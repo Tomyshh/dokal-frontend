@@ -1,0 +1,92 @@
+name: dokal
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
+
+  # Navigation
+  go_router: ^16.2.0
+
+  # Dependency Injection
+  get_it: ^8.2.0
+
+  # Network
+  dio: ^5.9.0
+
+  # Backend
+  supabase_flutter: ^2.10.1
+
+  # Local Storage
+  shared_preferences: ^2.5.3
+  flutter_secure_storage: ^9.2.4
+
+  # UI
+  flutter_svg: ^2.2.0
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  lottie: ^3.3.1
+
+  # Utilities
+  intl: ^0.20.2
+  dartz: ^0.10.1
+  permission_handler: ^12.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.5
+
+# Configuration flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/branding/dokal_logo_launcher_native_splash.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/branding/dokal_logo_launcher_native_splash.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/branding/dokal_logo_launcher_native_splash.png"
+    background_color: "#FFFFFF"
+    theme_color: "#2563EB"
+
+# Configuration flutter_native_splash
+flutter_native_splash:
+  color: "#005044"
+  image: "assets/branding/dokal_logo_launcher_native_splash.png"
+  branding_mode: center
+  android_12:
+    color: "#005044"
+    image: "assets/branding/dokal_logo_launcher_native_splash.png"
+  ios: true
+  android: true
+  web: true
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/branding/
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-VariableFont_wght.ttf
+        - asset: fonts/Montserrat-Italic-VariableFont_wght.ttf
+          style: italic
+        - asset: fonts/Montserrat-Medium.ttf
+          weight: 500

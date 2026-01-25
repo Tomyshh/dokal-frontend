@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+
+import '../constants/app_colors.dart';
+import '../constants/app_radii.dart';
+import '../constants/app_spacing.dart';
+
+/// Carte moderne Dokal avec styles compacts.
+class DokalCard extends StatelessWidget {
+  const DokalCard({
+    super.key,
+    required this.child,
+    this.padding = const EdgeInsets.all(AppSpacing.lg),
+    this.onTap,
+    this.color,
+    this.borderColor,
+    this.borderRadius,
+  });
+
+  final Widget child;
+  final EdgeInsets padding;
+  final VoidCallback? onTap;
+  final Color? color;
+  final Color? borderColor;
+  final BorderRadius? borderRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    final effectiveRadius = borderRadius ?? BorderRadius.circular(AppRadii.lg);
+    final effectiveColor = color ?? AppColors.surface;
+    final effectiveBorderColor = borderColor ?? AppColors.outline;
+
+    final cardContent = Container(
+      decoration: BoxDecoration(
+        color: effectiveColor,
+        borderRadius: effectiveRadius,
+        border: Border.all(color: effectiveBorderColor, width: 1),
+      ),
+      child: ClipRRect(
+        borderRadius: effectiveRadius,
+        child: Padding(
+          padding: padding,
+          child: child,
+        ),
+      ),
+    );
+
+    if (onTap == null) return cardContent;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: effectiveRadius,
+        onTap: onTap,
+        child: cardContent,
+      ),
+    );
+  }
+}
+
