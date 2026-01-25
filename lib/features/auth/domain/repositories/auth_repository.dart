@@ -19,5 +19,13 @@ abstract class AuthRepository {
   });
 
   Future<Either<Failure, Unit>> signOut();
+
+  Future<Either<Failure, Unit>> requestPasswordReset({
+    required String email,
+  });
+
+  Future<Either<Failure, Unit>> resendSignupConfirmationEmail({
+    required String email,
+  });
 }
 

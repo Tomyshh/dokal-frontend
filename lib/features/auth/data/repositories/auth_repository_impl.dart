@@ -63,6 +63,30 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(_messageFrom(e)));
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> requestPasswordReset({
+    required String email,
+  }) async {
+    try {
+      await remote.requestPasswordReset(email: email);
+      return const Right(unit);
+    } catch (e) {
+      return Left(Failure(_messageFrom(e)));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> resendSignupConfirmationEmail({
+    required String email,
+  }) async {
+    try {
+      await remote.resendSignupConfirmationEmail(email: email);
+      return const Right(unit);
+    } catch (e) {
+      return Left(Failure(_messageFrom(e)));
+    }
+  }
 }
 
 String _messageFrom(Object e) {

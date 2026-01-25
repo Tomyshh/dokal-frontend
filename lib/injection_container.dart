@@ -14,13 +14,17 @@ import 'features/auth/domain/repositories/onboarding_repository.dart';
 import 'features/auth/domain/usecases/complete_onboarding.dart';
 import 'features/auth/domain/usecases/get_session.dart';
 import 'features/auth/domain/usecases/get_onboarding_completed.dart';
+import 'features/auth/domain/usecases/request_password_reset.dart';
+import 'features/auth/domain/usecases/resend_signup_confirmation_email.dart';
 import 'features/auth/domain/usecases/sign_in.dart';
 import 'features/auth/domain/usecases/sign_out.dart';
 import 'features/auth/domain/usecases/sign_up.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/forgot_password_cubit.dart';
 import 'features/auth/presentation/bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/onboarding_cubit.dart';
 import 'features/auth/presentation/bloc/register_bloc.dart';
+import 'features/auth/presentation/bloc/verify_email_cubit.dart';
 import 'features/messages/data/datasources/messages_demo_data_source.dart';
 import 'features/messages/data/repositories/messages_repository_impl.dart';
 import 'features/messages/domain/repositories/messages_repository.dart';
@@ -129,10 +133,20 @@ void configureDependencies() {
       : (supabaseKeyDefine.isNotEmpty ? supabaseKeyDefine : supabaseKeyExpo);
 
   sl.registerSingletonAsync<SupabaseClient>(() async {
-    // Si non configuré, on démarre quand même l’app (les calls distants échoueront).
-    final url = supabaseUrl.isEmpty ? 'http://localhost:54321' : supabaseUrl;
-    final key = supabaseAnonKey.isEmpty ? 'anon' : supabaseAnonKey;
-    return SupabaseClient(url, key);
+    if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
+      throw StateError(
+        "Supabase n'est pas configuré. Ajoutez `EXPO_PUBLIC_SUPABASE_URL` et "
+        "`EXPO_PUBLIC_SUPABASE_KEY` dans `.env.local` puis lancez l'app avec "
+        "`--dart-define-from-file=.env.local`.",
+      );
+    }
+
+    await Supabase.initialize(
+      url: supabaseUrl,
+      anonKey: supabaseAnonKey,
+    );
+
+    return Supabase.instance.client;
   });
 
   // Auth
@@ -157,6 +171,10 @@ void configureDependencies() {
   sl.registerLazySingleton(() => SignUp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignOut(sl<AuthRepository>()));
   sl.registerLazySingleton(() => GetSession(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => RequestPasswordReset(sl<AuthRepository>()));
+  sl.registerLazySingleton(
+    () => ResendSignupConfirmationEmail(sl<AuthRepository>()),
+  );
   sl.registerLazySingleton(() => GetOnboardingCompleted(sl<OnboardingRepository>()));
   sl.registerLazySingleton(() => CompleteOnboarding(sl<OnboardingRepository>()));
 
@@ -169,6 +187,16 @@ void configureDependencies() {
 
   sl.registerFactory(() => LoginBloc(signIn: sl<SignIn>()));
   sl.registerFactory(() => RegisterBloc(signUp: sl<SignUp>()));
+  sl.registerFactory(
+    () => ForgotPasswordCubit(
+      requestPasswordReset: sl<RequestPasswordReset>(),
+    ),
+  );
+  sl.registerFactory(
+    () => VerifyEmailCubit(
+      resend: sl<ResendSignupConfirmationEmail>(),
+    ),
+  );
   sl.registerFactory(
     () => OnboardingCubit(
       getOnboardingCompleted: sl<GetOnboardingCompleted>(),

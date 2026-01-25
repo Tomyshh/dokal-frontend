@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: Image.asset(
                     'assets/branding/icononly_transparent_nobuffer.png',
-                    height: 56,
+                    height: 56,color: AppColors.primary,
                     fit: BoxFit.contain,
                   ),
                 ),

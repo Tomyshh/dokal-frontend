@@ -12,6 +12,8 @@ abstract class AuthRemoteDataSource {
     String? lastName,
   });
   Future<void> signOut();
+  Future<void> requestPasswordReset({required String email});
+  Future<void> resendSignupConfirmationEmail({required String email});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -74,6 +76,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> signOut() async {
     final client = await _client;
     await client.auth.signOut();
+  }
+
+  @override
+  Future<void> requestPasswordReset({required String email}) async {
+    final client = await _client;
+    await client.auth.resetPasswordForEmail(email);
+  }
+
+  @override
+  Future<void> resendSignupConfirmationEmail({required String email}) async {
+    final client = await _client;
+    await client.auth.resend(
+      type: OtpType.signup,
+      email: email,
+    );
   }
 }
 
