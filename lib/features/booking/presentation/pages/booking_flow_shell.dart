@@ -88,7 +88,7 @@ class BookingFlowShell extends StatelessWidget {
                   if (context.canPop()) {
                     context.pop();
                   } else {
-                    context.go('/practitioner/$practitionerId');
+                    context.go('/home/practitioner/$practitionerId');
                   }
                 },
               ),

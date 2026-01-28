@@ -122,7 +122,16 @@ class _SearchPageState extends State<SearchPage> {
                             nextAvailabilityLabel: p.nextAvailabilityLabel,
                             distanceLabel: p.distanceLabel,
                             avatarUrl: p.avatarUrl,
-                            onTap: () => context.push('/practitioner/${p.id}'),
+                            onTap: () {
+                              // La page search est utilisée à la fois sur `/search`
+                              // (root) et sur `/home/search` (branche Home). On
+                              // pousse vers la route cohérente avec le contexte.
+                              final fromPath = GoRouterState.of(context).uri.path;
+                              final target = fromPath.startsWith('/home')
+                                  ? '/home/practitioner/${p.id}'
+                                  : '/practitioner/${p.id}';
+                              context.push(target);
+                            },
                           );
                         },
                       );

@@ -87,7 +87,8 @@ class AppointmentDetailPage extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: TextButton.icon(
-                                    onPressed: () => context.push('/search'),
+                                    onPressed: () =>
+                                        context.push('/home/search'),
                                     icon: Icon(Icons.sync_rounded, size: 16.sp),
                                     label: Text(
                                       l10n.appointmentDetailReschedule,
@@ -369,7 +370,8 @@ class _AppointmentTopCard extends StatelessWidget {
             title: Text(a.practitionerName),
             subtitle: Text(a.specialty),
             trailing: const Icon(Icons.chevron_right_rounded),
-            onTap: () => context.push('/practitioner/p1'),
+            onTap: () =>
+                context.push('/home/practitioner/${a.practitionerId}'),
           ),
           const Divider(height: 1),
           ListTile(

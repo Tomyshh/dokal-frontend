@@ -68,6 +68,36 @@ bool isUserAuthenticated() {
   return _authBloc.state.isAuthenticated;
 }
 
+/// Validation simple de la destination `redirect` (anti open-redirect).
+/// Retourne une location interne (ex: `/home/search?x=1`) ou `null`.
+String? _safeRedirectTarget(GoRouterState state) {
+  final raw = state.uri.queryParameters['redirect'];
+  if (raw == null || raw.trim().isEmpty) return null;
+
+  final decoded = Uri.decodeComponent(raw.trim());
+  final uri = Uri.tryParse(decoded);
+  if (uri == null) return null;
+
+  // Refuser tout redirect externe.
+  if (uri.hasScheme || (uri.host.isNotEmpty)) return null;
+
+  final path = uri.path;
+  if (!path.startsWith('/')) return null;
+
+  // Refuser de reboucler sur des routes d'auth.
+  const authPaths = {
+    '/onboarding',
+    '/login',
+    '/register',
+    '/forgot-password',
+    '/verify-email',
+    '/splash',
+  };
+  if (authPaths.contains(path)) return null;
+
+  return uri.toString();
+}
+
 void initAppRouter(
   AuthBloc authBloc, {
   required bool Function() isOnboardingCompleted,
@@ -82,39 +112,57 @@ void initAppRouter(
     debugLogDiagnostics: true,
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
-      final loc = state.matchedLocation;
+      // `path` = chemin courant sans query (stable pour les checks)
+      // `full` = destination complète à restaurer après login (avec query)
+      final path = state.uri.path;
+      final full = state.uri.toString();
       final isAuthRoute =
-          loc == '/onboarding' ||
-          loc == '/login' ||
-          loc == '/register' ||
-          loc == '/forgot-password' ||
-          loc == '/verify-email';
+          path == '/onboarding' ||
+          path == '/login' ||
+          path == '/register' ||
+          path == '/forgot-password' ||
+          path == '/verify-email';
 
       final isAuthed = authBloc.state.isAuthenticated;
       final onboardingCompleted = _isOnboardingCompleted();
 
       // Si quelqu'un arrive sur /splash, on le sort immédiatement.
-      if (loc == '/splash') {
+      if (path == '/splash') {
         if (isAuthed) return '/home';
         if (onboardingCompleted) return '/home';
         return '/onboarding';
       }
 
       // Si onboarding déjà terminé, ne pas y revenir.
-      if (loc == '/onboarding' && onboardingCompleted) return '/home';
+      if (path == '/onboarding' && onboardingCompleted) return '/home';
 
       // Si authentifié et sur une route d'auth (login, register, etc.), aller au home
-      if (isAuthed && isAuthRoute) return '/home';
+      if (isAuthed && isAuthRoute) {
+        final target = _safeRedirectTarget(state);
+        return target ?? '/home';
+      }
 
       // Les routes protégées nécessitent une authentification
-      if (!isAuthed && _isProtectedRoute(loc)) {
+      if (!isAuthed && _isProtectedRoute(path)) {
         // Rediriger vers login avec la destination originale
-        return '/login?redirect=${Uri.encodeComponent(loc)}';
+        return '/login?redirect=${Uri.encodeComponent(full)}';
       }
 
       return null;
     },
     routes: [
+      // Fallback robuste: certaines navigations/back-stack peuvent retomber sur `/`.
+      GoRoute(
+        path: '/',
+        redirect: (context, state) {
+          // Évite une chaîne `/` -> `/splash` -> ...
+          final isAuthed = _authBloc.state.isAuthenticated;
+          final onboardingCompleted = _isOnboardingCompleted();
+          if (isAuthed) return '/home';
+          if (onboardingCompleted) return '/home';
+          return '/onboarding';
+        },
+      ),
       GoRoute(path: '/splash', builder: (context, state) => const SplashPage()),
       GoRoute(
         path: '/onboarding',
@@ -282,6 +330,14 @@ void initAppRouter(
             routes: [
               GoRoute(
                 path: '/account',
+                redirect: (context, state) {
+                  // Les sous-routes `/account/*` nécessitent une session.
+                  // Le root `/account` affiche le login inline si besoin.
+                  final isAuthed = _authBloc.state.isAuthenticated;
+                  final path = state.uri.path;
+                  if (!isAuthed && path != '/account') return '/account';
+                  return null;
+                },
                 pageBuilder: (context, state) {
                   final isAuthed = _authBloc.state.isAuthenticated;
                   return NoTransitionPage(

@@ -26,6 +26,7 @@ class AppointmentsDemoDataSourceImpl implements AppointmentsDemoDataSource {
     _upcoming.add(
       Appointment(
         id: 'demo',
+        practitionerId: 'p1',
         dateLabel: l10n.demoAppointmentDateThu19Feb,
         timeLabel: '15:15',
         practitionerName: l10n.demoPractitionerNameMarc,
@@ -42,6 +43,7 @@ class AppointmentsDemoDataSourceImpl implements AppointmentsDemoDataSource {
     _past.addAll([
       Appointment(
         id: 'past-1',
+        practitionerId: 'p2',
         dateLabel: l10n.demoShortDateMon15Feb,
         timeLabel: '10:00',
         practitionerName: l10n.demoPractitionerNameSarah,
@@ -54,6 +56,7 @@ class AppointmentsDemoDataSourceImpl implements AppointmentsDemoDataSource {
       ),
       Appointment(
         id: 'past-2',
+        practitionerId: 'p1',
         dateLabel: l10n.demoShortDateThu19Feb,
         timeLabel: '09:30',
         practitionerName: l10n.demoPractitionerNameMarc,
@@ -66,6 +69,7 @@ class AppointmentsDemoDataSourceImpl implements AppointmentsDemoDataSource {
       ),
       Appointment(
         id: 'past-3',
+        practitionerId: 'p3',
         dateLabel: l10n.demoShortDateMon15Feb,
         timeLabel: '16:45',
         practitionerName: l10n.demoPractitionerNameNoam,

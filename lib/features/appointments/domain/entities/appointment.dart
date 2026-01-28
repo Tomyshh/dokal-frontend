@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 class Appointment extends Equatable {
   const Appointment({
     required this.id,
+    required this.practitionerId,
     required this.dateLabel,
     required this.timeLabel,
     required this.practitionerName,
@@ -15,6 +16,7 @@ class Appointment extends Equatable {
   });
 
   final String id;
+  final String practitionerId;
   final String dateLabel;
   final String timeLabel;
   final String practitionerName;
@@ -28,6 +30,7 @@ class Appointment extends Equatable {
   @override
   List<Object?> get props => [
     id,
+    practitionerId,
     dateLabel,
     timeLabel,
     practitionerName,

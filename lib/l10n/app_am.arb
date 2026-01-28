@@ -1,0 +1,553 @@
+{
+  "@@locale": "am",
+
+  "commonError": "ስህተት",
+
+  "commonEmail": "ኢሜይል",
+  "commonEmailHint": "ለምሳሌ፡ name@domain.com",
+  "commonEmailRequired": "ኢሜይል ያስፈልጋል",
+  "commonEmailInvalid": "የተሳሳተ ኢሜይል",
+
+  "commonPassword": "የይለፍ ቃል",
+  "commonPasswordHint": "••••••••",
+  "commonPasswordRequired": "የይለፍ ቃል ያስፈልጋል",
+  "commonPasswordMinChars": "ቢያንስ {min} ቁምፊዎች",
+  "@commonPasswordMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+
+  "authLoginTitle": "ግባ",
+  "authLoginSubtitle": "ወደ ቀጠሮዎችዎ፣ መልዕክቶችዎ እና ሰነዶችዎ ይግቡ።",
+  "authLoginButton": "ግባ",
+  "authForgotPasswordCta": "የይለፍ ቃል ረሳህ?",
+  "authCreateAccountCta": "መለያ ፍጠር",
+  "authContinueWithoutAccount": "ያለ መለያ ቀጥል",
+
+  "authRegisterTitle": "መለያ ፍጠር",
+  "authRegisterSubtitle": "ሁሉም መስኮች ግዴታ ናቸው።",
+  "authFirstName": "ስም",
+  "authLastName": "የአባት ስም",
+  "commonRequired": "ግዴታ",
+  "commonContinue": "ቀጥል",
+  "authAlreadyHaveAccount": "አስቀድሞ መለያ አለኝ",
+
+  "authForgotPasswordTitle": "የይለፍ ቃል ረሳሁ",
+  "authForgotPasswordSubtitle": "የመመለሻ አገናኝ እንልካለን።",
+  "authForgotPasswordSendLink": "አገናኝ ላክ",
+  "authBackToLogin": "ወደ መግቢያ ተመለስ",
+  "authForgotPasswordEmailSent": "ኢሜይል ተልኳል። ገቢ ፖስታዎን ያረጋግጡ።",
+
+  "authVerifyEmailTitle": "ኢሜይልዎን ያረጋግጡ",
+  "authVerifyEmailDescription": "ወደ {email} የማረጋገጫ ኢሜይል ላክን። በኢሜይሉ ውስጥ ያለውን አገናኝ ጫን እና ወደ መተግበሪያው ተመለስ።",
+  "@authVerifyEmailDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authVerifyEmailCheckedBackToLogin": "አረጋግጫለሁ፣ ወደ መግቢያ ተመለስ",
+  "authVerifyEmailResend": "ኢሜይል ደግመህ ላክ",
+  "authVerifyEmailResentSnack": "የማረጋገጫ ኢሜይል ደግመን ላክን።",
+  "commonBack": "ተመለስ",
+
+  "homeMyPractitioners": "የእኔ ሐኪሞች",
+  "homeHistory": "ታሪክ",
+  "homeGreeting": "ሰላም {name}",
+  "@homeGreeting": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeSearchHint": "ሐኪም፣ ስፔሻሊቲ...",
+  "homeHealthTip1": "በዚህ ዓመት ጤናማ ልማዶችን ይማሩ።",
+  "homeHealthTip2": "መከተብ ለማድረግ ገና አልዘገየም።",
+  "homeCompleteHealthProfile": "የጤና መገለጫዎን ያሟሉ",
+  "homeCompleteHealthProfileSubtitle": "ግላዊ ማስታወሻዎችን ተቀበል እና ቀጠሮዎችህን አዘጋጅ",
+  "homeStart": "ጀምር",
+  "homeNoRecentPractitioner": "የቅርብ ጊዜ ሐኪም የለም",
+  "homeHistoryDescription": "ያገናኙትን ሐኪሞች ዝርዝር ማየት ትችላለህ",
+  "homeHistoryEnabledSnack": "ታሪክ ተከፍቷል",
+  "homeHistoryEnabled": "ታሪክ ተከፍቷል",
+  "homeActivateHistory": "ታሪክን አንቃ",
+  "homeNewMessageTitle": "ከዶክተር {name} አዲስ መልዕክት አለዎት",
+  "@homeNewMessageTitle": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeNewMessageNoAppointment": "የተያያዘ ቀጠሮ የለም",
+  "homeUpcomingAppointmentsTitle": "ቀጣይ ቀጠሮዎች",
+  "homeLast3AppointmentsTitle": "የመጨረሻ 3 ቀጠሮዎች",
+  "homeSeeAllPastAppointments": "ሁሉንም ያለፉ ቀጠሮዎች ይመልከቱ",
+  "homeAppointmentHistoryTitle": "የቀጠሮ ታሪክ",
+  "homeNoAppointmentHistory": "ያለፉ ቀጠሮዎች የሉም",
+
+  "commonTryAgainLater": "ቆይተህ እንደገና ሞክር።",
+  "commonUnableToLoad": "መጫን አልተቻለም",
+  "commonAvailableSoon": "በቅርቡ ይገኛል",
+  "commonCancel": "ይቅር",
+  "commonActionIsFinal": "ይህ እርምጃ መመለስ አይቻልም።",
+  "commonTodo": "ለማድረግ",
+  "commonToRead": "ለማንበብ",
+  "commonSettings": "ቅንብሮች",
+  "commonTryAgainInAMoment": "በትንሹ ጊዜ ውስጥ እንደገና ሞክር።",
+  "commonMinChars": "ቢያንስ {min} ቁምፊዎች",
+  "@commonMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "commonOnline": "በመስመር ላይ",
+
+  "appointmentsTitle": "ቀጠሮዎቼ",
+  "appointmentsTabUpcoming": "ቀጣይ",
+  "appointmentsTabPast": "ያለፉ",
+  "appointmentsNoUpcomingTitle": "ቀጣይ ቀጠሮ የለም",
+  "appointmentsNoUpcomingSubtitle": "ቀጣይ ቀጠሮዎችዎ እዚህ ይታያሉ።",
+  "appointmentsNoPastTitle": "ያለፉ ቀጠሮ የለም",
+  "appointmentsNoPastSubtitle": "የተጠናቀቁ ቀጠሮዎችዎ እዚህ ይታያሉ።",
+
+  "searchTitle": "ፈልግ",
+  "searchHint": "ሐኪም፣ ስፔሻሊቲ...",
+  "searchUnavailableTitle": "ፍለጋ አይገኝም",
+  "searchNoResultsTitle": "ውጤት የለም",
+  "searchNoResultsSubtitle": "ሌላ ቃል ሞክር።",
+
+  "searchFilterTitle": "ውጤቶችን አጣራ",
+  "searchFilterDate": "የመገኘት ቀን",
+  "searchFilterDateToday": "ዛሬ",
+  "searchFilterDateTomorrow": "ነገ",
+  "searchFilterDateThisWeek": "በዚህ ሳምንት",
+  "searchFilterDateNextWeek": "በሚቀጥለው ሳምንት",
+  "searchFilterDateAny": "ማንኛውም ቀን",
+  "searchFilterSpecialty": "ስፔሻሊቲ",
+  "searchFilterSpecialtyAll": "ሁሉም ስፔሻሊቲዎች",
+  "searchFilterKupatHolim": "የጤና ፈንድ",
+  "searchFilterKupatHolimAll": "ሁሉም ፈንዶች",
+  "searchFilterDistance": "ከፍተኛ ርቀት",
+  "searchFilterDistanceAny": "ያለ ገደብ",
+  "searchFilterApply": "ማጣሪያዎችን ተግብር",
+  "searchFilterReset": "ሁሉንም አጥፋ",
+  "searchFilterActiveCount": "{count} ንቁ ማጣሪያዎች",
+  "@searchFilterActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "searchSortTitle": "በ… ደርድር",
+  "searchSortAvailability": "መገኘት",
+  "searchSortDistance": "ርቀት",
+  "searchSortName": "ስም",
+  "searchSortRating": "ደረጃ",
+
+  "onboardingStep1Title": "ቀጠሮ በቀላሉ ያስያዙ",
+  "onboardingStep2Title": "ከሐኪሞችዎ ጋር በቀላሉ ይወያዩ",
+  "onboardingStep3Title": "የሕክምና ሰነዶችዎን ማንኛውንም ጊዜ ያግኙ",
+  "onboardingContinueButton": "ቀጥል",
+  "onboardingStartButton": "ጀምር",
+
+  "healthTitle": "ጤናዬ",
+  "healthSubtitle": "የጤና መገለጫዎን ያስተዳድሩ",
+  "healthProfileTitle": "የጤና መገለጫ",
+  "healthProfileSubtitle": "አስፈላጊ መረጃ ይሙሉ (እስራኤል)",
+  "healthProfileIntro": "ይህ መረጃ በእስራኤል ሕክምናዎን ለማዘጋጀት ይረዳናል (ፈንድ፣ የቤተሰብ ሐኪም፣ አለርጂዎች ወዘተ).",
+  "healthProfileSave": "አስቀምጥ",
+  "healthProfileSavedSnack": "መገለጫ ተቀምጧል",
+  "healthProfileStepIdentity": "መለያ",
+  "healthProfileStepKupatHolim": "ፈንድ",
+  "healthProfileStepMedical": "የሕክምና መረጃ",
+  "healthProfileStepEmergency": "የአደጋ እንዲጠራ",
+  "healthProfileTeudatZehut": "መታወቂያ ቁጥር",
+  "healthProfileDateOfBirth": "የትውልድ ቀን",
+  "healthProfileSex": "ፆታ",
+  "healthProfileSexFemale": "ሴት",
+  "healthProfileSexMale": "ወንድ",
+  "healthProfileSexOther": "ሌላ",
+  "healthProfileKupatHolim": "የጤና ፈንድ",
+  "healthProfileKupatMemberId": "የአባል መለያ",
+  "healthProfileFamilyDoctor": "የቤተሰብ ሐኪም",
+  "healthProfileEmergencyContactName": "የአደጋ እንዲጠራ ስም",
+  "healthProfileEmergencyContactPhone": "የአደጋ ስልክ",
+  "kupatClalit": "Clalit",
+  "kupatMaccabi": "Maccabi",
+  "kupatMeuhedet": "Meuhedet",
+  "kupatLeumit": "Leumit",
+  "kupatOther": "ሌላ",
+  "healthMyFileSectionTitle": "ፋይሌ",
+  "healthDocumentsTitle": "ሰነዶች",
+  "healthDocumentsSubtitle": "መድሀኒት ማዘዣ፣ ምርመራዎች፣ ሪፖርቶች",
+  "healthConditionsTitle": "የሕክምና ሁኔታዎች",
+  "healthConditionsSubtitle": "ታሪክ እና ሁኔታዎች",
+  "healthMedicationsTitle": "መድሀኒቶች",
+  "healthMedicationsSubtitle": "የአሁኑ ሕክምናዎች",
+  "healthAllergiesTitle": "አለርጂዎች",
+  "healthAllergiesSubtitle": "የታወቁ አለርጂዎች",
+  "healthVaccinationsTitle": "ክትባቶች",
+  "healthVaccinationsSubtitle": "የክትባት ታሪክ",
+  "healthUpToDateTitle": "ሁሉም ዘመናዊ ነው",
+  "healthUpToDateSubtitle": "አዲስ የጤና ማስታወሻዎች ሲኖሩ እናሳውቅዎታለን።",
+
+  "appointmentDetailTitle": "የቀጠሮ ዝርዝሮች",
+  "appointmentDetailCancelledSnack": "ቀጠሮ ተሰርዟል",
+  "appointmentDetailNotFoundTitle": "ቀጠሮ አልተገኘም",
+  "appointmentDetailNotFoundSubtitle": "ይህ ቀጠሮ አይገኝም ወይም ተሰርዟል።",
+  "appointmentDetailReschedule": "ዳግም ያቅዱ",
+  "appointmentDetailCancelQuestion": "ቀጠሮውን ልሰርዝ?",
+  "appointmentDetailPreparationTitle": "አስቀድሞ ዝግጅት ያስፈልጋል",
+  "appointmentDetailPreparationSubtitle": "ጉብኝትዎን አስቀድሞ ያዘጋጁ።",
+  "appointmentDetailPrepQuestionnaire": "የጤና መጠይቅ ሙሉ",
+  "appointmentDetailPrepInstructions": "መመሪያዎችን ይመልከቱ",
+  "appointmentPrepQuestionnaireSubtitle": "መደበኛ መጠይቅ (backend-ready)",
+  "appointmentPrepInstructionsSubtitle": "ከጉብኝት በፊት አስፈላጊ መረጃ",
+  "appointmentPrepQuestionSymptoms": "ምክንያት / ምልክቶች (በአጭር)",
+  "appointmentPrepQuestionAllergies": "አለርጂዎች (አማራጭ)",
+  "appointmentPrepQuestionMedications": "የአሁኑ መድሀኒቶች (አማራጭ)",
+  "appointmentPrepQuestionOther": "ተጨማሪ መረጃ (አማራጭ)",
+  "appointmentPrepConsentLabel": "ይህን መረጃ ከሐኪሙ ጋር ለመጋራት እስማማለሁ",
+  "appointmentPrepConsentRequired": "ለመቀጠል እባክዎ ያረጋግጡ።",
+  "appointmentPrepSavedSnack": "ዝግጅት ተቀምጧል",
+  "appointmentPrepSubmit": "ላክ",
+  "appointmentPrepInstruction1": "መታወቂያ እና የኢንሹራንስ ካርድ ይዘው ይምጡ።",
+  "appointmentPrepInstruction2": "10 ደቂቃ ቀድሞ ይድረሱ።",
+  "appointmentPrepInstruction3": "አስፈላጊ የሕክምና ሰነዶችን አዘጋጁ።",
+  "appointmentPrepInstructionsAccept": "እነዚህን መመሪያዎች አንብቤ ተቀብያለሁ",
+  "appointmentDetailSendDocsTitle": "ሰነዶችን ላክ",
+  "appointmentDetailSendDocsSubtitle": "ከቀጠሮው በፊት ሰነዶችን ለሐኪሙ ላክ።",
+  "appointmentDetailAddDocs": "ሰነዶች ጨምር",
+  "appointmentDetailEarlierSlotTitle": "ቀድሞ ሰዓት ትፈልጋለህ?",
+  "appointmentDetailEarlierSlotSubtitle": "ቀድሞ ቦታ ቢከፈት ማስጠንቀቂያ ተቀበል።",
+  "appointmentDetailEnableAlerts": "ማስጠንቀቂያዎችን አንቃ",
+  "appointmentDetailContactOffice": "ቢሮውን አግኝ",
+  "appointmentDetailVisitSummaryTitle": "የጉብኝት ማጠቃለያ",
+  "appointmentDetailVisitSummarySubtitle": "ዋና ነጥቦች እና ቀጣይ እርምጃዎች",
+  "appointmentDetailVisitSummaryDemo": "ክሊኒካዊ ምርመራ ተጠናቋል። በ3 ወራት ውስጥ ክትትል ይመከራል እና ሕክምናውን እንደ አስፈላጊነት ይቀጥሉ።",
+  "appointmentDetailDoctorReportTitle": "የዶክተር ሪፖርት",
+  "appointmentDetailDoctorReportSubtitle": "ከጉብኝት በኋላ የተጻፈ ማስታወሻ",
+  "appointmentDetailDoctorReportDemo": "ታካሚው/ዋ ለምክክር መጥቷል/ታለች። አሳሳቢ ውጤት አልተገኘም። ክትትል ይመከራል እና በሚቀጥለው ቀጠሮ ተዛማጅ ሰነዶችን ይዘው ይምጡ።",
+  "appointmentDetailDocumentsAndRxTitle": "ሰነዶች እና መድሀኒት ማዘዣ",
+  "appointmentDetailDocumentsAndRxSubtitle": "ከጉብኝት በኋላ የተጋሩ ሰነዶችን ያግኙ",
+  "appointmentDetailOpenVisitReport": "የጉብኝት ሪፖርት ክፈት",
+  "appointmentDetailOpenPrescription": "መድሀኒት ማዘዣ ክፈት",
+  "appointmentDetailSendMessageCta": "ለቢሮው መልዕክት ላክ",
+
+  "messagesTitle": "መልዕክቶች",
+  "messagesMarkAllRead": "ሁሉንም እንደተነበበ ምልክት አድርግ",
+  "messagesEmptyTitle": "መልዕክቶችዎ",
+  "messagesEmptySubtitle": "ሰነድ ለመጠየቅ፣ ጥያቄ ለመጠየቅ ወይም ውጤቶችን ለመከታተል ከሐኪሞችዎ ጋር ውይይት ጀምሩ።",
+  "messagesNewMessageTitle": "አዲስ መልዕክት",
+  "messagesWriteToOfficeTitle": "ለቢሮው ጻፍ",
+  "messagesResponseTime": "መልስ በ24–48 ሰዓት ውስጥ።",
+  "messagesSubjectLabel": "ርዕስ",
+  "messagesSubjectHint": "ለምሳሌ፡ ውጤቶች፣ ጥያቄ…",
+  "messagesSubjectRequired": "ርዕስ ያስፈልጋል",
+  "messagesMessageLabel": "መልዕክት",
+  "messagesMessageHint": "መልዕክትዎን ይጻፉ…",
+  "messagesSendButton": "ላክ",
+
+  "conversationTitle": "ውይይት",
+  "conversationNewMessageTooltip": "አዲስ መልዕክት",
+  "conversationWriteMessageHint": "መልዕክት ጻፍ…",
+
+  "practitionerTitle": "ሐኪም",
+  "practitionerUnavailableTitle": "ሐኪሙ አይገኝም",
+  "practitionerNotFoundTitle": "ሐኪም አልተገኘም",
+  "practitionerNotFoundSubtitle": "ይህ መገለጫ አይገኝም።",
+  "practitionerBookAppointment": "ቀጠሮ ያስያዙ",
+  "practitionerSendMessage": "መልዕክት ላክ",
+  "practitionerAvailabilities": "መገኘት",
+  "practitionerAddress": "አድራሻ",
+  "practitionerProfileSection": "መገለጫ",
+
+  "documentsTitle": "ሰነዶች",
+  "documentsEmptyTitle": "ሰነዶች የሉም",
+  "documentsEmptySubtitle": "መድሀኒት ማዘዣዎችዎ እና ውጤቶችዎ እዚህ ይታያሉ።",
+  "documentsOpen": "ክፈት",
+  "documentsShare": "አጋራ",
+
+  "authLogout": "ውጣ",
+
+  "securityTitle": "ደህንነት",
+  "securitySecureAccountTitle": "መለያዎን ያስጠብቁ",
+  "securitySecureAccountSubtitle": "መረጃዎን ያዘምኑ",
+  "securityChangePassword": "የይለፍ ቃል ቀይር",
+  "securityChangePasswordSuccess": "ጥያቄው ተቀምጧል",
+  "securityCurrentPassword": "የአሁኑ የይለፍ ቃል",
+  "securityNewPassword": "አዲስ የይለፍ ቃል",
+
+  "accountTitle": "መለያዬ",
+  "accountTaglineTitle": "ጤናዎ። ውሂብዎ።",
+  "accountTaglineSubtitle": "የግላዊነትዎ ጥበቃ ቀዳሚ ነው።",
+  "accountPersonalInfoSection": "ግላዊ መረጃ",
+  "accountMyProfile": "መገለጫዬ",
+  "accountMyRelatives": "ዘመዶቼ",
+  "accountSectionTitle": "መለያ",
+
+  "privacyTitle": "ግላዊነት",
+  "privacyYourDataTitle": "ውሂብዎ",
+  "privacyYourDataSubtitle": "መረጃዎን እንጠብቃለን እና መዳረሻን እንገድባለን።",
+  "privacySharingTitle": "ማጋራት",
+  "privacySharingSubtitle": "ከሐኪሞችዎ ጋር የሚጋሩትን ሰነዶች ተቆጣጠሩ።",
+  "privacyExportTitle": "ወደ ውጭ ላክ",
+  "privacyExportSubtitle": "ውሂብዎን በማንኛውም ጊዜ ወደ ውጭ ላክ።",
+
+  "paymentTitle": "ክፍያ",
+  "paymentEmptyTitle": "የክፍያ መንገድ የለም",
+  "paymentEmptySubtitle": "ክፍያን ለማቀላጠፍ ካርድ ያክሉ።",
+  "paymentExpires": "ያበቃው {expiry}",
+  "@paymentExpires": {
+    "placeholders": {
+      "expiry": {}
+    }
+  },
+
+  "relativesTitle": "ዘመዶቼ",
+  "relativesEmptyTitle": "ዘመድ የለም",
+  "relativesEmptySubtitle": "በስማቸው ቀጠሮ ለማስያዝ ዘመዶችን ያክሉ።",
+
+  "settingsUnavailableTitle": "ቅንብሮች አይገኙም",
+  "settingsUnavailableSubtitle": "ምርጫዎችዎን መጫን አልተቻለም።",
+  "settingsNotificationsTitle": "ማሳወቂያዎች",
+  "settingsNotificationsSubtitle": "መልዕክቶችን እና ዝማኔዎችን ተቀበል",
+  "settingsRemindersTitle": "የቀጠሮ ማስታወሻዎች",
+  "settingsRemindersSubtitle": "ከቀጠሮዎ በፊት ማስታወሻ ተቀበል",
+  "settingsLanguageTitle": "ቋንቋ",
+  "settingsLanguageCurrentLabel": "አማርኛ (አሁን)",
+  "settingsLanguageShortLabel": "አማርኛ",
+
+  "profileTitle": "መገለጫዬ",
+  "profileUnavailableTitle": "መገለጫ አይገኝም",
+  "profileUnavailableSubtitle": "መረጃዎ አይገኝም።",
+  "profileIdentitySection": "መለያ",
+  "commonName": "ስም",
+  "commonAddress": "አድራሻ",
+  "commonCity": "ከተማ",
+  "profileMedicalInfoSection": "የሕክምና መረጃ",
+  "profileBloodType": "የደም አይነት",
+  "profileHeight": "ቁመት",
+  "profileWeight": "ክብደት",
+
+  "bookingSelectPatientTitle": "ይህ ቀጠሮ ለማን ነው?",
+  "bookingPatientsUnavailableTitle": "ታካሚዎች አይገኙም",
+  "bookingAddRelative": "ዘመድ ጨምር",
+  "commonMe": "እኔ",
+
+  "bookingSelectSlotTitle": "ቀን ይምረጡ",
+  "bookingSelectSlotSubtitle": "የሚገኝ ቀን እና ሰዓት ይምረጡ።",
+  "bookingSeeMoreDates": "ተጨማሪ ቀናት ይመልከቱ",
+  "commonSelected": "ተመርጧል",
+
+  "bookingInstructionsTitle": "መመሪያዎች",
+  "bookingInstructionsSubtitle": "ከቀጠሮው በፊት እባክዎ እነዚህን ነጥቦች ያረጋግጡ።",
+  "bookingInstructionsBullet1": "የኢንሹራንስ ካርድዎን እና ካስፈለገ መድሀኒት ማዘዣ ይዘው ይምጡ።",
+  "bookingInstructionsBullet2": "ለሥነ-ስርዓት 10 ደቂቃ ቀድሞ ይድረሱ።",
+  "bookingInstructionsBullet3": "ለመሰረዝ ከተገደዱ በቶሎ እንዲቻል ያሳውቁን።",
+  "bookingInstructionsAccept": "እነዚህን መመሪያዎች አንብቤ ተቀብያለሁ።",
+
+  "bookingConfirmTitle": "ቀጠሮውን ያረጋግጡ",
+  "bookingConfirmSubtitle": "ከማረጋገጥ በፊት መረጃውን ያረጋግጡ።",
+  "bookingReasonLabel": "ምክንያት",
+  "bookingPatientLabel": "ታካሚ",
+  "bookingSlotLabel": "ሰዓት",
+  "bookingMissingInfoTitle": "መረጃ ጎድሏል",
+  "bookingZipCodeLabel": "ፖስታ ኮድ",
+  "bookingVisitedBeforeQuestion": "ከዚህ ሐኪም በፊት ተመልከተዋል?",
+  "commonYes": "አዎ",
+  "commonNo": "አይ",
+  "bookingConfirmButton": "ቀጠሮውን አረጋግጥ",
+  "bookingChangeSlotButton": "ሰዓት ቀይር",
+
+  "bookingSuccessTitle": "ቀጠሮ ተረጋግጧል",
+  "bookingSuccessSubtitle": "ማረጋገጫ ወደ ኢሜይልዎ ላክን።",
+  "bookingAddToCalendar": "ወደ ቀን መቁጠሪያዬ ጨምር",
+  "bookingBookAnotherAppointment": "ሌላ ቀጠሮ ያስያዙ",
+  "bookingSendDocsSubtitle": "ለቀጠሮው ሰነዶችን ለሐኪሙ ላክ።",
+  "bookingViewMyAppointments": "ቀጠሮዎቼን ይመልከቱ",
+  "bookingBackToHome": "ወደ መነሻ",
+
+  "vaccinationsEmptyTitle": "የተመዘገቡ ክትባቶች የሉም",
+  "vaccinationsEmptySubtitle": "ክትባቶችን እና ማስታወሻዎችን ተከታተሉ።",
+  "allergiesEmptyTitle": "አለርጂ የለም",
+  "allergiesEmptySubtitle": "ለደህንነትዎ አለርጂዎችን ያሳውቁ።",
+  "medicationsEmptyTitle": "መድሀኒት የለም",
+  "medicationsEmptySubtitle": "የአሁኑን ሕክምናዎች ያክሉ።",
+  "conditionsEmptyTitle": "ሁኔታ የለም",
+  "conditionsEmptySubtitle": "ለቀጠሮዎችዎ የሕክምና ታሪክ ያክሉ።",
+
+  "languageHebrew": "עברית",
+  "languageFrench": "Français",
+  "languageEnglish": "English",
+  "languageRussian": "Русский",
+  "languageSpanish": "Español",
+  "languageAmharic": "አማርኛ",
+
+  "errorGenericTryAgain": "ስህተት ተከስቷል። እንደገና ሞክር።",
+  "authSignInFailedTryAgain": "መግባት አልተሳካም። እንደገና ሞክር።",
+  "authSignUpFailedTryAgain": "መመዝገብ አልተሳካም። እንደገና ሞክር።",
+
+  "errorUnableToConfirmAppointment": "ቀጠሮውን ማረጋገጥ አልተቻለም።",
+  "errorUnableToLoadProfile": "መገለጫውን መጫን አልተቻለም።",
+  "errorUnableToReadHistoryState": "የታሪክ ሁኔታን ማንበብ አልተቻለም።",
+  "errorUnableToEnableHistory": "ታሪክን ማንቃት አልተቻለም።",
+  "errorUnableToLoadRelatives": "ዘመዶችን መጫን አልተቻለም።",
+  "errorUnableToAddRelative": "ዘመድ መጨመር አልተቻለም።",
+  "errorUnableToLoadPayments": "ክፍያዎችን መጫን አልተቻለም።",
+  "errorUnableToAddPaymentMethod": "የክፍያ መንገድ መጨመር አልተቻለም።",
+  "errorUnableToLoadHealthData": "የጤና ውሂብን መጫን አልተቻለም።",
+  "errorUnableToAddHealthItem": "ንጥል መጨመር አልተቻለም።",
+  "errorUnableToLoadHealthProfile": "የጤና መገለጫውን መጫን አልተቻለም።",
+  "errorUnableToSaveHealthProfile": "የጤና መገለጫውን ማስቀመጥ አልተቻለም።",
+  "errorUnableToLoadPractitioner": "ሐኪሙን መጫን አልተቻለም።",
+  "errorUnableToLoadSearch": "ፍለጋን መጫን አልተቻለም።",
+  "errorUnableToLoadDocuments": "ሰነዶችን መጫን አልተቻለም።",
+  "errorUnableToAddDocument": "ሰነዱን መጨመር አልተቻለም።",
+  "errorUnableToReadSettings": "ቅንብሮችን ማንበብ አልተቻለም።",
+  "errorUnableToSaveSettings": "ቅንብሮችን ማስቀመጥ አልተቻለም።",
+  "errorUnableToLoadUpcomingAppointments": "ቀጣይ ቀጠሮዎችን መጫን አልተቻለም።",
+  "errorUnableToLoadHistory": "ታሪክን መጫን አልተቻለም።",
+  "errorUnableToLoadAppointment": "ቀጠሮውን መጫን አልተቻለም።",
+  "errorUnableToCancelAppointment": "ቀጠሮውን መሰረዝ አልተቻለም።",
+  "errorUnableToLoadConversations": "ውይይቶችን መጫን አልተቻለም።",
+  "errorUnableToLoadConversation": "ውይይቱን መጫን አልተቻለም።",
+  "errorUnableToSendMessage": "መልዕክት መላክ አልተቻለም።",
+  "errorUnableToReadOnboardingState": "የመጀመሪያ መመሪያ ሁኔታን ማንበብ አልተቻለም።",
+  "errorUnableToSaveOnboarding": "የመጀመሪያ መመሪያን ማስቀመጥ አልተቻለም።",
+
+  "timeMinutesAgo": "ከ{minutes} ደቂቃ በፊት",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "ከ{hours} ሰዓት በፊት",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "ከ{days} ቀን በፊት",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "demoDentalOfficeName": "የጥርስ ክሊኒክ",
+  "demoConversation1LastMessage": "ሰላም፣ ውጤቶችዎ ዝግጁ ናቸው...",
+  "demoConversation2LastMessage": "በጣም ጥሩ፣ ሰነዱን እልክልዎታለሁ!",
+  "demoConversation3LastMessage": "ስለ ጉብኝትዎ እናመሰግናለን!",
+  "demoAppointmentConsultation": "ምክክር",
+  "demoAppointmentFollowUp": "የሕክምና ክትትል",
+  "demoShortDateThu19Feb": "ሐሙስ 19 ፌብ",
+  "demoShortDateMon15Feb": "ሰኞ 15 ፌብ",
+  "demoMessage1_1": "ሰላም፣ እንዴት ልንረዳ?",
+  "demoMessage1_2": "ሰላም፣ ሪፖርቴን መቀበል እፈልጋለሁ።",
+  "demoMessage1_3": "እሺ፣ የቀጠሮውን ቀን መግለጽ ትችላለህ?",
+  "demoMessage2_1": "ሰላም፣ ፋይልዎ ዘመናዊ ነው።",
+  "demoMessage3_1": "ሰላም!",
+  "demoMessage3_2": "አመሰግናለሁ ዶክተር።",
+
+  "relativeRelation": "ዘመድ",
+  "relativeChild": "ልጅ",
+  "relativeParent": "ወላጅ",
+  "relativeDemoName": "ዘመድ {index}",
+  "@relativeDemoName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeLabel": "{relation} • {year}",
+  "@relativeLabel": {
+    "placeholders": {
+      "relation": {},
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+
+  "documentsDemoTitle": "ሰነድ {index}",
+  "@documentsDemoTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "documentsDemoTypeLabel": "ሪፖርት",
+  "documentsDemoDateLabelToday": "ዛሬ",
+
+  "demoSpecialtyOphthalmologist": "የዓይን ሐኪም",
+  "demoSpecialtyGeneralPractitioner": "አጠቃላይ ሐኪም",
+  "demoPractitionerAbout": "የዓይን ሐኪም የዓይን በሽታዎችን ይታከማል እና ሪፍራክሽን፣ ፍታ (strabismus) እና የእይታ ችግኝ ያስተዳድራል።\n\nይህ መገለጫ ከbackend ጋር ለመገናኘት ዝግጁ ነው።",
+  "demoAvailabilityTodayAt": "ዛሬ • {time}",
+  "@demoAvailabilityTodayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityTomorrowAt": "ነገ • {time}",
+  "@demoAvailabilityTomorrowAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityThisWeekAt": "በዚህ ሳምንት • {time}",
+  "@demoAvailabilityThisWeekAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+
+  "demoSearchPractitionerName": "ዶ/ር ሐኪም {index}",
+  "@demoSearchPractitionerName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "demoSearchAddress": "75019 ፓሪስ • Avenue Secrétan",
+  "demoSearchSector1": "ሴክተር 1",
+  "demoAvailabilityToday": "ዛሬ",
+  "demoAvailabilityThisWeek": "በዚህ ሳምንት",
+  "demoDistance12km": "1.2 ኪሜ",
+
+  "demoAppointmentDateThu19Feb": "ሐሙስ፣ ፌብሩወሪ 19",
+  "demoAppointmentReasonNewPatientConsultation": "ምክክር (አዲስ ታካሚ)",
+
+  "demoPractitionerNameMarc": "ዶ/ር ማርክ BENHAMOU",
+  "demoPractitionerNameSarah": "ዶ/ር ሳራ COHEN",
+  "demoPractitionerNameNoam": "ዶ/ር ኖአም LEVI",
+  "demoPractitionerNameMarcShort": "ዶ/ር ማርክ B.",
+  "demoPractitionerNameSophie": "ዶ/ር ሶፊ L.",
+  "demoPatientNameTom": "ቶም",
+  "demoAddressParis": "28, avenue Secrétan, 75019 ፓሪስ",
+  "demoProfileFullName": "ቶም ጃሚ",
+  "demoProfileEmail": "tom@domaine.com",
+  "demoProfileCity": "75019 ፓሪስ",
+  "demoPaymentBrandVisa": "Visa",
+
+  "commonInitialsFallback": "እኔ",
+
+  "navHome": "መነሻ",
+  "navAppointments": "ቀጠሮዎች",
+  "navHealth": "ጤና",
+  "navMessages": "መልዕክቶች",
+  "navAccount": "መለያ"
+}

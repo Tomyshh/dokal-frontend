@@ -39,7 +39,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
       context.pop();
     } else {
       // Fallback: go to home
-      context.go('/');
+      context.go('/home');
     }
   }
 

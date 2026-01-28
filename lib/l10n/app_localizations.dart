@@ -5,9 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_am.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
 import 'app_localizations_fr.dart';
 import 'app_localizations_he.dart';
+import 'app_localizations_ru.dart';
 
 // ignore_for_file: type=lint
 
@@ -95,9 +98,12 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('am'),
     Locale('en'),
+    Locale('es'),
     Locale('fr'),
     Locale('he'),
+    Locale('ru'),
   ];
 
   /// No description provided for @commonError.
@@ -1948,6 +1954,24 @@ abstract class AppLocalizations {
   /// **'English'**
   String get languageEnglish;
 
+  /// No description provided for @languageRussian.
+  ///
+  /// In he, this message translates to:
+  /// **'Русский'**
+  String get languageRussian;
+
+  /// No description provided for @languageSpanish.
+  ///
+  /// In he, this message translates to:
+  /// **'Español'**
+  String get languageSpanish;
+
+  /// No description provided for @languageAmharic.
+  ///
+  /// In he, this message translates to:
+  /// **'አማርኛ'**
+  String get languageAmharic;
+
   /// No description provided for @errorGenericTryAgain.
   ///
   /// In he, this message translates to:
@@ -2475,8 +2499,14 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'fr', 'he'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+    'am',
+    'en',
+    'es',
+    'fr',
+    'he',
+    'ru',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -2485,12 +2515,18 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'am':
+      return AppLocalizationsAm();
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
     case 'fr':
       return AppLocalizationsFr();
     case 'he':
       return AppLocalizationsHe();
+    case 'ru':
+      return AppLocalizationsRu();
   }
 
   throw FlutterError(

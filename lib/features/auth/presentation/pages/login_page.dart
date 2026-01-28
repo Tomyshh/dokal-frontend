@@ -34,6 +34,18 @@ class _LoginPageState extends State<LoginPage> {
   bool get _isBookingGate =>
       (widget.redirectTo ?? '').trim().startsWith('/booking/');
 
+  String? get _safeRedirectTo {
+    final raw = widget.redirectTo;
+    if (raw == null) return null;
+    final trimmed = raw.trim();
+    if (trimmed.isEmpty) return null;
+    final uri = Uri.tryParse(trimmed);
+    if (uri == null) return null;
+    if (uri.hasScheme || uri.host.isNotEmpty) return null;
+    if (!uri.path.startsWith('/')) return null;
+    return uri.toString();
+  }
+
   String? get _bookingPractitionerId {
     final redirect = (widget.redirectTo ?? '').trim();
     final match = RegExp(r'^/booking/([^/?]+)').firstMatch(redirect);
@@ -138,8 +150,8 @@ class _LoginPageState extends State<LoginPage> {
                                 const AuthRefreshRequested(),
                               );
                               // Rediriger vers la page demandée ou le home
-                              final redirect = widget.redirectTo;
-                              if (redirect != null && redirect.isNotEmpty) {
+                              final redirect = _safeRedirectTo;
+                              if (redirect != null) {
                                 context.go(redirect);
                               }
                               // Sinon, le router redirigera automatiquement vers /home
@@ -200,9 +212,9 @@ class _LoginPageState extends State<LoginPage> {
                         }
                         final id = _bookingPractitionerId;
                         if (id != null && id.isNotEmpty) {
-                          context.go('/practitioner/$id');
+                          context.go('/home/practitioner/$id');
                         } else {
-                          context.go('/search');
+                          context.go('/home/search');
                         }
                       },
                       icon: const Icon(Icons.arrow_back_rounded),

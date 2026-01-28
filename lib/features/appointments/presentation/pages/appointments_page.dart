@@ -48,7 +48,7 @@ class AppointmentsPage extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton.small(
             heroTag: 'fab_appointments',
-            onPressed: () => context.push('/search'),
+            onPressed: () => context.push('/home/search'),
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
             child: const Icon(Icons.add_rounded, size: 20),

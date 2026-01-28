@@ -1,0 +1,553 @@
+{
+  "@@locale": "ru",
+
+  "commonError": "Ошибка",
+
+  "commonEmail": "Электронная почта",
+  "commonEmailHint": "например: name@domain.com",
+  "commonEmailRequired": "Требуется email",
+  "commonEmailInvalid": "Неверный email",
+
+  "commonPassword": "Пароль",
+  "commonPasswordHint": "••••••••",
+  "commonPasswordRequired": "Требуется пароль",
+  "commonPasswordMinChars": "Минимум {min} символов",
+  "@commonPasswordMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+
+  "authLoginTitle": "Войти",
+  "authLoginSubtitle": "Доступ к вашим приемам, сообщениям и документам.",
+  "authLoginButton": "Войти",
+  "authForgotPasswordCta": "Забыли пароль?",
+  "authCreateAccountCta": "Создать аккаунт",
+  "authContinueWithoutAccount": "Продолжить без аккаунта",
+
+  "authRegisterTitle": "Создать аккаунт",
+  "authRegisterSubtitle": "Все поля обязательны.",
+  "authFirstName": "Имя",
+  "authLastName": "Фамилия",
+  "commonRequired": "Обязательно",
+  "commonContinue": "Продолжить",
+  "authAlreadyHaveAccount": "У меня уже есть аккаунт",
+
+  "authForgotPasswordTitle": "Забыли пароль",
+  "authForgotPasswordSubtitle": "Мы отправим вам ссылку для сброса.",
+  "authForgotPasswordSendLink": "Отправить ссылку",
+  "authBackToLogin": "Назад ко входу",
+  "authForgotPasswordEmailSent": "Письмо отправлено. Проверьте почту.",
+
+  "authVerifyEmailTitle": "Подтвердите email",
+  "authVerifyEmailDescription": "Мы отправили письмо подтверждения на {email}. Нажмите ссылку в письме и вернитесь в приложение.",
+  "@authVerifyEmailDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authVerifyEmailCheckedBackToLogin": "Подтвердил(а), назад ко входу",
+  "authVerifyEmailResend": "Отправить письмо снова",
+  "authVerifyEmailResentSnack": "Письмо подтверждения отправлено снова.",
+  "commonBack": "Назад",
+
+  "homeMyPractitioners": "Мои специалисты",
+  "homeHistory": "История",
+  "homeGreeting": "Привет, {name}",
+  "@homeGreeting": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeSearchHint": "Врач, специальность...",
+  "homeHealthTip1": "В этом году заведите полезные привычки.",
+  "homeHealthTip2": "Еще не поздно сделать прививку.",
+  "homeCompleteHealthProfile": "Заполните профиль здоровья",
+  "homeCompleteHealthProfileSubtitle": "Получайте персональные напоминания и готовьтесь к приемам",
+  "homeStart": "Начать",
+  "homeNoRecentPractitioner": "Нет недавних специалистов",
+  "homeHistoryDescription": "Вы можете посмотреть список специалистов, у которых вы были",
+  "homeHistoryEnabledSnack": "История включена",
+  "homeHistoryEnabled": "История включена",
+  "homeActivateHistory": "Включить историю",
+  "homeNewMessageTitle": "У вас новое сообщение от доктора {name}",
+  "@homeNewMessageTitle": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeNewMessageNoAppointment": "Нет связанного приема",
+  "homeUpcomingAppointmentsTitle": "Ближайшие приемы",
+  "homeLast3AppointmentsTitle": "Последние 3 приема",
+  "homeSeeAllPastAppointments": "Посмотреть все прошедшие приемы",
+  "homeAppointmentHistoryTitle": "История приемов",
+  "homeNoAppointmentHistory": "Нет прошедших приемов",
+
+  "commonTryAgainLater": "Попробуйте позже.",
+  "commonUnableToLoad": "Не удалось загрузить",
+  "commonAvailableSoon": "Скоро будет доступно",
+  "commonCancel": "Отмена",
+  "commonActionIsFinal": "Это действие необратимо.",
+  "commonTodo": "Сделать",
+  "commonToRead": "К прочтению",
+  "commonSettings": "Настройки",
+  "commonTryAgainInAMoment": "Попробуйте чуть позже.",
+  "commonMinChars": "Минимум {min} символов",
+  "@commonMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "commonOnline": "Онлайн",
+
+  "appointmentsTitle": "Мои приемы",
+  "appointmentsTabUpcoming": "Предстоящие",
+  "appointmentsTabPast": "Прошедшие",
+  "appointmentsNoUpcomingTitle": "Нет предстоящих приемов",
+  "appointmentsNoUpcomingSubtitle": "Ваши следующие приемы появятся здесь.",
+  "appointmentsNoPastTitle": "Нет прошедших приемов",
+  "appointmentsNoPastSubtitle": "Завершенные приемы появятся здесь.",
+
+  "searchTitle": "Поиск",
+  "searchHint": "Врач, специальность...",
+  "searchUnavailableTitle": "Поиск недоступен",
+  "searchNoResultsTitle": "Нет результатов",
+  "searchNoResultsSubtitle": "Попробуйте другой запрос.",
+
+  "searchFilterTitle": "Фильтр результатов",
+  "searchFilterDate": "Дата доступности",
+  "searchFilterDateToday": "Сегодня",
+  "searchFilterDateTomorrow": "Завтра",
+  "searchFilterDateThisWeek": "На этой неделе",
+  "searchFilterDateNextWeek": "На следующей неделе",
+  "searchFilterDateAny": "Любая дата",
+  "searchFilterSpecialty": "Специальность",
+  "searchFilterSpecialtyAll": "Все специальности",
+  "searchFilterKupatHolim": "Больничная касса",
+  "searchFilterKupatHolimAll": "Все кассы",
+  "searchFilterDistance": "Максимальная дистанция",
+  "searchFilterDistanceAny": "Без ограничения",
+  "searchFilterApply": "Применить фильтры",
+  "searchFilterReset": "Сбросить все",
+  "searchFilterActiveCount": "Активных фильтров: {count}",
+  "@searchFilterActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "searchSortTitle": "Сортировать по",
+  "searchSortAvailability": "Доступности",
+  "searchSortDistance": "Расстоянию",
+  "searchSortName": "Имени",
+  "searchSortRating": "Рейтингу",
+
+  "onboardingStep1Title": "Легко записывайтесь на прием",
+  "onboardingStep2Title": "Легко общайтесь с вашими специалистами",
+  "onboardingStep3Title": "Доступ к меддокументам в любое время",
+  "onboardingContinueButton": "Продолжить",
+  "onboardingStartButton": "Начать",
+
+  "healthTitle": "Мое здоровье",
+  "healthSubtitle": "Управляйте профилем здоровья",
+  "healthProfileTitle": "Профиль здоровья",
+  "healthProfileSubtitle": "Заполните ключевую информацию (Израиль)",
+  "healthProfileIntro": "Эта информация помогает подготовить ваш прием в Израиле (касса, семейный врач, аллергии и т.д.).",
+  "healthProfileSave": "Сохранить",
+  "healthProfileSavedSnack": "Профиль сохранен",
+  "healthProfileStepIdentity": "Личность",
+  "healthProfileStepKupatHolim": "Касса",
+  "healthProfileStepMedical": "Медицинская информация",
+  "healthProfileStepEmergency": "Контакт на случай ЧС",
+  "healthProfileTeudatZehut": "Номер удостоверения",
+  "healthProfileDateOfBirth": "Дата рождения",
+  "healthProfileSex": "Пол",
+  "healthProfileSexFemale": "Женский",
+  "healthProfileSexMale": "Мужской",
+  "healthProfileSexOther": "Другое",
+  "healthProfileKupatHolim": "Больничная касса",
+  "healthProfileKupatMemberId": "Номер участника",
+  "healthProfileFamilyDoctor": "Семейный врач",
+  "healthProfileEmergencyContactName": "Имя контакта на случай ЧС",
+  "healthProfileEmergencyContactPhone": "Телефон на случай ЧС",
+  "kupatClalit": "Clalit",
+  "kupatMaccabi": "Maccabi",
+  "kupatMeuhedet": "Meuhedet",
+  "kupatLeumit": "Leumit",
+  "kupatOther": "Другое",
+  "healthMyFileSectionTitle": "Мой файл",
+  "healthDocumentsTitle": "Документы",
+  "healthDocumentsSubtitle": "Рецепты, анализы, отчеты",
+  "healthConditionsTitle": "Заболевания",
+  "healthConditionsSubtitle": "История и состояния",
+  "healthMedicationsTitle": "Лекарства",
+  "healthMedicationsSubtitle": "Текущие назначения",
+  "healthAllergiesTitle": "Аллергии",
+  "healthAllergiesSubtitle": "Известные аллергии",
+  "healthVaccinationsTitle": "Прививки",
+  "healthVaccinationsSubtitle": "История вакцинации",
+  "healthUpToDateTitle": "Все актуально",
+  "healthUpToDateSubtitle": "Мы уведомим вас, когда появятся новые напоминания.",
+
+  "appointmentDetailTitle": "Детали приема",
+  "appointmentDetailCancelledSnack": "Прием отменен",
+  "appointmentDetailNotFoundTitle": "Прием не найден",
+  "appointmentDetailNotFoundSubtitle": "Этот прием недоступен или отменен.",
+  "appointmentDetailReschedule": "Перенести",
+  "appointmentDetailCancelQuestion": "Отменить прием?",
+  "appointmentDetailPreparationTitle": "Требуется подготовка",
+  "appointmentDetailPreparationSubtitle": "Подготовьте визит заранее.",
+  "appointmentDetailPrepQuestionnaire": "Заполнить медицинскую анкету",
+  "appointmentDetailPrepInstructions": "Посмотреть инструкции",
+  "appointmentPrepQuestionnaireSubtitle": "Стандартизированная анкета (готово для backend)",
+  "appointmentPrepInstructionsSubtitle": "Важная информация перед визитом",
+  "appointmentPrepQuestionSymptoms": "Причина / симптомы (кратко)",
+  "appointmentPrepQuestionAllergies": "Аллергии (необязательно)",
+  "appointmentPrepQuestionMedications": "Текущие лекарства (необязательно)",
+  "appointmentPrepQuestionOther": "Дополнительная информация (необязательно)",
+  "appointmentPrepConsentLabel": "Я согласен(на) поделиться этой информацией со специалистом",
+  "appointmentPrepConsentRequired": "Пожалуйста, подтвердите, чтобы продолжить.",
+  "appointmentPrepSavedSnack": "Подготовка сохранена",
+  "appointmentPrepSubmit": "Отправить",
+  "appointmentPrepInstruction1": "Возьмите документ и страховую карту.",
+  "appointmentPrepInstruction2": "Приходите на 10 минут раньше.",
+  "appointmentPrepInstruction3": "Подготовьте важные медицинские документы.",
+  "appointmentPrepInstructionsAccept": "Я прочитал(а) и принимаю эти инструкции",
+  "appointmentDetailSendDocsTitle": "Отправить документы",
+  "appointmentDetailSendDocsSubtitle": "Отправьте документы специалисту до приема.",
+  "appointmentDetailAddDocs": "Добавить документы",
+  "appointmentDetailEarlierSlotTitle": "Хотите более раннее время?",
+  "appointmentDetailEarlierSlotSubtitle": "Получите уведомление, если появится более ранний слот.",
+  "appointmentDetailEnableAlerts": "Включить уведомления",
+  "appointmentDetailContactOffice": "Связаться с кабинетом",
+  "appointmentDetailVisitSummaryTitle": "Итоги визита",
+  "appointmentDetailVisitSummarySubtitle": "Главное и следующие шаги",
+  "appointmentDetailVisitSummaryDemo": "Осмотр проведен. Рекомендован контроль через 3 месяца и продолжение лечения при необходимости.",
+  "appointmentDetailDoctorReportTitle": "Отчет врача",
+  "appointmentDetailDoctorReportSubtitle": "Заметка после визита",
+  "appointmentDetailDoctorReportDemo": "Пациент пришел на консультацию. Тревожных находок нет. Рекомендовано наблюдение и принести релевантные документы на следующий прием.",
+  "appointmentDetailDocumentsAndRxTitle": "Документы и рецепт",
+  "appointmentDetailDocumentsAndRxSubtitle": "Документы, полученные после визита",
+  "appointmentDetailOpenVisitReport": "Открыть отчет о визите",
+  "appointmentDetailOpenPrescription": "Открыть рецепт",
+  "appointmentDetailSendMessageCta": "Написать в кабинет",
+
+  "messagesTitle": "Сообщения",
+  "messagesMarkAllRead": "Отметить все прочитанным",
+  "messagesEmptyTitle": "Ваши сообщения",
+  "messagesEmptySubtitle": "Начните диалог со специалистами, чтобы запросить документ, задать вопрос или следить за результатами.",
+  "messagesNewMessageTitle": "Новое сообщение",
+  "messagesWriteToOfficeTitle": "Написать в кабинет",
+  "messagesResponseTime": "Ответ в течение 24–48 ч.",
+  "messagesSubjectLabel": "Тема",
+  "messagesSubjectHint": "например: результаты, вопрос…",
+  "messagesSubjectRequired": "Тема обязательна",
+  "messagesMessageLabel": "Сообщение",
+  "messagesMessageHint": "Напишите сообщение…",
+  "messagesSendButton": "Отправить",
+
+  "conversationTitle": "Диалог",
+  "conversationNewMessageTooltip": "Новое сообщение",
+  "conversationWriteMessageHint": "Написать сообщение…",
+
+  "practitionerTitle": "Специалист",
+  "practitionerUnavailableTitle": "Специалист недоступен",
+  "practitionerNotFoundTitle": "Специалист не найден",
+  "practitionerNotFoundSubtitle": "Этот профиль недоступен.",
+  "practitionerBookAppointment": "Записаться на прием",
+  "practitionerSendMessage": "Отправить сообщение",
+  "practitionerAvailabilities": "Доступность",
+  "practitionerAddress": "Адрес",
+  "practitionerProfileSection": "Профиль",
+
+  "documentsTitle": "Документы",
+  "documentsEmptyTitle": "Нет документов",
+  "documentsEmptySubtitle": "Ваши рецепты и результаты появятся здесь.",
+  "documentsOpen": "Открыть",
+  "documentsShare": "Поделиться",
+
+  "authLogout": "Выйти",
+
+  "securityTitle": "Безопасность",
+  "securitySecureAccountTitle": "Защитите аккаунт",
+  "securitySecureAccountSubtitle": "Обновите информацию",
+  "securityChangePassword": "Сменить пароль",
+  "securityChangePasswordSuccess": "Запрос сохранен",
+  "securityCurrentPassword": "Текущий пароль",
+  "securityNewPassword": "Новый пароль",
+
+  "accountTitle": "Мой аккаунт",
+  "accountTaglineTitle": "Ваше здоровье. Ваши данные.",
+  "accountTaglineSubtitle": "Ваша конфиденциальность — наш приоритет.",
+  "accountPersonalInfoSection": "Личная информация",
+  "accountMyProfile": "Мой профиль",
+  "accountMyRelatives": "Мои близкие",
+  "accountSectionTitle": "Аккаунт",
+
+  "privacyTitle": "Конфиденциальность",
+  "privacyYourDataTitle": "Ваши данные",
+  "privacyYourDataSubtitle": "Мы защищаем вашу информацию и ограничиваем доступ к ней.",
+  "privacySharingTitle": "Обмен",
+  "privacySharingSubtitle": "Контролируйте документы, которыми делитесь со специалистами.",
+  "privacyExportTitle": "Экспорт",
+  "privacyExportSubtitle": "Экспортируйте данные в любое время.",
+
+  "paymentTitle": "Оплата",
+  "paymentEmptyTitle": "Нет способа оплаты",
+  "paymentEmptySubtitle": "Добавьте карту, чтобы упростить оплату.",
+  "paymentExpires": "Действует до {expiry}",
+  "@paymentExpires": {
+    "placeholders": {
+      "expiry": {}
+    }
+  },
+
+  "relativesTitle": "Мои близкие",
+  "relativesEmptyTitle": "Нет близких",
+  "relativesEmptySubtitle": "Добавьте близких, чтобы записывать их на прием.",
+
+  "settingsUnavailableTitle": "Настройки недоступны",
+  "settingsUnavailableSubtitle": "Не удалось загрузить ваши предпочтения.",
+  "settingsNotificationsTitle": "Уведомления",
+  "settingsNotificationsSubtitle": "Получайте сообщения и обновления",
+  "settingsRemindersTitle": "Напоминания о приемах",
+  "settingsRemindersSubtitle": "Получайте напоминания перед приемами",
+  "settingsLanguageTitle": "Язык",
+  "settingsLanguageCurrentLabel": "Русский (текущий)",
+  "settingsLanguageShortLabel": "Русский",
+
+  "profileTitle": "Мой профиль",
+  "profileUnavailableTitle": "Профиль недоступен",
+  "profileUnavailableSubtitle": "Ваша информация недоступна.",
+  "profileIdentitySection": "Личность",
+  "commonName": "Имя",
+  "commonAddress": "Адрес",
+  "commonCity": "Город",
+  "profileMedicalInfoSection": "Медицинская информация",
+  "profileBloodType": "Группа крови",
+  "profileHeight": "Рост",
+  "profileWeight": "Вес",
+
+  "bookingSelectPatientTitle": "Для кого этот прием?",
+  "bookingPatientsUnavailableTitle": "Пациенты недоступны",
+  "bookingAddRelative": "Добавить близкого",
+  "commonMe": "я",
+
+  "bookingSelectSlotTitle": "Выберите дату",
+  "bookingSelectSlotSubtitle": "Выберите доступную дату и время.",
+  "bookingSeeMoreDates": "Показать больше дат",
+  "commonSelected": "Выбрано",
+
+  "bookingInstructionsTitle": "Инструкции",
+  "bookingInstructionsSubtitle": "Перед приемом, пожалуйста, проверьте эти пункты.",
+  "bookingInstructionsBullet1": "Возьмите страховую карту и рецепт, если нужно.",
+  "bookingInstructionsBullet2": "Приходите на 10 минут раньше для оформления.",
+  "bookingInstructionsBullet3": "При отмене сообщите как можно скорее.",
+  "bookingInstructionsAccept": "Я прочитал(а) и принимаю эти инструкции.",
+
+  "bookingConfirmTitle": "Подтвердите прием",
+  "bookingConfirmSubtitle": "Проверьте информацию перед подтверждением.",
+  "bookingReasonLabel": "Причина",
+  "bookingPatientLabel": "Пациент",
+  "bookingSlotLabel": "Время",
+  "bookingMissingInfoTitle": "Не хватает информации",
+  "bookingZipCodeLabel": "Почтовый индекс",
+  "bookingVisitedBeforeQuestion": "Вы уже были у этого специалиста?",
+  "commonYes": "Да",
+  "commonNo": "Нет",
+  "bookingConfirmButton": "Подтвердить прием",
+  "bookingChangeSlotButton": "Изменить время",
+
+  "bookingSuccessTitle": "Прием подтвержден",
+  "bookingSuccessSubtitle": "Мы отправили подтверждение на вашу почту.",
+  "bookingAddToCalendar": "Добавить в календарь",
+  "bookingBookAnotherAppointment": "Записаться еще раз",
+  "bookingSendDocsSubtitle": "Отправьте документы специалисту к приему.",
+  "bookingViewMyAppointments": "Посмотреть мои приемы",
+  "bookingBackToHome": "На главную",
+
+  "vaccinationsEmptyTitle": "Нет записанных прививок",
+  "vaccinationsEmptySubtitle": "Отслеживайте прививки и напоминания.",
+  "allergiesEmptyTitle": "Нет аллергий",
+  "allergiesEmptySubtitle": "Укажите аллергии для вашей безопасности.",
+  "medicationsEmptyTitle": "Нет лекарств",
+  "medicationsEmptySubtitle": "Добавьте текущие назначения.",
+  "conditionsEmptyTitle": "Нет заболеваний",
+  "conditionsEmptySubtitle": "Добавьте историю для подготовки к приемам.",
+
+  "languageHebrew": "עברית",
+  "languageFrench": "Français",
+  "languageEnglish": "English",
+  "languageRussian": "Русский",
+  "languageSpanish": "Español",
+  "languageAmharic": "አማርኛ",
+
+  "errorGenericTryAgain": "Произошла ошибка. Попробуйте снова.",
+  "authSignInFailedTryAgain": "Не удалось войти. Попробуйте снова.",
+  "authSignUpFailedTryAgain": "Не удалось зарегистрироваться. Попробуйте снова.",
+
+  "errorUnableToConfirmAppointment": "Не удалось подтвердить прием.",
+  "errorUnableToLoadProfile": "Не удалось загрузить профиль.",
+  "errorUnableToReadHistoryState": "Не удалось прочитать состояние истории.",
+  "errorUnableToEnableHistory": "Не удалось включить историю.",
+  "errorUnableToLoadRelatives": "Не удалось загрузить близких.",
+  "errorUnableToAddRelative": "Не удалось добавить близкого.",
+  "errorUnableToLoadPayments": "Не удалось загрузить способы оплаты.",
+  "errorUnableToAddPaymentMethod": "Не удалось добавить способ оплаты.",
+  "errorUnableToLoadHealthData": "Не удалось загрузить данные о здоровье.",
+  "errorUnableToAddHealthItem": "Не удалось добавить элемент.",
+  "errorUnableToLoadHealthProfile": "Не удалось загрузить профиль здоровья.",
+  "errorUnableToSaveHealthProfile": "Не удалось сохранить профиль здоровья.",
+  "errorUnableToLoadPractitioner": "Не удалось загрузить специалиста.",
+  "errorUnableToLoadSearch": "Не удалось загрузить поиск.",
+  "errorUnableToLoadDocuments": "Не удалось загрузить документы.",
+  "errorUnableToAddDocument": "Не удалось добавить документ.",
+  "errorUnableToReadSettings": "Не удалось прочитать настройки.",
+  "errorUnableToSaveSettings": "Не удалось сохранить настройки.",
+  "errorUnableToLoadUpcomingAppointments": "Не удалось загрузить предстоящие приемы.",
+  "errorUnableToLoadHistory": "Не удалось загрузить историю.",
+  "errorUnableToLoadAppointment": "Не удалось загрузить прием.",
+  "errorUnableToCancelAppointment": "Не удалось отменить прием.",
+  "errorUnableToLoadConversations": "Не удалось загрузить диалоги.",
+  "errorUnableToLoadConversation": "Не удалось загрузить диалог.",
+  "errorUnableToSendMessage": "Не удалось отправить сообщение.",
+  "errorUnableToReadOnboardingState": "Не удалось прочитать состояние онбординга.",
+  "errorUnableToSaveOnboarding": "Не удалось сохранить онбординг.",
+
+  "timeMinutesAgo": "{minutes} мин назад",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{hours} ч назад",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "{days} д назад",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "demoDentalOfficeName": "Стоматологическая клиника",
+  "demoConversation1LastMessage": "Здравствуйте, ваши результаты доступны...",
+  "demoConversation2LastMessage": "Отлично, я отправляю вам документ!",
+  "demoConversation3LastMessage": "Спасибо за визит!",
+  "demoAppointmentConsultation": "Консультация",
+  "demoAppointmentFollowUp": "Медицинский контроль",
+  "demoShortDateThu19Feb": "Чт, 19 фев",
+  "demoShortDateMon15Feb": "Пн, 15 фев",
+  "demoMessage1_1": "Здравствуйте, чем можем помочь?",
+  "demoMessage1_2": "Здравствуйте, я хотел(а) бы получить свой отчет.",
+  "demoMessage1_3": "Конечно, уточните дату приема, пожалуйста.",
+  "demoMessage2_1": "Здравствуйте, ваш файл обновлен.",
+  "demoMessage3_1": "Здравствуйте!",
+  "demoMessage3_2": "Спасибо, доктор.",
+
+  "relativeRelation": "Близкий",
+  "relativeChild": "Ребенок",
+  "relativeParent": "Родитель",
+  "relativeDemoName": "Близкий {index}",
+  "@relativeDemoName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeLabel": "{relation} • {year}",
+  "@relativeLabel": {
+    "placeholders": {
+      "relation": {},
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+
+  "documentsDemoTitle": "Документ {index}",
+  "@documentsDemoTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "documentsDemoTypeLabel": "Отчет",
+  "documentsDemoDateLabelToday": "Сегодня",
+
+  "demoSpecialtyOphthalmologist": "Офтальмолог",
+  "demoSpecialtyGeneralPractitioner": "Терапевт",
+  "demoPractitionerAbout": "Офтальмолог лечит заболевания глаз и занимается рефракцией, косоглазием и нарушениями зрения.\n\nЭтот профиль готов к подключению к backend.",
+  "demoAvailabilityTodayAt": "Сегодня • {time}",
+  "@demoAvailabilityTodayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityTomorrowAt": "Завтра • {time}",
+  "@demoAvailabilityTomorrowAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityThisWeekAt": "На этой неделе • {time}",
+  "@demoAvailabilityThisWeekAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+
+  "demoSearchPractitionerName": "Д-р Специалист {index}",
+  "@demoSearchPractitionerName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "demoSearchAddress": "75019 Париж • Avenue Secrétan",
+  "demoSearchSector1": "Сектор 1",
+  "demoAvailabilityToday": "Сегодня",
+  "demoAvailabilityThisWeek": "На этой неделе",
+  "demoDistance12km": "1,2 км",
+
+  "demoAppointmentDateThu19Feb": "Четверг, 19 февраля",
+  "demoAppointmentReasonNewPatientConsultation": "Консультация (новый пациент)",
+
+  "demoPractitionerNameMarc": "Д-р Марк БЕНАМО",
+  "demoPractitionerNameSarah": "Д-р Сара КОЭН",
+  "demoPractitionerNameNoam": "Д-р Ноам ЛЕВИ",
+  "demoPractitionerNameMarcShort": "Д-р Марк Б.",
+  "demoPractitionerNameSophie": "Д-р Софи Л.",
+  "demoPatientNameTom": "Том",
+  "demoAddressParis": "28, avenue Secrétan, 75019 Париж",
+  "demoProfileFullName": "Том Джами",
+  "demoProfileEmail": "tom@domaine.com",
+  "demoProfileCity": "75019 Париж",
+  "demoPaymentBrandVisa": "Visa",
+
+  "commonInitialsFallback": "Я",
+
+  "navHome": "Главная",
+  "navAppointments": "Приемы",
+  "navHealth": "Здоровье",
+  "navMessages": "Сообщения",
+  "navAccount": "Аккаунт"
+}

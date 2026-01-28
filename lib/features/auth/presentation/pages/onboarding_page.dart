@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:country_flags/country_flags.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -215,6 +216,9 @@ class _OnboardingContent extends StatelessWidget {
               hebrewLabel: l10n.languageHebrew,
               frenchLabel: l10n.languageFrench,
               englishLabel: l10n.languageEnglish,
+              russianLabel: l10n.languageRussian,
+              spanishLabel: l10n.languageSpanish,
+              amharicLabel: l10n.languageAmharic,
             ),
           ),
           SizedBox(height: AppSpacing.sm.h),
@@ -338,6 +342,9 @@ class _LanguagePicker extends StatelessWidget {
     required this.hebrewLabel,
     required this.frenchLabel,
     required this.englishLabel,
+    required this.russianLabel,
+    required this.spanishLabel,
+    required this.amharicLabel,
   });
 
   final String current;
@@ -345,11 +352,38 @@ class _LanguagePicker extends StatelessWidget {
   final String hebrewLabel;
   final String frenchLabel;
   final String englishLabel;
+  final String russianLabel;
+  final String spanishLabel;
+  final String amharicLabel;
 
   @override
   Widget build(BuildContext context) {
+    Widget flagForLanguage(String languageCode) {
+      // Mapping langue -> pays (ISO-3166) pour afficher un drapeau.
+      // Note: c’est un choix UX (anglais -> US).
+      final countryCode = switch (languageCode) {
+        'he' => 'IL',
+        'fr' => 'FR',
+        'en' => 'US',
+        'ru' => 'RU',
+        'es' => 'ES',
+        'am' => 'ET',
+        _ => 'UN',
+      };
+
+      return CountryFlag.fromCountryCode(
+        countryCode,
+        theme: const ImageTheme(
+          width: 18,
+          height: 12,
+          shape: RoundedRectangle(2),
+        ),
+      );
+    }
+
     Widget chip({required String code, required String label}) {
       return ChoiceChip(
+        avatar: flagForLanguage(code),
         label: Text(label),
         selected: current == code,
         onSelected: (_) => onSelect(code),
@@ -372,6 +406,9 @@ class _LanguagePicker extends StatelessWidget {
         chip(code: 'he', label: hebrewLabel),
         chip(code: 'fr', label: frenchLabel),
         chip(code: 'en', label: englishLabel),
+        chip(code: 'ru', label: russianLabel),
+        chip(code: 'es', label: spanishLabel),
+        chip(code: 'am', label: amharicLabel),
       ],
     );
   }

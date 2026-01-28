@@ -384,6 +384,9 @@
   "languageHebrew": "עברית",
   "languageFrench": "Français",
   "languageEnglish": "English",
+  "languageRussian": "Русский",
+  "languageSpanish": "Español",
+  "languageAmharic": "አማርኛ",
 
   "errorGenericTryAgain": "An error occurred. Try again.",
   "authSignInFailedTryAgain": "Sign-in failed. Try again.",

@@ -354,6 +354,9 @@
   "languageHebrew": "עברית",
   "languageFrench": "Français",
   "languageEnglish": "English",
+  "languageRussian": "Русский",
+  "languageSpanish": "Español",
+  "languageAmharic": "አማርኛ",
 
   "errorGenericTryAgain": "Une erreur est survenue. Réessayez.",
   "authSignInFailedTryAgain": "Connexion échouée. Réessayez.",

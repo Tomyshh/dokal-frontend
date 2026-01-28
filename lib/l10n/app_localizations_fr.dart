@@ -1001,6 +1001,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
+  String get languageRussian => 'Русский';
+
+  @override
+  String get languageSpanish => 'Español';
+
+  @override
+  String get languageAmharic => 'አማርኛ';
+
+  @override
   String get errorGenericTryAgain => 'Une erreur est survenue. Réessayez.';
 
   @override

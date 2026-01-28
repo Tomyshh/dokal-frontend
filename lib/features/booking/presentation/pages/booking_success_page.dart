@@ -76,7 +76,7 @@ class BookingSuccessPage extends StatelessWidget {
                   color: AppColors.primary,
                 ),
                 title: Text(l10n.bookingBookAnotherAppointment),
-                onTap: () => context.go('/search'),
+                onTap: () => context.go('/home/search'),
               ),
             ],
           ),

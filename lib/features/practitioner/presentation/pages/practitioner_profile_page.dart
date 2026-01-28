@@ -173,7 +173,9 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                     if (context.canPop()) {
                       context.pop();
                     } else {
-                      context.go('/');
+                      // Si on arrive ici via un redirect / remplacement de stack,
+                      // il n'y a parfois rien à "pop". On renvoie vers la recherche.
+                      context.go('/home/search');
                     }
                   },
                   child: Container(
@@ -1080,7 +1082,9 @@ class _BookingConfirmation extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => context.go('/booking/$practitionerId'),
+              // `push` garde un historique correct quand on revient en arrière
+              // (ex: login gate sur les routes protégées).
+              onPressed: () => context.push('/booking/$practitionerId'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: AppColors.primary,
