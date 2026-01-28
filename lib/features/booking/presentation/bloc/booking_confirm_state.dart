@@ -10,9 +10,9 @@ class BookingConfirmState extends Equatable {
   });
 
   const BookingConfirmState.initial()
-      : status = BookingConfirmStatus.initial,
-        appointmentId = null,
-        error = null;
+    : status = BookingConfirmStatus.initial,
+      appointmentId = null,
+      error = null;
 
   final BookingConfirmStatus status;
   final String? appointmentId;
@@ -33,4 +33,3 @@ class BookingConfirmState extends Equatable {
   @override
   List<Object?> get props => [status, appointmentId, error];
 }
-

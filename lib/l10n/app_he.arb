@@ -1,0 +1,550 @@
+{
+  "@@locale": "he",
+
+  "commonError": "שגיאה",
+
+  "commonEmail": "אימייל",
+  "commonEmailHint": "לדוגמה: name@domain.com",
+  "commonEmailRequired": "נדרש אימייל",
+  "commonEmailInvalid": "אימייל לא תקין",
+
+  "commonPassword": "סיסמה",
+  "commonPasswordHint": "••••••••",
+  "commonPasswordRequired": "נדרשת סיסמה",
+  "commonPasswordMinChars": "מינימום {min} תווים",
+  "@commonPasswordMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+
+  "authLoginTitle": "התחברות",
+  "authLoginSubtitle": "גישה לפגישות, הודעות ומסמכים שלך.",
+  "authLoginButton": "התחבר",
+  "authForgotPasswordCta": "שכחת סיסמה?",
+  "authCreateAccountCta": "צור חשבון",
+  "authContinueWithoutAccount": "המשך ללא חשבון",
+
+  "authRegisterTitle": "צור חשבון",
+  "authRegisterSubtitle": "כל השדות חובה.",
+  "authFirstName": "שם פרטי",
+  "authLastName": "שם משפחה",
+  "commonRequired": "חובה",
+  "commonContinue": "המשך",
+  "authAlreadyHaveAccount": "כבר יש לי חשבון",
+
+  "authForgotPasswordTitle": "שכחת סיסמה",
+  "authForgotPasswordSubtitle": "נשלח לך קישור לאיפוס.",
+  "authForgotPasswordSendLink": "שלח קישור",
+  "authBackToLogin": "חזרה להתחברות",
+  "authForgotPasswordEmailSent": "האימייל נשלח. בדוק את תיבת הדואר שלך.",
+
+  "authVerifyEmailTitle": "אמת את האימייל שלך",
+  "authVerifyEmailDescription": "שלחנו אימייל אימות לכתובת {email}. לחץ על הקישור באימייל וחזור לאפליקציה.",
+  "@authVerifyEmailDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authVerifyEmailCheckedBackToLogin": "אישרתי, חזרה להתחברות",
+  "authVerifyEmailResend": "שלח שוב את האימייל",
+  "authVerifyEmailResentSnack": "אימייל האימות נשלח מחדש.",
+  "commonBack": "חזרה",
+
+  "homeMyPractitioners": "הרופאים שלי",
+  "homeHistory": "היסטוריה",
+  "homeGreeting": "שלום {name}",
+  "@homeGreeting": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeSearchHint": "רופא, התמחות...",
+  "homeHealthTip1": "השנה, מאמצים הרגלי בריאות נכונים.",
+  "homeHealthTip2": "עדיין אפשר להתחסן.",
+  "homeCompleteHealthProfile": "השלם את פרופיל הבריאות שלך",
+  "homeCompleteHealthProfileSubtitle": "קבל תזכורות מותאמות והכן את הביקורים שלך",
+  "homeStart": "התחל",
+  "homeNoRecentPractitioner": "אין רופא אחרון",
+  "homeHistoryDescription": "ניתן להציג את רשימת הרופאים שבהם ביקרת",
+  "homeHistoryEnabledSnack": "היסטוריה הופעלה",
+  "homeHistoryEnabled": "היסטוריה הופעלה",
+  "homeActivateHistory": "הפעל היסטוריה",
+  "homeNewMessageTitle": "מחכה לך הודעה חדשה מ־{name}",
+  "@homeNewMessageTitle": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeNewMessageNoAppointment": "ללא תור משויך",
+  "homeUpcomingAppointmentsTitle": "תורים קרובים",
+  "homeLast3AppointmentsTitle": "3 התורים האחרונים",
+  "homeSeeAllPastAppointments": "צפה בכל התורים שעברו",
+  "homeAppointmentHistoryTitle": "היסטוריית תורים",
+  "homeNoAppointmentHistory": "אין היסטוריית תורים",
+
+  "commonTryAgainLater": "נסה שוב מאוחר יותר.",
+  "commonUnableToLoad": "לא ניתן לטעון",
+  "commonAvailableSoon": "זמין בקרוב",
+  "commonCancel": "ביטול",
+  "commonActionIsFinal": "פעולה זו היא סופית.",
+  "commonTodo": "לביצוע",
+  "commonToRead": "לקריאה",
+  "commonSettings": "הגדרות",
+  "commonTryAgainInAMoment": "נסה שוב בעוד רגע.",
+  "commonMinChars": "מינימום {min} תווים",
+  "@commonMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "commonOnline": "מחובר",
+
+  "appointmentsTitle": "התורים שלי",
+  "appointmentsTabUpcoming": "בקרוב",
+  "appointmentsTabPast": "עבר",
+  "appointmentsNoUpcomingTitle": "אין תורים קרובים",
+  "appointmentsNoUpcomingSubtitle": "התורים הבאים שלך יופיעו כאן.",
+  "appointmentsNoPastTitle": "אין תורים קודמים",
+  "appointmentsNoPastSubtitle": "תורים שהסתיימו יופיעו כאן.",
+
+  "searchTitle": "חיפוש",
+  "searchHint": "רופא, התמחות...",
+  "searchUnavailableTitle": "החיפוש אינו זמין",
+  "searchNoResultsTitle": "אין תוצאות",
+  "searchNoResultsSubtitle": "נסה מונח אחר.",
+
+  "searchFilterTitle": "סינון תוצאות",
+  "searchFilterDate": "תאריך זמינות",
+  "searchFilterDateToday": "היום",
+  "searchFilterDateTomorrow": "מחר",
+  "searchFilterDateThisWeek": "השבוע",
+  "searchFilterDateNextWeek": "שבוע הבא",
+  "searchFilterDateAny": "כל תאריך",
+  "searchFilterSpecialty": "התמחות",
+  "searchFilterSpecialtyAll": "כל ההתמחויות",
+  "searchFilterKupatHolim": "קופת חולים",
+  "searchFilterKupatHolimAll": "כל הקופות",
+  "searchFilterDistance": "מרחק מקסימלי",
+  "searchFilterDistanceAny": "ללא הגבלה",
+  "searchFilterApply": "החל סינון",
+  "searchFilterReset": "נקה הכל",
+  "searchFilterActiveCount": "{count} סינונים פעילים",
+  "@searchFilterActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "searchSortTitle": "מיין לפי",
+  "searchSortAvailability": "זמינות",
+  "searchSortDistance": "מרחק",
+  "searchSortName": "שם",
+  "searchSortRating": "דירוג",
+
+  "onboardingStep1Title": "קבעו תורים בקלות",
+  "onboardingStep2Title": "התכתבו בקלות עם הרופאים שלכם",
+  "onboardingStep3Title": "גישה לתיק הרפואי בכל זמן",
+  "onboardingContinueButton": "המשך",
+  "onboardingStartButton": "התחל",
+
+  "healthTitle": "הבריאות שלי",
+  "healthSubtitle": "נהל את פרופיל הבריאות שלך",
+  "healthProfileTitle": "פרופיל בריאות",
+  "healthProfileSubtitle": "מלא מידע חשוב לקראת ביקורים ותורים",
+  "healthProfileIntro": "מידע זה יעזור לנו להכין את הביקורים שלך בישראל (קופת חולים, רופא משפחה, אלרגיות וכו׳).",
+  "healthProfileSave": "שמור",
+  "healthProfileSavedSnack": "הפרופיל נשמר",
+  "healthProfileStepIdentity": "זהות",
+  "healthProfileStepKupatHolim": "קופת חולים",
+  "healthProfileStepMedical": "מידע רפואי",
+  "healthProfileStepEmergency": "איש קשר לחירום",
+  "healthProfileTeudatZehut": "תעודת זהות",
+  "healthProfileDateOfBirth": "תאריך לידה",
+  "healthProfileSex": "מין",
+  "healthProfileSexFemale": "נקבה",
+  "healthProfileSexMale": "זכר",
+  "healthProfileSexOther": "אחר",
+  "healthProfileKupatHolim": "קופת חולים",
+  "healthProfileKupatMemberId": "מספר חבר",
+  "healthProfileFamilyDoctor": "רופא/ת משפחה",
+  "healthProfileEmergencyContactName": "שם איש קשר לחירום",
+  "healthProfileEmergencyContactPhone": "טלפון לחירום",
+  "kupatClalit": "כללית",
+  "kupatMaccabi": "מכבי",
+  "kupatMeuhedet": "מאוחדת",
+  "kupatLeumit": "לאומית",
+  "kupatOther": "אחר",
+  "healthMyFileSectionTitle": "התיק שלי",
+  "healthDocumentsTitle": "מסמכים",
+  "healthDocumentsSubtitle": "מרשמים, בדיקות, סיכומים",
+  "healthConditionsTitle": "מצבים רפואיים",
+  "healthConditionsSubtitle": "היסטוריה רפואית ומחלות",
+  "healthMedicationsTitle": "תרופות",
+  "healthMedicationsSubtitle": "טיפולים נוכחיים",
+  "healthAllergiesTitle": "אלרגיות",
+  "healthAllergiesSubtitle": "אלרגיות ידועות",
+  "healthVaccinationsTitle": "חיסונים",
+  "healthVaccinationsSubtitle": "היסטוריית חיסונים",
+  "healthUpToDateTitle": "הכול מעודכן",
+  "healthUpToDateSubtitle": "נודיע לך כשיהיו לך תזכורות בריאות חדשות.",
+
+  "appointmentDetailTitle": "פרטי התור",
+  "appointmentDetailCancelledSnack": "התור בוטל",
+  "appointmentDetailNotFoundTitle": "התור לא נמצא",
+  "appointmentDetailNotFoundSubtitle": "התור אינו זמין או בוטל.",
+  "appointmentDetailReschedule": "לקבוע מחדש",
+  "appointmentDetailCancelQuestion": "לבטל את התור?",
+  "appointmentDetailPreparationTitle": "נדרשת הכנה",
+  "appointmentDetailPreparationSubtitle": "הכן את הביקור מראש.",
+  "appointmentDetailPrepQuestionnaire": "מילוי שאלון בריאות",
+  "appointmentDetailPrepInstructions": "צפה בהנחיות",
+  "appointmentPrepQuestionnaireSubtitle": "שאלון סטנדרטי (מוכן לשרת)",
+  "appointmentPrepInstructionsSubtitle": "מידע חשוב לפני הביקור",
+  "appointmentPrepQuestionSymptoms": "סיבה / תסמינים (תיאור קצר)",
+  "appointmentPrepQuestionAllergies": "אלרגיות (אופציונלי)",
+  "appointmentPrepQuestionMedications": "תרופות קבועות (אופציונלי)",
+  "appointmentPrepQuestionOther": "מידע נוסף (אופציונלי)",
+  "appointmentPrepConsentLabel": "אני מסכים/ה לשתף מידע זה עם הרופא/ה",
+  "appointmentPrepConsentRequired": "נא לאשר כדי להמשיך.",
+  "appointmentPrepSavedSnack": "ההכנה נשמרה",
+  "appointmentPrepSubmit": "שלח",
+  "appointmentPrepInstruction1": "הבא תעודה מזהה וכרטיס ביטוח.",
+  "appointmentPrepInstruction2": "הגיעו 10 דקות מוקדם יותר.",
+  "appointmentPrepInstruction3": "הכינו מסמכים רפואיים חשובים.",
+  "appointmentPrepInstructionsAccept": "קראתי ואני מסכים/ה להנחיות אלו",
+  "appointmentDetailSendDocsTitle": "שליחת מסמכים",
+  "appointmentDetailSendDocsSubtitle": "שלח מסמכים לרופא לפני הביקור.",
+  "appointmentDetailAddDocs": "הוסף מסמכים",
+  "appointmentDetailEarlierSlotTitle": "רוצה תור מוקדם יותר?",
+  "appointmentDetailEarlierSlotSubtitle": "קבל התראה אם תתפנה שעה מוקדמת יותר.",
+  "appointmentDetailEnableAlerts": "הפעל התראות",
+  "appointmentDetailContactOffice": "צור קשר עם המרפאה",
+  "appointmentDetailVisitSummaryTitle": "סיכום ביקור",
+  "appointmentDetailVisitSummarySubtitle": "מה קרה בביקור ומה הצעדים הבאים",
+  "appointmentDetailVisitSummaryDemo": "בוצעה בדיקה קלינית. הומלץ על מעקב בעוד 3 חודשים, והמשך טיפול לפי הצורך.",
+  "appointmentDetailDoctorReportTitle": "סיכום רופא",
+  "appointmentDetailDoctorReportSubtitle": "דוח רפואי מהרופא המטפל",
+  "appointmentDetailDoctorReportDemo": "המטופל/ת הגיע/ה לבדיקה. לא נמצאו ממצאים חריגים. מומלץ להמשיך מעקב ולהביא מסמכים רלוונטיים לביקור הבא.",
+  "appointmentDetailDocumentsAndRxTitle": "מסמכים ומרשמים",
+  "appointmentDetailDocumentsAndRxSubtitle": "מצא את המסמכים שהתקבלו לאחר הביקור",
+  "appointmentDetailOpenVisitReport": "פתח את סיכום הביקור",
+  "appointmentDetailOpenPrescription": "פתח מרשם",
+  "appointmentDetailSendMessageCta": "שלח הודעה למרפאה",
+
+  "messagesTitle": "הודעות",
+  "messagesMarkAllRead": "סמן הכול כנקרא",
+  "messagesEmptyTitle": "ההודעות שלך",
+  "messagesEmptySubtitle": "התחל שיחה עם הרופאים שלך כדי לבקש מסמך, לשאול שאלה או לעקוב אחר תוצאות.",
+  "messagesNewMessageTitle": "הודעה חדשה",
+  "messagesWriteToOfficeTitle": "כתוב למרפאה",
+  "messagesResponseTime": "מענה תוך 24–48 שעות.",
+  "messagesSubjectLabel": "נושא",
+  "messagesSubjectHint": "לדוגמה: תוצאות, שאלה…",
+  "messagesSubjectRequired": "נדרש נושא",
+  "messagesMessageLabel": "הודעה",
+  "messagesMessageHint": "כתוב את ההודעה שלך…",
+  "messagesSendButton": "שלח",
+
+  "conversationTitle": "שיחה",
+  "conversationNewMessageTooltip": "הודעה חדשה",
+  "conversationWriteMessageHint": "כתוב הודעה…",
+
+  "practitionerTitle": "רופא",
+  "practitionerUnavailableTitle": "הרופא אינו זמין",
+  "practitionerNotFoundTitle": "הרופא לא נמצא",
+  "practitionerNotFoundSubtitle": "הפרופיל אינו זמין.",
+  "practitionerBookAppointment": "קבע תור",
+  "practitionerSendMessage": "שלח הודעה",
+  "practitionerAvailabilities": "זמינות",
+  "practitionerAddress": "כתובת",
+  "practitionerProfileSection": "פרופיל",
+
+  "documentsTitle": "מסמכים",
+  "documentsEmptyTitle": "אין מסמך",
+  "documentsEmptySubtitle": "המרשמים והתוצאות שלך יופיעו כאן.",
+  "documentsOpen": "פתח",
+  "documentsShare": "שתף",
+
+  "authLogout": "התנתק",
+
+  "securityTitle": "אבטחה",
+  "securitySecureAccountTitle": "אבטח את החשבון שלך",
+  "securitySecureAccountSubtitle": "עדכן את הפרטים שלך",
+  "securityChangePassword": "שנה סיסמה",
+  "securityChangePasswordSuccess": "הבקשה נשמרה",
+  "securityCurrentPassword": "סיסמה נוכחית",
+  "securityNewPassword": "סיסמה חדשה",
+
+  "accountTitle": "החשבון שלי",
+  "accountTaglineTitle": "הבריאות שלך. הנתונים שלך.",
+  "accountTaglineSubtitle": "הפרטיות שלך היא העדיפות שלנו.",
+  "accountPersonalInfoSection": "פרטים אישיים",
+  "accountMyProfile": "הפרופיל שלי",
+  "accountMyRelatives": "הקרובים שלי",
+  "accountSectionTitle": "חשבון",
+
+  "privacyTitle": "פרטיות",
+  "privacyYourDataTitle": "הנתונים שלך",
+  "privacyYourDataSubtitle": "אנחנו מגנים על המידע שלך ומגבילים את הגישה אליו.",
+  "privacySharingTitle": "שיתוף",
+  "privacySharingSubtitle": "שלוט במסמכים שמשותפים עם הרופאים שלך.",
+  "privacyExportTitle": "ייצוא",
+  "privacyExportSubtitle": "ייצא את הנתונים שלך בכל עת.",
+
+  "paymentTitle": "תשלום",
+  "paymentEmptyTitle": "אין אמצעי תשלום",
+  "paymentEmptySubtitle": "הוסף כרטיס כדי לפשט את החיוב.",
+  "paymentExpires": "תוקף {expiry}",
+  "@paymentExpires": {
+    "placeholders": {
+      "expiry": {}
+    }
+  },
+
+  "relativesTitle": "הקרובים שלי",
+  "relativesEmptyTitle": "אין קרוב",
+  "relativesEmptySubtitle": "הוסף קרובים כדי לקבוע תור בשמם.",
+
+  "settingsUnavailableTitle": "ההגדרות אינן זמינות",
+  "settingsUnavailableSubtitle": "לא ניתן לטעון את ההעדפות שלך.",
+  "settingsNotificationsTitle": "התראות",
+  "settingsNotificationsSubtitle": "קבל הודעות ועדכונים",
+  "settingsRemindersTitle": "תזכורות לתורים",
+  "settingsRemindersSubtitle": "קבל תזכורות לפני התורים שלך",
+  "settingsLanguageTitle": "שפה",
+  "settingsLanguageCurrentLabel": "עברית (נוכחי)",
+  "settingsLanguageShortLabel": "עברית",
+
+  "profileTitle": "הפרופיל שלי",
+  "profileUnavailableTitle": "הפרופיל אינו זמין",
+  "profileUnavailableSubtitle": "הפרטים שלך אינם זמינים.",
+  "profileIdentitySection": "זהות",
+  "commonName": "שם",
+  "commonAddress": "כתובת",
+  "commonCity": "עיר",
+  "profileMedicalInfoSection": "מידע רפואי",
+  "profileBloodType": "סוג דם",
+  "profileHeight": "גובה",
+  "profileWeight": "משקל",
+
+  "bookingSelectPatientTitle": "למי מיועד התור הזה?",
+  "bookingPatientsUnavailableTitle": "המטופלים אינם זמינים",
+  "bookingAddRelative": "הוסף קרוב",
+  "commonMe": "אני",
+
+  "bookingSelectSlotTitle": "בחר תאריך",
+  "bookingSelectSlotSubtitle": "בחר תאריך ושעה זמינים.",
+  "bookingSeeMoreDates": "ראה עוד תאריכים",
+  "commonSelected": "נבחר",
+
+  "bookingInstructionsTitle": "הנחיות",
+  "bookingInstructionsSubtitle": "לפני התור, אנא בדוק את הנקודות הבאות.",
+  "bookingInstructionsBullet1": "הבא את כרטיס הביטוח והמרשם במידת הצורך.",
+  "bookingInstructionsBullet2": "הגע 10 דקות מוקדם יותר לצורך סידורים.",
+  "bookingInstructionsBullet3": "במקרה של ביטול, הודע בהקדם האפשרי.",
+  "bookingInstructionsAccept": "קראתי ואני מסכים להנחיות אלו.",
+
+  "bookingConfirmTitle": "אשר את התור",
+  "bookingConfirmSubtitle": "בדוק את המידע לפני האישור.",
+  "bookingReasonLabel": "סיבה",
+  "bookingPatientLabel": "מטופל",
+  "bookingSlotLabel": "מועד",
+  "bookingMissingInfoTitle": "מידע חסר",
+  "bookingZipCodeLabel": "מיקוד",
+  "bookingVisitedBeforeQuestion": "האם ביקרת אצל רופא זה בעבר?",
+  "commonYes": "כן",
+  "commonNo": "לא",
+  "bookingConfirmButton": "אשר את התור",
+  "bookingChangeSlotButton": "שנה את המועד",
+
+  "bookingSuccessTitle": "התור אושר",
+  "bookingSuccessSubtitle": "שלחנו אישור לאימייל שלך.",
+  "bookingAddToCalendar": "הוסף ללוח השנה שלי",
+  "bookingBookAnotherAppointment": "קבע תור נוסף",
+  "bookingSendDocsSubtitle": "שלח מסמכים לרופא עבור הביקור.",
+  "bookingViewMyAppointments": "ראה את התורים שלי",
+  "bookingBackToHome": "חזרה לדף הבית",
+
+  "vaccinationsEmptyTitle": "אין חיסונים רשומים",
+  "vaccinationsEmptySubtitle": "עקוב אחר החיסונים והתזכורות שלך.",
+  "allergiesEmptyTitle": "אין אלרגיות",
+  "allergiesEmptySubtitle": "דווח על האלרגיות שלך למען בטיחותך.",
+  "medicationsEmptyTitle": "אין תרופות",
+  "medicationsEmptySubtitle": "הוסף את הטיפולים הנוכחיים שלך.",
+  "conditionsEmptyTitle": "אין מצב רפואי",
+  "conditionsEmptySubtitle": "הוסף היסטוריה רפואית עבור התורים שלך.",
+
+  "languageHebrew": "עברית",
+  "languageFrench": "Français",
+  "languageEnglish": "English",
+
+  "errorGenericTryAgain": "אירעה שגיאה. נסה שוב.",
+  "authSignInFailedTryAgain": "ההתחברות נכשלה. נסה שוב.",
+  "authSignUpFailedTryAgain": "ההרשמה נכשלה. נסה שוב.",
+
+  "errorUnableToConfirmAppointment": "לא ניתן לאשר את התור.",
+  "errorUnableToLoadProfile": "לא ניתן לטעון את הפרופיל.",
+  "errorUnableToReadHistoryState": "לא ניתן לקרוא את מצב ההיסטוריה.",
+  "errorUnableToEnableHistory": "לא ניתן להפעיל את ההיסטוריה.",
+  "errorUnableToLoadRelatives": "לא ניתן לטעון את הקרובים.",
+  "errorUnableToAddRelative": "לא ניתן להוסיף קרוב.",
+  "errorUnableToLoadPayments": "לא ניתן לטעון תשלומים.",
+  "errorUnableToAddPaymentMethod": "לא ניתן להוסיף אמצעי תשלום.",
+  "errorUnableToLoadHealthData": "לא ניתן לטעון נתוני בריאות.",
+  "errorUnableToAddHealthItem": "לא ניתן להוסיף פריט.",
+  "errorUnableToLoadHealthProfile": "לא ניתן לטעון את פרופיל הבריאות.",
+  "errorUnableToSaveHealthProfile": "לא ניתן לשמור את פרופיל הבריאות.",
+  "errorUnableToLoadPractitioner": "לא ניתן לטעון את הרופא.",
+  "errorUnableToLoadSearch": "לא ניתן לטעון את החיפוש.",
+  "errorUnableToLoadDocuments": "לא ניתן לטעון מסמכים.",
+  "errorUnableToAddDocument": "לא ניתן להוסיף מסמך.",
+  "errorUnableToReadSettings": "לא ניתן לקרוא את ההגדרות.",
+  "errorUnableToSaveSettings": "לא ניתן לשמור את ההגדרות.",
+  "errorUnableToLoadUpcomingAppointments": "לא ניתן לטעון תורים קרובים.",
+  "errorUnableToLoadHistory": "לא ניתן לטעון היסטוריה.",
+  "errorUnableToLoadAppointment": "לא ניתן לטעון את התור.",
+  "errorUnableToCancelAppointment": "לא ניתן לבטל את התור.",
+  "errorUnableToLoadConversations": "לא ניתן לטעון שיחות.",
+  "errorUnableToLoadConversation": "לא ניתן לטעון את השיחה.",
+  "errorUnableToSendMessage": "לא ניתן לשלוח את ההודעה.",
+  "errorUnableToReadOnboardingState": "לא ניתן לקרוא את מצב ההדרכה.",
+  "errorUnableToSaveOnboarding": "לא ניתן לשמור את ההדרכה.",
+
+  "timeMinutesAgo": "לפני {minutes} דק׳",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "לפני {hours} ש׳",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "לפני {days} י׳",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "demoDentalOfficeName": "מרפאת שיניים",
+  "demoConversation1LastMessage": "שלום, התוצאות שלך זמינות...",
+  "demoConversation2LastMessage": "מצוין, אני שולח לך את המסמך!",
+  "demoConversation3LastMessage": "תודה על הביקור!",
+  "demoAppointmentConsultation": "ייעוץ",
+  "demoAppointmentFollowUp": "מעקב רפואי",
+  "demoShortDateThu19Feb": "ה׳ 19 בפבר׳",
+  "demoShortDateMon15Feb": "ב׳ 15 בפבר׳",
+  "demoMessage1_1": "שלום, איך אפשר לעזור?",
+  "demoMessage1_2": "שלום, אני רוצה לקבל את הסיכום שלי.",
+  "demoMessage1_3": "בוודאי, האם תוכל לציין את תאריך התור?",
+  "demoMessage2_1": "שלום, התיק שלך מעודכן.",
+  "demoMessage3_1": "שלום!",
+  "demoMessage3_2": "תודה דוקטור.",
+
+  "relativeRelation": "קרוב",
+  "relativeChild": "ילד",
+  "relativeParent": "הורה",
+  "relativeDemoName": "קרוב {index}",
+  "@relativeDemoName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeLabel": "{relation} • {year}",
+  "@relativeLabel": {
+    "placeholders": {
+      "relation": {},
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+
+  "documentsDemoTitle": "מסמך {index}",
+  "@documentsDemoTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "documentsDemoTypeLabel": "סיכום",
+  "documentsDemoDateLabelToday": "היום",
+
+  "demoSpecialtyOphthalmologist": "רופא עיניים",
+  "demoSpecialtyGeneralPractitioner": "רופא משפחה",
+  "demoPractitionerAbout": "רופא העיניים מטפל במחלות העין, ומתמחה ברפרקציה, פזילה והפרעות ראייה.\n\nפרופיל זה מוכן להתחבר לשרת.",
+  "demoAvailabilityTodayAt": "היום • {time}",
+  "@demoAvailabilityTodayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityTomorrowAt": "מחר • {time}",
+  "@demoAvailabilityTomorrowAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityThisWeekAt": "השבוע • {time}",
+  "@demoAvailabilityThisWeekAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+
+  "demoSearchPractitionerName": "ד\"ר מטפל {index}",
+  "@demoSearchPractitionerName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "demoSearchAddress": "75019 פריז • Avenue Secrétan",
+  "demoSearchSector1": "סקטור 1",
+  "demoAvailabilityToday": "היום",
+  "demoAvailabilityThisWeek": "השבוע",
+  "demoDistance12km": "1.2 ק\"מ",
+
+  "demoAppointmentDateThu19Feb": "יום ה׳ 19 בפברואר",
+  "demoAppointmentReasonNewPatientConsultation": "ייעוץ (מטופל חדש)",
+
+  "demoPractitionerNameMarc": "ד\"ר מרק בן-חמו",
+  "demoPractitionerNameSarah": "ד\"ר שרה כהן",
+  "demoPractitionerNameNoam": "ד\"ר נעם לוי",
+  "demoPractitionerNameMarcShort": "ד\"ר מרק ב׳",
+  "demoPractitionerNameSophie": "ד\"ר סופי ל׳",
+  "demoPatientNameTom": "תום",
+  "demoAddressParis": "28, שדרות סרטא, 75019 פריז",
+  "demoProfileFullName": "תום ג׳מי",
+  "demoProfileEmail": "tom@domaine.com",
+  "demoProfileCity": "75019 פריז",
+  "demoPaymentBrandVisa": "ויזה",
+
+  "commonInitialsFallback": "אני",
+
+  "navHome": "בית",
+  "navAppointments": "תורים",
+  "navHealth": "בריאות",
+  "navMessages": "הודעות",
+  "navAccount": "חשבון"
+}

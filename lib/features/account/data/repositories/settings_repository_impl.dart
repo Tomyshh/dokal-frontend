@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/app_settings.dart';
 import '../../domain/repositories/settings_repository.dart';
 import '../datasources/settings_local_data_source.dart';
@@ -15,7 +16,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
     try {
       return Right(local.getSettings());
     } catch (_) {
-      return const Left(Failure('Impossible de lire les paramètres.'));
+      return Left(Failure(l10nStatic.errorUnableToReadSettings));
     }
   }
 
@@ -25,8 +26,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
       await local.saveSettings(settings);
       return const Right(unit);
     } catch (_) {
-      return const Left(Failure('Impossible de sauvegarder les paramètres.'));
+      return Left(Failure(l10nStatic.errorUnableToSaveSettings));
     }
   }
 }
-

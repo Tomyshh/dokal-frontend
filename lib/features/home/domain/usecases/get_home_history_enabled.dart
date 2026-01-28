@@ -10,4 +10,3 @@ class GetHomeHistoryEnabled {
 
   Future<Either<Failure, bool>> call() => repo.isHistoryEnabled();
 }
-

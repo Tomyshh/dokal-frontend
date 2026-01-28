@@ -12,4 +12,3 @@ class GetPaymentMethods {
   Future<Either<Failure, List<PaymentMethod>>> call() =>
       repo.listPaymentMethods();
 }
-

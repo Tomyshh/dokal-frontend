@@ -7,7 +7,9 @@ class AppColors {
   static const Color primary = Color(0xFF005044);
   static const Color primaryLight = Color(0xFF006B5F);
   static const Color primaryDark = Color(0xFF003D33);
-  static const Color primaryLightBackground = Color(0xFFE0F2E8); // Vert clair pour les containers
+  static const Color primaryLightBackground = Color(
+    0xFFE0F2E8,
+  ); // Vert clair pour les containers
 
   // Secondary / semantic
   static const Color accent = Color(0xFF10B981);
@@ -25,4 +27,3 @@ class AppColors {
   // Misc
   static const Color shadow = Color(0x14000000);
 }
-

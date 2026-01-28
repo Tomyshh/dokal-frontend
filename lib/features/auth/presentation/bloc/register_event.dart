@@ -23,4 +23,3 @@ class RegisterSubmitted extends RegisterEvent {
   @override
   List<Object?> get props => [email, password, firstName, lastName];
 }
-

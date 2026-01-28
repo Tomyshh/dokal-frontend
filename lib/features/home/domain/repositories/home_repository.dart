@@ -9,4 +9,3 @@ abstract class HomeRepository {
   Future<Either<Failure, Unit>> enableHistory();
   Future<Either<Failure, List<HomePractitioner>>> getRecentPractitioners();
 }
-

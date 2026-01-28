@@ -3,16 +3,12 @@ part of 'payment_cubit.dart';
 enum PaymentStatus { initial, loading, success, failure }
 
 class PaymentState extends Equatable {
-  const PaymentState({
-    required this.status,
-    required this.items,
-    this.error,
-  });
+  const PaymentState({required this.status, required this.items, this.error});
 
   const PaymentState.initial()
-      : status = PaymentStatus.initial,
-        items = const [],
-        error = null;
+    : status = PaymentStatus.initial,
+      items = const [],
+      error = null;
 
   final PaymentStatus status;
   final List<PaymentMethod> items;
@@ -33,4 +29,3 @@ class PaymentState extends Equatable {
   @override
   List<Object?> get props => [status, items, error];
 }
-

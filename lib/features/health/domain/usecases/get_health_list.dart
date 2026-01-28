@@ -12,4 +12,3 @@ class GetHealthList {
   Future<Either<Failure, List<HealthItem>>> call(HealthListType type) =>
       repo.list(type);
 }
-

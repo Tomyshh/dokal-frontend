@@ -6,6 +6,7 @@ import '../../../account/domain/entities/user_profile.dart';
 import '../../../account/domain/usecases/add_relative_demo.dart';
 import '../../../account/domain/usecases/get_profile.dart';
 import '../../../account/domain/usecases/get_relatives.dart';
+import '../../../../l10n/l10n_static.dart';
 
 part 'booking_patients_state.dart';
 
@@ -14,10 +15,10 @@ class BookingPatientsCubit extends Cubit<BookingPatientsState> {
     required GetProfile getProfile,
     required GetRelatives getRelatives,
     required AddRelativeDemo addRelativeDemo,
-  })  : _getProfile = getProfile,
-        _getRelatives = getRelatives,
-        _addRelativeDemo = addRelativeDemo,
-        super(const BookingPatientsState.initial());
+  }) : _getProfile = getProfile,
+       _getRelatives = getRelatives,
+       _addRelativeDemo = addRelativeDemo,
+       super(const BookingPatientsState.initial());
 
   final GetProfile _getProfile;
   final GetRelatives _getRelatives;
@@ -29,9 +30,10 @@ class BookingPatientsCubit extends Cubit<BookingPatientsState> {
     final relRes = await _getRelatives();
 
     if (profRes.isLeft() || relRes.isLeft()) {
-      final msg = profRes.fold((l) => l.message, (_) => null) ??
+      final msg =
+          profRes.fold((l) => l.message, (_) => null) ??
           relRes.fold((l) => l.message, (_) => null) ??
-          'Erreur';
+          l10nStatic.commonError;
       emit(state.copyWith(status: BookingPatientsStatus.failure, error: msg));
       return;
     }
@@ -39,7 +41,9 @@ class BookingPatientsCubit extends Cubit<BookingPatientsState> {
     emit(
       state.copyWith(
         status: BookingPatientsStatus.success,
-        me: profRes.getOrElse(() => const UserProfile(fullName: '—', email: '—', city: '—')),
+        me: profRes.getOrElse(
+          () => const UserProfile(fullName: '—', email: '—', city: '—'),
+        ),
         relatives: relRes.getOrElse(() => const []),
         error: null,
       ),
@@ -50,9 +54,10 @@ class BookingPatientsCubit extends Cubit<BookingPatientsState> {
     emit(state.copyWith(status: BookingPatientsStatus.loading));
     final res = await _addRelativeDemo();
     res.fold(
-      (f) => emit(state.copyWith(status: BookingPatientsStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: BookingPatientsStatus.failure, error: f.message),
+      ),
       (_) async => load(),
     );
   }
 }
-

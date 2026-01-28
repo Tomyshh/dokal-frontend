@@ -11,10 +11,14 @@ class BookingPatientsState extends Equatable {
   });
 
   const BookingPatientsState.initial()
-      : status = BookingPatientsStatus.initial,
-        me = const UserProfile(fullName: 'Tom Jami', email: 'tom@domaine.com', city: '75019 Paris'),
-        relatives = const [],
-        error = null;
+    : status = BookingPatientsStatus.initial,
+      me = const UserProfile(
+        fullName: 'Tom Jami',
+        email: 'tom@domaine.com',
+        city: '75019 Paris',
+      ),
+      relatives = const [],
+      error = null;
 
   final BookingPatientsStatus status;
   final UserProfile me;
@@ -38,4 +42,3 @@ class BookingPatientsState extends Equatable {
   @override
   List<Object?> get props => [status, me, relatives, error];
 }
-

@@ -1,6 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../appointments/domain/entities/appointment.dart';
+import '../../../appointments/domain/usecases/get_past_appointments.dart';
+import '../../../appointments/domain/usecases/get_upcoming_appointments.dart';
+import '../../../messages/domain/entities/conversation_preview.dart';
+import '../../../messages/domain/usecases/get_conversations.dart';
 import '../../domain/usecases/enable_home_history.dart';
 import '../../domain/usecases/get_home_greeting_name.dart';
 import '../../domain/usecases/get_home_history_enabled.dart';
@@ -12,19 +17,31 @@ class HomeCubit extends Cubit<HomeState> {
     required GetHomeGreetingName getGreetingName,
     required GetHomeHistoryEnabled getHistoryEnabled,
     required EnableHomeHistory enableHistory,
-  })  : _getGreetingName = getGreetingName,
-        _getHistoryEnabled = getHistoryEnabled,
-        _enableHistory = enableHistory,
-        super(const HomeState.initial());
+    required GetUpcomingAppointments getUpcomingAppointments,
+    required GetPastAppointments getPastAppointments,
+    required GetConversations getConversations,
+  }) : _getGreetingName = getGreetingName,
+       _getHistoryEnabled = getHistoryEnabled,
+       _enableHistory = enableHistory,
+       _getUpcomingAppointments = getUpcomingAppointments,
+       _getPastAppointments = getPastAppointments,
+       _getConversations = getConversations,
+       super(const HomeState.initial());
 
   final GetHomeGreetingName _getGreetingName;
   final GetHomeHistoryEnabled _getHistoryEnabled;
   final EnableHomeHistory _enableHistory;
+  final GetUpcomingAppointments _getUpcomingAppointments;
+  final GetPastAppointments _getPastAppointments;
+  final GetConversations _getConversations;
 
   Future<void> load() async {
     emit(state.copyWith(status: HomeStatus.loading));
     final nameRes = await _getGreetingName();
     final histRes = await _getHistoryEnabled();
+    final upcomingRes = await _getUpcomingAppointments();
+    final pastRes = await _getPastAppointments();
+    final convRes = await _getConversations();
 
     String? error;
     String name = '—';
@@ -38,11 +55,29 @@ class HomeCubit extends Cubit<HomeState> {
       return;
     }
 
+    // Appointments are "best effort" for now (so the Home stays usable offline/demo).
+    final upcoming = upcomingRes.getOrElse(() => const <Appointment>[]);
+    final past = pastRes.getOrElse(() => const <Appointment>[]);
+
+    final upcomingList = upcoming.take(3).toList(growable: false);
+    final history = past.take(3).toList(growable: false);
+
+    final conversations = convRes.getOrElse(
+      () => const <ConversationPreview>[],
+    );
+    final newMessage = conversations.cast<ConversationPreview?>().firstWhere(
+      (c) => (c?.unreadCount ?? 0) > 0,
+      orElse: () => null,
+    );
+
     emit(
       state.copyWith(
         status: HomeStatus.success,
         greetingName: name,
         historyEnabled: enabled,
+        upcomingAppointments: upcomingList,
+        newMessageConversation: newMessage,
+        appointmentHistory: history,
         error: null,
       ),
     );
@@ -54,9 +89,12 @@ class HomeCubit extends Cubit<HomeState> {
     res.fold(
       (f) => emit(state.copyWith(status: HomeStatus.failure, error: f.message)),
       (_) => emit(
-        state.copyWith(status: HomeStatus.success, historyEnabled: true, error: null),
+        state.copyWith(
+          status: HomeStatus.success,
+          historyEnabled: true,
+          error: null,
+        ),
       ),
     );
   }
 }
-

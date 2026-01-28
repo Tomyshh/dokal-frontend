@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../l10n/l10n.dart';
 
 class PrivacyPage extends StatelessWidget {
   const PrivacyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: const DokalAppBar(title: 'Confidentialité'),
+      appBar: DokalAppBar(title: l10n.privacyTitle),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg.r),
           children: [
             _PrivacyTile(
               icon: Icons.security_rounded,
-              title: 'Vos données',
-              subtitle:
-                  'Nous protégeons vos informations et limitons leur accès.',
+              title: l10n.privacyYourDataTitle,
+              subtitle: l10n.privacyYourDataSubtitle,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm.h),
             _PrivacyTile(
               icon: Icons.share_rounded,
-              title: 'Partage',
-              subtitle:
-                  'Contrôlez les documents partagés avec vos praticiens.',
+              title: l10n.privacySharingTitle,
+              subtitle: l10n.privacySharingSubtitle,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm.h),
             _PrivacyTile(
               icon: Icons.download_rounded,
-              title: 'Export',
-              subtitle: 'Exportez vos données à tout moment.',
+              title: l10n.privacyExportTitle,
+              subtitle: l10n.privacyExportSubtitle,
             ),
           ],
         ),
@@ -56,25 +57,25 @@ class _PrivacyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DokalCard(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md.r),
       child: Row(
         children: [
           Container(
-            width: 36,
-            height: 36,
+            width: 36.r,
+            height: 36.r,
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Icon(icon, size: 18, color: AppColors.primary),
+            child: Icon(icon, size: 18.sp, color: AppColors.primary),
           ),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: Theme.of(context).textTheme.titleSmall),
-                const SizedBox(height: 2),
+                SizedBox(height: 2.h),
                 Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
@@ -84,4 +85,3 @@ class _PrivacyTile extends StatelessWidget {
     );
   }
 }
-

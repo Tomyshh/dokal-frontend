@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -18,14 +19,14 @@ class SplashPage extends StatelessWidget {
               // Logo icône
               Image.asset(
                 'assets/branding/icononly_transparent_nobuffer.png',
-                width: 100,
-                height: 100,
+                width: 100.r,
+                height: 100.r,
                 fit: BoxFit.contain,
               ),
-              const SizedBox(height: AppSpacing.xl),
-              const SizedBox(
-                width: 20,
-                height: 20,
+              SizedBox(height: AppSpacing.xl.h),
+              SizedBox(
+                width: 20.r,
+                height: 20.r,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   color: AppColors.primary,
@@ -38,4 +39,3 @@ class SplashPage extends StatelessWidget {
     );
   }
 }
-

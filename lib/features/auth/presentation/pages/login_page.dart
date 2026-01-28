@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -8,6 +9,7 @@ import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../core/widgets/dokal_text_field.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/login_bloc.dart';
 
@@ -27,6 +29,17 @@ class _LoginPageState extends State<LoginPage> {
   final _password = TextEditingController();
   bool _obscure = true;
 
+  bool get _isAccountInline => (widget.redirectTo ?? '') == '/account';
+
+  bool get _isBookingGate =>
+      (widget.redirectTo ?? '').trim().startsWith('/booking/');
+
+  String? get _bookingPractitionerId {
+    final redirect = (widget.redirectTo ?? '').trim();
+    final match = RegExp(r'^/booking/([^/?]+)').firstMatch(redirect);
+    return match?.group(1);
+  }
+
   @override
   void dispose() {
     _email.dispose();
@@ -36,13 +49,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider(
       create: (_) => sl<LoginBloc>(),
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(automaticallyImplyLeading: false),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl.r),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,21 +64,22 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: Image.asset(
                     'assets/branding/icononly_transparent_nobuffer.png',
-                    height: 56,color: AppColors.primary,
+                    height: 56.h,
+                    color: AppColors.primary,
                     fit: BoxFit.contain,
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xxl),
+                SizedBox(height: AppSpacing.xxl.h),
                 Text(
-                  'Connexion',
+                  l10n.authLoginTitle,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm.h),
                 Text(
-                  'Accédez à vos rendez-vous, messages et documents.',
+                  l10n.authLoginSubtitle,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl.h),
                 DokalCard(
                   child: Form(
                     key: _formKey,
@@ -72,23 +87,25 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         DokalTextField(
                           controller: _email,
-                          label: 'Email',
-                          hint: 'ex: nom@domaine.com',
+                          label: l10n.commonEmail,
+                          hint: l10n.commonEmailHint,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           prefixIcon: Icons.mail_rounded,
                           validator: (v) {
                             final value = (v ?? '').trim();
-                            if (value.isEmpty) return 'Email requis';
-                            if (!value.contains('@')) return 'Email invalide';
+                            if (value.isEmpty) return l10n.commonEmailRequired;
+                            if (!value.contains('@')) {
+                              return l10n.commonEmailInvalid;
+                            }
                             return null;
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md.h),
                         DokalTextField(
                           controller: _password,
-                          label: 'Mot de passe',
-                          hint: '••••••••',
+                          label: l10n.commonPassword,
+                          hint: l10n.commonPasswordHint,
                           obscureText: _obscure,
                           textInputAction: TextInputAction.done,
                           prefixIcon: Icons.lock_rounded,
@@ -103,21 +120,23 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           validator: (v) {
                             final value = (v ?? '');
-                            if (value.isEmpty) return 'Mot de passe requis';
+                            if (value.isEmpty) {
+                              return l10n.commonPasswordRequired;
+                            }
                             if (value.length < 6) {
-                              return 'Minimum 6 caractères';
+                              return l10n.commonPasswordMinChars(6);
                             }
                             return null;
                           },
                           onFieldSubmitted: (_) => _submit(context),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg.h),
                         BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
                             if (state.status == LoginStatus.success) {
                               context.read<AuthBloc>().add(
-                                    const AuthRefreshRequested(),
-                                  );
+                                const AuthRefreshRequested(),
+                              );
                               // Rediriger vers la page demandée ou le home
                               final redirect = widget.redirectTo;
                               if (redirect != null && redirect.isNotEmpty) {
@@ -128,7 +147,9 @@ class _LoginPageState extends State<LoginPage> {
                             if (state.status == LoginStatus.failure) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(state.errorMessage ?? 'Erreur'),
+                                  content: Text(
+                                    state.errorMessage ?? l10n.commonError,
+                                  ),
                                 ),
                               );
                             }
@@ -137,39 +158,64 @@ class _LoginPageState extends State<LoginPage> {
                             return DokalButton.primary(
                               onPressed: () => _submit(context),
                               isLoading: state.status == LoginStatus.loading,
-                              child: const Text('Se connecter'),
+                              child: Text(l10n.authLoginButton),
                             );
                           },
                         ),
-                        const SizedBox(height: AppSpacing.sm),
+                        SizedBox(height: AppSpacing.sm.h),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () => context.go('/forgot-password'),
-                            child: const Text('Mot de passe oublié ?'),
+                            child: Text(l10n.authForgotPasswordCta),
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.xs),
+                        SizedBox(height: AppSpacing.xs.h),
                         DokalButton.outline(
                           onPressed: () {
                             final redirect = widget.redirectTo;
                             if (redirect != null && redirect.isNotEmpty) {
-                              context.go('/register?redirect=${Uri.encodeComponent(redirect)}');
+                              context.go(
+                                '/register?redirect=${Uri.encodeComponent(redirect)}',
+                              );
                             } else {
                               context.go('/register');
                             }
                           },
-                          child: const Text('Créer un compte'),
+                          child: Text(l10n.authCreateAccountCta),
                         ),
                       ],
                     ),
                   ),
                 ),
                 const Spacer(),
-                TextButton(
-                  onPressed: () => context.go('/home'),
-                  child: const Text('Continuer sans compte'),
-                ),
+                if (_isBookingGate)
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton.icon(
+                      onPressed: () {
+                        if (context.canPop()) {
+                          context.pop();
+                          return;
+                        }
+                        final id = _bookingPractitionerId;
+                        if (id != null && id.isNotEmpty) {
+                          context.go('/practitioner/$id');
+                        } else {
+                          context.go('/search');
+                        }
+                      },
+                      icon: const Icon(Icons.arrow_back_rounded),
+                      label: Text(l10n.commonBack),
+                    ),
+                  )
+                else if (_isAccountInline)
+                  const SizedBox.shrink()
+                else
+                  TextButton(
+                    onPressed: () => context.go('/home'),
+                    child: Text(l10n.authContinueWithoutAccount),
+                  ),
               ],
             ),
           ),
@@ -181,11 +227,7 @@ class _LoginPageState extends State<LoginPage> {
   void _submit(BuildContext context) {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     context.read<LoginBloc>().add(
-          LoginSubmitted(
-            email: _email.text.trim(),
-            password: _password.text,
-          ),
-        );
+      LoginSubmitted(email: _email.text.trim(), password: _password.text),
+    );
   }
 }
-

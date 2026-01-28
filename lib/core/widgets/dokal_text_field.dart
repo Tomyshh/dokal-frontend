@@ -44,4 +44,3 @@ class DokalTextField extends StatelessWidget {
     );
   }
 }
-

@@ -12,9 +12,9 @@ class ConversationCubit extends Cubit<ConversationState> {
     required GetConversationMessages getConversationMessages,
     required SendMessage sendMessage,
     required String conversationId,
-  })  : _getConversationMessages = getConversationMessages,
-        _sendMessage = sendMessage,
-        super(ConversationState.initial(conversationId: conversationId));
+  }) : _getConversationMessages = getConversationMessages,
+       _sendMessage = sendMessage,
+       super(ConversationState.initial(conversationId: conversationId));
 
   final GetConversationMessages _getConversationMessages;
   final SendMessage _sendMessage;
@@ -23,7 +23,9 @@ class ConversationCubit extends Cubit<ConversationState> {
     emit(state.copyWith(status: ConversationStatus.loading));
     final res = await _getConversationMessages(state.conversationId);
     res.fold(
-      (f) => emit(state.copyWith(status: ConversationStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: ConversationStatus.failure, error: f.message),
+      ),
       (items) => emit(
         state.copyWith(
           status: ConversationStatus.success,
@@ -37,9 +39,14 @@ class ConversationCubit extends Cubit<ConversationState> {
   Future<void> send(String text) async {
     final trimmed = text.trim();
     if (trimmed.isEmpty) return;
-    final res = await _sendMessage(conversationId: state.conversationId, text: trimmed);
+    final res = await _sendMessage(
+      conversationId: state.conversationId,
+      text: trimmed,
+    );
     res.fold(
-      (f) => emit(state.copyWith(status: ConversationStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: ConversationStatus.failure, error: f.message),
+      ),
       (_) async {
         // Recharger depuis la source (démo) pour rester cohérent avec le futur backend.
         await load();
@@ -47,4 +54,3 @@ class ConversationCubit extends Cubit<ConversationState> {
     );
   }
 }
-

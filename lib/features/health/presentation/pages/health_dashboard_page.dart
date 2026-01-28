@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../l10n/l10n.dart';
 
 class HealthDashboardPage extends StatelessWidget {
   const HealthDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -17,60 +20,57 @@ class HealthDashboardPage extends StatelessWidget {
             // Header
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.lg,
-                  AppSpacing.lg,
-                  AppSpacing.md,
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.lg.w,
+                  AppSpacing.lg.h,
+                  AppSpacing.lg.w,
+                  AppSpacing.md.h,
                 ),
                 child: Row(
                   children: [
                     Container(
-                      width: 44,
-                      height: 44,
+                      width: 44.r,
+                      height: 44.r,
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.primary,
-                            AppColors.primaryLight,
-                          ],
+                          colors: [AppColors.primary, AppColors.primaryLight],
                         ),
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(14.r),
                         boxShadow: [
                           BoxShadow(
                             color: AppColors.primary.withValues(alpha: 0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
+                            blurRadius: 12.r,
+                            offset: Offset(0, 4.h),
                           ),
                         ],
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.favorite_rounded,
                         color: Colors.white,
-                        size: 24,
+                        size: 24.sp,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.md),
-                    const Expanded(
+                    SizedBox(width: AppSpacing.md.w),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ma Santé',
+                            l10n.healthTitle,
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
                               letterSpacing: -0.5,
                             ),
                           ),
-                          SizedBox(height: 2),
+                          SizedBox(height: 2.h),
                           Text(
-                            'Gérez votre profil santé',
+                            l10n.healthSubtitle,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: AppColors.textSecondary,
                             ),
                           ),
@@ -83,68 +83,59 @@ class HealthDashboardPage extends StatelessWidget {
             ),
             // Contenu
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm.h),
                   // Carte statut
                   _StatusCard(),
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: AppSpacing.xl.h),
                   // Section menu
-                  const Text(
-                    'Mon dossier',
+                  Text(
+                    l10n.healthMyFileSectionTitle,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
                       color: AppColors.primary,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.md),
-                  _MenuCard(
-                    icon: Icons.description_rounded,
-                    iconColor: const Color(0xFF3B82F6),
-                    iconBgColor: const Color(0xFFEFF6FF),
-                    title: 'Documents',
-                    subtitle: 'Ordonnances, analyses, comptes-rendus',
-                    onTap: () => context.go('/health/documents'),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.md.h),
                   _MenuCard(
                     icon: Icons.healing_rounded,
                     iconColor: const Color(0xFFF59E0B),
                     iconBgColor: const Color(0xFFFFFBEB),
-                    title: 'Conditions médicales',
-                    subtitle: 'Antécédents et pathologies',
-                    onTap: () => context.go('/health/conditions'),
+                    title: l10n.healthConditionsTitle,
+                    subtitle: l10n.healthConditionsSubtitle,
+                    onTap: () => context.push('/health/conditions'),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm.h),
                   _MenuCard(
                     icon: Icons.medication_rounded,
                     iconColor: const Color(0xFF10B981),
                     iconBgColor: const Color(0xFFECFDF5),
-                    title: 'Médicaments',
-                    subtitle: 'Traitements en cours',
-                    onTap: () => context.go('/health/medications'),
+                    title: l10n.healthMedicationsTitle,
+                    subtitle: l10n.healthMedicationsSubtitle,
+                    onTap: () => context.push('/health/medications'),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm.h),
                   _MenuCard(
                     icon: Icons.warning_amber_rounded,
                     iconColor: const Color(0xFFEF4444),
                     iconBgColor: const Color(0xFFFEF2F2),
-                    title: 'Allergies',
-                    subtitle: 'Allergies connues',
-                    onTap: () => context.go('/health/allergies'),
+                    title: l10n.healthAllergiesTitle,
+                    subtitle: l10n.healthAllergiesSubtitle,
+                    onTap: () => context.push('/health/allergies'),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm.h),
                   _MenuCard(
                     icon: Icons.vaccines_rounded,
                     iconColor: const Color(0xFF8B5CF6),
                     iconBgColor: const Color(0xFFF5F3FF),
-                    title: 'Vaccinations',
-                    subtitle: 'Historique vaccinal',
-                    onTap: () => context.go('/health/vaccinations'),
+                    title: l10n.healthVaccinationsTitle,
+                    subtitle: l10n.healthVaccinationsSubtitle,
+                    onTap: () => context.push('/health/vaccinations'),
                   ),
-                  const SizedBox(height: 100),
+                  SizedBox(height: 100.h),
                 ]),
               ),
             ),
@@ -158,8 +149,9 @@ class HealthDashboardPage extends StatelessWidget {
 class _StatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.lg.r),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -178,43 +170,43 @@ class _StatusCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 52,
-            height: 52,
+            width: 52.r,
+            height: 52.r,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(16.r),
               boxShadow: [
                 BoxShadow(
                   color: AppColors.primary.withValues(alpha: 0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  blurRadius: 8.r,
+                  offset: Offset(0, 2.h),
                 ),
               ],
             ),
-            child: const Icon(
+            child: Icon(
               Icons.check_circle_rounded,
               color: AppColors.accent,
-              size: 28,
+              size: 28.sp,
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Vous êtes à jour',
+                Text(
+                  l10n.healthUpToDateTitle,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
-                  'Nous vous notifierons quand vous aurez de nouveaux rappels santé.',
+                  l10n.healthUpToDateSubtitle,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 13.sp,
                     color: AppColors.textSecondary.withValues(alpha: 0.9),
                     height: 1.4,
                   ),
@@ -250,51 +242,47 @@ class _MenuCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: EdgeInsets.all(AppSpacing.md.r),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 2),
+              blurRadius: 12.r,
+              offset: Offset(0, 2.h),
             ),
           ],
         ),
         child: Row(
           children: [
             Container(
-              width: 48,
-              height: 48,
+              width: 48.r,
+              height: 48.r,
               decoration: BoxDecoration(
                 color: iconBgColor,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(14.r),
               ),
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: 24,
-              ),
+              child: Icon(icon, color: iconColor, size: 24.sp),
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 15,
+                    style: TextStyle(
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2.h),
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 13.sp,
                       color: AppColors.textSecondary.withValues(alpha: 0.8),
                     ),
                   ),
@@ -302,16 +290,16 @@ class _MenuCard extends StatelessWidget {
               ),
             ),
             Container(
-              width: 32,
-              height: 32,
+              width: 32.r,
+              height: 32.r,
               decoration: BoxDecoration(
                 color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.chevron_right_rounded,
                 color: AppColors.textSecondary,
-                size: 20,
+                size: 20.sp,
               ),
             ),
           ],

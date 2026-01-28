@@ -10,9 +10,9 @@ class OnboardingState extends Equatable {
   });
 
   const OnboardingState.initial()
-      : status = OnboardingStatus.initial,
-        completed = false,
-        error = null;
+    : status = OnboardingStatus.initial,
+      completed = false,
+      error = null;
 
   final OnboardingStatus status;
   final bool completed;
@@ -33,4 +33,3 @@ class OnboardingState extends Equatable {
   @override
   List<Object?> get props => [status, completed, error];
 }
-

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/app_locale_controller.dart';
 import '../bloc/onboarding_cubit.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -18,21 +21,6 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   final _controller = PageController();
   int _currentPage = 0;
-
-  final _pages = const [
-    _OnboardingStep(
-      title: 'Réservez facilement vos rendez-vous',
-      imagePath: 'assets/images/onboarding_1.jpeg',
-    ),
-    _OnboardingStep(
-      title: 'Échangez facilement avec vos praticiens',
-      imagePath: 'assets/images/onboarding_2.jpeg',
-    ),
-    _OnboardingStep(
-      title: 'Accédez à vos dossiers médicaux à tout moment',
-      imagePath: 'assets/images/onboarding_3.jpeg',
-    ),
-  ];
 
   @override
   void dispose() {
@@ -53,7 +41,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLast = _currentPage == _pages.length - 1;
+    final l10n = context.l10n;
+    final pages = [
+      _OnboardingStep(
+        title: l10n.onboardingStep1Title,
+        imagePath: 'assets/images/onboarding_1.jpeg',
+      ),
+      _OnboardingStep(
+        title: l10n.onboardingStep2Title,
+        imagePath: 'assets/images/onboarding_2.jpeg',
+      ),
+      _OnboardingStep(
+        title: l10n.onboardingStep3Title,
+        imagePath: 'assets/images/onboarding_3.jpeg',
+      ),
+    ];
+    final isLast = _currentPage == pages.length - 1;
 
     return BlocProvider(
       create: (_) => sl<OnboardingCubit>(),
@@ -61,7 +64,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         listener: (context, state) {
           if (state.status == OnboardingStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error ?? 'Erreur')),
+              SnackBar(content: Text(state.error ?? l10n.commonError)),
             );
           }
           if (state.status == OnboardingStatus.success && state.completed) {
@@ -73,37 +76,41 @@ class _OnboardingPageState extends State<OnboardingPage> {
           body: SafeArea(
             child: Column(
               children: [
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg.h),
                 // Barre de progression segmentée
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl.w),
                   child: _ProgressBar(
-                    totalSteps: _pages.length,
+                    totalSteps: pages.length,
                     currentStep: _currentPage,
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xxl),
+                SizedBox(height: AppSpacing.xxl.h),
                 // Logo Dokal
                 const _DokalLogo(),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg.h),
                 // Contenu scrollable
                 Expanded(
                   child: PageView.builder(
                     controller: _controller,
-                    itemCount: _pages.length,
+                    itemCount: pages.length,
                     onPageChanged: _onPageChanged,
                     itemBuilder: (context, index) {
-                      final step = _pages[index];
-                      return _OnboardingContent(step: step);
+                      final step = pages[index];
+                      return _OnboardingContent(
+                        step: step,
+                        showLanguagePicker: index == 0,
+                      );
                     },
                   ),
                 ),
                 // Bouton en bas
                 Padding(
-                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  padding: EdgeInsets.all(AppSpacing.xl.r),
                   child: BlocBuilder<OnboardingCubit, OnboardingState>(
                     builder: (context, state) {
-                      final isLoading = state.status == OnboardingStatus.loading;
+                      final isLoading =
+                          state.status == OnboardingStatus.loading;
                       return DokalButton.primary(
                         onPressed: isLoading
                             ? null
@@ -115,7 +122,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 context.read<OnboardingCubit>().complete();
                               },
                         isLoading: isLoading,
-                        child: Text(isLast ? 'Commencer' : 'Continuer'),
+                        child: Text(
+                          isLast
+                              ? l10n.onboardingStartButton
+                              : l10n.onboardingContinueButton,
+                        ),
                       );
                     },
                   ),
@@ -131,10 +142,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
 /// Barre de progression segmentée style Doctolib
 class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({
-    required this.totalSteps,
-    required this.currentStep,
-  });
+  const _ProgressBar({required this.totalSteps, required this.currentStep});
 
   final int totalSteps;
   final int currentStep;
@@ -149,14 +157,16 @@ class _ProgressBar extends StatelessWidget {
 
         return Expanded(
           child: Container(
-            height: 4,
+            height: 4.h,
             margin: EdgeInsets.only(
-              left: isFirst ? 0 : 4,
-              right: isLast ? 0 : 4,
+              left: isFirst ? 0 : 4.w,
+              right: isLast ? 0 : 4.w,
             ),
             decoration: BoxDecoration(
-              color: isActive ? AppColors.primary : AppColors.primary.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(2),
+              color: isActive
+                  ? AppColors.primary
+                  : AppColors.primary.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(2.r),
             ),
           ),
         );
@@ -173,36 +183,56 @@ class _DokalLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       'assets/branding/icononly_transparent_nobuffer.png',
-      height: 56,
-      fit: BoxFit.contain,color: Color(0xFF005044),
+      height: 56.h,
+      fit: BoxFit.contain,
+      color: const Color(0xFF005044),
     );
   }
 }
 
 /// Contenu d'une étape d'onboarding
 class _OnboardingContent extends StatelessWidget {
-  const _OnboardingContent({required this.step});
+  const _OnboardingContent({
+    required this.step,
+    this.showLanguagePicker = false,
+  });
 
   final _OnboardingStep step;
+  final bool showLanguagePicker;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Column(
       children: [
+        if (showLanguagePicker) ...[
+          SizedBox(height: AppSpacing.md.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl.w),
+            child: _LanguagePicker(
+              current: AppLocaleController.locale.value.languageCode,
+              onSelect: (code) => AppLocaleController.setLocale(Locale(code)),
+              hebrewLabel: l10n.languageHebrew,
+              frenchLabel: l10n.languageFrench,
+              englishLabel: l10n.languageEnglish,
+            ),
+          ),
+          SizedBox(height: AppSpacing.sm.h),
+        ],
         // Titre
         Text(
           step.title,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
+          ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: AppSpacing.xxxl),
+        SizedBox(height: AppSpacing.xxxl.h),
         // Image avec formes décoratives
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl.w),
             child: _ImagePlaceholder(imagePath: step.imagePath),
           ),
         ),
@@ -225,73 +255,73 @@ class _ImagePlaceholder extends StatelessWidget {
         // Forme décorative gauche
         Positioned(
           left: 0,
-          top: 40,
+          top: 40.h,
           child: Container(
-            width: 80,
-            height: 80,
+            width: 80.r,
+            height: 80.r,
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.6),
-              borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.circular(40.r),
             ),
           ),
         ),
         // Forme décorative droite
         Positioned(
           right: 0,
-          top: 20,
+          top: 20.h,
           child: Container(
-            width: 100,
-            height: 100,
+            width: 100.r,
+            height: 100.r,
             decoration: BoxDecoration(
               color: const Color(0xFF00D4FF).withValues(alpha: 0.7),
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(50.r),
             ),
           ),
         ),
         // Forme décorative bas droite
         Positioned(
-          right: 40,
-          bottom: 60,
+          right: 40.w,
+          bottom: 60.h,
           child: Container(
-            width: 60,
-            height: 60,
+            width: 60.r,
+            height: 60.r,
             decoration: BoxDecoration(
               color: const Color(0xFF00D4FF).withValues(alpha: 0.8),
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(30.r),
             ),
           ),
         ),
         // Container principal de l'image
         Container(
-          width: 280,
-          height: 280,
+          width: 280.r,
+          height: 280.r,
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(140),
-              topRight: Radius.circular(140),
-              bottomLeft: Radius.circular(100),
-              bottomRight: Radius.circular(140),
+              topLeft: Radius.circular(140.r),
+              topRight: Radius.circular(140.r),
+              bottomLeft: Radius.circular(100.r),
+              bottomRight: Radius.circular(140.r),
             ),
             boxShadow: [
               BoxShadow(
                 color: AppColors.shadow,
-                blurRadius: 20,
-                offset: const Offset(0, 10),
+                blurRadius: 20.r,
+                offset: Offset(0, 10.h),
               ),
             ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(140),
-              topRight: Radius.circular(140),
-              bottomLeft: Radius.circular(100),
-              bottomRight: Radius.circular(140),
+              topLeft: Radius.circular(140.r),
+              topRight: Radius.circular(140.r),
+              bottomLeft: Radius.circular(100.r),
+              bottomRight: Radius.circular(140.r),
             ),
             child: Image.asset(
               imagePath,
-              width: 280,
-              height: 280,
+              width: 280.r,
+              height: 280.r,
               fit: BoxFit.cover,
             ),
           ),
@@ -301,11 +331,54 @@ class _ImagePlaceholder extends StatelessWidget {
   }
 }
 
-class _OnboardingStep {
-  const _OnboardingStep({
-    required this.title,
-    required this.imagePath,
+class _LanguagePicker extends StatelessWidget {
+  const _LanguagePicker({
+    required this.current,
+    required this.onSelect,
+    required this.hebrewLabel,
+    required this.frenchLabel,
+    required this.englishLabel,
   });
+
+  final String current;
+  final ValueChanged<String> onSelect;
+  final String hebrewLabel;
+  final String frenchLabel;
+  final String englishLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget chip({required String code, required String label}) {
+      return ChoiceChip(
+        label: Text(label),
+        selected: current == code,
+        onSelected: (_) => onSelect(code),
+        selectedColor: AppColors.primary.withValues(alpha: 0.15),
+        side: BorderSide(
+          color: current == code ? AppColors.primary : AppColors.outline,
+        ),
+        labelStyle: TextStyle(
+          color: current == code ? AppColors.primary : AppColors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+    }
+
+    return Wrap(
+      spacing: 10.w,
+      runSpacing: 10.h,
+      alignment: WrapAlignment.center,
+      children: [
+        chip(code: 'he', label: hebrewLabel),
+        chip(code: 'fr', label: frenchLabel),
+        chip(code: 'en', label: englishLabel),
+      ],
+    );
+  }
+}
+
+class _OnboardingStep {
+  const _OnboardingStep({required this.title, required this.imagePath});
 
   final String title;
   final String imagePath;

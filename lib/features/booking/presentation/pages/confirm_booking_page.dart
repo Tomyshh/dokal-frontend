@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_spacing.dart';
@@ -7,6 +8,7 @@ import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/booking_bloc.dart';
 import '../bloc/booking_confirm_cubit.dart';
 
@@ -15,6 +17,7 @@ class ConfirmBookingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final practitionerId = context.read<BookingBloc>().state.practitionerId;
 
     return BlocProvider(
@@ -23,7 +26,7 @@ class ConfirmBookingPage extends StatelessWidget {
         listener: (context, state) {
           if (state.status == BookingConfirmStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error ?? 'Erreur')),
+              SnackBar(content: Text(state.error ?? l10n.commonError)),
             );
           }
           if (state.status == BookingConfirmStatus.success) {
@@ -33,20 +36,20 @@ class ConfirmBookingPage extends StatelessWidget {
         builder: (context, confirmState) {
           final isLoading = confirmState.status == BookingConfirmStatus.loading;
           return ListView(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl.r),
             children: [
               Text(
-                'Confirmer le rendez-vous',
+                l10n.bookingConfirmTitle,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
+                  fontWeight: FontWeight.w900,
+                ),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm.h),
               Text(
-                'Vérifiez les informations avant de valider.',
+                l10n.bookingConfirmSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl.h),
               BlocBuilder<BookingBloc, BookingState>(
                 builder: (context, state) {
                   return Column(
@@ -57,97 +60,102 @@ class ConfirmBookingPage extends StatelessWidget {
                           children: [
                             _Row(
                               icon: Icons.medical_information_rounded,
-                              title: 'Motif',
+                              title: l10n.bookingReasonLabel,
                               value: state.reason ?? '—',
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12.h),
                             _Row(
                               icon: Icons.person_rounded,
-                              title: 'Patient',
+                              title: l10n.bookingPatientLabel,
                               value: state.patientLabel ?? '—',
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12.h),
                             _Row(
                               icon: Icons.schedule_rounded,
-                              title: 'Créneau',
+                              title: l10n.bookingSlotLabel,
                               value: state.slotLabel ?? '—',
                             ),
-                            const SizedBox(height: 12),
-                            const _Row(
+                            SizedBox(height: 12.h),
+                            _Row(
                               icon: Icons.location_on_rounded,
-                              title: 'Adresse',
+                              title: l10n.commonAddress,
                               value: '83 Boulevard de la Villette, 75010 Paris',
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.lg),
+                      SizedBox(height: AppSpacing.lg.h),
                       DokalCard(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Informations manquantes',
+                              l10n.bookingMissingInfoTitle,
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md.h),
                             _InlineField(
-                              label: 'Adresse',
+                              label: l10n.commonAddress,
                               value: state.addressLine ?? '',
-                              onChanged: (v) => context
-                                  .read<BookingBloc>()
-                                  .add(BookingAddressChanged(v)),
+                              onChanged: (v) => context.read<BookingBloc>().add(
+                                BookingAddressChanged(v),
+                              ),
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md.h),
                             _InlineField(
-                              label: 'Code postal',
+                              label: l10n.bookingZipCodeLabel,
                               value: state.zipCode ?? '',
                               keyboardType: TextInputType.number,
-                              onChanged: (v) => context
-                                  .read<BookingBloc>()
-                                  .add(BookingZipCodeChanged(v)),
+                              onChanged: (v) => context.read<BookingBloc>().add(
+                                BookingZipCodeChanged(v),
+                              ),
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md.h),
                             _InlineField(
-                              label: 'Ville',
+                              label: l10n.commonCity,
                               value: state.city ?? '',
-                              onChanged: (v) => context
-                                  .read<BookingBloc>()
-                                  .add(BookingCityChanged(v)),
+                              onChanged: (v) => context.read<BookingBloc>().add(
+                                BookingCityChanged(v),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.lg),
+                      SizedBox(height: AppSpacing.lg.h),
                       DokalCard(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Avez-vous déjà consulté ce praticien ?',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w800,
-                                  ),
+                              l10n.bookingVisitedBeforeQuestion,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w800),
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md.h),
                             Row(
                               children: [
                                 Expanded(
                                   child: _YesNoButton(
-                                    label: 'Oui',
+                                    label: l10n.commonYes,
                                     selected: state.visitedBefore == true,
-                                    onTap: () => context.read<BookingBloc>().add(
-                                          const BookingVisitedBeforeChanged(true),
+                                    onTap: () =>
+                                        context.read<BookingBloc>().add(
+                                          const BookingVisitedBeforeChanged(
+                                            true,
+                                          ),
                                         ),
                                   ),
                                 ),
-                                const SizedBox(width: AppSpacing.md),
+                                SizedBox(width: AppSpacing.md.w),
                                 Expanded(
                                   child: _YesNoButton(
-                                    label: 'Non',
+                                    label: l10n.commonNo,
                                     selected: state.visitedBefore == false,
-                                    onTap: () => context.read<BookingBloc>().add(
-                                          const BookingVisitedBeforeChanged(false),
+                                    onTap: () =>
+                                        context.read<BookingBloc>().add(
+                                          const BookingVisitedBeforeChanged(
+                                            false,
+                                          ),
                                         ),
                                   ),
                                 ),
@@ -156,33 +164,33 @@ class ConfirmBookingPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.lg),
+                      SizedBox(height: AppSpacing.lg.h),
                       if (isLoading) ...[
                         const DokalLoader(lines: 2),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg.h),
                       ],
                       DokalButton.primary(
                         onPressed: (!state.isReadyToConfirm || isLoading)
                             ? null
                             : () => context.read<BookingConfirmCubit>().confirm(
-                                  practitionerId: practitionerId,
-                                  reason: state.reason!,
-                                  patientLabel: state.patientLabel!,
-                                  slotLabel: state.slotLabel!,
-                                  addressLine: state.addressLine!.trim(),
-                                  zipCode: state.zipCode!.trim(),
-                                  city: state.city!.trim(),
-                                  visitedBefore: state.visitedBefore!,
-                                ),
+                                practitionerId: practitionerId,
+                                reason: state.reason!,
+                                patientLabel: state.patientLabel!,
+                                slotLabel: state.slotLabel!,
+                                addressLine: state.addressLine!.trim(),
+                                zipCode: state.zipCode!.trim(),
+                                city: state.city!.trim(),
+                                visitedBefore: state.visitedBefore!,
+                              ),
                         leading: const Icon(Icons.check_rounded),
-                        child: const Text('CONFIRMER LE RENDEZ-VOUS'),
+                        child: Text(l10n.bookingConfirmButton),
                       ),
-                      const SizedBox(height: AppSpacing.sm),
+                      SizedBox(height: AppSpacing.sm.h),
                       DokalButton.outline(
                         onPressed: isLoading
                             ? null
                             : () => context.go('/booking/$practitionerId/slot'),
-                        child: const Text('Modifier le créneau'),
+                        child: Text(l10n.bookingChangeSlotButton),
                       ),
                     ],
                   );
@@ -197,11 +205,7 @@ class ConfirmBookingPage extends StatelessWidget {
 }
 
 class _Row extends StatelessWidget {
-  const _Row({
-    required this.icon,
-    required this.title,
-    required this.value,
-  });
+  const _Row({required this.icon, required this.title, required this.value});
 
   final IconData icon;
   final String title;
@@ -213,19 +217,16 @@ class _Row extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 2),
-          child: Icon(icon, size: 18),
+          padding: EdgeInsets.only(top: 2.h),
+          child: Icon(icon, size: 18.sp),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              const SizedBox(height: 4),
+              Text(title, style: Theme.of(context).textTheme.labelLarge),
+              SizedBox(height: 4.h),
               Text(value, style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
@@ -253,7 +254,9 @@ class _InlineField extends StatefulWidget {
 }
 
 class _InlineFieldState extends State<_InlineField> {
-  late final TextEditingController _c = TextEditingController(text: widget.value);
+  late final TextEditingController _c = TextEditingController(
+    text: widget.value,
+  );
 
   @override
   void dispose() {
@@ -270,7 +273,10 @@ class _InlineFieldState extends State<_InlineField> {
       decoration: InputDecoration(
         labelText: widget.label,
         suffixIcon: ok
-            ? Icon(Icons.check_circle_rounded, color: Theme.of(context).colorScheme.primary)
+            ? Icon(
+                Icons.check_circle_rounded,
+                color: Theme.of(context).colorScheme.primary,
+              )
             : null,
       ),
       onChanged: (v) {
@@ -305,25 +311,24 @@ class _YesNoButton extends StatelessWidget {
         : Theme.of(context).colorScheme.onSurface;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(10.r),
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: EdgeInsets.symmetric(vertical: 14.h),
         decoration: BoxDecoration(
           color: bg,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
           border: Border.all(color: border),
         ),
         alignment: Alignment.center,
         child: Text(
           label,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: fg,
-                fontWeight: FontWeight.w800,
-              ),
+            color: fg,
+            fontWeight: FontWeight.w800,
+          ),
         ),
       ),
     );
   }
 }
-

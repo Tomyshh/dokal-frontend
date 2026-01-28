@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/appointment.dart';
 import '../../domain/usecases/get_past_appointments.dart';
 import '../../domain/usecases/get_upcoming_appointments.dart';
+import '../../../../l10n/l10n_static.dart';
 
 part 'appointments_state.dart';
 
@@ -11,9 +12,9 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
   AppointmentsCubit({
     required GetUpcomingAppointments getUpcoming,
     required GetPastAppointments getPast,
-  })  : _getUpcoming = getUpcoming,
-        _getPast = getPast,
-        super(const AppointmentsState.initial());
+  }) : _getUpcoming = getUpcoming,
+       _getPast = getPast,
+       super(const AppointmentsState.initial());
 
   final GetUpcomingAppointments _getUpcoming;
   final GetPastAppointments _getPast;
@@ -27,9 +28,10 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     final pastEither = pastRes;
 
     if (upcomingEither.isLeft() || pastEither.isLeft()) {
-      final msg = upcomingEither.fold((l) => l.message, (_) => null) ??
+      final msg =
+          upcomingEither.fold((l) => l.message, (_) => null) ??
           pastEither.fold((l) => l.message, (_) => null) ??
-          'Erreur';
+          l10nStatic.commonError;
       emit(state.copyWith(status: AppointmentsStatus.failure, error: msg));
       return;
     }
@@ -47,4 +49,3 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     );
   }
 }
-

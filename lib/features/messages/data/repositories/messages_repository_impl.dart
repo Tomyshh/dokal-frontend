@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/conversation_preview.dart';
 import '../../domain/repositories/messages_repository.dart';
@@ -16,7 +17,7 @@ class MessagesRepositoryImpl implements MessagesRepository {
     try {
       return Right(demo.listConversations());
     } catch (_) {
-      return const Left(Failure('Impossible de charger les conversations.'));
+      return Left(Failure(l10nStatic.errorUnableToLoadConversations));
     }
   }
 
@@ -27,7 +28,7 @@ class MessagesRepositoryImpl implements MessagesRepository {
     try {
       return Right(demo.getMessages(conversationId));
     } catch (_) {
-      return const Left(Failure('Impossible de charger la conversation.'));
+      return Left(Failure(l10nStatic.errorUnableToLoadConversation));
     }
   }
 
@@ -40,8 +41,7 @@ class MessagesRepositoryImpl implements MessagesRepository {
       demo.appendMessage(conversationId, ChatMessage(fromMe: true, text: text));
       return const Right(unit);
     } catch (_) {
-      return const Left(Failure("Impossible d'envoyer le message."));
+      return Left(Failure(l10nStatic.errorUnableToSendMessage));
     }
   }
 }
-

@@ -70,4 +70,3 @@ class BookingVisitedBeforeChanged extends BookingEvent {
 class BookingReset extends BookingEvent {
   const BookingReset();
 }
-

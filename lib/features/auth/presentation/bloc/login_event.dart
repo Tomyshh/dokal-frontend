@@ -16,4 +16,3 @@ class LoginSubmitted extends LoginEvent {
   @override
   List<Object?> get props => [email, password];
 }
-

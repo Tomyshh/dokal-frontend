@@ -10,4 +10,3 @@ class EnableHomeHistory {
 
   Future<Either<Failure, Unit>> call() => repo.enableHistory();
 }
-

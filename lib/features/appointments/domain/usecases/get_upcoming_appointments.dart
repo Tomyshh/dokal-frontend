@@ -11,4 +11,3 @@ class GetUpcomingAppointments {
 
   Future<Either<Failure, List<Appointment>>> call() => repo.listUpcoming();
 }
-

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/booking_bloc.dart';
 
 class InstructionsPage extends StatefulWidget {
@@ -19,36 +21,37 @@ class _InstructionsPageState extends State<InstructionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final practitionerId = context.read<BookingBloc>().state.practitionerId;
 
     return ListView(
-      padding: const EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.all(AppSpacing.xl.r),
       children: [
         Text(
-          'Instructions',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+          l10n.bookingInstructionsTitle,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
         ),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm.h),
         Text(
-          'Avant le rendez-vous, merci de vérifier ces points.',
+          l10n.bookingInstructionsSubtitle,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        const SizedBox(height: AppSpacing.xl),
-        const DokalCard(
+        SizedBox(height: AppSpacing.xl.h),
+        DokalCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Bullet('Apportez votre carte vitale et votre ordonnance si besoin.'),
-              SizedBox(height: 10),
-              _Bullet('Arrivez 10 minutes en avance pour les formalités.'),
-              SizedBox(height: 10),
-              _Bullet('En cas d’annulation, prévenez dès que possible.'),
+              _Bullet(l10n.bookingInstructionsBullet1),
+              SizedBox(height: 10.h),
+              _Bullet(l10n.bookingInstructionsBullet2),
+              SizedBox(height: 10.h),
+              _Bullet(l10n.bookingInstructionsBullet3),
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         DokalCard(
           child: Row(
             children: [
@@ -56,27 +59,29 @@ class _InstructionsPageState extends State<InstructionsPage> {
                 value: _accepted,
                 onChanged: (v) => setState(() => _accepted = v ?? false),
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6.w),
               Expanded(
                 child: Text(
-                  'J’ai lu et j’accepte ces instructions.',
+                  l10n.bookingInstructionsAccept,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         DokalButton.primary(
           onPressed: !_accepted
               ? null
               : () {
-                  context.read<BookingBloc>().add(const BookingInstructionsAccepted());
+                  context.read<BookingBloc>().add(
+                    const BookingInstructionsAccepted(),
+                  );
                   context.go('/booking/$practitionerId/slot');
                 },
-          child: const Text('Continuer'),
+          child: Text(l10n.commonContinue),
         ),
       ],
     );
@@ -93,21 +98,20 @@ class _Bullet extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Icon(Icons.check_rounded, size: 18),
+        Padding(
+          padding: EdgeInsets.only(top: 3.h),
+          child: Icon(Icons.check_rounded, size: 18.sp),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10.w),
         Expanded(
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
       ],
     );
   }
 }
-

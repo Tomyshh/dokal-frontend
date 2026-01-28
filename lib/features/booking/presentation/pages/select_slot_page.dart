@@ -1,65 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/booking_bloc.dart';
 
 class SelectSlotPage extends StatelessWidget {
   const SelectSlotPage({super.key});
 
-  static const _slots = <({String dayLabel, List<String> times})>[
-    (dayLabel: 'Mercredi 28 Janvier 2026', times: ['11:00', '15:00', '16:00']),
-    (dayLabel: 'Jeudi 29 Janvier 2026', times: []),
-    (dayLabel: 'Lundi 2 Février 2026', times: []),
-    (dayLabel: 'Mardi 3 Février 2026', times: []),
-    (dayLabel: 'Mercredi 4 Février 2026', times: []),
-    (dayLabel: 'Jeudi 5 Février 2026', times: []),
+  static final _slots = <({DateTime day, List<String> times})>[
+    (day: DateTime(2026, 1, 28), times: <String>['11:00', '15:00', '16:00']),
+    (day: DateTime(2026, 1, 29), times: <String>[]),
+    (day: DateTime(2026, 2, 2), times: <String>[]),
+    (day: DateTime(2026, 2, 3), times: <String>[]),
+    (day: DateTime(2026, 2, 4), times: <String>[]),
+    (day: DateTime(2026, 2, 5), times: <String>[]),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final practitionerId = context.read<BookingBloc>().state.practitionerId;
+    final localeName = Localizations.localeOf(context).toString();
 
     return ListView(
-      padding: const EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.all(AppSpacing.xl.r),
       children: [
         Text(
-          'Choisir une date',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+          l10n.bookingSelectSlotTitle,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
         ),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm.h),
         Text(
-          'Sélectionnez une date et un horaire disponibles.',
+          l10n.bookingSelectSlotSubtitle,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        const SizedBox(height: AppSpacing.xl),
+        SizedBox(height: AppSpacing.xl.h),
         BlocBuilder<BookingBloc, BookingState>(
           builder: (context, state) {
             return Column(
               children: [
                 for (final group in _slots)
                   _DateCard(
-                    dayLabel: group.dayLabel,
+                    dayLabel: DateFormat.yMMMMEEEEd(
+                      localeName,
+                    ).format(group.day),
                     times: group.times,
                     selectedLabel: state.slotLabel,
                     onSelect: (t) {
-                      final label = '${group.dayLabel} • $t';
-                      context.read<BookingBloc>().add(BookingSlotSelected(label));
+                      final dayLabel = DateFormat.yMMMMEEEEd(
+                        localeName,
+                      ).format(group.day);
+                      final label = '$dayLabel • $t';
+                      context.read<BookingBloc>().add(
+                        BookingSlotSelected(label),
+                      );
                       context.go('/booking/$practitionerId/confirm');
                     },
                   ),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg.h),
                 OutlinedButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Plus de dates bientôt')),
+                      SnackBar(content: Text(l10n.commonAvailableSoon)),
                     );
                   },
-                  child: const Text('Voir plus de dates'),
+                  child: Text(l10n.bookingSeeMoreDates),
                 ),
               ],
             );
@@ -92,11 +104,14 @@ class _DateCardState extends State<_DateCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final hasTimes = widget.times.isNotEmpty;
-    final selectedForDay = (widget.selectedLabel ?? '').startsWith(widget.dayLabel);
+    final selectedForDay = (widget.selectedLabel ?? '').startsWith(
+      widget.dayLabel,
+    );
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      padding: EdgeInsets.only(bottom: AppSpacing.md.h),
       child: DokalCard(
         padding: EdgeInsets.zero,
         onTap: hasTimes ? () => setState(() => _expanded = !_expanded) : null,
@@ -105,27 +120,32 @@ class _DateCardState extends State<_DateCard> {
             ListTile(
               title: Text(widget.dayLabel),
               trailing: Icon(
-                _expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                _expanded
+                    ? Icons.expand_less_rounded
+                    : Icons.expand_more_rounded,
               ),
-              subtitle: selectedForDay ? const Text('Sélectionné') : null,
-              onTap: hasTimes ? () => setState(() => _expanded = !_expanded) : null,
+              subtitle: selectedForDay ? Text(l10n.commonSelected) : null,
+              onTap: hasTimes
+                  ? () => setState(() => _expanded = !_expanded)
+                  : null,
             ),
             if (_expanded && hasTimes)
               Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.lg.w,
                   0,
-                  AppSpacing.lg,
-                  AppSpacing.lg,
+                  AppSpacing.lg.w,
+                  AppSpacing.lg.h,
                 ),
                 child: Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
+                  spacing: 12.w,
+                  runSpacing: 12.h,
                   children: [
                     for (final t in widget.times)
                       _TimeBox(
                         label: t,
-                        selected: widget.selectedLabel == '${widget.dayLabel} • $t',
+                        selected:
+                            widget.selectedLabel == '${widget.dayLabel} • $t',
                         onTap: () => widget.onSelect(t),
                       ),
                   ],
@@ -154,31 +174,31 @@ class _TimeBox extends StatelessWidget {
     final bg = selected
         ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15)
         : Theme.of(context).colorScheme.primary.withValues(alpha: 0.08);
-    final border =
-        selected ? Theme.of(context).colorScheme.primary : Colors.transparent;
+    final border = selected
+        ? Theme.of(context).colorScheme.primary
+        : Colors.transparent;
     final fg = Theme.of(context).colorScheme.primary;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(8.r),
       onTap: onTap,
       child: Container(
-        width: 96,
+        width: 96.w,
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: EdgeInsets.symmetric(vertical: 14.h),
         decoration: BoxDecoration(
           color: bg,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
           border: Border.all(color: border, width: 1.2),
         ),
         child: Text(
           label,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: fg,
-                fontWeight: FontWeight.w800,
-              ),
+            color: fg,
+            fontWeight: FontWeight.w800,
+          ),
         ),
       ),
     );
   }
 }
-

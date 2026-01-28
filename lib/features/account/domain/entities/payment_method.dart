@@ -16,4 +16,3 @@ class PaymentMethod extends Equatable {
   @override
   List<Object?> get props => [id, brandLabel, last4, expiry];
 }
-

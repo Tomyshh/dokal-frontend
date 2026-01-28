@@ -9,10 +9,7 @@ class AppSettings extends Equatable {
   final bool notificationsEnabled;
   final bool remindersEnabled;
 
-  AppSettings copyWith({
-    bool? notificationsEnabled,
-    bool? remindersEnabled,
-  }) {
+  AppSettings copyWith({bool? notificationsEnabled, bool? remindersEnabled}) {
     return AppSettings(
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       remindersEnabled: remindersEnabled ?? this.remindersEnabled,
@@ -22,4 +19,3 @@ class AppSettings extends Equatable {
   @override
   List<Object?> get props => [notificationsEnabled, remindersEnabled];
 }
-

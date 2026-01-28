@@ -13,10 +13,10 @@ class HealthListCubit extends Cubit<HealthListState> {
     required HealthListType type,
     required GetHealthList getHealthList,
     required AddHealthItemDemo addHealthItemDemo,
-  })  : _type = type,
-        _getHealthList = getHealthList,
-        _addHealthItemDemo = addHealthItemDemo,
-        super(const HealthListState.initial());
+  }) : _type = type,
+       _getHealthList = getHealthList,
+       _addHealthItemDemo = addHealthItemDemo,
+       super(const HealthListState.initial());
 
   final HealthListType _type;
   final GetHealthList _getHealthList;
@@ -26,9 +26,15 @@ class HealthListCubit extends Cubit<HealthListState> {
     emit(state.copyWith(status: HealthListStatus.loading));
     final res = await _getHealthList(_type);
     res.fold(
-      (f) => emit(state.copyWith(status: HealthListStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: HealthListStatus.failure, error: f.message),
+      ),
       (items) => emit(
-        state.copyWith(status: HealthListStatus.success, items: items, error: null),
+        state.copyWith(
+          status: HealthListStatus.success,
+          items: items,
+          error: null,
+        ),
       ),
     );
   }
@@ -36,9 +42,10 @@ class HealthListCubit extends Cubit<HealthListState> {
   Future<void> addDemo() async {
     final res = await _addHealthItemDemo(_type);
     res.fold(
-      (f) => emit(state.copyWith(status: HealthListStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: HealthListStatus.failure, error: f.message),
+      ),
       (_) async => load(),
     );
   }
 }
-

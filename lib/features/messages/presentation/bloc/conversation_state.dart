@@ -11,9 +11,9 @@ class ConversationState extends Equatable {
   });
 
   const ConversationState.initial({required this.conversationId})
-      : status = ConversationStatus.initial,
-        messages = const [],
-        error = null;
+    : status = ConversationStatus.initial,
+      messages = const [],
+      error = null;
 
   final ConversationStatus status;
   final String conversationId;
@@ -36,4 +36,3 @@ class ConversationState extends Equatable {
   @override
   List<Object?> get props => [status, conversationId, messages, error];
 }
-

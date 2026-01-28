@@ -7,7 +7,7 @@ class LoginState extends Equatable {
   const LoginState.loading() : this._(status: LoginStatus.loading);
   const LoginState.success() : this._(status: LoginStatus.success);
   const LoginState.failure(String message)
-      : this._(status: LoginStatus.failure, errorMessage: message);
+    : this._(status: LoginStatus.failure, errorMessage: message);
 
   final LoginStatus status;
   final String? errorMessage;
@@ -17,4 +17,3 @@ class LoginState extends Equatable {
 }
 
 enum LoginStatus { initial, loading, success, failure }
-

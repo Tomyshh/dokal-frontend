@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_colors.dart';
+import '../../l10n/l10n.dart';
 
 /// AppBar moderne Dokal avec bouton retour stylisé.
 class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -52,8 +53,9 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (subtitle != null) {
       titleWidget = Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment:
-            centerTitle ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+        crossAxisAlignment: centerTitle
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
         children: [
           Text(
             title,
@@ -110,7 +112,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: effectiveFg,
                   ),
                 ),
-                tooltip: 'Retour',
+                tooltip: context.l10n.commonBack,
               ),
             )
           : null,

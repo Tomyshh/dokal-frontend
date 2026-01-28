@@ -12,4 +12,3 @@ class GetConversations {
   Future<Either<Failure, List<ConversationPreview>>> call() =>
       repo.listConversations();
 }
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_radii.dart';
@@ -15,11 +16,11 @@ Future<T?> showDokalModal<T>({
     backgroundColor: Colors.transparent,
     builder: (context) => SafeArea(
       child: Container(
-        margin: const EdgeInsets.all(AppSpacing.md),
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        margin: EdgeInsets.all(AppSpacing.md.r),
+        padding: EdgeInsets.all(AppSpacing.lg.r),
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(AppRadii.xl),
+          borderRadius: BorderRadius.circular(AppRadii.xl.r),
           border: Border.all(color: AppColors.outline),
           boxShadow: const [
             BoxShadow(
@@ -34,4 +35,3 @@ Future<T?> showDokalModal<T>({
     ),
   );
 }
-

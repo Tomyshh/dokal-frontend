@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/repositories/booking_repository.dart';
 import '../datasources/booking_demo_data_source.dart';
 
@@ -33,8 +34,7 @@ class BookingRepositoryImpl implements BookingRepository {
       );
       return Right(id);
     } catch (_) {
-      return const Left(Failure("Impossible de confirmer le rendez-vous."));
+      return Left(Failure(l10nStatic.errorUnableToConfirmAppointment));
     }
   }
 }
-

@@ -11,10 +11,10 @@ class SearchState extends Equatable {
   });
 
   const SearchState.initial()
-      : status = SearchStatus.initial,
-        query = '',
-        results = const [],
-        error = null;
+    : status = SearchStatus.initial,
+      query = '',
+      results = const [],
+      error = null;
 
   final SearchStatus status;
   final String query;
@@ -38,4 +38,3 @@ class SearchState extends Equatable {
   @override
   List<Object?> get props => [status, query, results, error];
 }
-

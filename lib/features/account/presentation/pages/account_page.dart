@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AccountPage extends StatelessWidget {
@@ -13,50 +15,51 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 48,
+        toolbarHeight: 48.h,
         title: Text(
-          'Mon compte',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+          l10n.accountTitle,
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
       ),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg.r),
           children: [
             DokalCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: EdgeInsets.all(AppSpacing.md.r),
               child: Row(
                 children: [
                   Container(
-                    width: 36,
-                    height: 36,
+                    width: 36.r,
+                    height: 36.r,
                     decoration: BoxDecoration(
                       color: AppColors.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(AppRadii.sm),
+                      borderRadius: BorderRadius.circular(AppRadii.sm.r),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.shield_rounded,
-                      size: 18,
+                      size: 18.sp,
                       color: AppColors.primary,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Votre santé. Vos données.',
+                          l10n.accountTaglineTitle,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2.h),
                         Text(
-                          'Votre confidentialité est notre priorité.',
+                          l10n.accountTaglineSubtitle,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -65,54 +68,53 @@ class AccountPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
-            _SectionHeader(title: 'Informations personnelles'),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.lg.h),
+            _SectionHeader(title: l10n.accountPersonalInfoSection),
+            SizedBox(height: AppSpacing.sm.h),
             _MenuTile(
               icon: Icons.person_rounded,
-              title: 'Mon profil',
-              onTap: () => context.go('/account/profile'),
+              title: l10n.accountMyProfile,
+              onTap: () => context.push('/account/profile'),
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs.h),
             _MenuTile(
               icon: Icons.group_rounded,
-              title: 'Mes proches',
-              onTap: () => context.go('/account/relatives'),
+              title: l10n.accountMyRelatives,
+              onTap: () => context.push('/account/relatives'),
             ),
-            const SizedBox(height: AppSpacing.lg),
-            _SectionHeader(title: 'Compte'),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.lg.h),
+            _SectionHeader(title: l10n.accountSectionTitle),
+            SizedBox(height: AppSpacing.sm.h),
             _MenuTile(
               icon: Icons.lock_rounded,
-              title: 'Sécurité',
-              onTap: () => context.go('/account/security'),
+              title: l10n.securityTitle,
+              onTap: () => context.push('/account/security'),
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs.h),
             _MenuTile(
               icon: Icons.payments_rounded,
-              title: 'Paiement',
-              onTap: () => context.go('/account/payment'),
+              title: l10n.paymentTitle,
+              onTap: () => context.push('/account/payment'),
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs.h),
             _MenuTile(
               icon: Icons.tune_rounded,
-              title: 'Paramètres',
-              onTap: () => context.go('/account/settings'),
+              title: l10n.commonSettings,
+              onTap: () => context.push('/account/settings'),
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs.h),
             _MenuTile(
               icon: Icons.privacy_tip_rounded,
-              title: 'Confidentialité',
-              onTap: () => context.go('/account/privacy'),
+              title: l10n.privacyTitle,
+              onTap: () => context.push('/account/privacy'),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg.h),
             _MenuTile(
               icon: Icons.logout_rounded,
-              title: 'Se déconnecter',
+              title: l10n.authLogout,
               showChevron: false,
-              onTap: () => context.read<AuthBloc>().add(
-                    const AuthLogoutRequested(),
-                  ),
+              onTap: () =>
+                  context.read<AuthBloc>().add(const AuthLogoutRequested()),
             ),
           ],
         ),
@@ -130,9 +132,9 @@ class _SectionHeader extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w600,
-          ),
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.w600,
+      ),
     );
   }
 }
@@ -153,25 +155,22 @@ class _MenuTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DokalCard(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.md.w,
+        vertical: AppSpacing.sm.h,
       ),
       onTap: onTap,
       child: Row(
         children: [
-          Icon(icon, size: 18, color: AppColors.textSecondary),
-          const SizedBox(width: AppSpacing.md),
+          Icon(icon, size: 18.sp, color: AppColors.textSecondary),
+          SizedBox(width: AppSpacing.md.w),
           Expanded(
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
+            child: Text(title, style: Theme.of(context).textTheme.titleSmall),
           ),
           if (showChevron)
             Icon(
               Icons.chevron_right_rounded,
-              size: 18,
+              size: 18.sp,
               color: AppColors.textSecondary,
             ),
         ],
@@ -179,4 +178,3 @@ class _MenuTile extends StatelessWidget {
     );
   }
 }
-

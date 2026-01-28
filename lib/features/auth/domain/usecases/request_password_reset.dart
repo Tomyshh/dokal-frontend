@@ -10,4 +10,3 @@ class RequestPasswordReset {
   Future<Either<Failure, Unit>> call({required String email}) =>
       _repo.requestPasswordReset(email: email);
 }
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_radii.dart';
@@ -9,7 +10,7 @@ class DokalCard extends StatelessWidget {
   const DokalCard({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(AppSpacing.lg),
+    this.padding,
     this.onTap,
     this.color,
     this.borderColor,
@@ -17,7 +18,7 @@ class DokalCard extends StatelessWidget {
   });
 
   final Widget child;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final VoidCallback? onTap;
   final Color? color;
   final Color? borderColor;
@@ -25,9 +26,11 @@ class DokalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveRadius = borderRadius ?? BorderRadius.circular(AppRadii.lg);
+    final effectiveRadius =
+        borderRadius ?? BorderRadius.circular(AppRadii.lg.r);
     final effectiveColor = color ?? AppColors.surface;
     final effectiveBorderColor = borderColor ?? AppColors.outline;
+    final effectivePadding = padding ?? EdgeInsets.all(AppSpacing.lg.r);
 
     final cardContent = Container(
       decoration: BoxDecoration(
@@ -37,10 +40,7 @@ class DokalCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: effectiveRadius,
-        child: Padding(
-          padding: padding,
-          child: child,
-        ),
+        child: Padding(padding: effectivePadding, child: child),
       ),
     );
 
@@ -56,4 +56,3 @@ class DokalCard extends StatelessWidget {
     );
   }
 }
-

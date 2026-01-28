@@ -11,9 +11,9 @@ class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit({
     required GetPaymentMethods getPaymentMethods,
     required AddPaymentMethodDemo addPaymentMethodDemo,
-  })  : _getPaymentMethods = getPaymentMethods,
-        _addPaymentMethodDemo = addPaymentMethodDemo,
-        super(const PaymentState.initial());
+  }) : _getPaymentMethods = getPaymentMethods,
+       _addPaymentMethodDemo = addPaymentMethodDemo,
+       super(const PaymentState.initial());
 
   final GetPaymentMethods _getPaymentMethods;
   final AddPaymentMethodDemo _addPaymentMethodDemo;
@@ -22,17 +22,24 @@ class PaymentCubit extends Cubit<PaymentState> {
     emit(state.copyWith(status: PaymentStatus.loading));
     final res = await _getPaymentMethods();
     res.fold(
-      (f) => emit(state.copyWith(status: PaymentStatus.failure, error: f.message)),
-      (items) => emit(state.copyWith(status: PaymentStatus.success, items: items, error: null)),
+      (f) =>
+          emit(state.copyWith(status: PaymentStatus.failure, error: f.message)),
+      (items) => emit(
+        state.copyWith(
+          status: PaymentStatus.success,
+          items: items,
+          error: null,
+        ),
+      ),
     );
   }
 
   Future<void> addDemo() async {
     final res = await _addPaymentMethodDemo();
     res.fold(
-      (f) => emit(state.copyWith(status: PaymentStatus.failure, error: f.message)),
+      (f) =>
+          emit(state.copyWith(status: PaymentStatus.failure, error: f.message)),
       (_) async => load(),
     );
   }
 }
-

@@ -10,8 +10,8 @@ part 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit({required SearchPractitioners searchPractitioners})
-      : _searchPractitioners = searchPractitioners,
-        super(const SearchState.initial());
+    : _searchPractitioners = searchPractitioners,
+      super(const SearchState.initial());
 
   final SearchPractitioners _searchPractitioners;
   Timer? _debounce;
@@ -26,7 +26,8 @@ class SearchCubit extends Cubit<SearchState> {
     emit(state.copyWith(status: SearchStatus.loading));
     final res = await _searchPractitioners(state.query);
     res.fold(
-      (f) => emit(state.copyWith(status: SearchStatus.failure, error: f.message)),
+      (f) =>
+          emit(state.copyWith(status: SearchStatus.failure, error: f.message)),
       (items) => emit(
         state.copyWith(
           status: SearchStatus.success,
@@ -43,4 +44,3 @@ class SearchCubit extends Cubit<SearchState> {
     return super.close();
   }
 }
-

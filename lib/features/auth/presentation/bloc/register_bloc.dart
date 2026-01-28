@@ -8,8 +8,8 @@ part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc({required SignUp signUp})
-      : _signUp = signUp,
-        super(const RegisterState.initial()) {
+    : _signUp = signUp,
+      super(const RegisterState.initial()) {
     on<RegisterSubmitted>(_onSubmitted);
   }
 
@@ -32,4 +32,3 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 }
-

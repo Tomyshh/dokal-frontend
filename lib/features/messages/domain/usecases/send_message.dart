@@ -11,7 +11,5 @@ class SendMessage {
   Future<Either<Failure, Unit>> call({
     required String conversationId,
     required String text,
-  }) =>
-      repo.sendMessage(conversationId: conversationId, text: text);
+  }) => repo.sendMessage(conversationId: conversationId, text: text);
 }
-

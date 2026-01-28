@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_spacing.dart';
@@ -7,6 +8,7 @@ import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../core/widgets/dokal_text_field.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/register_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -38,13 +40,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider(
       create: (_) => sl<RegisterBloc>(),
       child: Scaffold(
         appBar: AppBar(),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl.r),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -52,21 +55,21 @@ class _RegisterPageState extends State<RegisterPage> {
                 Center(
                   child: Image.asset(
                     'assets/branding/icononly_transparent_nobuffer.png',
-                    height: 56,
+                    height: 56.h,
                     fit: BoxFit.contain,
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xxl),
+                SizedBox(height: AppSpacing.xxl.h),
                 Text(
-                  'Créer un compte',
+                  l10n.authRegisterTitle,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm.h),
                 Text(
-                  'Tous les champs sont obligatoires.',
+                  l10n.authRegisterSubtitle,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl.h),
                 DokalCard(
                   child: Form(
                     key: _formKey,
@@ -77,47 +80,49 @@ class _RegisterPageState extends State<RegisterPage> {
                             Expanded(
                               child: DokalTextField(
                                 controller: _firstName,
-                                label: 'Prénom',
+                                label: l10n.authFirstName,
                                 prefixIcon: Icons.person_rounded,
                                 textInputAction: TextInputAction.next,
                                 validator: (v) => (v ?? '').trim().isEmpty
-                                    ? 'Requis'
+                                    ? l10n.commonRequired
                                     : null,
                               ),
                             ),
-                            const SizedBox(width: AppSpacing.md),
+                            SizedBox(width: AppSpacing.md.w),
                             Expanded(
                               child: DokalTextField(
                                 controller: _lastName,
-                                label: 'Nom',
+                                label: l10n.authLastName,
                                 textInputAction: TextInputAction.next,
                                 validator: (v) => (v ?? '').trim().isEmpty
-                                    ? 'Requis'
+                                    ? l10n.commonRequired
                                     : null,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md.h),
                         DokalTextField(
                           controller: _email,
-                          label: 'Email',
-                          hint: 'ex: nom@domaine.com',
+                          label: l10n.commonEmail,
+                          hint: l10n.commonEmailHint,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           prefixIcon: Icons.mail_rounded,
                           validator: (v) {
                             final value = (v ?? '').trim();
-                            if (value.isEmpty) return 'Email requis';
-                            if (!value.contains('@')) return 'Email invalide';
+                            if (value.isEmpty) return l10n.commonEmailRequired;
+                            if (!value.contains('@')) {
+                              return l10n.commonEmailInvalid;
+                            }
                             return null;
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md.h),
                         DokalTextField(
                           controller: _password,
-                          label: 'Mot de passe',
-                          hint: '••••••••',
+                          label: l10n.commonPassword,
+                          hint: l10n.commonPasswordHint,
                           obscureText: _obscure,
                           textInputAction: TextInputAction.done,
                           prefixIcon: Icons.lock_rounded,
@@ -132,15 +137,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           validator: (v) {
                             final value = (v ?? '');
-                            if (value.isEmpty) return 'Mot de passe requis';
+                            if (value.isEmpty) {
+                              return l10n.commonPasswordRequired;
+                            }
                             if (value.length < 6) {
-                              return 'Minimum 6 caractères';
+                              return l10n.commonPasswordMinChars(6);
                             }
                             return null;
                           },
                           onFieldSubmitted: (_) => _submit(context),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg.h),
                         BlocConsumer<RegisterBloc, RegisterState>(
                           listener: (context, state) {
                             if (state.status == RegisterStatus.success) {
@@ -152,7 +159,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (state.status == RegisterStatus.failure) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(state.errorMessage ?? 'Erreur'),
+                                  content: Text(
+                                    state.errorMessage ?? l10n.commonError,
+                                  ),
                                 ),
                               );
                             }
@@ -160,23 +169,24 @@ class _RegisterPageState extends State<RegisterPage> {
                           builder: (context, state) {
                             return DokalButton.primary(
                               onPressed: () => _submit(context),
-                              isLoading:
-                                  state.status == RegisterStatus.loading,
-                              child: const Text('Continuer'),
+                              isLoading: state.status == RegisterStatus.loading,
+                              child: Text(l10n.commonContinue),
                             );
                           },
                         ),
-                        const SizedBox(height: AppSpacing.sm),
+                        SizedBox(height: AppSpacing.sm.h),
                         DokalButton.outline(
                           onPressed: () {
                             final redirect = widget.redirectTo;
                             if (redirect != null && redirect.isNotEmpty) {
-                              context.go('/login?redirect=${Uri.encodeComponent(redirect)}');
+                              context.go(
+                                '/login?redirect=${Uri.encodeComponent(redirect)}',
+                              );
                             } else {
                               context.go('/login');
                             }
                           },
-                          child: const Text("J'ai déjà un compte"),
+                          child: Text(l10n.authAlreadyHaveAccount),
                         ),
                       ],
                     ),
@@ -185,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const Spacer(),
                 TextButton(
                   onPressed: () => context.go('/home'),
-                  child: const Text('Continuer sans compte'),
+                  child: Text(l10n.authContinueWithoutAccount),
                 ),
               ],
             ),
@@ -198,12 +208,12 @@ class _RegisterPageState extends State<RegisterPage> {
   void _submit(BuildContext context) {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     context.read<RegisterBloc>().add(
-          RegisterSubmitted(
-            firstName: _firstName.text.trim(),
-            lastName: _lastName.text.trim(),
-            email: _email.text.trim(),
-            password: _password.text,
-          ),
-        );
+      RegisterSubmitted(
+        firstName: _firstName.text.trim(),
+        lastName: _lastName.text.trim(),
+        email: _email.text.trim(),
+        password: _password.text,
+      ),
+    );
   }
 }

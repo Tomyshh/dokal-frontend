@@ -10,4 +10,3 @@ class AddHealthItemDemo {
 
   Future<Either<Failure, Unit>> call(HealthListType type) => repo.addDemo(type);
 }
-

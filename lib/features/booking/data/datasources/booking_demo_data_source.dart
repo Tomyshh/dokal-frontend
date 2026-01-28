@@ -28,4 +28,3 @@ class BookingDemoDataSourceImpl implements BookingDemoDataSource {
     return 'appt_demo_${DateTime.now().millisecondsSinceEpoch}';
   }
 }
-

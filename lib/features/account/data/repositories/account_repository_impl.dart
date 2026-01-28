@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/payment_method.dart';
 import '../../domain/entities/relative.dart';
 import '../../domain/entities/user_profile.dart';
@@ -17,7 +18,7 @@ class AccountRepositoryImpl implements AccountRepository {
     try {
       return Right(demo.getProfile());
     } catch (_) {
-      return const Left(Failure('Impossible de charger le profil.'));
+      return Left(Failure(l10nStatic.errorUnableToLoadProfile));
     }
   }
 
@@ -26,7 +27,7 @@ class AccountRepositoryImpl implements AccountRepository {
     try {
       return Right(demo.listRelatives());
     } catch (_) {
-      return const Left(Failure('Impossible de charger les proches.'));
+      return Left(Failure(l10nStatic.errorUnableToLoadRelatives));
     }
   }
 
@@ -36,7 +37,7 @@ class AccountRepositoryImpl implements AccountRepository {
       demo.addRelativeDemo();
       return const Right(unit);
     } catch (_) {
-      return const Left(Failure('Impossible d’ajouter un proche.'));
+      return Left(Failure(l10nStatic.errorUnableToAddRelative));
     }
   }
 
@@ -45,7 +46,7 @@ class AccountRepositoryImpl implements AccountRepository {
     try {
       return Right(demo.listPaymentMethods());
     } catch (_) {
-      return const Left(Failure('Impossible de charger les paiements.'));
+      return Left(Failure(l10nStatic.errorUnableToLoadPayments));
     }
   }
 
@@ -55,7 +56,7 @@ class AccountRepositoryImpl implements AccountRepository {
       demo.addPaymentMethodDemo();
       return const Right(unit);
     } catch (_) {
-      return const Left(Failure('Impossible d’ajouter un moyen de paiement.'));
+      return Left(Failure(l10nStatic.errorUnableToAddPaymentMethod));
     }
   }
 
@@ -65,4 +66,3 @@ class AccountRepositoryImpl implements AccountRepository {
     return const Right(unit);
   }
 }
-

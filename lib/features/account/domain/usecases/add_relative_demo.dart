@@ -10,4 +10,3 @@ class AddRelativeDemo {
 
   Future<Either<Failure, Unit>> call() => repo.addRelativeDemo();
 }
-

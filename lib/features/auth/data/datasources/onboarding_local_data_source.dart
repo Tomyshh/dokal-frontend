@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/exceptions.dart';
+import '../../../../l10n/l10n_static.dart';
 
 abstract class OnboardingLocalDataSource {
   bool isCompleted();
@@ -21,8 +22,7 @@ class OnboardingLocalDataSourceImpl implements OnboardingLocalDataSource {
   Future<void> setCompleted() async {
     final ok = await prefs.setBool(_key, true);
     if (!ok) {
-      throw const CacheException("Impossible d'enregistrer l'onboarding.");
+      throw CacheException(l10nStatic.errorUnableToSaveOnboarding);
     }
   }
 }
-

@@ -9,4 +9,3 @@ class AppRadii {
   static const double xxl = 20;
   static const double pill = 999;
 }
-

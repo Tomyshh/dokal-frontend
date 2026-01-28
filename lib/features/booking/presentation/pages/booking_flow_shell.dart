@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -41,8 +42,12 @@ class BookingFlowShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => BookingBloc(practitionerId: practitionerId)),
-        BlocProvider(create: (_) => sl<PractitionerCubit>(param1: practitionerId)),
+        BlocProvider(
+          create: (_) => BookingBloc(practitionerId: practitionerId),
+        ),
+        BlocProvider(
+          create: (_) => sl<PractitionerCubit>(param1: practitionerId),
+        ),
       ],
       child: Builder(
         builder: (context) {
@@ -61,11 +66,17 @@ class BookingFlowShell extends StatelessWidget {
                     children: [
                       const Text(
                         'Prendre rendez-vous',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       Text(
                         name,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ],
                   );
@@ -86,65 +97,76 @@ class BookingFlowShell extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSpacing.xl,
-                      AppSpacing.md,
-                      AppSpacing.xl,
-                      AppSpacing.md,
+                    padding: EdgeInsets.fromLTRB(
+                      AppSpacing.xl.w,
+                      AppSpacing.md.h,
+                      AppSpacing.xl.w,
+                      AppSpacing.md.h,
                     ),
                     child: Column(
                       children: [
                         _ProgressBar(current: idx, total: _steps.length),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md.h),
                         BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
                             return DokalCard(
-                              padding: const EdgeInsets.all(AppSpacing.lg),
+                              padding: EdgeInsets.all(AppSpacing.lg.r),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       Container(
-                                        width: 44,
-                                        height: 44,
+                                        width: 44.r,
+                                        height: 44.r,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.white.withValues(alpha: 0.18),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.18,
+                                          ),
                                         ),
                                         child: const Icon(
                                           Icons.medical_services_rounded,
                                           color: AppColors.primary,
                                         ),
                                       ),
-                                      const SizedBox(width: AppSpacing.md),
+                                      SizedBox(width: AppSpacing.md.w),
                                       Expanded(
-                                        child: BlocBuilder<PractitionerCubit, PractitionerState>(
-                                          builder: (context, pState) {
-                                            final p = pState.profile;
-                                            return Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  p?.name ?? '—',
-                                                  style: Theme.of(context).textTheme.titleMedium,
-                                                ),
-                                                const SizedBox(height: 2),
-                                                Text(
-                                                  '${p?.specialty ?? '—'} • ${p?.address ?? '—'}',
-                                                  style: Theme.of(context).textTheme.bodyMedium,
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
+                                        child:
+                                            BlocBuilder<
+                                              PractitionerCubit,
+                                              PractitionerState
+                                            >(
+                                              builder: (context, pState) {
+                                                final p = pState.profile;
+                                                return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      p?.name ?? '—',
+                                                      style: Theme.of(
+                                                        context,
+                                                      ).textTheme.titleMedium,
+                                                    ),
+                                                    SizedBox(height: 2.h),
+                                                    Text(
+                                                      '${p?.specialty ?? '—'} • ${p?.address ?? '—'}',
+                                                      style: Theme.of(
+                                                        context,
+                                                      ).textTheme.bodyMedium,
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: AppSpacing.md),
+                                  SizedBox(height: AppSpacing.md.h),
                                   Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
+                                    spacing: 8.w,
+                                    runSpacing: 8.h,
                                     children: [
                                       _SummaryPill(
                                         icon: Icons.medical_information_rounded,
@@ -200,10 +222,10 @@ class _ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final progress = (current + 1) / total;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(999),
+      borderRadius: BorderRadius.circular(999.r),
       child: LinearProgressIndicator(
         value: progress,
-        minHeight: 10,
+        minHeight: 10.h,
         backgroundColor: AppColors.outline,
         valueColor: const AlwaysStoppedAnimation(AppColors.primary),
       ),
@@ -230,26 +252,30 @@ class _SummaryPill extends StatelessWidget {
     final fg = isActive ? AppColors.accent : AppColors.textSecondary;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(999.r),
         border: Border.all(
-          color: isActive ? AppColors.accent.withValues(alpha: 0.22) : AppColors.outline,
+          color: isActive
+              ? AppColors.accent.withValues(alpha: 0.22)
+              : AppColors.outline,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: fg),
-          const SizedBox(width: 8),
+          Icon(icon, size: 16.sp, color: fg),
+          SizedBox(width: 8.w),
           ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 170),
+            constraints: BoxConstraints(maxWidth: 170.w),
             child: Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(color: fg),
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(color: fg),
             ),
           ),
         ],
@@ -263,4 +289,3 @@ class _Step {
   final String label;
   final String pathTemplate;
 }
-

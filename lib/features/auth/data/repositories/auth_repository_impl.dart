@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/auth_session.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_data_source.dart';
@@ -91,6 +92,5 @@ class AuthRepositoryImpl implements AuthRepository {
 
 String _messageFrom(Object e) {
   if (e is AuthException) return e.message;
-  return 'Une erreur est survenue. Réessayez.';
+  return l10nStatic.errorGenericTryAgain;
 }
-

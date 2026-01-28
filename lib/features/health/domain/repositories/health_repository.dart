@@ -9,4 +9,3 @@ abstract class HealthRepository {
   Future<Either<Failure, List<HealthItem>>> list(HealthListType type);
   Future<Either<Failure, Unit>> addDemo(HealthListType type);
 }
-

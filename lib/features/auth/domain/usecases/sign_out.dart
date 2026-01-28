@@ -9,4 +9,3 @@ class SignOut {
 
   Future<Either<Failure, Unit>> call() => _repo.signOut();
 }
-

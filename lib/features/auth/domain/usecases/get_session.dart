@@ -10,4 +10,3 @@ class GetSession {
 
   Future<Either<Failure, AuthSession?>> call() => _repo.getSession();
 }
-

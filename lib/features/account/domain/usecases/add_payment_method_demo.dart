@@ -10,4 +10,3 @@ class AddPaymentMethodDemo {
 
   Future<Either<Failure, Unit>> call() => repo.addPaymentMethodDemo();
 }
-

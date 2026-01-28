@@ -11,9 +11,9 @@ class PractitionerState extends Equatable {
   });
 
   const PractitionerState.initial({required this.practitionerId})
-      : status = PractitionerStatus.initial,
-        profile = null,
-        error = null;
+    : status = PractitionerStatus.initial,
+      profile = null,
+      error = null;
 
   final PractitionerStatus status;
   final String practitionerId;
@@ -36,4 +36,3 @@ class PractitionerState extends Equatable {
   @override
   List<Object?> get props => [status, practitionerId, profile, error];
 }
-

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/repositories/onboarding_repository.dart';
 import '../datasources/onboarding_local_data_source.dart';
 
@@ -14,7 +15,7 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
     try {
       return Right(local.isCompleted());
     } catch (_) {
-      return const Left(Failure("Impossible de lire l'état d'onboarding."));
+      return Left(Failure(l10nStatic.errorUnableToReadOnboardingState));
     }
   }
 
@@ -24,8 +25,7 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
       await local.setCompleted();
       return const Right(unit);
     } catch (_) {
-      return const Left(Failure("Impossible d'enregistrer l'onboarding."));
+      return Left(Failure(l10nStatic.errorUnableToSaveOnboarding));
     }
   }
 }
-

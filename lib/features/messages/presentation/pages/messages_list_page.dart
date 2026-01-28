@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
 import '../../domain/entities/conversation_preview.dart';
 import '../bloc/messages_cubit.dart';
 
@@ -14,6 +16,7 @@ class MessagesListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider(
       create: (_) => sl<MessagesCubit>()..load(),
       child: Scaffold(
@@ -21,13 +24,13 @@ class MessagesListPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: AppColors.background,
           surfaceTintColor: Colors.transparent,
-          toolbarHeight: 48,
+          toolbarHeight: 48.h,
           centerTitle: true,
           title: Text(
-            'Messages',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+            l10n.messagesTitle,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
           ),
           actions: [
             IconButton(
@@ -41,30 +44,35 @@ class MessagesListPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ListTile(
-                            leading: const Icon(Icons.done_all_rounded, size: 20),
+                            leading: const Icon(
+                              Icons.done_all_rounded,
+                              size: 20,
+                            ),
                             title: Text(
-                              'Marquer tout comme lu',
+                              l10n.messagesMarkAllRead,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                             onTap: () {
                               Navigator.of(ctx).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Fonction disponible bientôt')),
+                                SnackBar(
+                                  content: Text(l10n.commonAvailableSoon),
+                                ),
                               );
                             },
                           ),
                           ListTile(
                             leading: const Icon(Icons.tune_rounded, size: 20),
                             title: Text(
-                              'Paramètres',
+                              l10n.commonSettings,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                             onTap: () {
                               Navigator.of(ctx).pop();
-                              context.go('/account/settings');
+                              context.push('/account/settings');
                             },
                           ),
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm.h),
                         ],
                       ),
                     );
@@ -83,28 +91,26 @@ class MessagesListPage extends StatelessWidget {
             }
             if (state.status == MessagesStatus.failure) {
               return DokalEmptyState(
-                title: 'Impossible de charger',
-                subtitle: state.error ?? 'Réessayez dans un instant.',
+                title: l10n.commonUnableToLoad,
+                subtitle: state.error ?? l10n.commonTryAgainInAMoment,
                 icon: Icons.error_outline_rounded,
               );
             }
             if (conversations.isEmpty) {
-              return const DokalEmptyState(
-                title: 'Vos messages',
-                subtitle:
-                    'Démarrez une conversation avec vos praticiens pour demander un document, '
-                    'poser une question ou suivre vos résultats.',
+              return DokalEmptyState(
+                title: l10n.messagesEmptyTitle,
+                subtitle: l10n.messagesEmptySubtitle,
                 icon: Icons.mail_rounded,
               );
             }
             return ListView.builder(
-              padding: const EdgeInsets.only(top: AppSpacing.sm),
+              padding: EdgeInsets.only(top: AppSpacing.sm.h),
               itemCount: conversations.length,
               itemBuilder: (context, index) {
                 final conv = conversations[index];
                 return _ConversationTile(
                   conversation: conv,
-                  onTap: () => context.go('/messages/c/${conv.id}'),
+                  onTap: () => context.push('/messages/c/${conv.id}'),
                   showDivider: index < conversations.length - 1,
                 );
               },
@@ -112,7 +118,8 @@ class MessagesListPage extends StatelessWidget {
           },
         ),
         floatingActionButton: FloatingActionButton.small(
-          onPressed: () => context.go('/messages/new'),
+          heroTag: 'fab_messages',
+          onPressed: () => context.push('/messages/new'),
           backgroundColor: AppColors.primary,
           child: const Icon(Icons.edit_rounded, color: Colors.white, size: 20),
         ),
@@ -142,9 +149,9 @@ class _ConversationTile extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.sm,
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg.w,
+                vertical: AppSpacing.sm.h,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +161,7 @@ class _ConversationTile extends StatelessWidget {
                     color: Color(conversation.avatarColorValue),
                     isOnline: conversation.isOnline,
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +178,8 @@ class _ConversationTile extends StatelessWidget {
                             ),
                             Text(
                               conversation.timeAgo,
-                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
                                     color: conversation.unreadCount > 0
                                         ? AppColors.primary
                                         : AppColors.textSecondary,
@@ -182,13 +190,14 @@ class _ConversationTile extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2.h),
                         Row(
                           children: [
                             Expanded(
                               child: Text(
                                 conversation.lastMessage,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
                                       fontWeight: conversation.unreadCount > 0
                                           ? FontWeight.w500
                                           : FontWeight.w400,
@@ -198,14 +207,16 @@ class _ConversationTile extends StatelessWidget {
                               ),
                             ),
                             if (conversation.unreadCount > 0) ...[
-                              const SizedBox(width: AppSpacing.xs),
+                              SizedBox(width: AppSpacing.xs.w),
                               _UnreadBadge(count: conversation.unreadCount),
                             ],
                           ],
                         ),
                         if (conversation.appointment != null) ...[
-                          const SizedBox(height: AppSpacing.xs),
-                          _AppointmentChip(appointment: conversation.appointment!),
+                          SizedBox(height: AppSpacing.xs.h),
+                          _AppointmentChip(
+                            appointment: conversation.appointment!,
+                          ),
                         ],
                       ],
                     ),
@@ -217,7 +228,7 @@ class _ConversationTile extends StatelessWidget {
               Divider(
                 height: 1,
                 thickness: 1,
-                indent: 64,
+                indent: 64.w,
                 color: AppColors.outline.withValues(alpha: 0.5),
               ),
           ],
@@ -244,13 +255,13 @@ class _Avatar extends StatelessWidget {
     final initials = name.split(' ').take(2).map((e) => e[0]).join();
 
     return SizedBox(
-      width: 40,
-      height: 40,
+      width: 40.r,
+      height: 40.r,
       child: Stack(
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: 40.r,
+            height: 40.r,
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.15),
               shape: BoxShape.circle,
@@ -259,7 +270,7 @@ class _Avatar extends StatelessWidget {
               child: Text(
                 initials,
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 13.sp,
                   fontWeight: FontWeight.w600,
                   color: color,
                 ),
@@ -271,8 +282,8 @@ class _Avatar extends StatelessWidget {
               right: 1,
               bottom: 1,
               child: Container(
-                width: 10,
-                height: 10,
+                width: 10.r,
+                height: 10.r,
                 decoration: BoxDecoration(
                   color: AppColors.accent,
                   shape: BoxShape.circle,
@@ -295,8 +306,8 @@ class _UnreadBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 18,
-      height: 18,
+      width: 18.r,
+      height: 18.r,
       decoration: const BoxDecoration(
         color: AppColors.primary,
         shape: BoxShape.circle,
@@ -304,9 +315,9 @@ class _UnreadBadge extends StatelessWidget {
       child: Center(
         child: Text(
           count.toString(),
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 10,
+            fontSize: 10.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -324,47 +335,47 @@ class _AppointmentChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.xs,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm.w,
+        vertical: AppSpacing.xs.h,
       ),
       decoration: BoxDecoration(
         color: AppColors.surfaceVariant,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(6.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 22,
-            height: 22,
+            width: 22.r,
+            height: 22.r,
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(4.r),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.calendar_today_rounded,
-              size: 11,
+              size: 11.sp,
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(width: AppSpacing.xs),
+          SizedBox(width: AppSpacing.xs.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 appointment.title,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
               ),
               Text(
                 appointment.date,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.primary,
-                      fontSize: 9,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: AppColors.primary,
+                  fontSize: 9.sp,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

@@ -6,4 +6,3 @@ abstract class OnboardingRepository {
   Future<Either<Failure, bool>> isCompleted();
   Future<Either<Failure, Unit>> complete();
 }
-

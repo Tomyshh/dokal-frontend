@@ -11,9 +11,9 @@ class AppointmentDetailState extends Equatable {
   });
 
   const AppointmentDetailState.initial({required this.appointmentId})
-      : status = AppointmentDetailStatus.initial,
-        appointment = null,
-        error = null;
+    : status = AppointmentDetailStatus.initial,
+      appointment = null,
+      error = null;
 
   final AppointmentDetailStatus status;
   final String appointmentId;
@@ -36,4 +36,3 @@ class AppointmentDetailState extends Equatable {
   @override
   List<Object?> get props => [status, appointmentId, appointment, error];
 }
-

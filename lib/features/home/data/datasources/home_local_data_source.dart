@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/exceptions.dart';
+import '../../../../l10n/l10n_static.dart';
 
 abstract class HomeLocalDataSource {
   String getGreetingName();
@@ -26,8 +27,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
   Future<void> enableHistory() async {
     final ok = await prefs.setBool(_kHistoryEnabled, true);
     if (!ok) {
-      throw const CacheException("Impossible d'activer l'historique.");
+      throw CacheException(l10nStatic.errorUnableToEnableHistory);
     }
   }
 }
-

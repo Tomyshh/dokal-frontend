@@ -12,4 +12,3 @@ class GetConversationMessages {
   Future<Either<Failure, List<ChatMessage>>> call(String conversationId) =>
       repo.getConversationMessages(conversationId);
 }
-

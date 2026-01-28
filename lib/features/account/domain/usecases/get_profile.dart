@@ -11,4 +11,3 @@ class GetProfile {
 
   Future<Either<Failure, UserProfile>> call() => repo.getProfile();
 }
-

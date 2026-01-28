@@ -43,4 +43,3 @@ class DokalAvatar extends StatelessWidget {
     );
   }
 }
-

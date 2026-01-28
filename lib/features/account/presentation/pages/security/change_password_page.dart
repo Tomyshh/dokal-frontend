@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/app_spacing.dart';
@@ -7,6 +8,7 @@ import '../../../../../core/widgets/dokal_button.dart';
 import '../../../../../core/widgets/dokal_card.dart';
 import '../../../../../core/widgets/dokal_text_field.dart';
 import '../../../../../injection_container.dart';
+import '../../../../../l10n/l10n.dart';
 import '../../bloc/change_password_cubit.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -31,18 +33,19 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider(
       create: (_) => sl<ChangePasswordCubit>(),
       child: BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
         listener: (context, state) {
           if (state.status == ChangePasswordStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error ?? 'Erreur')),
+              SnackBar(content: Text(state.error ?? l10n.commonError)),
             );
           }
           if (state.status == ChangePasswordStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Demande enregistrée')),
+              SnackBar(content: Text(l10n.securityChangePasswordSuccess)),
             );
             if (context.canPop()) context.pop();
             context.go('/account/security');
@@ -51,10 +54,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         builder: (context, state) {
           final isLoading = state.status == ChangePasswordStatus.loading;
           return Scaffold(
-            appBar: AppBar(title: const Text('Changer le mot de passe')),
+            appBar: AppBar(title: Text(l10n.securityChangePassword)),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.xl),
+                padding: EdgeInsets.all(AppSpacing.xl.r),
                 child: DokalCard(
                   child: Form(
                     key: _formKey,
@@ -63,42 +66,51 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       children: [
                         DokalTextField(
                           controller: _current,
-                          label: 'Mot de passe actuel',
-                          hint: '••••••••',
+                          label: l10n.securityCurrentPassword,
+                          hint: l10n.commonPasswordHint,
                           obscureText: _obscure,
                           prefixIcon: Icons.lock_rounded,
-                          validator: (v) => (v ?? '').isEmpty ? 'Requis' : null,
+                          validator: (v) =>
+                              (v ?? '').isEmpty ? l10n.commonRequired : null,
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md.h),
                         DokalTextField(
                           controller: _next,
-                          label: 'Nouveau mot de passe',
-                          hint: '••••••••',
+                          label: l10n.securityNewPassword,
+                          hint: l10n.commonPasswordHint,
                           obscureText: _obscure,
                           prefixIcon: Icons.lock_outline_rounded,
                           suffixIcon: IconButton(
-                            onPressed: () => setState(() => _obscure = !_obscure),
+                            onPressed: () =>
+                                setState(() => _obscure = !_obscure),
                             icon: Icon(
-                              _obscure ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                              _obscure
+                                  ? Icons.visibility_rounded
+                                  : Icons.visibility_off_rounded,
                             ),
                           ),
                           validator: (v) {
                             final value = v ?? '';
-                            if (value.isEmpty) return 'Requis';
-                            if (value.length < 6) return 'Minimum 6 caractères';
+                            if (value.isEmpty) return l10n.commonRequired;
+                            if (value.length < 6) {
+                              return l10n.commonPasswordMinChars(6);
+                            }
                             return null;
                           },
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg.h),
                         DokalButton.primary(
                           onPressed: isLoading
                               ? null
                               : () {
-                                  if (!(_formKey.currentState?.validate() ?? false)) return;
+                                  if (!(_formKey.currentState?.validate() ??
+                                      false)) {
+                                    return;
+                                  }
                                   context.read<ChangePasswordCubit>().submit();
                                 },
                           isLoading: isLoading,
-                          child: const Text('Continuer'),
+                          child: Text(l10n.commonContinue),
                         ),
                       ],
                     ),
@@ -112,4 +124,3 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 }
-

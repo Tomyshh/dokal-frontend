@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/health_item.dart';
 import '../../domain/repositories/health_repository.dart';
 import '../datasources/health_demo_data_source.dart';
@@ -15,7 +16,7 @@ class HealthRepositoryImpl implements HealthRepository {
     try {
       return Right(demo.list(type));
     } catch (_) {
-      return const Left(Failure('Impossible de charger les données santé.'));
+      return Left(Failure(l10nStatic.errorUnableToLoadHealthData));
     }
   }
 
@@ -25,8 +26,7 @@ class HealthRepositoryImpl implements HealthRepository {
       demo.addDemo(type);
       return const Right(unit);
     } catch (_) {
-      return const Left(Failure('Impossible d’ajouter un élément.'));
+      return Left(Failure(l10nStatic.errorUnableToAddHealthItem));
     }
   }
 }
-

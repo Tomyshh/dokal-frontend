@@ -5,8 +5,8 @@ import 'forgot_password_state.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   ForgotPasswordCubit({required RequestPasswordReset requestPasswordReset})
-      : _requestPasswordReset = requestPasswordReset,
-        super(const ForgotPasswordState.initial());
+    : _requestPasswordReset = requestPasswordReset,
+      super(const ForgotPasswordState.initial());
 
   final RequestPasswordReset _requestPasswordReset;
 
@@ -19,4 +19,3 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     );
   }
 }
-

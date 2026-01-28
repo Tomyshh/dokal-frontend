@@ -7,8 +7,8 @@ part 'booking_confirm_state.dart';
 
 class BookingConfirmCubit extends Cubit<BookingConfirmState> {
   BookingConfirmCubit({required ConfirmBooking confirmBooking})
-      : _confirmBooking = confirmBooking,
-        super(const BookingConfirmState.initial());
+    : _confirmBooking = confirmBooking,
+      super(const BookingConfirmState.initial());
 
   final ConfirmBooking _confirmBooking;
 
@@ -34,9 +34,16 @@ class BookingConfirmCubit extends Cubit<BookingConfirmState> {
       visitedBefore: visitedBefore,
     );
     res.fold(
-      (f) => emit(state.copyWith(status: BookingConfirmStatus.failure, error: f.message)),
-      (id) => emit(state.copyWith(status: BookingConfirmStatus.success, appointmentId: id, error: null)),
+      (f) => emit(
+        state.copyWith(status: BookingConfirmStatus.failure, error: f.message),
+      ),
+      (id) => emit(
+        state.copyWith(
+          status: BookingConfirmStatus.success,
+          appointmentId: id,
+          error: null,
+        ),
+      ),
     );
   }
 }
-

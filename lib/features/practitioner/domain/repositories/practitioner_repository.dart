@@ -6,4 +6,3 @@ import '../entities/practitioner_profile.dart';
 abstract class PractitionerRepository {
   Future<Either<Failure, PractitionerProfile>> getById(String id);
 }
-

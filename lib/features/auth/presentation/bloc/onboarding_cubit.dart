@@ -10,9 +10,9 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit({
     required GetOnboardingCompleted getOnboardingCompleted,
     required CompleteOnboarding completeOnboarding,
-  })  : _getOnboardingCompleted = getOnboardingCompleted,
-        _completeOnboarding = completeOnboarding,
-        super(const OnboardingState.initial());
+  }) : _getOnboardingCompleted = getOnboardingCompleted,
+       _completeOnboarding = completeOnboarding,
+       super(const OnboardingState.initial());
 
   final GetOnboardingCompleted _getOnboardingCompleted;
   final CompleteOnboarding _completeOnboarding;
@@ -21,7 +21,9 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     emit(state.copyWith(status: OnboardingStatus.loading));
     final res = await _getOnboardingCompleted();
     res.fold(
-      (f) => emit(state.copyWith(status: OnboardingStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: OnboardingStatus.failure, error: f.message),
+      ),
       (completed) => emit(
         state.copyWith(
           status: OnboardingStatus.success,
@@ -36,7 +38,9 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     emit(state.copyWith(status: OnboardingStatus.loading));
     final res = await _completeOnboarding();
     res.fold(
-      (f) => emit(state.copyWith(status: OnboardingStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: OnboardingStatus.failure, error: f.message),
+      ),
       (_) => emit(
         state.copyWith(
           status: OnboardingStatus.success,
@@ -47,4 +51,3 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     );
   }
 }
-

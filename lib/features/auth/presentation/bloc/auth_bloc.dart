@@ -9,14 +9,12 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({
-    required GetSession getSession,
-    required SignOut signOut,
-  })  : _getSession = getSession,
-        _signOut = signOut,
-        // On évite de bloquer l'app sur un état "unknown".
-        // L'app démarre en "unauthenticated" et bascule vers "authenticated" si une session existe.
-        super(const AuthState.unauthenticated()) {
+  AuthBloc({required GetSession getSession, required SignOut signOut})
+    : _getSession = getSession,
+      _signOut = signOut,
+      // On évite de bloquer l'app sur un état "unknown".
+      // L'app démarre en "unauthenticated" et bascule vers "authenticated" si une session existe.
+      super(const AuthState.unauthenticated()) {
     on<AuthStarted>(_onStarted);
     on<AuthRefreshRequested>(_onRefreshRequested);
     on<AuthLogoutRequested>(_onLogout);
@@ -38,16 +36,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _checkSession(Emitter<AuthState> emit) async {
     final res = await _getSession();
-    res.fold(
-      (_) => emit(const AuthState.unauthenticated()),
-      (session) {
-        if (session == null) {
-          emit(const AuthState.unauthenticated());
-        } else {
-          emit(AuthState.authenticated(session));
-        }
-      },
-    );
+    res.fold((_) => emit(const AuthState.unauthenticated()), (session) {
+      if (session == null) {
+        emit(const AuthState.unauthenticated());
+      } else {
+        emit(AuthState.authenticated(session));
+      }
+    });
   }
 
   Future<void> _onLogout(
@@ -61,4 +56,3 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 }
-

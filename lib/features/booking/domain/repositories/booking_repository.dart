@@ -14,4 +14,3 @@ abstract class BookingRepository {
     required bool visitedBefore,
   });
 }
-

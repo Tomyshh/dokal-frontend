@@ -13,12 +13,10 @@ class SignUp {
     required String password,
     String? firstName,
     String? lastName,
-  }) =>
-      _repo.signUp(
-        email: email,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-      );
+  }) => _repo.signUp(
+    email: email,
+    password: password,
+    firstName: firstName,
+    lastName: lastName,
+  );
 }
-

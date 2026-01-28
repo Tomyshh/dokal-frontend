@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_radii.dart';
@@ -64,20 +65,20 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surface,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg.w,
+          vertical: AppSpacing.md.h,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(AppRadii.lg.r),
           borderSide: const BorderSide(color: AppColors.outline),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(AppRadii.lg.r),
           borderSide: const BorderSide(color: AppColors.outline),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(AppRadii.lg.r),
           borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         hintStyle: const TextStyle(color: AppColors.textSecondary),
@@ -87,7 +88,7 @@ class AppTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(AppRadii.lg.r),
           side: const BorderSide(color: AppColors.outline),
         ),
       ),
@@ -102,4 +103,3 @@ class AppTheme {
     );
   }
 }
-

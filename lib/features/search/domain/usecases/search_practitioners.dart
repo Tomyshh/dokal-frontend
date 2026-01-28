@@ -12,4 +12,3 @@ class SearchPractitioners {
   Future<Either<Failure, List<PractitionerSearchResult>>> call(String query) =>
       repo.search(query: query);
 }
-

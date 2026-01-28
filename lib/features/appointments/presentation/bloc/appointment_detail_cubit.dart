@@ -12,9 +12,9 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailState> {
     required GetAppointmentDetail getAppointmentDetail,
     required CancelAppointment cancelAppointment,
     required String appointmentId,
-  })  : _getAppointmentDetail = getAppointmentDetail,
-        _cancelAppointment = cancelAppointment,
-        super(AppointmentDetailState.initial(appointmentId: appointmentId));
+  }) : _getAppointmentDetail = getAppointmentDetail,
+       _cancelAppointment = cancelAppointment,
+       super(AppointmentDetailState.initial(appointmentId: appointmentId));
 
   final GetAppointmentDetail _getAppointmentDetail;
   final CancelAppointment _cancelAppointment;
@@ -23,7 +23,12 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailState> {
     emit(state.copyWith(status: AppointmentDetailStatus.loading));
     final res = await _getAppointmentDetail(state.appointmentId);
     res.fold(
-      (f) => emit(state.copyWith(status: AppointmentDetailStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(
+          status: AppointmentDetailStatus.failure,
+          error: f.message,
+        ),
+      ),
       (appointment) => emit(
         state.copyWith(
           status: AppointmentDetailStatus.success,
@@ -38,7 +43,12 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailState> {
     emit(state.copyWith(status: AppointmentDetailStatus.loading));
     final res = await _cancelAppointment(state.appointmentId);
     res.fold(
-      (f) => emit(state.copyWith(status: AppointmentDetailStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(
+          status: AppointmentDetailStatus.failure,
+          error: f.message,
+        ),
+      ),
       (_) => emit(
         state.copyWith(
           status: AppointmentDetailStatus.success,
@@ -49,4 +59,3 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailState> {
     );
   }
 }
-

@@ -14,4 +14,3 @@ abstract class MessagesRepository {
     required String text,
   });
 }
-

@@ -3,16 +3,12 @@ part of 'relatives_cubit.dart';
 enum RelativesStatus { initial, loading, success, failure }
 
 class RelativesState extends Equatable {
-  const RelativesState({
-    required this.status,
-    required this.items,
-    this.error,
-  });
+  const RelativesState({required this.status, required this.items, this.error});
 
   const RelativesState.initial()
-      : status = RelativesStatus.initial,
-        items = const [],
-        error = null;
+    : status = RelativesStatus.initial,
+      items = const [],
+      error = null;
 
   final RelativesStatus status;
   final List<Relative> items;
@@ -33,4 +29,3 @@ class RelativesState extends Equatable {
   @override
   List<Object?> get props => [status, items, error];
 }
-

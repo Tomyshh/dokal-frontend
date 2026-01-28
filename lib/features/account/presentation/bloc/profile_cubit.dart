@@ -8,8 +8,8 @@ part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({required GetProfile getProfile})
-      : _getProfile = getProfile,
-        super(const ProfileState.initial());
+    : _getProfile = getProfile,
+      super(const ProfileState.initial());
 
   final GetProfile _getProfile;
 
@@ -17,11 +17,15 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(state.copyWith(status: ProfileStatus.loading));
     final res = await _getProfile();
     res.fold(
-      (f) => emit(state.copyWith(status: ProfileStatus.failure, error: f.message)),
+      (f) =>
+          emit(state.copyWith(status: ProfileStatus.failure, error: f.message)),
       (profile) => emit(
-        state.copyWith(status: ProfileStatus.success, profile: profile, error: null),
+        state.copyWith(
+          status: ProfileStatus.success,
+          profile: profile,
+          error: null,
+        ),
       ),
     );
   }
 }
-

@@ -48,12 +48,6 @@ import 'features/account/domain/repositories/settings_repository.dart';
 import 'features/account/domain/usecases/get_settings.dart';
 import 'features/account/domain/usecases/save_settings.dart';
 import 'features/account/presentation/bloc/settings_cubit.dart';
-import 'features/health/data/datasources/documents_demo_data_source.dart';
-import 'features/health/data/repositories/documents_repository_impl.dart';
-import 'features/health/domain/repositories/documents_repository.dart';
-import 'features/health/domain/usecases/add_demo_document.dart';
-import 'features/health/domain/usecases/get_documents.dart';
-import 'features/health/presentation/bloc/documents_cubit.dart';
 import 'features/search/data/datasources/search_demo_data_source.dart';
 import 'features/search/data/repositories/search_repository_impl.dart';
 import 'features/search/domain/repositories/search_repository.dart';
@@ -65,11 +59,17 @@ import 'features/practitioner/domain/repositories/practitioner_repository.dart';
 import 'features/practitioner/domain/usecases/get_practitioner_profile.dart';
 import 'features/practitioner/presentation/bloc/practitioner_cubit.dart';
 import 'features/health/data/datasources/health_demo_data_source.dart';
+import 'features/health/data/datasources/health_profile_local_data_source.dart';
 import 'features/health/data/repositories/health_repository_impl.dart';
+import 'features/health/data/repositories/health_profile_repository_impl.dart';
 import 'features/health/domain/repositories/health_repository.dart';
+import 'features/health/domain/repositories/health_profile_repository.dart';
 import 'features/health/domain/usecases/add_health_item_demo.dart';
 import 'features/health/domain/usecases/get_health_list.dart';
+import 'features/health/domain/usecases/get_health_profile.dart';
+import 'features/health/domain/usecases/save_health_profile.dart';
 import 'features/health/presentation/bloc/health_list_cubit.dart';
+import 'features/health/presentation/bloc/health_profile_cubit.dart';
 import 'features/account/data/datasources/account_demo_data_source.dart';
 import 'features/account/data/repositories/account_repository_impl.dart';
 import 'features/account/domain/repositories/account_repository.dart';
@@ -102,7 +102,9 @@ final sl = GetIt.instance;
 void configureDependencies() {
   // External
   // IMPORTANT: on le veut prêt dès le démarrage (sinon `sl<SharedPreferences>()` peut crasher).
-  sl.registerSingletonAsync<SharedPreferences>(() => SharedPreferences.getInstance());
+  sl.registerSingletonAsync<SharedPreferences>(
+    () => SharedPreferences.getInstance(),
+  );
 
   sl.registerLazySingleton<Dio>(() => Dio());
   sl.registerLazySingleton<DioClient>(() => DioClient(sl<Dio>()));
@@ -115,19 +117,30 @@ void configureDependencies() {
   // - `flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...`
   // - ou un fichier `.env.local` (via `--dart-define-from-file=.env.local`)
   // On supporte aussi les clés style Expo (`EXPO_PUBLIC_*`) pour éviter les confusions.
-  final supabaseUrlDefine =
-      const String.fromEnvironment('SUPABASE_URL', defaultValue: '');
-  final supabaseUrlExpo =
-      const String.fromEnvironment('EXPO_PUBLIC_SUPABASE_URL', defaultValue: '');
-  final supabaseAnonKeyDefine =
-      const String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: '');
-  final supabaseKeyDefine =
-      const String.fromEnvironment('SUPABASE_KEY', defaultValue: '');
-  final supabaseKeyExpo =
-      const String.fromEnvironment('EXPO_PUBLIC_SUPABASE_KEY', defaultValue: '');
+  final supabaseUrlDefine = const String.fromEnvironment(
+    'SUPABASE_URL',
+    defaultValue: '',
+  );
+  final supabaseUrlExpo = const String.fromEnvironment(
+    'EXPO_PUBLIC_SUPABASE_URL',
+    defaultValue: '',
+  );
+  final supabaseAnonKeyDefine = const String.fromEnvironment(
+    'SUPABASE_ANON_KEY',
+    defaultValue: '',
+  );
+  final supabaseKeyDefine = const String.fromEnvironment(
+    'SUPABASE_KEY',
+    defaultValue: '',
+  );
+  final supabaseKeyExpo = const String.fromEnvironment(
+    'EXPO_PUBLIC_SUPABASE_KEY',
+    defaultValue: '',
+  );
 
-  final supabaseUrl =
-      supabaseUrlDefine.isNotEmpty ? supabaseUrlDefine : supabaseUrlExpo;
+  final supabaseUrl = supabaseUrlDefine.isNotEmpty
+      ? supabaseUrlDefine
+      : supabaseUrlExpo;
   final supabaseAnonKey = supabaseAnonKeyDefine.isNotEmpty
       ? supabaseAnonKeyDefine
       : (supabaseKeyDefine.isNotEmpty ? supabaseKeyDefine : supabaseKeyExpo);
@@ -141,10 +154,7 @@ void configureDependencies() {
       );
     }
 
-    await Supabase.initialize(
-      url: supabaseUrl,
-      anonKey: supabaseAnonKey,
-    );
+    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
     return Supabase.instance.client;
   });
@@ -175,27 +185,24 @@ void configureDependencies() {
   sl.registerLazySingleton(
     () => ResendSignupConfirmationEmail(sl<AuthRepository>()),
   );
-  sl.registerLazySingleton(() => GetOnboardingCompleted(sl<OnboardingRepository>()));
-  sl.registerLazySingleton(() => CompleteOnboarding(sl<OnboardingRepository>()));
+  sl.registerLazySingleton(
+    () => GetOnboardingCompleted(sl<OnboardingRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => CompleteOnboarding(sl<OnboardingRepository>()),
+  );
 
   sl.registerLazySingleton(
-    () => AuthBloc(
-      getSession: sl<GetSession>(),
-      signOut: sl<SignOut>(),
-    ),
+    () => AuthBloc(getSession: sl<GetSession>(), signOut: sl<SignOut>()),
   );
 
   sl.registerFactory(() => LoginBloc(signIn: sl<SignIn>()));
   sl.registerFactory(() => RegisterBloc(signUp: sl<SignUp>()));
   sl.registerFactory(
-    () => ForgotPasswordCubit(
-      requestPasswordReset: sl<RequestPasswordReset>(),
-    ),
+    () => ForgotPasswordCubit(requestPasswordReset: sl<RequestPasswordReset>()),
   );
   sl.registerFactory(
-    () => VerifyEmailCubit(
-      resend: sl<ResendSignupConfirmationEmail>(),
-    ),
+    () => VerifyEmailCubit(resend: sl<ResendSignupConfirmationEmail>()),
   );
   sl.registerFactory(
     () => OnboardingCubit(
@@ -217,7 +224,9 @@ void configureDependencies() {
   );
   sl.registerLazySingleton(() => SendMessage(sl<MessagesRepository>()));
 
-  sl.registerFactory(() => MessagesCubit(getConversations: sl<GetConversations>()));
+  sl.registerFactory(
+    () => MessagesCubit(getConversations: sl<GetConversations>()),
+  );
   sl.registerFactoryParam<ConversationCubit, String, void>(
     (conversationId, _) => ConversationCubit(
       getConversationMessages: sl<GetConversationMessages>(),
@@ -277,29 +286,17 @@ void configureDependencies() {
     )..load(),
   );
 
-  // Health / Documents (démo)
-  sl.registerLazySingleton<DocumentsDemoDataSource>(
-    () => DocumentsDemoDataSourceImpl(),
-  );
-  sl.registerLazySingleton<DocumentsRepository>(
-    () => DocumentsRepositoryImpl(demo: sl<DocumentsDemoDataSource>()),
-  );
-  sl.registerLazySingleton(() => GetDocuments(sl<DocumentsRepository>()));
-  sl.registerLazySingleton(() => AddDemoDocument(sl<DocumentsRepository>()));
-  sl.registerFactory(
-    () => DocumentsCubit(
-      getDocuments: sl<GetDocuments>(),
-      addDemoDocument: sl<AddDemoDocument>(),
-    )..load(),
-  );
-
   // Search (démo)
-  sl.registerLazySingleton<SearchDemoDataSource>(() => SearchDemoDataSourceImpl());
+  sl.registerLazySingleton<SearchDemoDataSource>(
+    () => SearchDemoDataSourceImpl(),
+  );
   sl.registerLazySingleton<SearchRepository>(
     () => SearchRepositoryImpl(demo: sl<SearchDemoDataSource>()),
   );
   sl.registerLazySingleton(() => SearchPractitioners(sl<SearchRepository>()));
-  sl.registerFactory(() => SearchCubit(searchPractitioners: sl<SearchPractitioners>())..search());
+  sl.registerFactory(
+    () => SearchCubit(searchPractitioners: sl<SearchPractitioners>())..search(),
+  );
 
   // Practitioner (démo)
   sl.registerLazySingleton<PractitionerDemoDataSource>(
@@ -319,7 +316,9 @@ void configureDependencies() {
   );
 
   // Health lists (démo)
-  sl.registerLazySingleton<HealthDemoDataSource>(() => HealthDemoDataSourceImpl());
+  sl.registerLazySingleton<HealthDemoDataSource>(
+    () => HealthDemoDataSourceImpl(),
+  );
   sl.registerLazySingleton<HealthRepository>(
     () => HealthRepositoryImpl(demo: sl<HealthDemoDataSource>()),
   );
@@ -331,6 +330,27 @@ void configureDependencies() {
       getHealthList: sl<GetHealthList>(),
       addHealthItemDemo: sl<AddHealthItemDemo>(),
     )..load(),
+  );
+
+  // Health profile (local)
+  sl.registerLazySingleton<HealthProfileLocalDataSource>(
+    () => HealthProfileLocalDataSourceImpl(prefs: sl<SharedPreferences>()),
+  );
+  sl.registerLazySingleton<HealthProfileRepository>(
+    () =>
+        HealthProfileRepositoryImpl(local: sl<HealthProfileLocalDataSource>()),
+  );
+  sl.registerLazySingleton(
+    () => GetHealthProfile(sl<HealthProfileRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => SaveHealthProfile(sl<HealthProfileRepository>()),
+  );
+  sl.registerFactory(
+    () => HealthProfileCubit(
+      getHealthProfile: sl<GetHealthProfile>(),
+      saveHealthProfile: sl<SaveHealthProfile>(),
+    ),
   );
 
   // Account (démo) : profil / proches / paiement / sécurité
@@ -345,7 +365,9 @@ void configureDependencies() {
   sl.registerLazySingleton(() => AddRelativeDemo(sl<AccountRepository>()));
   sl.registerLazySingleton(() => GetPaymentMethods(sl<AccountRepository>()));
   sl.registerLazySingleton(() => AddPaymentMethodDemo(sl<AccountRepository>()));
-  sl.registerLazySingleton(() => RequestPasswordChangeDemo(sl<AccountRepository>()));
+  sl.registerLazySingleton(
+    () => RequestPasswordChangeDemo(sl<AccountRepository>()),
+  );
 
   sl.registerFactory(() => ProfileCubit(getProfile: sl<GetProfile>())..load());
   sl.registerFactory(
@@ -381,16 +403,23 @@ void configureDependencies() {
       getGreetingName: sl<GetHomeGreetingName>(),
       getHistoryEnabled: sl<GetHomeHistoryEnabled>(),
       enableHistory: sl<EnableHomeHistory>(),
+      getUpcomingAppointments: sl<GetUpcomingAppointments>(),
+      getPastAppointments: sl<GetPastAppointments>(),
+      getConversations: sl<GetConversations>(),
     )..load(),
   );
 
   // Booking confirm (démo)
-  sl.registerLazySingleton<BookingDemoDataSource>(() => BookingDemoDataSourceImpl());
+  sl.registerLazySingleton<BookingDemoDataSource>(
+    () => BookingDemoDataSourceImpl(),
+  );
   sl.registerLazySingleton<BookingRepository>(
     () => BookingRepositoryImpl(demo: sl<BookingDemoDataSource>()),
   );
   sl.registerLazySingleton(() => ConfirmBooking(sl<BookingRepository>()));
-  sl.registerFactory(() => BookingConfirmCubit(confirmBooking: sl<ConfirmBooking>()));
+  sl.registerFactory(
+    () => BookingConfirmCubit(confirmBooking: sl<ConfirmBooking>()),
+  );
   sl.registerFactory(
     () => BookingPatientsCubit(
       getProfile: sl<GetProfile>(),
@@ -399,4 +428,3 @@ void configureDependencies() {
     )..load(),
   );
 }
-

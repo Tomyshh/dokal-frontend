@@ -18,4 +18,3 @@ class AuthLogoutRequested extends AuthEvent {
 class AuthRefreshRequested extends AuthEvent {
   const AuthRefreshRequested();
 }
-

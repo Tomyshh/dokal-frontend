@@ -8,8 +8,8 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({required SignIn signIn})
-      : _signIn = signIn,
-        super(const LoginState.initial()) {
+    : _signIn = signIn,
+      super(const LoginState.initial()) {
     on<LoginSubmitted>(_onSubmitted);
   }
 
@@ -27,4 +27,3 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 }
-

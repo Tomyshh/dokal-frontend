@@ -10,8 +10,8 @@ class PractitionerCubit extends Cubit<PractitionerState> {
   PractitionerCubit({
     required GetPractitionerProfile getPractitionerProfile,
     required String practitionerId,
-  })  : _getPractitionerProfile = getPractitionerProfile,
-        super(PractitionerState.initial(practitionerId: practitionerId));
+  }) : _getPractitionerProfile = getPractitionerProfile,
+       super(PractitionerState.initial(practitionerId: practitionerId));
 
   final GetPractitionerProfile _getPractitionerProfile;
 
@@ -19,7 +19,9 @@ class PractitionerCubit extends Cubit<PractitionerState> {
     emit(state.copyWith(status: PractitionerStatus.loading));
     final res = await _getPractitionerProfile(state.practitionerId);
     res.fold(
-      (f) => emit(state.copyWith(status: PractitionerStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: PractitionerStatus.failure, error: f.message),
+      ),
       (profile) => emit(
         state.copyWith(
           status: PractitionerStatus.success,
@@ -30,4 +32,3 @@ class PractitionerCubit extends Cubit<PractitionerState> {
     );
   }
 }
-

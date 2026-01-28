@@ -16,4 +16,3 @@ abstract class AccountRepository {
 
   Future<Either<Failure, Unit>> requestPasswordChangeDemo();
 }
-

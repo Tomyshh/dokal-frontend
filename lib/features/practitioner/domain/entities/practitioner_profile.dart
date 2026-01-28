@@ -8,6 +8,13 @@ class PractitionerProfile extends Equatable {
     required this.address,
     required this.about,
     required this.nextAvailabilities,
+    this.avatarUrl,
+    this.sector,
+    this.phone,
+    this.email,
+    this.languages,
+    this.education,
+    this.yearsOfExperience,
   });
 
   final String id;
@@ -16,8 +23,28 @@ class PractitionerProfile extends Equatable {
   final String address;
   final String about;
   final List<String> nextAvailabilities;
+  final String? avatarUrl;
+  final String? sector;
+  final String? phone;
+  final String? email;
+  final List<String>? languages;
+  final String? education;
+  final int? yearsOfExperience;
 
   @override
-  List<Object?> get props => [id, name, specialty, address, about, nextAvailabilities];
+  List<Object?> get props => [
+    id,
+    name,
+    specialty,
+    address,
+    about,
+    nextAvailabilities,
+    avatarUrl,
+    sector,
+    phone,
+    email,
+    languages,
+    education,
+    yearsOfExperience,
+  ];
 }
-

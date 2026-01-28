@@ -23,27 +23,28 @@ class ConversationPreview extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        lastMessage,
-        timeAgo,
-        unreadCount,
-        isOnline,
-        avatarColorValue,
-        appointment,
-      ];
+    id,
+    name,
+    lastMessage,
+    timeAgo,
+    unreadCount,
+    isOnline,
+    avatarColorValue,
+    appointment,
+  ];
 }
 
 class ConversationAppointmentPreview extends Equatable {
   const ConversationAppointmentPreview({
     required this.title,
     required this.date,
+    this.isPast = false,
   });
 
   final String title;
   final String date;
+  final bool isPast;
 
   @override
-  List<Object?> get props => [title, date];
+  List<Object?> get props => [title, date, isPast];
 }
-

@@ -11,4 +11,3 @@ class GetRelatives {
 
   Future<Either<Failure, List<Relative>>> call() => repo.listRelatives();
 }
-

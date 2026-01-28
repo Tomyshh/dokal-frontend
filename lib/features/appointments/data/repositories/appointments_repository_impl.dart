@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/appointment.dart';
 import '../../domain/repositories/appointments_repository.dart';
 import '../datasources/appointments_demo_data_source.dart';
@@ -15,7 +16,7 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
     try {
       return Right(demo.upcoming());
     } catch (_) {
-      return const Left(Failure("Impossible de charger les rendez-vous à venir."));
+      return Left(Failure(l10nStatic.errorUnableToLoadUpcomingAppointments));
     }
   }
 
@@ -24,7 +25,7 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
     try {
       return Right(demo.past());
     } catch (_) {
-      return const Left(Failure("Impossible de charger l'historique."));
+      return Left(Failure(l10nStatic.errorUnableToLoadHistory));
     }
   }
 
@@ -33,7 +34,7 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
     try {
       return Right(demo.getById(id));
     } catch (_) {
-      return const Left(Failure("Impossible de charger le rendez-vous."));
+      return Left(Failure(l10nStatic.errorUnableToLoadAppointment));
     }
   }
 
@@ -43,8 +44,7 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
       demo.cancel(id);
       return const Right(unit);
     } catch (_) {
-      return const Left(Failure("Impossible d'annuler le rendez-vous."));
+      return Left(Failure(l10nStatic.errorUnableToCancelAppointment));
     }
   }
 }
-

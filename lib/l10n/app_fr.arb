@@ -1,0 +1,520 @@
+{
+  "@@locale": "fr",
+
+  "commonError": "Erreur",
+
+  "commonEmail": "Email",
+  "commonEmailHint": "ex: nom@domaine.com",
+  "commonEmailRequired": "Email requis",
+  "commonEmailInvalid": "Email invalide",
+
+  "commonPassword": "Mot de passe",
+  "commonPasswordHint": "••••••••",
+  "commonPasswordRequired": "Mot de passe requis",
+  "commonPasswordMinChars": "Minimum {min} caractères",
+  "@commonPasswordMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+
+  "authLoginTitle": "Connexion",
+  "authLoginSubtitle": "Accédez à vos rendez-vous, messages et documents.",
+  "authLoginButton": "Se connecter",
+  "authForgotPasswordCta": "Mot de passe oublié ?",
+  "authCreateAccountCta": "Créer un compte",
+  "authContinueWithoutAccount": "Continuer sans compte",
+
+  "authRegisterTitle": "Créer un compte",
+  "authRegisterSubtitle": "Tous les champs sont obligatoires.",
+  "authFirstName": "Prénom",
+  "authLastName": "Nom",
+  "commonRequired": "Requis",
+  "commonContinue": "Continuer",
+  "authAlreadyHaveAccount": "J'ai déjà un compte",
+
+  "authForgotPasswordTitle": "Mot de passe oublié",
+  "authForgotPasswordSubtitle": "Nous vous enverrons un lien de réinitialisation.",
+  "authForgotPasswordSendLink": "Envoyer le lien",
+  "authBackToLogin": "Retour à la connexion",
+  "authForgotPasswordEmailSent": "Email envoyé. Vérifiez votre boîte de réception.",
+
+  "authVerifyEmailTitle": "Vérifiez votre email",
+  "authVerifyEmailDescription": "Nous avons envoyé un email de confirmation à {email}. Cliquez sur le lien dans l'email puis revenez dans l'application.",
+  "@authVerifyEmailDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authVerifyEmailCheckedBackToLogin": "J'ai vérifié, retourner à la connexion",
+  "authVerifyEmailResend": "Renvoyer l'email",
+  "authVerifyEmailResentSnack": "Email de confirmation renvoyé.",
+  "commonBack": "Retour",
+
+  "homeMyPractitioners": "Mes praticiens",
+  "homeHistory": "Historique",
+  "homeGreeting": "Bonjour {name}",
+  "@homeGreeting": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeSearchHint": "Praticien, spécialité...",
+  "homeHealthTip1": "Cette année, adoptez les bons réflexes santé.",
+  "homeHealthTip2": "Il est encore temps de vous faire vacciner.",
+  "homeCompleteHealthProfile": "Compléter votre profil santé",
+  "homeCompleteHealthProfileSubtitle": "Recevez des rappels personnalisés et préparez vos RDV",
+  "homeStart": "Commencer",
+  "homeNoRecentPractitioner": "Aucun praticien récent",
+  "homeHistoryDescription": "Vous pouvez afficher la liste des praticiens que vous avez consultés",
+  "homeHistoryEnabledSnack": "Historique activé",
+  "homeHistoryEnabled": "Historique activé",
+  "homeActivateHistory": "Activer l'historique",
+  "homeNewMessageTitle": "Vous avez un nouveau message du Dr {name}",
+  "@homeNewMessageTitle": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeNewMessageNoAppointment": "Aucun rendez-vous associé",
+  "homeUpcomingAppointmentsTitle": "Rendez-vous à venir",
+  "homeLast3AppointmentsTitle": "3 derniers rendez-vous",
+  "homeSeeAllPastAppointments": "Voir tous les rendez-vous passés",
+  "homeAppointmentHistoryTitle": "Historique de rendez-vous",
+  "homeNoAppointmentHistory": "Aucun rendez-vous passé",
+
+  "commonTryAgainLater": "Réessayez plus tard.",
+  "commonUnableToLoad": "Impossible de charger",
+  "commonAvailableSoon": "Disponible bientôt",
+  "commonCancel": "Annuler",
+  "commonActionIsFinal": "Cette action est définitive.",
+  "commonTodo": "À faire",
+  "commonToRead": "À lire",
+  "commonSettings": "Paramètres",
+  "commonTryAgainInAMoment": "Réessayez dans un instant.",
+  "commonMinChars": "Minimum {min} caractères",
+  "@commonMinChars": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "commonOnline": "En ligne",
+
+  "appointmentsTitle": "Mes rendez-vous",
+  "appointmentsTabUpcoming": "À venir",
+  "appointmentsTabPast": "Passés",
+  "appointmentsNoUpcomingTitle": "Aucun rendez-vous à venir",
+  "appointmentsNoUpcomingSubtitle": "Vos prochains RDV apparaîtront ici.",
+  "appointmentsNoPastTitle": "Aucun rendez-vous passé",
+  "appointmentsNoPastSubtitle": "Vos RDV terminés apparaîtront ici.",
+
+  "searchTitle": "Rechercher",
+  "searchHint": "Praticien, spécialité...",
+  "searchUnavailableTitle": "Recherche indisponible",
+  "searchNoResultsTitle": "Aucun résultat",
+  "searchNoResultsSubtitle": "Essayez avec un autre terme.",
+
+  "onboardingStep1Title": "Réservez facilement vos rendez-vous",
+  "onboardingStep2Title": "Échangez facilement avec vos praticiens",
+  "onboardingStep3Title": "Accédez à vos dossiers médicaux à tout moment",
+  "onboardingContinueButton": "Continuer",
+  "onboardingStartButton": "Commencer",
+
+  "healthTitle": "Ma Santé",
+  "healthSubtitle": "Gérez votre profil santé",
+  "healthProfileTitle": "Profil santé",
+  "healthProfileSubtitle": "Renseignez les informations clés (Israël)",
+  "healthProfileIntro": "Ces informations nous aident à préparer vos soins en Israël (koupot holim, médecin traitant, allergies, etc.).",
+  "healthProfileSave": "Enregistrer",
+  "healthProfileSavedSnack": "Profil enregistré",
+  "healthProfileStepIdentity": "Identité",
+  "healthProfileStepKupatHolim": "Koupot holim",
+  "healthProfileStepMedical": "Informations médicales",
+  "healthProfileStepEmergency": "Contact d’urgence",
+  "healthProfileTeudatZehut": "Teoudat zehout",
+  "healthProfileDateOfBirth": "Date de naissance",
+  "healthProfileSex": "Sexe",
+  "healthProfileSexFemale": "Femme",
+  "healthProfileSexMale": "Homme",
+  "healthProfileSexOther": "Autre",
+  "healthProfileKupatHolim": "Kupat holim",
+  "healthProfileKupatMemberId": "N° adhérent",
+  "healthProfileFamilyDoctor": "Médecin traitant",
+  "healthProfileEmergencyContactName": "Nom du contact d’urgence",
+  "healthProfileEmergencyContactPhone": "Téléphone du contact d’urgence",
+  "kupatClalit": "Clalit",
+  "kupatMaccabi": "Maccabi",
+  "kupatMeuhedet": "Meuhedet",
+  "kupatLeumit": "Leumit",
+  "kupatOther": "Autre",
+  "healthMyFileSectionTitle": "Mon dossier",
+  "healthDocumentsTitle": "Documents",
+  "healthDocumentsSubtitle": "Ordonnances, analyses, comptes-rendus",
+  "healthConditionsTitle": "Conditions médicales",
+  "healthConditionsSubtitle": "Antécédents et pathologies",
+  "healthMedicationsTitle": "Médicaments",
+  "healthMedicationsSubtitle": "Traitements en cours",
+  "healthAllergiesTitle": "Allergies",
+  "healthAllergiesSubtitle": "Allergies connues",
+  "healthVaccinationsTitle": "Vaccinations",
+  "healthVaccinationsSubtitle": "Historique vaccinal",
+  "healthUpToDateTitle": "Vous êtes à jour",
+  "healthUpToDateSubtitle": "Nous vous notifierons quand vous aurez de nouveaux rappels santé.",
+
+  "appointmentDetailTitle": "Détails du rendez-vous",
+  "appointmentDetailCancelledSnack": "Rendez-vous annulé",
+  "appointmentDetailNotFoundTitle": "Rendez-vous introuvable",
+  "appointmentDetailNotFoundSubtitle": "Ce RDV est indisponible ou annulé.",
+  "appointmentDetailReschedule": "Replanifier",
+  "appointmentDetailCancelQuestion": "Annuler le rendez-vous ?",
+  "appointmentDetailPreparationTitle": "Préparation requise",
+  "appointmentDetailPreparationSubtitle": "Préparez votre consultation en avance.",
+  "appointmentDetailPrepQuestionnaire": "Remplir le questionnaire santé",
+  "appointmentDetailPrepInstructions": "Voir les instructions",
+  "appointmentPrepQuestionnaireSubtitle": "Questionnaire standardisé (prêt backend)",
+  "appointmentPrepInstructionsSubtitle": "Informations importantes avant la consultation",
+  "appointmentPrepQuestionSymptoms": "Motif / symptômes (décrivez en quelques mots)",
+  "appointmentPrepQuestionAllergies": "Allergies (optionnel)",
+  "appointmentPrepQuestionMedications": "Traitements en cours (optionnel)",
+  "appointmentPrepQuestionOther": "Informations complémentaires (optionnel)",
+  "appointmentPrepConsentLabel": "J’accepte de partager ces informations avec le praticien",
+  "appointmentPrepConsentRequired": "Veuillez accepter pour continuer.",
+  "appointmentPrepSavedSnack": "Préparation enregistrée",
+  "appointmentPrepSubmit": "Envoyer",
+  "appointmentPrepInstruction1": "Apportez une pièce d’identité et votre carte d’assurance.",
+  "appointmentPrepInstruction2": "Arrivez 10 minutes en avance.",
+  "appointmentPrepInstruction3": "Préparez vos documents médicaux importants.",
+  "appointmentPrepInstructionsAccept": "J’ai lu et j’accepte ces instructions",
+  "appointmentDetailSendDocsTitle": "Envoyer des documents",
+  "appointmentDetailSendDocsSubtitle": "Envoyez des documents au praticien avant la consultation.",
+  "appointmentDetailAddDocs": "Ajouter des documents",
+  "appointmentDetailEarlierSlotTitle": "Vous voulez un créneau plus tôt ?",
+  "appointmentDetailEarlierSlotSubtitle": "Recevez une alerte si un créneau plus tôt est disponible.",
+  "appointmentDetailEnableAlerts": "Activer les alertes",
+  "appointmentDetailContactOffice": "Contacter le cabinet",
+  "appointmentDetailVisitSummaryTitle": "Résumé de la visite",
+  "appointmentDetailVisitSummarySubtitle": "Ce qu’il faut retenir et la suite",
+  "appointmentDetailVisitSummaryDemo": "Examen clinique réalisé. Suivi recommandé dans 3 mois et poursuite du traitement si nécessaire.",
+  "appointmentDetailDoctorReportTitle": "Compte rendu du médecin",
+  "appointmentDetailDoctorReportSubtitle": "Note médicale rédigée après la consultation",
+  "appointmentDetailDoctorReportDemo": "Le patient s’est présenté pour une consultation. Aucun signe inquiétant. Suivi recommandé, et apport de documents pertinents au prochain rendez-vous.",
+  "appointmentDetailDocumentsAndRxTitle": "Documents & ordonnance",
+  "appointmentDetailDocumentsAndRxSubtitle": "Retrouvez les documents remis après la visite",
+  "appointmentDetailOpenVisitReport": "Ouvrir le compte rendu",
+  "appointmentDetailOpenPrescription": "Ouvrir l’ordonnance",
+  "appointmentDetailSendMessageCta": "Envoyer un message au cabinet",
+
+  "messagesTitle": "Messages",
+  "messagesMarkAllRead": "Marquer tout comme lu",
+  "messagesEmptyTitle": "Vos messages",
+  "messagesEmptySubtitle": "Démarrez une conversation avec vos praticiens pour demander un document, poser une question ou suivre vos résultats.",
+  "messagesNewMessageTitle": "Nouveau message",
+  "messagesWriteToOfficeTitle": "Écrire au cabinet",
+  "messagesResponseTime": "Réponse sous 24–48h.",
+  "messagesSubjectLabel": "Objet",
+  "messagesSubjectHint": "ex: Résultats, question…",
+  "messagesSubjectRequired": "Objet requis",
+  "messagesMessageLabel": "Message",
+  "messagesMessageHint": "Écrivez votre message…",
+  "messagesSendButton": "Envoyer",
+
+  "conversationTitle": "Conversation",
+  "conversationNewMessageTooltip": "Nouveau message",
+  "conversationWriteMessageHint": "Écrire un message…",
+
+  "practitionerTitle": "Praticien",
+  "practitionerUnavailableTitle": "Praticien indisponible",
+  "practitionerNotFoundTitle": "Praticien introuvable",
+  "practitionerNotFoundSubtitle": "Ce profil est indisponible.",
+  "practitionerBookAppointment": "Prendre rendez-vous",
+  "practitionerSendMessage": "Envoyer un message",
+  "practitionerAvailabilities": "Disponibilités",
+  "practitionerAddress": "Adresse",
+  "practitionerProfileSection": "Profil",
+
+  "documentsTitle": "Documents",
+  "documentsEmptyTitle": "Aucun document",
+  "documentsEmptySubtitle": "Vos ordonnances et résultats apparaîtront ici.",
+  "documentsOpen": "Ouvrir",
+  "documentsShare": "Partager",
+
+  "authLogout": "Se déconnecter",
+
+  "securityTitle": "Sécurité",
+  "securitySecureAccountTitle": "Sécurisez votre compte",
+  "securitySecureAccountSubtitle": "Mettez à jour vos informations",
+  "securityChangePassword": "Changer le mot de passe",
+  "securityChangePasswordSuccess": "Demande enregistrée",
+  "securityCurrentPassword": "Mot de passe actuel",
+  "securityNewPassword": "Nouveau mot de passe",
+
+  "accountTitle": "Mon compte",
+  "accountTaglineTitle": "Votre santé. Vos données.",
+  "accountTaglineSubtitle": "Votre confidentialité est notre priorité.",
+  "accountPersonalInfoSection": "Informations personnelles",
+  "accountMyProfile": "Mon profil",
+  "accountMyRelatives": "Mes proches",
+  "accountSectionTitle": "Compte",
+
+  "privacyTitle": "Confidentialité",
+  "privacyYourDataTitle": "Vos données",
+  "privacyYourDataSubtitle": "Nous protégeons vos informations et limitons leur accès.",
+  "privacySharingTitle": "Partage",
+  "privacySharingSubtitle": "Contrôlez les documents partagés avec vos praticiens.",
+  "privacyExportTitle": "Export",
+  "privacyExportSubtitle": "Exportez vos données à tout moment.",
+
+  "paymentTitle": "Paiement",
+  "paymentEmptyTitle": "Aucun moyen de paiement",
+  "paymentEmptySubtitle": "Ajoutez une carte pour simplifier la facturation.",
+  "paymentExpires": "Expire {expiry}",
+  "@paymentExpires": {
+    "placeholders": {
+      "expiry": {}
+    }
+  },
+
+  "relativesTitle": "Mes proches",
+  "relativesEmptyTitle": "Aucun proche",
+  "relativesEmptySubtitle": "Ajoutez vos proches pour prendre RDV en leur nom.",
+
+  "settingsUnavailableTitle": "Paramètres indisponibles",
+  "settingsUnavailableSubtitle": "Impossible de charger vos préférences.",
+  "settingsNotificationsTitle": "Notifications",
+  "settingsNotificationsSubtitle": "Recevoir des messages et mises à jour",
+  "settingsRemindersTitle": "Rappels de rendez-vous",
+  "settingsRemindersSubtitle": "Recevoir des rappels avant vos RDV",
+  "settingsLanguageTitle": "Langue",
+  "settingsLanguageCurrentLabel": "Français (actuel)",
+  "settingsLanguageShortLabel": "Français",
+
+  "profileTitle": "Mon profil",
+  "profileUnavailableTitle": "Profil indisponible",
+  "profileUnavailableSubtitle": "Vos informations sont indisponibles.",
+  "profileIdentitySection": "Identité",
+  "commonName": "Nom",
+  "commonAddress": "Adresse",
+  "commonCity": "Ville",
+  "profileMedicalInfoSection": "Informations médicales",
+  "profileBloodType": "Groupe sanguin",
+  "profileHeight": "Taille",
+  "profileWeight": "Poids",
+
+  "bookingSelectPatientTitle": "Pour qui est ce rendez-vous ?",
+  "bookingPatientsUnavailableTitle": "Patients indisponibles",
+  "bookingAddRelative": "Ajouter un proche",
+  "commonMe": "moi",
+
+  "bookingSelectSlotTitle": "Choisir une date",
+  "bookingSelectSlotSubtitle": "Sélectionnez une date et un horaire disponibles.",
+  "bookingSeeMoreDates": "Voir plus de dates",
+  "commonSelected": "Sélectionné",
+
+  "bookingInstructionsTitle": "Instructions",
+  "bookingInstructionsSubtitle": "Avant le rendez-vous, merci de vérifier ces points.",
+  "bookingInstructionsBullet1": "Apportez votre carte vitale et votre ordonnance si besoin.",
+  "bookingInstructionsBullet2": "Arrivez 10 minutes en avance pour les formalités.",
+  "bookingInstructionsBullet3": "En cas d’annulation, prévenez dès que possible.",
+  "bookingInstructionsAccept": "J’ai lu et j’accepte ces instructions.",
+
+  "bookingConfirmTitle": "Confirmer le rendez-vous",
+  "bookingConfirmSubtitle": "Vérifiez les informations avant de valider.",
+  "bookingReasonLabel": "Motif",
+  "bookingPatientLabel": "Patient",
+  "bookingSlotLabel": "Créneau",
+  "bookingMissingInfoTitle": "Informations manquantes",
+  "bookingZipCodeLabel": "Code postal",
+  "bookingVisitedBeforeQuestion": "Avez-vous déjà consulté ce praticien ?",
+  "commonYes": "Oui",
+  "commonNo": "Non",
+  "bookingConfirmButton": "Confirmer le rendez-vous",
+  "bookingChangeSlotButton": "Modifier le créneau",
+
+  "bookingSuccessTitle": "Rendez-vous confirmé",
+  "bookingSuccessSubtitle": "Nous avons envoyé une confirmation à votre email.",
+  "bookingAddToCalendar": "Ajouter à mon calendrier",
+  "bookingBookAnotherAppointment": "Reprendre un rendez-vous",
+  "bookingSendDocsSubtitle": "Envoyez des documents à votre praticien pour la consultation.",
+  "bookingViewMyAppointments": "Voir mes rendez-vous",
+  "bookingBackToHome": "Retour à l’accueil",
+
+  "vaccinationsEmptyTitle": "Aucun vaccin enregistré",
+  "vaccinationsEmptySubtitle": "Suivez vos vaccins et rappels.",
+  "allergiesEmptyTitle": "Aucune allergie",
+  "allergiesEmptySubtitle": "Déclarez vos allergies pour votre sécurité.",
+  "medicationsEmptyTitle": "Aucun médicament",
+  "medicationsEmptySubtitle": "Ajoutez vos traitements en cours.",
+  "conditionsEmptyTitle": "Aucune condition",
+  "conditionsEmptySubtitle": "Ajoutez vos antécédents pour vos RDV.",
+
+  "languageHebrew": "עברית",
+  "languageFrench": "Français",
+  "languageEnglish": "English",
+
+  "errorGenericTryAgain": "Une erreur est survenue. Réessayez.",
+  "authSignInFailedTryAgain": "Connexion échouée. Réessayez.",
+  "authSignUpFailedTryAgain": "Inscription échouée. Réessayez.",
+
+  "errorUnableToConfirmAppointment": "Impossible de confirmer le rendez-vous.",
+  "errorUnableToLoadProfile": "Impossible de charger le profil.",
+  "errorUnableToReadHistoryState": "Impossible de lire l'état de l'historique.",
+  "errorUnableToEnableHistory": "Impossible d'activer l'historique.",
+  "errorUnableToLoadRelatives": "Impossible de charger les proches.",
+  "errorUnableToAddRelative": "Impossible d’ajouter un proche.",
+  "errorUnableToLoadPayments": "Impossible de charger les paiements.",
+  "errorUnableToAddPaymentMethod": "Impossible d’ajouter un moyen de paiement.",
+  "errorUnableToLoadHealthData": "Impossible de charger les données santé.",
+  "errorUnableToAddHealthItem": "Impossible d’ajouter un élément.",
+  "errorUnableToLoadHealthProfile": "Impossible de charger le profil santé.",
+  "errorUnableToSaveHealthProfile": "Impossible d’enregistrer le profil santé.",
+  "errorUnableToLoadPractitioner": "Impossible de charger le praticien.",
+  "errorUnableToLoadSearch": "Impossible de charger la recherche.",
+  "errorUnableToLoadDocuments": "Impossible de charger les documents.",
+  "errorUnableToAddDocument": "Impossible d’ajouter le document.",
+  "errorUnableToReadSettings": "Impossible de lire les paramètres.",
+  "errorUnableToSaveSettings": "Impossible de sauvegarder les paramètres.",
+  "errorUnableToLoadUpcomingAppointments": "Impossible de charger les rendez-vous à venir.",
+  "errorUnableToLoadHistory": "Impossible de charger l'historique.",
+  "errorUnableToLoadAppointment": "Impossible de charger le rendez-vous.",
+  "errorUnableToCancelAppointment": "Impossible d'annuler le rendez-vous.",
+  "errorUnableToLoadConversations": "Impossible de charger les conversations.",
+  "errorUnableToLoadConversation": "Impossible de charger la conversation.",
+  "errorUnableToSendMessage": "Impossible d'envoyer le message.",
+  "errorUnableToReadOnboardingState": "Impossible de lire l'état d'onboarding.",
+  "errorUnableToSaveOnboarding": "Impossible d'enregistrer l'onboarding.",
+
+  "timeMinutesAgo": "il y a {minutes} min",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "il y a {hours} h",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "il y a {days} j",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "demoDentalOfficeName": "Cabinet dentaire",
+  "demoConversation1LastMessage": "Bonjour, vos résultats sont disponibles...",
+  "demoConversation2LastMessage": "Parfait, je vous envoie le document !",
+  "demoConversation3LastMessage": "Merci pour votre visite !",
+  "demoAppointmentConsultation": "Consultation",
+  "demoAppointmentFollowUp": "Suivi médical",
+  "demoShortDateThu19Feb": "Jeu 19 Fév",
+  "demoShortDateMon15Feb": "Lun 15 Fév",
+  "demoMessage1_1": "Bonjour, comment pouvons-nous vous aider ?",
+  "demoMessage1_2": "Bonjour, je souhaite obtenir mon compte-rendu.",
+  "demoMessage1_3": "Bien sûr, pouvez-vous préciser la date du rendez-vous ?",
+  "demoMessage2_1": "Bonjour, votre dossier est à jour.",
+  "demoMessage3_1": "Bonjour !",
+  "demoMessage3_2": "Merci docteur.",
+
+  "relativeRelation": "Proche",
+  "relativeChild": "Enfant",
+  "relativeParent": "Parent",
+  "relativeDemoName": "Proche {index}",
+  "@relativeDemoName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeLabel": "{relation} • {year}",
+  "@relativeLabel": {
+    "placeholders": {
+      "relation": {},
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+
+  "documentsDemoTitle": "Document {index}",
+  "@documentsDemoTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "documentsDemoTypeLabel": "Compte-rendu",
+  "documentsDemoDateLabelToday": "Aujourd’hui",
+
+  "demoSpecialtyOphthalmologist": "Ophtalmologiste",
+  "demoSpecialtyGeneralPractitioner": "Médecin généraliste",
+  "demoPractitionerAbout": "L’ophtalmologue traite les maladies de l’œil, et prend en charge la réfraction, le strabisme, et les troubles de la vision.\n\nCe profil est prêt à être branché au backend.",
+  "demoAvailabilityTodayAt": "Aujourd’hui • {time}",
+  "@demoAvailabilityTodayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityTomorrowAt": "Demain • {time}",
+  "@demoAvailabilityTomorrowAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "demoAvailabilityThisWeekAt": "Cette semaine • {time}",
+  "@demoAvailabilityThisWeekAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+
+  "demoSearchPractitionerName": "Dr Practicien {index}",
+  "@demoSearchPractitionerName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "demoSearchAddress": "75019 Paris • Avenue Secrétan",
+  "demoSearchSector1": "Secteur 1",
+  "demoAvailabilityToday": "Aujourd’hui",
+  "demoAvailabilityThisWeek": "Cette semaine",
+  "demoDistance12km": "1,2 km",
+
+  "demoAppointmentDateThu19Feb": "Jeudi 19 Février",
+  "demoAppointmentReasonNewPatientConsultation": "Consultation (nouveau patient)",
+
+  "demoPractitionerNameMarc": "Dr Marc BENHAMOU",
+  "demoPractitionerNameSarah": "Dr Sarah COHEN",
+  "demoPractitionerNameNoam": "Dr Noam LEVI",
+  "demoPractitionerNameMarcShort": "Dr Marc B.",
+  "demoPractitionerNameSophie": "Dr Sophie L.",
+  "demoPatientNameTom": "Tom",
+  "demoAddressParis": "28, avenue Secrétan, 75019 Paris",
+  "demoProfileFullName": "Tom Jami",
+  "demoProfileEmail": "tom@domaine.com",
+  "demoProfileCity": "75019 Paris",
+  "demoPaymentBrandVisa": "Visa",
+
+  "commonInitialsFallback": "MO",
+
+  "navHome": "Accueil",
+  "navAppointments": "RDV",
+  "navHealth": "Santé",
+  "navMessages": "Messages",
+  "navAccount": "Compte"
+}

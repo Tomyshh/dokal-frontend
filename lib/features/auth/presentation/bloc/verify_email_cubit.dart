@@ -5,8 +5,8 @@ import 'verify_email_state.dart';
 
 class VerifyEmailCubit extends Cubit<VerifyEmailState> {
   VerifyEmailCubit({required ResendSignupConfirmationEmail resend})
-      : _resend = resend,
-        super(const VerifyEmailState.initial());
+    : _resend = resend,
+      super(const VerifyEmailState.initial());
 
   final ResendSignupConfirmationEmail _resend;
 
@@ -19,4 +19,3 @@ class VerifyEmailCubit extends Cubit<VerifyEmailState> {
     );
   }
 }
-

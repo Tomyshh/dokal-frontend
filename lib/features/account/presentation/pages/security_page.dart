@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -7,6 +8,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class SecurityPage extends StatelessWidget {
@@ -14,41 +16,42 @@ class SecurityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: const DokalAppBar(title: 'Sécurité'),
+      appBar: DokalAppBar(title: l10n.securityTitle),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg.r),
           children: [
             DokalCard(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: EdgeInsets.all(AppSpacing.md.r),
               child: Row(
                 children: [
                   Container(
-                    width: 36,
-                    height: 36,
+                    width: 36.r,
+                    height: 36.r,
                     decoration: BoxDecoration(
                       color: AppColors.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.shield_rounded,
-                      size: 18,
+                      size: 18.sp,
                       color: AppColors.primary,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Sécurisez votre compte',
+                          l10n.securitySecureAccountTitle,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2.h),
                         Text(
-                          'Mettez à jour vos informations',
+                          l10n.securitySecureAccountSubtitle,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -57,38 +60,37 @@ class SecurityPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md.h),
             DokalCard(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.md,
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg.w,
+                vertical: AppSpacing.md.h,
               ),
               onTap: () => context.go('/account/security/change-password'),
               child: Row(
                 children: [
                   const Icon(Icons.lock_rounded, size: 20),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md.w),
                   Expanded(
                     child: Text(
-                      'Changer le mot de passe',
+                      l10n.securityChangePassword,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
                   Icon(
                     Icons.chevron_right_rounded,
-                    size: 18,
+                    size: 18.sp,
                     color: AppColors.textSecondary,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl.h),
             DokalButton.outline(
-              onPressed: () => context.read<AuthBloc>().add(
-                    const AuthLogoutRequested(),
-                  ),
+              onPressed: () =>
+                  context.read<AuthBloc>().add(const AuthLogoutRequested()),
               leading: const Icon(Icons.logout_rounded, size: 18),
-              child: const Text('Se déconnecter'),
+              child: Text(l10n.authLogout),
             ),
           ],
         ),
@@ -96,4 +98,3 @@ class SecurityPage extends StatelessWidget {
     );
   }
 }
-

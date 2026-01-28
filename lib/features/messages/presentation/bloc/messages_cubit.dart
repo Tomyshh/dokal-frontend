@@ -8,8 +8,8 @@ part 'messages_state.dart';
 
 class MessagesCubit extends Cubit<MessagesState> {
   MessagesCubit({required GetConversations getConversations})
-      : _getConversations = getConversations,
-        super(const MessagesState.initial());
+    : _getConversations = getConversations,
+      super(const MessagesState.initial());
 
   final GetConversations _getConversations;
 
@@ -17,7 +17,9 @@ class MessagesCubit extends Cubit<MessagesState> {
     emit(state.copyWith(status: MessagesStatus.loading));
     final res = await _getConversations();
     res.fold(
-      (f) => emit(state.copyWith(status: MessagesStatus.failure, error: f.message)),
+      (f) => emit(
+        state.copyWith(status: MessagesStatus.failure, error: f.message),
+      ),
       (items) => emit(
         state.copyWith(
           status: MessagesStatus.success,
@@ -28,4 +30,3 @@ class MessagesCubit extends Cubit<MessagesState> {
     );
   }
 }
-

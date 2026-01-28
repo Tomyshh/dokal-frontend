@@ -11,10 +11,10 @@ class AppointmentsState extends Equatable {
   });
 
   const AppointmentsState.initial()
-      : status = AppointmentsStatus.initial,
-        upcoming = const [],
-        past = const [],
-        error = null;
+    : status = AppointmentsStatus.initial,
+      upcoming = const [],
+      past = const [],
+      error = null;
 
   final AppointmentsStatus status;
   final List<Appointment> upcoming;
@@ -38,4 +38,3 @@ class AppointmentsState extends Equatable {
   @override
   List<Object?> get props => [status, upcoming, past, error];
 }
-

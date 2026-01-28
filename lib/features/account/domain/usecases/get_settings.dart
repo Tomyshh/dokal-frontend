@@ -11,4 +11,3 @@ class GetSettings {
 
   Future<Either<Failure, AppSettings>> call() => repo.getSettings();
 }
-

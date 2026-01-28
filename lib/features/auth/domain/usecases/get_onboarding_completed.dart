@@ -10,4 +10,3 @@ class GetOnboardingCompleted {
 
   Future<Either<Failure, bool>> call() => repo.isCompleted();
 }
-

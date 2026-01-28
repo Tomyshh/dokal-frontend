@@ -13,4 +13,3 @@ class DioClient {
 
   Dio get raw => _dio;
 }
-

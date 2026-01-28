@@ -11,7 +11,5 @@ class SignIn {
   Future<Either<Failure, AuthSession>> call({
     required String email,
     required String password,
-  }) =>
-      _repo.signIn(email: email, password: password);
+  }) => _repo.signIn(email: email, password: password);
 }
-

@@ -2,32 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_colors.dart';
+import '../../l10n/l10n.dart';
 
 class MainShell extends StatelessWidget {
-  const MainShell({super.key, required this.child});
+  const MainShell({super.key, required this.navigationShell});
 
-  final Widget child;
-
-  static const _tabs = <_Tab>[
-    _Tab('/home', Icons.home_rounded, Icons.home_outlined, 'Accueil', false),
-    _Tab('/appointments', Icons.calendar_today_rounded, Icons.calendar_today_outlined, 'RDV', false),
-    _Tab('/health', Icons.favorite_rounded, Icons.favorite_outline_rounded, 'Santé', false),
-    _Tab('/messages', Icons.mail_rounded, Icons.mail_outline_rounded, 'Messages', false),
-    _Tab('/account', Icons.person_rounded, Icons.person_outline_rounded, 'Compte', true),
-  ];
-
-  int _indexFromLocation(String location) {
-    final idx = _tabs.indexWhere((t) => location.startsWith(t.path));
-    return idx < 0 ? 0 : idx;
-  }
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).matchedLocation;
-    final currentIndex = _indexFromLocation(location);
+    final l10n = context.l10n;
+    final currentIndex = navigationShell.currentIndex;
+
+    final tabs = <_Tab>[
+      _Tab(0, Icons.home_rounded, Icons.home_outlined, l10n.navHome, false),
+      _Tab(
+        1,
+        Icons.calendar_today_rounded,
+        Icons.calendar_today_outlined,
+        l10n.navAppointments,
+        false,
+      ),
+      _Tab(
+        2,
+        Icons.mail_rounded,
+        Icons.mail_outline_rounded,
+        l10n.navMessages,
+        false,
+      ),
+      _Tab(
+        3,
+        Icons.person_rounded,
+        Icons.person_outline_rounded,
+        l10n.navAccount,
+        false,
+      ),
+    ];
 
     return Scaffold(
-      body: child,
+      body: navigationShell,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -45,16 +58,20 @@ class MainShell extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 6),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(_tabs.length, (index) {
-                final tab = _tabs[index];
+              children: List.generate(tabs.length, (index) {
+                final tab = tabs[index];
                 final isSelected = index == currentIndex;
-                
+
                 return _NavBarItem(
                   icon: isSelected ? tab.activeIcon : tab.icon,
                   label: tab.label,
                   isSelected: isSelected,
                   hasBadge: tab.hasBadge,
-                  onTap: () => context.go(tab.path),
+                  onTap: () => navigationShell.goBranch(
+                    tab.index,
+                    // Re-tap on current tab returns to its initial location
+                    initialLocation: tab.index == currentIndex,
+                  ),
                 );
               }),
             ),
@@ -96,7 +113,9 @@ class _NavBarItem extends StatelessWidget {
                 Icon(
                   icon,
                   size: 24,
-                  color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.textSecondary,
                 ),
                 if (hasBadge)
                   Positioned(
@@ -142,8 +161,8 @@ class _NavBarItem extends StatelessWidget {
 }
 
 class _Tab {
-  const _Tab(this.path, this.activeIcon, this.icon, this.label, this.hasBadge);
-  final String path;
+  const _Tab(this.index, this.activeIcon, this.icon, this.label, this.hasBadge);
+  final int index;
   final IconData activeIcon;
   final IconData icon;
   final String label;

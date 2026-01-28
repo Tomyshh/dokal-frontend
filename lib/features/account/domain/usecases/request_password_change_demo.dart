@@ -10,4 +10,3 @@ class RequestPasswordChangeDemo {
 
   Future<Either<Failure, Unit>> call() => repo.requestPasswordChangeDemo();
 }
-

@@ -14,4 +14,3 @@ class HomePractitioner extends Equatable {
   @override
   List<Object?> get props => [id, name, specialty];
 }
-

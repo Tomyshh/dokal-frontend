@@ -10,4 +10,3 @@ class CancelAppointment {
 
   Future<Either<Failure, Unit>> call(String id) => repo.cancel(id);
 }
-

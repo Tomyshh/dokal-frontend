@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
@@ -9,6 +9,7 @@ import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_avatar.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
 import '../../domain/entities/chat_message.dart';
 import '../bloc/conversation_cubit.dart';
 
@@ -32,6 +33,7 @@ class _ConversationPageState extends State<ConversationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider(
       create: (_) =>
           sl<ConversationCubit>(param1: widget.conversationId)..load(),
@@ -39,35 +41,26 @@ class _ConversationPageState extends State<ConversationPage> {
         listener: (context, state) {
           if (state.status == ConversationStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error ?? 'Erreur')),
+              SnackBar(content: Text(state.error ?? l10n.commonError)),
             );
           }
         },
         child: Scaffold(
-          appBar: DokalAppBar(
-            title: 'Conversation',
-            actions: [
-              IconButton(
-                tooltip: 'Nouveau message',
-                onPressed: () => context.go('/messages/new'),
-                icon: const Icon(Icons.edit_rounded, size: 20),
-              ),
-            ],
-          ),
+          appBar: DokalAppBar(title: l10n.conversationTitle),
           body: SafeArea(
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.sm,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg.w,
+                    vertical: AppSpacing.sm.h,
                   ),
                   child: DokalCard(
-                    padding: const EdgeInsets.all(AppSpacing.md),
+                    padding: EdgeInsets.all(AppSpacing.md.r),
                     child: Row(
                       children: [
-                        const DokalAvatar(name: 'Cabinet Benhamou', size: 36),
-                        const SizedBox(width: AppSpacing.md),
+                        DokalAvatar(name: 'Cabinet Benhamou', size: 36.r),
+                        SizedBox(width: AppSpacing.md.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,26 +69,29 @@ class _ConversationPageState extends State<ConversationPage> {
                                 'Cabinet Dr BENHAMOU',
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
-                              const SizedBox(height: 2),
+                              SizedBox(height: 2.h),
                               Text(
-                                'Réponse sous 24–48h',
+                                l10n.messagesResponseTime,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 4.h,
                           ),
                           decoration: BoxDecoration(
                             color: AppColors.accent.withValues(alpha: 0.10),
-                            borderRadius: BorderRadius.circular(AppRadii.pill),
+                            borderRadius: BorderRadius.circular(
+                              AppRadii.pill.r,
+                            ),
                           ),
                           child: Text(
-                            'En ligne',
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            l10n.commonOnline,
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(
                                   color: AppColors.accent,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -116,7 +112,7 @@ class _ConversationPageState extends State<ConversationPage> {
                       }
                       final messages = state.messages;
                       return ListView.builder(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        padding: EdgeInsets.all(AppSpacing.lg.r),
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           final m = messages[index];
@@ -127,7 +123,7 @@ class _ConversationPageState extends State<ConversationPage> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  padding: EdgeInsets.all(AppSpacing.sm.r),
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     border: Border(
@@ -141,23 +137,23 @@ class _ConversationPageState extends State<ConversationPage> {
                           controller: _controller,
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
-                            hintText: 'Écrire un message…',
+                            hintText: l10n.conversationWriteMessageHint,
                             hintStyle: Theme.of(context).textTheme.bodySmall,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.md,
-                              vertical: AppSpacing.sm,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.md.w,
+                              vertical: AppSpacing.sm.h,
                             ),
                           ),
                           onSubmitted: (_) => _send(context),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       SizedBox(
-                        width: 36,
-                        height: 36,
+                        width: 36.r,
+                        height: 36.r,
                         child: IconButton.filled(
                           onPressed: () => _send(context),
-                          icon: const Icon(Icons.send_rounded, size: 16),
+                          icon: Icon(Icons.send_rounded, size: 16.sp),
                           padding: EdgeInsets.zero,
                         ),
                       ),
@@ -193,16 +189,13 @@ class _MessageBubble extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
-        margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 10,
-        ),
+        margin: EdgeInsets.only(bottom: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         decoration: BoxDecoration(
           color: m.fromMe
               ? AppColors.primary.withValues(alpha: 0.12)
               : AppColors.surface,
-          borderRadius: BorderRadius.circular(AppRadii.lg),
+          borderRadius: BorderRadius.circular(AppRadii.lg.r),
           border: Border.all(
             color: m.fromMe ? AppColors.primary : AppColors.outline,
             width: 1,
@@ -210,12 +203,11 @@ class _MessageBubble extends StatelessWidget {
         ),
         child: Text(
           m.text,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textPrimary,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.textPrimary),
         ),
       ),
     );
   }
 }
-

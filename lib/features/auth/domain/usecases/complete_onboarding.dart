@@ -10,4 +10,3 @@ class CompleteOnboarding {
 
   Future<Either<Failure, Unit>> call() => repo.complete();
 }
-

@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class ChatMessage extends Equatable {
-  const ChatMessage({
-    required this.fromMe,
-    required this.text,
-  });
+  const ChatMessage({required this.fromMe, required this.text});
 
   final bool fromMe;
   final String text;
@@ -12,4 +9,3 @@ class ChatMessage extends Equatable {
   @override
   List<Object?> get props => [fromMe, text];
 }
-

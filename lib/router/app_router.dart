@@ -13,6 +13,7 @@ import '../features/auth/presentation/pages/forgot_password_page.dart';
 import '../features/auth/presentation/pages/verify_email_page.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
 import '../features/health/presentation/pages/health_dashboard_page.dart';
+import '../features/health/presentation/pages/health_profile_workflow_page.dart';
 import '../features/home/presentation/pages/home_page.dart';
 import '../features/messages/presentation/pages/messages_list_page.dart';
 import '../features/practitioner/presentation/pages/practitioner_profile_page.dart';
@@ -25,10 +26,11 @@ import '../features/booking/presentation/pages/select_patient_page.dart';
 import '../features/booking/presentation/pages/select_reason_page.dart';
 import '../features/booking/presentation/pages/select_slot_page.dart';
 import '../features/appointments/presentation/pages/appointment_detail_page.dart';
+import '../features/appointments/presentation/pages/appointment_instructions_page.dart';
+import '../features/appointments/presentation/pages/appointment_questionnaire_page.dart';
 import '../features/messages/presentation/pages/new_message_page.dart';
 import '../features/messages/presentation/pages/conversation_page.dart';
 import '../features/health/presentation/pages/allergies_page.dart';
-import '../features/health/presentation/pages/documents_page.dart';
 import '../features/health/presentation/pages/medical_conditions_page.dart';
 import '../features/health/presentation/pages/medications_page.dart';
 import '../features/health/presentation/pages/vaccinations_page.dart';
@@ -45,13 +47,16 @@ late final AuthBloc _authBloc;
 late final bool Function() _isOnboardingCompleted;
 
 final _rootNavKey = GlobalKey<NavigatorState>();
+final _homeTabNavKey = GlobalKey<NavigatorState>(debugLabel: 'homeTab');
+final _appointmentsTabNavKey = GlobalKey<NavigatorState>(
+  debugLabel: 'appointmentsTab',
+);
+final _messagesTabNavKey = GlobalKey<NavigatorState>(debugLabel: 'messagesTab');
+final _accountTabNavKey = GlobalKey<NavigatorState>(debugLabel: 'accountTab');
 
 /// Routes qui nécessitent une authentification
-/// Seulement le booking et le compte - les autres onglets sont accessibles
-const _protectedRoutes = [
-  '/booking',
-  '/account',
-];
+/// Seulement le booking - l'onglet Compte affiche le login inline si besoin
+const _protectedRoutes = ['/booking'];
 
 /// Vérifie si une route nécessite une authentification
 bool _isProtectedRoute(String location) {
@@ -69,7 +74,7 @@ void initAppRouter(
 }) {
   _authBloc = authBloc;
   _isOnboardingCompleted = isOnboardingCompleted;
-  
+
   appRouter = GoRouter(
     navigatorKey: _rootNavKey,
     // On démarre sur un splash qui décide (auth + onboarding).
@@ -78,7 +83,8 @@ void initAppRouter(
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
       final loc = state.matchedLocation;
-      final isAuthRoute = loc == '/onboarding' ||
+      final isAuthRoute =
+          loc == '/onboarding' ||
           loc == '/login' ||
           loc == '/register' ||
           loc == '/forgot-password' ||
@@ -86,33 +92,30 @@ void initAppRouter(
 
       final isAuthed = authBloc.state.isAuthenticated;
       final onboardingCompleted = _isOnboardingCompleted();
-      
+
       // Si quelqu'un arrive sur /splash, on le sort immédiatement.
       if (loc == '/splash') {
         if (isAuthed) return '/home';
         if (onboardingCompleted) return '/home';
         return '/onboarding';
       }
-      
+
       // Si onboarding déjà terminé, ne pas y revenir.
       if (loc == '/onboarding' && onboardingCompleted) return '/home';
-      
+
       // Si authentifié et sur une route d'auth (login, register, etc.), aller au home
       if (isAuthed && isAuthRoute) return '/home';
-      
+
       // Les routes protégées nécessitent une authentification
       if (!isAuthed && _isProtectedRoute(loc)) {
         // Rediriger vers login avec la destination originale
         return '/login?redirect=${Uri.encodeComponent(loc)}';
       }
-      
+
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/splash',
-        builder: (context, state) => const SplashPage(),
-      ),
+      GoRoute(path: '/splash', builder: (context, state) => const SplashPage()),
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingPage(),
@@ -137,14 +140,10 @@ void initAppRouter(
       ),
       GoRoute(
         path: '/verify-email',
-        builder: (context, state) => VerifyEmailPage(
-          email: (state.extra as String?) ?? '',
-        ),
+        builder: (context, state) =>
+            VerifyEmailPage(email: (state.extra as String?) ?? ''),
       ),
-      GoRoute(
-        path: '/search',
-        builder: (context, state) => const SearchPage(),
-      ),
+      GoRoute(path: '/search', builder: (context, state) => const SearchPage()),
       GoRoute(
         path: '/practitioner/:id',
         builder: (context, state) => PractitionerProfilePage(
@@ -188,114 +187,165 @@ void initAppRouter(
           ),
         ],
       ),
-      ShellRoute(
-        builder: (context, state, child) => MainShell(child: child),
-        routes: [
-          GoRoute(
-            path: '/home',
-            builder: (context, state) => const HomePage(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            navigatorKey: _homeTabNavKey,
             routes: [
               GoRoute(
-                path: 'search',
-                builder: (context, state) => const SearchPage(),
-              ),
-              GoRoute(
-                path: 'practitioner/:id',
-                builder: (context, state) => PractitionerProfilePage(
-                  practitionerId: state.pathParameters['id']!,
-                ),
-              ),
-            ],
-          ),
-          GoRoute(
-            path: '/appointments',
-            builder: (context, state) => const AppointmentsPage(),
-            routes: [
-              GoRoute(
-                path: ':id',
-                builder: (context, state) => AppointmentDetailPage(
-                  appointmentId: state.pathParameters['id']!,
-                ),
-              ),
-            ],
-          ),
-          GoRoute(
-            path: '/health',
-            builder: (context, state) => const HealthDashboardPage(),
-            routes: [
-              GoRoute(
-                path: 'documents',
-                builder: (context, state) => const DocumentsPage(),
-              ),
-              GoRoute(
-                path: 'conditions',
-                builder: (context, state) => const MedicalConditionsPage(),
-              ),
-              GoRoute(
-                path: 'medications',
-                builder: (context, state) => const MedicationsPage(),
-              ),
-              GoRoute(
-                path: 'allergies',
-                builder: (context, state) => const AllergiesPage(),
-              ),
-              GoRoute(
-                path: 'vaccinations',
-                builder: (context, state) => const VaccinationsPage(),
-              ),
-            ],
-          ),
-          GoRoute(
-            path: '/messages',
-            builder: (context, state) => const MessagesListPage(),
-            routes: [
-              GoRoute(
-                path: 'new',
-                builder: (context, state) => const NewMessagePage(),
-              ),
-              GoRoute(
-                path: 'c/:id',
-                builder: (context, state) => ConversationPage(
-                  conversationId: state.pathParameters['id']!,
-                ),
-              ),
-            ],
-          ),
-          GoRoute(
-            path: '/account',
-            builder: (context, state) => const AccountPage(),
-            routes: [
-              GoRoute(
-                path: 'profile',
-                builder: (context, state) => const ProfilePage(),
-              ),
-              GoRoute(
-                path: 'relatives',
-                builder: (context, state) => const RelativesPage(),
-              ),
-              GoRoute(
-                path: 'security',
-                builder: (context, state) => const SecurityPage(),
+                path: '/home',
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: HomePage()),
                 routes: [
                   GoRoute(
-                    path: 'change-password',
-                    builder: (context, state) => const ChangePasswordPage(),
+                    path: 'search',
+                    builder: (context, state) => const SearchPage(),
+                  ),
+                  GoRoute(
+                    path: 'health-profile',
+                    builder: (context, state) =>
+                        const HealthProfileWorkflowPage(),
+                  ),
+                  GoRoute(
+                    path: 'practitioner/:id',
+                    builder: (context, state) => PractitionerProfilePage(
+                      practitionerId: state.pathParameters['id']!,
+                    ),
                   ),
                 ],
               ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _appointmentsTabNavKey,
+            routes: [
               GoRoute(
-                path: 'payment',
-                builder: (context, state) => const PaymentPage(),
-              ),
-              GoRoute(
-                path: 'settings',
-                builder: (context, state) => const SettingsPage(),
-              ),
-              GoRoute(
-                path: 'privacy',
-                builder: (context, state) => const PrivacyPage(),
+                path: '/appointments',
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: AppointmentsPage()),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) => AppointmentDetailPage(
+                      appointmentId: state.pathParameters['id']!,
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'questionnaire',
+                        builder: (context, state) =>
+                            AppointmentQuestionnairePage(
+                              appointmentId: state.pathParameters['id']!,
+                            ),
+                      ),
+                      GoRoute(
+                        path: 'instructions',
+                        builder: (context, state) =>
+                            AppointmentInstructionsPage(
+                              appointmentId: state.pathParameters['id']!,
+                            ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _messagesTabNavKey,
+            routes: [
+              GoRoute(
+                path: '/messages',
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: MessagesListPage()),
+                routes: [
+                  GoRoute(
+                    path: 'new',
+                    builder: (context, state) => NewMessagePage(
+                      initialSubject: state.uri.queryParameters['subject'],
+                      initialMessage: state.uri.queryParameters['message'],
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'c/:id',
+                    builder: (context, state) => ConversationPage(
+                      conversationId: state.pathParameters['id']!,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _accountTabNavKey,
+            routes: [
+              GoRoute(
+                path: '/account',
+                pageBuilder: (context, state) {
+                  final isAuthed = _authBloc.state.isAuthenticated;
+                  return NoTransitionPage(
+                    child: isAuthed
+                        ? const AccountPage()
+                        : const LoginPage(redirectTo: '/account'),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'profile',
+                    builder: (context, state) => const ProfilePage(),
+                  ),
+                  GoRoute(
+                    path: 'relatives',
+                    builder: (context, state) => const RelativesPage(),
+                  ),
+                  GoRoute(
+                    path: 'security',
+                    builder: (context, state) => const SecurityPage(),
+                    routes: [
+                      GoRoute(
+                        path: 'change-password',
+                        builder: (context, state) => const ChangePasswordPage(),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'payment',
+                    builder: (context, state) => const PaymentPage(),
+                  ),
+                  GoRoute(
+                    path: 'settings',
+                    builder: (context, state) => const SettingsPage(),
+                  ),
+                  GoRoute(
+                    path: 'privacy',
+                    builder: (context, state) => const PrivacyPage(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/health',
+        builder: (context, state) => const HealthDashboardPage(),
+        routes: [
+          GoRoute(
+            path: 'conditions',
+            builder: (context, state) => const MedicalConditionsPage(),
+          ),
+          GoRoute(
+            path: 'medications',
+            builder: (context, state) => const MedicationsPage(),
+          ),
+          GoRoute(
+            path: 'allergies',
+            builder: (context, state) => const AllergiesPage(),
+          ),
+          GoRoute(
+            path: 'vaccinations',
+            builder: (context, state) => const VaccinationsPage(),
           ),
         ],
       ),

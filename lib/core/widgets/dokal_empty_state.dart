@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
@@ -22,39 +23,35 @@ class DokalEmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.xxl.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 56,
-              height: 56,
+              width: 56.r,
+              height: 56.r,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.primary.withValues(alpha: 0.08),
               ),
-              child: Icon(icon, color: AppColors.primary, size: 24),
+              child: Icon(icon, color: AppColors.primary, size: 24.sp),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg.h),
             Text(
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs.h),
             Text(
               subtitle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall,
             ),
-            if (action != null) ...[
-              const SizedBox(height: AppSpacing.lg),
-              action!,
-            ],
+            if (action != null) ...[SizedBox(height: AppSpacing.lg.h), action!],
           ],
         ),
       ),
     );
   }
 }
-

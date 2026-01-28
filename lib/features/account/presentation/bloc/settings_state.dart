@@ -10,9 +10,9 @@ class SettingsState extends Equatable {
   });
 
   const SettingsState.initial()
-      : status = SettingsStatus.initial,
-        settings = null,
-        error = null;
+    : status = SettingsStatus.initial,
+      settings = null,
+      error = null;
 
   final SettingsStatus status;
   final AppSettings? settings;
@@ -33,4 +33,3 @@ class SettingsState extends Equatable {
   @override
   List<Object?> get props => [status, settings, error];
 }
-

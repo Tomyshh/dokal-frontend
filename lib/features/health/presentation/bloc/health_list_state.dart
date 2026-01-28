@@ -10,9 +10,9 @@ class HealthListState extends Equatable {
   });
 
   const HealthListState.initial()
-      : status = HealthListStatus.initial,
-        items = const [],
-        error = null;
+    : status = HealthListStatus.initial,
+      items = const [],
+      error = null;
 
   final HealthListStatus status;
   final List<HealthItem> items;
@@ -33,4 +33,3 @@ class HealthListState extends Equatable {
   @override
   List<Object?> get props => [status, items, error];
 }
-

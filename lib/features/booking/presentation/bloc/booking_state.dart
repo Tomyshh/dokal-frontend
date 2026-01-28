@@ -58,15 +58,14 @@ class BookingState extends Equatable {
 
   @override
   List<Object?> get props => [
-        practitionerId,
-        reason,
-        patientLabel,
-        instructionsAccepted,
-        slotLabel,
-        addressLine,
-        zipCode,
-        city,
-        visitedBefore,
-      ];
+    practitionerId,
+    reason,
+    patientLabel,
+    instructionsAccepted,
+    slotLabel,
+    addressLine,
+    zipCode,
+    city,
+    visitedBefore,
+  ];
 }
-

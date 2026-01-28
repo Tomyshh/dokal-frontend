@@ -12,4 +12,3 @@ class SaveSettings {
   Future<Either<Failure, Unit>> call(AppSettings settings) =>
       repo.saveSettings(settings);
 }
-

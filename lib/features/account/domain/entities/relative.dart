@@ -1,11 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Relative extends Equatable {
-  const Relative({
-    required this.id,
-    required this.name,
-    required this.label,
-  });
+  const Relative({required this.id, required this.name, required this.label});
 
   final String id;
   final String name;
@@ -14,4 +10,3 @@ class Relative extends Equatable {
   @override
   List<Object?> get props => [id, name, label];
 }
-

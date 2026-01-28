@@ -43,10 +43,7 @@ class DokalChip extends StatelessWidget {
             ],
             Text(
               label,
-              style: TextStyle(
-                color: fg,
-                fontWeight: FontWeight.w700,
-              ),
+              style: TextStyle(color: fg, fontWeight: FontWeight.w700),
             ),
           ],
         ),
@@ -54,4 +51,3 @@ class DokalChip extends StatelessWidget {
     );
   }
 }
-

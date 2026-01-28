@@ -7,7 +7,7 @@ class RegisterState extends Equatable {
   const RegisterState.loading() : this._(status: RegisterStatus.loading);
   const RegisterState.success() : this._(status: RegisterStatus.success);
   const RegisterState.failure(String message)
-      : this._(status: RegisterStatus.failure, errorMessage: message);
+    : this._(status: RegisterStatus.failure, errorMessage: message);
 
   final RegisterStatus status;
   final String? errorMessage;
@@ -17,4 +17,3 @@ class RegisterState extends Equatable {
 }
 
 enum RegisterStatus { initial, loading, success, failure }
-

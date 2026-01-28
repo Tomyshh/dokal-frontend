@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/entities/auth_session.dart';
+import '../../../../l10n/l10n_static.dart';
 
 abstract class AuthRemoteDataSource {
   Future<AuthSession?> getSession();
@@ -44,7 +45,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
     final user = res.user;
     if (user == null) {
-      throw const AuthException('Connexion échouée. Réessayez.');
+      throw AuthException(l10nStatic.authSignInFailedTryAgain);
     }
     return AuthSession(userId: user.id, email: user.email);
   }
@@ -67,7 +68,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
     final user = res.user;
     if (user == null) {
-      throw const AuthException('Inscription échouée. Réessayez.');
+      throw AuthException(l10nStatic.authSignUpFailedTryAgain);
     }
     return AuthSession(userId: user.id, email: user.email);
   }
@@ -87,10 +88,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> resendSignupConfirmationEmail({required String email}) async {
     final client = await _client;
-    await client.auth.resend(
-      type: OtpType.signup,
-      email: email,
-    );
+    await client.auth.resend(type: OtpType.signup, email: email);
   }
 }
-

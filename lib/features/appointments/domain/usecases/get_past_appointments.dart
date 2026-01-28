@@ -11,4 +11,3 @@ class GetPastAppointments {
 
   Future<Either<Failure, List<Appointment>>> call() => repo.listPast();
 }
-

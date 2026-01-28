@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'injection_container.dart';
+import 'l10n/app_locale_controller.dart';
 import 'router/app_router.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   await sl.allReady();
+  await AppLocaleController.init();
   final authBloc = sl<AuthBloc>();
   final prefs = sl<SharedPreferences>();
   initAppRouter(

@@ -10,4 +10,3 @@ class ResendSignupConfirmationEmail {
   Future<Either<Failure, Unit>> call({required String email}) =>
       _repo.resendSignupConfirmationEmail(email: email);
 }
-

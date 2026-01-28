@@ -10,4 +10,3 @@ class GetHomeGreetingName {
 
   Future<Either<Failure, String>> call() => repo.getGreetingName();
 }
-

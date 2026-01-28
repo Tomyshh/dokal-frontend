@@ -9,6 +9,6 @@ class GetPractitionerProfile {
 
   final PractitionerRepository repo;
 
-  Future<Either<Failure, PractitionerProfile>> call(String id) => repo.getById(id);
+  Future<Either<Failure, PractitionerProfile>> call(String id) =>
+      repo.getById(id);
 }
-

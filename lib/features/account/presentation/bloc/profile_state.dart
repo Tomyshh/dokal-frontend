@@ -3,16 +3,12 @@ part of 'profile_cubit.dart';
 enum ProfileStatus { initial, loading, success, failure }
 
 class ProfileState extends Equatable {
-  const ProfileState({
-    required this.status,
-    required this.profile,
-    this.error,
-  });
+  const ProfileState({required this.status, required this.profile, this.error});
 
   const ProfileState.initial()
-      : status = ProfileStatus.initial,
-        profile = null,
-        error = null;
+    : status = ProfileStatus.initial,
+      profile = null,
+      error = null;
 
   final ProfileStatus status;
   final UserProfile? profile;
@@ -33,4 +29,3 @@ class ProfileState extends Equatable {
   @override
   List<Object?> get props => [status, profile, error];
 }
-

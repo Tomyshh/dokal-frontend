@@ -11,4 +11,3 @@ class GetAppointmentDetail {
 
   Future<Either<Failure, Appointment?>> call(String id) => repo.getById(id);
 }
-

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/booking_bloc.dart';
 
 class BookingSuccessPage extends StatelessWidget {
@@ -13,35 +15,36 @@ class BookingSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final state = context.read<BookingBloc>().state;
     final slot = state.slotLabel ?? '—';
     final patient = state.patientLabel ?? '—';
 
     return ListView(
-      padding: const EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.all(AppSpacing.xl.r),
       children: [
         Center(
           child: Icon(
             Icons.check_circle_rounded,
-            size: 52,
+            size: 52.sp,
             color: AppColors.accent,
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         Text(
-          'Rendez-vous confirmé',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+          l10n.bookingSuccessTitle,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm.h),
         Text(
-          'Nous avons envoyé une confirmation à votre email.',
+          l10n.bookingSuccessSubtitle,
           style: Theme.of(context).textTheme.bodyLarge,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: AppSpacing.xl),
+        SizedBox(height: AppSpacing.xl.h),
         _AppointmentSummaryCard(
           slotLabel: slot,
           practitionerName: 'Dr Dan BOTBOL',
@@ -49,85 +52,82 @@ class BookingSuccessPage extends StatelessWidget {
           patientLabel: patient,
           reason: state.reason ?? '—',
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md.h),
         DokalCard(
           padding: EdgeInsets.zero,
           child: Column(
             children: [
               ListTile(
-                leading: const Icon(Icons.calendar_month_rounded, color: AppColors.primary),
-                title: const Text('Ajouter à mon calendrier'),
+                leading: const Icon(
+                  Icons.calendar_month_rounded,
+                  color: AppColors.primary,
+                ),
+                title: Text(l10n.bookingAddToCalendar),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Calendrier disponible bientôt')),
+                    SnackBar(content: Text(l10n.commonAvailableSoon)),
                   );
                 },
               ),
               const Divider(height: 1),
               ListTile(
-                leading: const Icon(Icons.refresh_rounded, color: AppColors.primary),
-                title: const Text('Reprendre un rendez-vous'),
+                leading: const Icon(
+                  Icons.refresh_rounded,
+                  color: AppColors.primary,
+                ),
+                title: Text(l10n.bookingBookAnotherAppointment),
                 onTap: () => context.go('/search'),
               ),
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         _SectionCard(
-          title: 'Préparation requise',
-          subtitle: 'Préparez votre consultation en avance.',
+          title: l10n.appointmentDetailPreparationTitle,
+          subtitle: l10n.appointmentDetailPreparationSubtitle,
           children: [
             _PrepTile(
               icon: Icons.assignment_rounded,
-              title: 'Remplir le questionnaire santé',
-              statusLabel: 'À faire',
+              title: l10n.appointmentDetailPrepQuestionnaire,
+              statusLabel: l10n.commonTodo,
             ),
             const Divider(height: 1),
             _PrepTile(
               icon: Icons.info_outline_rounded,
-              title: 'Voir les instructions',
-              statusLabel: 'À lire',
+              title: l10n.appointmentDetailPrepInstructions,
+              statusLabel: l10n.commonToRead,
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md.h),
         _SectionCard(
-          title: 'Envoyer des documents',
-          subtitle: 'Envoyez des documents à votre praticien pour la consultation.',
+          title: l10n.appointmentDetailEarlierSlotTitle,
+          subtitle: l10n.appointmentDetailEarlierSlotSubtitle,
           children: [
-            ListTile(
-              leading: const Icon(Icons.upload_file_rounded, color: AppColors.primary),
-              title: const Text('Ajouter des documents'),
-              onTap: () => context.go('/health/documents'),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.md),
-        _SectionCard(
-          title: 'Vous voulez un créneau plus tôt ?',
-          subtitle: 'Recevez une alerte si un créneau plus tôt est disponible.',
-          children: const [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg.w,
+                vertical: AppSpacing.md.h,
+              ),
               child: Row(
                 children: [
-                  Expanded(child: Text('Activer les alertes')),
-                  Switch(value: false, onChanged: null),
+                  Expanded(child: Text(l10n.appointmentDetailEnableAlerts)),
+                  const Switch(value: false, onChanged: null),
                 ],
               ),
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg.h),
         DokalButton.primary(
           onPressed: () => context.go('/appointments'),
           leading: const Icon(Icons.event_available_rounded),
-          child: const Text('Voir mes rendez-vous'),
+          child: Text(l10n.bookingViewMyAppointments),
         ),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm.h),
         DokalButton.outline(
           onPressed: () => context.go('/home'),
-          child: const Text('Retour à l’accueil'),
+          child: Text(l10n.bookingBackToHome),
         ),
       ],
     );
@@ -157,19 +157,29 @@ class _AppointmentSummaryCard extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg.w,
+              vertical: AppSpacing.md.h,
+            ),
             decoration: BoxDecoration(
               color: AppColors.textPrimary.withValues(alpha: 0.85),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
             ),
             child: Row(
               children: [
-                const Icon(Icons.calendar_today_rounded, size: 16, color: Colors.white),
-                const SizedBox(width: 10),
+                Icon(
+                  Icons.calendar_today_rounded,
+                  size: 16.sp,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 10.w),
                 Expanded(
                   child: Text(
                     slotLabel,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
@@ -215,17 +225,17 @@ class _SectionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.lg,
-              AppSpacing.sm,
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg.w,
+              AppSpacing.lg.h,
+              AppSpacing.lg.w,
+              AppSpacing.sm.h,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
               ],
             ),
@@ -250,30 +260,30 @@ class _PrepTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ListTile(
       leading: Icon(icon, color: AppColors.primary),
       title: Text(title),
       trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
         decoration: BoxDecoration(
           color: AppColors.primary.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(999.r),
         ),
         child: Text(
           statusLabel,
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.primary,
             fontWeight: FontWeight.w700,
-            fontSize: 12,
+            fontSize: 12.sp,
           ),
         ),
       ),
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Disponible bientôt')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.commonAvailableSoon)));
       },
     );
   }
 }
-

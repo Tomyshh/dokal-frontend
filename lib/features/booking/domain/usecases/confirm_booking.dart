@@ -17,16 +17,14 @@ class ConfirmBooking {
     required String zipCode,
     required String city,
     required bool visitedBefore,
-  }) =>
-      repo.confirm(
-        practitionerId: practitionerId,
-        reason: reason,
-        patientLabel: patientLabel,
-        slotLabel: slotLabel,
-        addressLine: addressLine,
-        zipCode: zipCode,
-        city: city,
-        visitedBefore: visitedBefore,
-      );
+  }) => repo.confirm(
+    practitionerId: practitionerId,
+    reason: reason,
+    patientLabel: patientLabel,
+    slotLabel: slotLabel,
+    addressLine: addressLine,
+    zipCode: zipCode,
+    city: city,
+    visitedBefore: visitedBefore,
+  );
 }
-

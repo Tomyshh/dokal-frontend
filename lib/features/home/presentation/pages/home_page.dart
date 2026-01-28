@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/widgets/appointment_card.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,6 +15,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocProvider(
       create: (_) => sl<HomeCubit>(),
       child: Scaffold(
@@ -22,25 +26,23 @@ class HomePage extends StatelessWidget {
             const _StickyHeader(),
             // Contenu
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  const SizedBox(height: AppSpacing.md),
-                  // Carousel de conseils santé
-                  _HealthTipsCarousel(),
-                  const SizedBox(height: AppSpacing.md),
-                  // Card profil santé
+                  SizedBox(height: AppSpacing.md.h),
+                  // Card profil santé (tout en haut)
                   _HealthProfileCard(),
-                  const SizedBox(height: AppSpacing.lg),
-                  // Section Mes praticiens
-                  const _SectionTitle(title: 'Mes praticiens'),
-                  const SizedBox(height: AppSpacing.xs),
-                  _EmptyPractitionerCard(),
-                  const SizedBox(height: AppSpacing.lg),
-                  // Section Historique
-                  const _SectionTitle(title: 'Historique'),
-                  const SizedBox(height: AppSpacing.xs),
-                  const _ActivateHistoryCard(),
+                  SizedBox(height: AppSpacing.md.h),
+                  // Rendez-vous à venir
+                  _SectionTitle(title: l10n.homeUpcomingAppointmentsTitle),
+                  SizedBox(height: AppSpacing.xs.h),
+                  _UpcomingAppointmentsSection(),
+                  SizedBox(height: AppSpacing.md.h),
+                  // Nouveau message (3e position)
+                  _NewMessageSection(),
+                  SizedBox(height: AppSpacing.lg.h),
+                  // 3 derniers rendez-vous + CTA
+                  _AppointmentHistorySection(),
                   const SizedBox(height: 100), // Espace pour la navbar
                 ]),
               ),
@@ -52,14 +54,260 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class _UpcomingAppointmentsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (p, n) =>
+          p.upcomingAppointments != n.upcomingAppointments ||
+          p.greetingName != n.greetingName,
+      builder: (context, state) {
+        final items = state.upcomingAppointments;
+        if (items.isEmpty) return const SizedBox.shrink();
+
+        return Column(
+          children: [
+            for (final a in items) ...[
+              AppointmentCard(
+                dateLabel: a.dateLabel,
+                timeLabel: a.timeLabel,
+                practitionerName: a.practitionerName,
+                specialty: a.specialty,
+                reason: a.reason,
+                avatarUrl: a.avatarUrl,
+                isPast: a.isPast,
+                trailing: _PatientChip(
+                  name: a.patientName ?? state.greetingName,
+                ),
+                onTap: () => context.push('/appointments/${a.id}'),
+              ),
+              SizedBox(height: AppSpacing.sm.h),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _PatientChip extends StatelessWidget {
+  const _PatientChip({required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(999.r),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
+      ),
+      child: Text(
+        name,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: AppColors.primary,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+class _NewMessageSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (p, n) => p.newMessageConversation != n.newMessageConversation,
+      builder: (context, state) {
+        final conv = state.newMessageConversation;
+        if (conv == null) return const SizedBox.shrink();
+
+        final appt = conv.appointment;
+        final apptLabel = appt == null
+            ? l10n.homeNewMessageNoAppointment
+            : '${appt.title} • ${appt.date}';
+
+        final isPast = appt?.isPast ?? false;
+        final chipLabel = isPast
+            ? l10n.appointmentsTabPast
+            : l10n.appointmentsTabUpcoming;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _SectionTitle(title: l10n.messagesTitle),
+            SizedBox(height: AppSpacing.xs.h),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => context.push('/messages/c/${conv.id}'),
+              child: Container(
+                padding: EdgeInsets.all(AppSpacing.md.r),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLightBackground,
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.15),
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Icône message avec badge
+                    Container(
+                      width: 44.r,
+                      height: 44.r,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.primary,
+                            AppColors.primaryLight,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.3),
+                            blurRadius: 8.r,
+                            offset: Offset(0, 3.h),
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(
+                            Icons.mail_rounded,
+                            color: Colors.white,
+                            size: 22.sp,
+                          ),
+                          // Badge notification
+                          Positioned(
+                            right: 4.w,
+                            top: 4.h,
+                            child: Container(
+                              width: 12.r,
+                              height: 12.r,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFEF4444),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.md.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.homeNewMessageTitle(conv.name),
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            conv.lastMessage,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: AppColors.textSecondary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 8.h),
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                  vertical: 5.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isPast
+                                      ? AppColors.textSecondary
+                                          .withValues(alpha: 0.1)
+                                      : AppColors.accent.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(999.r),
+                                  border: Border.all(
+                                    color: isPast
+                                        ? AppColors.textSecondary
+                                            .withValues(alpha: 0.2)
+                                        : AppColors.accent
+                                            .withValues(alpha: 0.3),
+                                  ),
+                                ),
+                                child: Text(
+                                  chipLabel,
+                                  style: TextStyle(
+                                    color: isPast
+                                        ? AppColors.textSecondary
+                                        : AppColors.accent,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 11.sp,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: AppSpacing.sm.w),
+                              Expanded(
+                                child: Text(
+                                  apptLabel,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                      ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.sm.w),
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Icon(
+                        Icons.chevron_left_rounded,
+                        size: 20.sp,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 /// Header sticky utilisant SliverAppBar
 class _StickyHeader extends StatelessWidget {
   const _StickyHeader();
 
   @override
   Widget build(BuildContext context) {
-    final statusBarHeight = MediaQuery.of(context).padding.top;
-    
+    final l10n = context.l10n;
+
     return SliverAppBar(
       pinned: true,
       floating: false,
@@ -72,208 +320,105 @@ class _StickyHeader extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF005044),
-              Color(0xFF003D33),
-            ],
+            colors: [Color(0xFF005044), Color(0xFF003D33)],
           ),
         ),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.lg,
-            statusBarHeight + AppSpacing.md,
-            AppSpacing.lg,
-            AppSpacing.lg,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Salutation
-              BlocBuilder<HomeCubit, HomeState>(
-                buildWhen: (p, n) =>
-                    p.greetingName != n.greetingName || p.status != n.status,
-                builder: (context, state) {
-                  final name = state.greetingName;
-                  return Text(
-                    'Bonjour $name',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      height: 1.2,
+        child: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg.w,
+              AppSpacing.sm.h,
+              AppSpacing.lg.w,
+              AppSpacing.md.h,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Salutation
+                BlocBuilder<HomeCubit, HomeState>(
+                  buildWhen: (p, n) =>
+                      p.greetingName != n.greetingName || p.status != n.status,
+                  builder: (context, state) {
+                    final name = state.greetingName;
+                    return Text(
+                      l10n.homeGreeting(name),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w500,
+                        height: 1.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    );
+                  },
+                ),
+                SizedBox(height: AppSpacing.md.h),
+                // Barre de recherche - padding vertical au lieu de hauteur fixe
+                GestureDetector(
+                  onTap: () => context.push('/home/search'),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 8.h,
                     ),
-                  );
-                },
-              ),
-              const SizedBox(height: AppSpacing.md),
-              // Barre de recherche moderne
-              GestureDetector(
-                onTap: () => context.go('/home/search'),
-                child: Container(
-                  height: 52,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.06),
-                        blurRadius: 16,
-                        spreadRadius: 0,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search_rounded,
-                        color: AppColors.textSecondary.withValues(alpha: 0.6),
-                        size: 22,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'Praticien, spécialité...',
-                          style: TextStyle(
-                            color: AppColors.textSecondary.withValues(alpha: 0.7),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.1,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.06),
+                          blurRadius: 16.r,
+                          spreadRadius: 0,
+                          offset: Offset(0, 4.h),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.search_rounded,
+                          color: AppColors.textSecondary.withValues(alpha: 0.6),
+                          size: 22.sp,
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Text(
+                            l10n.homeSearchHint,
+                            style: TextStyle(
+                              color: AppColors.textSecondary.withValues(
+                                alpha: 0.7,
+                              ),
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0.1,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 36,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryLightBackground,
-                          borderRadius: BorderRadius.circular(10),
+                        Container(
+                          width: 36.r,
+                          height: 36.r,
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryLightBackground,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Icon(
+                            Icons.tune_rounded,
+                            color: AppColors.primary,
+                            size: 20.sp,
+                          ),
                         ),
-                        child: Icon(
-                          Icons.tune_rounded,
-                          color: AppColors.primary,
-                          size: 20,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// Carousel de conseils santé
-class _HealthTipsCarousel extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 110,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        clipBehavior: Clip.none,
-        children: [
-          _HealthTipCard(
-            text: 'Cette année, adoptez les bons réflexes santé.',
-            showImage: true,
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          _HealthTipCard(
-            text: 'Il est encore temps de vous faire vacciner.',
-            showArrow: true,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Card de conseil santé
-class _HealthTipCard extends StatelessWidget {
-  const _HealthTipCard({
-    required this.text,
-    this.showImage = false,
-    this.showArrow = false,
-  });
-
-  final String text;
-  final bool showImage;
-  final bool showArrow;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 260,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-                height: 1.35,
-              ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (showImage) ...[
-            const SizedBox(width: AppSpacing.sm),
-            Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(
-                Icons.people_rounded,
-                size: 32,
-                color: AppColors.primary.withValues(alpha: 0.7),
-              ),
-            ),
-          ],
-          if (showArrow) ...[
-            const SizedBox(width: AppSpacing.sm),
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.outline,
-                  width: 1.5,
-                ),
-              ),
-              child: const Icon(
-                Icons.arrow_forward,
-                size: 16,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ],
-        ],
       ),
     );
   }
@@ -290,13 +435,14 @@ class _HealthProfileCardState extends State<_HealthProfileCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     if (!_isVisible) return const SizedBox.shrink();
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md.r),
       decoration: BoxDecoration(
         color: AppColors.primaryLightBackground,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,9 +457,9 @@ class _HealthProfileCardState extends State<_HealthProfileCard> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Compléter votre profil santé',
-                        style: const TextStyle(
-                          fontSize: 14,
+                        l10n.homeCompleteHealthProfile,
+                        style: TextStyle(
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
                         ),
@@ -321,32 +467,32 @@ class _HealthProfileCardState extends State<_HealthProfileCard> {
                     ),
                     GestureDetector(
                       onTap: () => setState(() => _isVisible = false),
-                      child: const Icon(
+                      child: Icon(
                         Icons.close,
-                        size: 18,
+                        size: 18.sp,
                         color: AppColors.textSecondary,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
-                  'Recevez des rappels personnalisés et préparez vos RDV',
+                  l10n.homeCompleteHealthProfileSubtitle,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: AppColors.textSecondary,
                     height: 1.3,
                   ),
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm.h),
                 _CompactButton(
-                  label: 'Commencer',
-                  onTap: () => context.go('/health'),
+                  label: l10n.homeStart,
+                  onTap: () => context.push('/home/health-profile'),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm.w),
           // Icône coeur
           _HeartPulseIcon(),
         ],
@@ -367,13 +513,13 @@ class _CompactButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: 8,
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.md.w,
+          vertical: 8.h,
         ),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
           border: Border.all(color: AppColors.primary, width: 1.5),
         ),
         child: Text(
@@ -399,11 +545,7 @@ class _HeartPulseIcon extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Icon(
-            Icons.favorite,
-            color: Colors.pinkAccent,
-            size: 28,
-          ),
+          Icon(Icons.favorite, color: Colors.pinkAccent, size: 28),
           Positioned(
             right: 2,
             bottom: 6,
@@ -438,8 +580,8 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: const TextStyle(
-        fontSize: 15,
+      style: TextStyle(
+        fontSize: 15.sp,
         fontWeight: FontWeight.w700,
         color: AppColors.primary,
       ),
@@ -447,152 +589,89 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-/// Card praticien vide
-class _EmptyPractitionerCard extends StatelessWidget {
+class _AppointmentHistorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.primaryLightBackground,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: AppColors.surfaceVariant,
-              borderRadius: BorderRadius.circular(10),
+    final l10n = context.l10n;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _SectionTitle(title: l10n.homeLast3AppointmentsTitle),
             ),
-            child: const Icon(
-              Icons.person_outline,
-              color: AppColors.textSecondary,
-              size: 22,
+            TextButton(
+              onPressed: () => context.go('/appointments?tab=past'),
+              child: Text(l10n.homeSeeAllPastAppointments),
             ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Text(
-            'Aucun praticien récent',
-            style: TextStyle(
-              fontSize: 13,
-              color: AppColors.textSecondary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Card activation historique
-class _ActivateHistoryCard extends StatelessWidget {
-  const _ActivateHistoryCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.primaryLightBackground,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Icône horloge avec badge
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: Stack(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Icon(
-                    Icons.access_time,
-                    color: Colors.pinkAccent,
-                    size: 22,
-                  ),
+          ],
+        ),
+        SizedBox(height: AppSpacing.xs.h),
+        BlocBuilder<HomeCubit, HomeState>(
+          buildWhen: (p, n) => p.appointmentHistory != n.appointmentHistory,
+          builder: (context, state) {
+            final items = state.appointmentHistory;
+            if (items.isEmpty) {
+              return Container(
+                padding: EdgeInsets.all(AppSpacing.md.r),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLightBackground,
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: 14,
-                    height: 14,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 1.5),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40.r,
+                      height: 40.r,
+                      decoration: BoxDecoration(
+                        color: AppColors.surfaceVariant,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Icon(
+                        Icons.event_busy_rounded,
+                        color: AppColors.textSecondary,
+                        size: 22.sp,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.priority_high,
-                      size: 8,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Vous pouvez afficher la liste des praticiens que vous avez consultés',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textPrimary,
-                    height: 1.35,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                BlocConsumer<HomeCubit, HomeState>(
-                  listenWhen: (p, n) => p.historyEnabled != n.historyEnabled,
-                  listener: (context, state) {
-                    if (state.historyEnabled) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Historique activé')),
-                      );
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state.historyEnabled) {
-                      return Text(
-                        'Historique activé',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
-                        ),
-                      );
-                    }
-                    return GestureDetector(
-                      onTap: () => context.read<HomeCubit>().activateHistory(),
+                    SizedBox(width: AppSpacing.sm.w),
+                    Expanded(
                       child: Text(
-                        'Activer l\'historique',
+                        l10n.homeNoAppointmentHistory,
                         style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
+                          fontSize: 13.sp,
+                          color: AppColors.textSecondary,
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
+              );
+            }
+
+            return Column(
+              children: [
+                for (final a in items) ...[
+                  AppointmentCard(
+                    dateLabel: a.dateLabel,
+                    timeLabel: a.timeLabel,
+                    practitionerName: a.practitionerName,
+                    specialty: a.specialty,
+                    reason: a.reason,
+                    avatarUrl: a.avatarUrl,
+                    isPast: a.isPast,
+                    trailing: _PatientChip(
+                      name: a.patientName ?? l10n.commonMe,
+                    ),
+                    onTap: () => context.push('/appointments/${a.id}'),
+                  ),
+                  SizedBox(height: AppSpacing.sm.h),
+                ],
               ],
-            ),
-          ),
-        ],
-      ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

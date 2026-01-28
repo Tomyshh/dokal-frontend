@@ -17,7 +17,8 @@ class HealthDemoDataSourceImpl implements HealthDemoDataSource {
   int _i = 0;
 
   @override
-  List<HealthItem> list(HealthListType type) => List.unmodifiable(_data[type] ?? const []);
+  List<HealthItem> list(HealthListType type) =>
+      List.unmodifiable(_data[type] ?? const []);
 
   @override
   void addDemo(HealthListType type) {
@@ -29,7 +30,9 @@ class HealthDemoDataSourceImpl implements HealthDemoDataSource {
       HealthListType.vaccinations => 'Vaccin $_i',
     };
     final existing = _data[type] ?? <HealthItem>[];
-    _data[type] = [HealthItem(id: '${type.name}_$_i', label: label), ...existing];
+    _data[type] = [
+      HealthItem(id: '${type.name}_$_i', label: label),
+      ...existing,
+    ];
   }
 }
-

@@ -6,7 +6,7 @@ part 'booking_state.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc({required String practitionerId})
-      : super(BookingState(practitionerId: practitionerId)) {
+    : super(BookingState(practitionerId: practitionerId)) {
     on<BookingReasonSelected>(_onReasonSelected);
     on<BookingPatientSelected>(_onPatientSelected);
     on<BookingInstructionsAccepted>(_onInstructionsAccepted);
@@ -39,14 +39,14 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     emit(state.copyWith(instructionsAccepted: true));
   }
 
-  void _onSlotSelected(
-    BookingSlotSelected event,
-    Emitter<BookingState> emit,
-  ) {
+  void _onSlotSelected(BookingSlotSelected event, Emitter<BookingState> emit) {
     emit(state.copyWith(slotLabel: event.slotLabel));
   }
 
-  void _onAddressChanged(BookingAddressChanged event, Emitter<BookingState> emit) {
+  void _onAddressChanged(
+    BookingAddressChanged event,
+    Emitter<BookingState> emit,
+  ) {
     emit(state.copyWith(addressLine: event.addressLine));
   }
 
@@ -69,4 +69,3 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     emit(BookingState(practitionerId: state.practitionerId));
   }
 }
-

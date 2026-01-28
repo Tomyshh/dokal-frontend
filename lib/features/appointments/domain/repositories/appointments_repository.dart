@@ -9,4 +9,3 @@ abstract class AppointmentsRepository {
   Future<Either<Failure, Appointment?>> getById(String id);
   Future<Either<Failure, Unit>> cancel(String id);
 }
-
