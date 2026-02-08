@@ -15,4 +15,19 @@ abstract class AccountRepository {
   Future<Either<Failure, Unit>> addPaymentMethodDemo();
 
   Future<Either<Failure, Unit>> requestPasswordChangeDemo();
+
+  Future<Either<Failure, Unit>> updateProfile({
+    String? firstName,
+    String? lastName,
+    String? phone,
+    String? city,
+    String? dateOfBirth,
+    String? sex,
+  });
+
+  Future<Either<Failure, String?>> uploadAvatar(String filePath);
+
+  Future<Either<Failure, Unit>> deletePaymentMethod(String id);
+
+  Future<Either<Failure, Unit>> setDefaultPaymentMethod(String id);
 }

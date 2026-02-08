@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/entities/appointment.dart';
 import '../../domain/usecases/get_past_appointments.dart';
@@ -20,6 +21,21 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
   final GetPastAppointments _getPast;
 
   Future<void> load() async {
+    // Mode invité: on laisse l'utilisateur voir l'écran RDV sans session.
+    // Les RDV "personnels" nécessitent un JWT, donc on ne call pas le backend.
+    final hasSession = Supabase.instance.client.auth.currentSession != null;
+    if (!hasSession) {
+      emit(
+        state.copyWith(
+          status: AppointmentsStatus.success,
+          upcoming: const <Appointment>[],
+          past: const <Appointment>[],
+          error: null,
+        ),
+      );
+      return;
+    }
+
     emit(state.copyWith(status: AppointmentsStatus.loading));
     final upcomingRes = await _getUpcoming();
     final pastRes = await _getPast();

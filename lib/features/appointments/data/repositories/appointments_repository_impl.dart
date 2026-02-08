@@ -1,20 +1,24 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/appointment.dart';
 import '../../domain/repositories/appointments_repository.dart';
-import '../datasources/appointments_demo_data_source.dart';
+import '../datasources/appointments_remote_data_source.dart';
 
 class AppointmentsRepositoryImpl implements AppointmentsRepository {
-  AppointmentsRepositoryImpl({required this.demo});
+  AppointmentsRepositoryImpl({required this.remote});
 
-  final AppointmentsDemoDataSource demo;
+  final AppointmentsRemoteDataSourceImpl remote;
 
   @override
   Future<Either<Failure, List<Appointment>>> listUpcoming() async {
     try {
-      return Right(demo.upcoming());
+      final list = await remote.upcomingAsync();
+      return Right(list);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
     } catch (_) {
       return Left(Failure(l10nStatic.errorUnableToLoadUpcomingAppointments));
     }
@@ -23,7 +27,10 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
   @override
   Future<Either<Failure, List<Appointment>>> listPast() async {
     try {
-      return Right(demo.past());
+      final list = await remote.pastAsync();
+      return Right(list);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
     } catch (_) {
       return Left(Failure(l10nStatic.errorUnableToLoadHistory));
     }
@@ -32,7 +39,10 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
   @override
   Future<Either<Failure, Appointment?>> getById(String id) async {
     try {
-      return Right(demo.getById(id));
+      final appointment = await remote.getByIdAsync(id);
+      return Right(appointment);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
     } catch (_) {
       return Left(Failure(l10nStatic.errorUnableToLoadAppointment));
     }
@@ -41,8 +51,10 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
   @override
   Future<Either<Failure, Unit>> cancel(String id) async {
     try {
-      demo.cancel(id);
+      await remote.cancelAsync(id);
       return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
     } catch (_) {
       return Left(Failure(l10nStatic.errorUnableToCancelAppointment));
     }

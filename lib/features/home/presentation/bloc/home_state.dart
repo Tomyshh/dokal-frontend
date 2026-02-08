@@ -15,7 +15,7 @@ class HomeState extends Equatable {
 
   const HomeState.initial()
     : status = HomeStatus.initial,
-      greetingName = 'Tom',
+      greetingName = '',
       historyEnabled = false,
       upcomingAppointments = const [],
       newMessageConversation = null,

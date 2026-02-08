@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -68,6 +69,7 @@ class _UpcomingTab extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<AppointmentsCubit, AppointmentsState>(
       builder: (context, state) {
+        final hasSession = Supabase.instance.client.auth.currentSession != null;
         if (state.status == AppointmentsStatus.loading) {
           return Padding(
             padding: EdgeInsets.all(AppSpacing.lg.r),
@@ -85,8 +87,16 @@ class _UpcomingTab extends StatelessWidget {
         if (items.isEmpty) {
           return DokalEmptyState(
             title: l10n.appointmentsNoUpcomingTitle,
-            subtitle: l10n.appointmentsNoUpcomingSubtitle,
+            subtitle: hasSession
+                ? l10n.appointmentsNoUpcomingSubtitle
+                : '${l10n.appointmentsNoUpcomingSubtitle}\n${l10n.authLoginSubtitle}',
             icon: Icons.event_available_rounded,
+            action: hasSession
+                ? null
+                : ElevatedButton(
+                    onPressed: () => context.push('/account'),
+                    child: Text(l10n.authLoginButton),
+                  ),
           );
         }
         return ListView.separated(
@@ -119,6 +129,7 @@ class _PastTab extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<AppointmentsCubit, AppointmentsState>(
       builder: (context, state) {
+        final hasSession = Supabase.instance.client.auth.currentSession != null;
         if (state.status == AppointmentsStatus.loading) {
           return Padding(
             padding: EdgeInsets.all(AppSpacing.lg.r),
@@ -136,8 +147,16 @@ class _PastTab extends StatelessWidget {
         if (items.isEmpty) {
           return DokalEmptyState(
             title: l10n.appointmentsNoPastTitle,
-            subtitle: l10n.appointmentsNoPastSubtitle,
+            subtitle: hasSession
+                ? l10n.appointmentsNoPastSubtitle
+                : '${l10n.appointmentsNoPastSubtitle}\n${l10n.authLoginSubtitle}',
             icon: Icons.event_busy_rounded,
+            action: hasSession
+                ? null
+                : ElevatedButton(
+                    onPressed: () => context.push('/account'),
+                    child: Text(l10n.authLoginButton),
+                  ),
           );
         }
         return ListView.separated(

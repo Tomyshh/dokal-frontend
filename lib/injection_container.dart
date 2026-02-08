@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/permissions/permissions_service.dart';
-import 'core/network/dio_client.dart';
+import 'core/network/api_client.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/datasources/onboarding_local_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
@@ -25,7 +26,7 @@ import 'features/auth/presentation/bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/onboarding_cubit.dart';
 import 'features/auth/presentation/bloc/register_bloc.dart';
 import 'features/auth/presentation/bloc/verify_email_cubit.dart';
-import 'features/messages/data/datasources/messages_demo_data_source.dart';
+import 'features/messages/data/datasources/messages_remote_data_source.dart';
 import 'features/messages/data/repositories/messages_repository_impl.dart';
 import 'features/messages/domain/repositories/messages_repository.dart';
 import 'features/messages/domain/usecases/get_conversation_messages.dart';
@@ -33,7 +34,7 @@ import 'features/messages/domain/usecases/get_conversations.dart';
 import 'features/messages/domain/usecases/send_message.dart';
 import 'features/messages/presentation/bloc/conversation_cubit.dart';
 import 'features/messages/presentation/bloc/messages_cubit.dart';
-import 'features/appointments/data/datasources/appointments_demo_data_source.dart';
+import 'features/appointments/data/datasources/appointments_remote_data_source.dart';
 import 'features/appointments/data/repositories/appointments_repository_impl.dart';
 import 'features/appointments/domain/repositories/appointments_repository.dart';
 import 'features/appointments/domain/usecases/cancel_appointment.dart';
@@ -42,24 +43,26 @@ import 'features/appointments/domain/usecases/get_past_appointments.dart';
 import 'features/appointments/domain/usecases/get_upcoming_appointments.dart';
 import 'features/appointments/presentation/bloc/appointment_detail_cubit.dart';
 import 'features/appointments/presentation/bloc/appointments_cubit.dart';
-import 'features/account/data/datasources/settings_local_data_source.dart';
+import 'features/account/data/datasources/settings_remote_data_source.dart';
 import 'features/account/data/repositories/settings_repository_impl.dart';
 import 'features/account/domain/repositories/settings_repository.dart';
 import 'features/account/domain/usecases/get_settings.dart';
 import 'features/account/domain/usecases/save_settings.dart';
 import 'features/account/presentation/bloc/settings_cubit.dart';
-import 'features/search/data/datasources/search_demo_data_source.dart';
+import 'features/search/data/datasources/search_remote_data_source.dart';
 import 'features/search/data/repositories/search_repository_impl.dart';
 import 'features/search/domain/repositories/search_repository.dart';
 import 'features/search/domain/usecases/search_practitioners.dart';
 import 'features/search/presentation/bloc/search_cubit.dart';
-import 'features/practitioner/data/datasources/practitioner_demo_data_source.dart';
+import 'features/practitioner/data/datasources/practitioner_remote_data_source.dart';
 import 'features/practitioner/data/repositories/practitioner_repository_impl.dart';
 import 'features/practitioner/domain/repositories/practitioner_repository.dart';
 import 'features/practitioner/domain/usecases/get_practitioner_profile.dart';
+import 'features/practitioner/domain/usecases/get_practitioner_slots.dart';
+import 'features/practitioner/domain/usecases/get_practitioner_reviews.dart';
 import 'features/practitioner/presentation/bloc/practitioner_cubit.dart';
-import 'features/health/data/datasources/health_demo_data_source.dart';
-import 'features/health/data/datasources/health_profile_local_data_source.dart';
+import 'features/health/data/datasources/health_remote_data_source.dart';
+import 'features/health/data/datasources/health_profile_remote_data_source.dart';
 import 'features/health/data/repositories/health_repository_impl.dart';
 import 'features/health/data/repositories/health_profile_repository_impl.dart';
 import 'features/health/domain/repositories/health_repository.dart';
@@ -70,15 +73,19 @@ import 'features/health/domain/usecases/get_health_profile.dart';
 import 'features/health/domain/usecases/save_health_profile.dart';
 import 'features/health/presentation/bloc/health_list_cubit.dart';
 import 'features/health/presentation/bloc/health_profile_cubit.dart';
-import 'features/account/data/datasources/account_demo_data_source.dart';
+import 'features/account/data/datasources/account_remote_data_source.dart';
 import 'features/account/data/repositories/account_repository_impl.dart';
 import 'features/account/domain/repositories/account_repository.dart';
 import 'features/account/domain/usecases/add_payment_method_demo.dart';
 import 'features/account/domain/usecases/add_relative_demo.dart';
+import 'features/account/domain/usecases/delete_payment_method.dart';
 import 'features/account/domain/usecases/get_payment_methods.dart';
 import 'features/account/domain/usecases/get_profile.dart';
 import 'features/account/domain/usecases/get_relatives.dart';
 import 'features/account/domain/usecases/request_password_change_demo.dart';
+import 'features/account/domain/usecases/set_default_payment_method.dart';
+import 'features/account/domain/usecases/update_profile.dart';
+import 'features/account/domain/usecases/upload_avatar.dart';
 import 'features/account/presentation/bloc/change_password_cubit.dart';
 import 'features/account/presentation/bloc/payment_cubit.dart';
 import 'features/account/presentation/bloc/profile_cubit.dart';
@@ -90,67 +97,78 @@ import 'features/home/domain/usecases/enable_home_history.dart';
 import 'features/home/domain/usecases/get_home_greeting_name.dart';
 import 'features/home/domain/usecases/get_home_history_enabled.dart';
 import 'features/home/presentation/bloc/home_cubit.dart';
-import 'features/booking/data/datasources/booking_demo_data_source.dart';
+import 'features/booking/data/datasources/booking_remote_data_source.dart';
 import 'features/booking/data/repositories/booking_repository_impl.dart';
 import 'features/booking/domain/repositories/booking_repository.dart';
 import 'features/booking/domain/usecases/confirm_booking.dart';
 import 'features/booking/presentation/bloc/booking_confirm_cubit.dart';
 import 'features/booking/presentation/bloc/booking_patients_cubit.dart';
+import 'features/notifications/data/datasources/notifications_remote_data_source.dart';
+import 'features/notifications/data/repositories/notifications_repository_impl.dart';
+import 'features/notifications/domain/repositories/notifications_repository.dart';
+import 'features/notifications/domain/usecases/get_notifications.dart';
+import 'features/notifications/domain/usecases/get_unread_count.dart';
+import 'features/notifications/domain/usecases/mark_all_read.dart';
+import 'features/notifications/domain/usecases/mark_notification_read.dart';
+import 'features/notifications/domain/usecases/register_push_token.dart';
+import 'features/notifications/domain/usecases/remove_push_token.dart';
+import 'features/notifications/presentation/bloc/notifications_cubit.dart';
+import 'features/reviews/data/datasources/reviews_remote_data_source.dart';
+import 'features/reviews/data/repositories/reviews_repository_impl.dart';
+import 'features/reviews/domain/repositories/reviews_repository.dart';
+import 'features/reviews/domain/usecases/create_review.dart';
+import 'features/reviews/presentation/bloc/reviews_cubit.dart';
 
 final sl = GetIt.instance;
 
 void configureDependencies() {
   // External
-  // IMPORTANT: on le veut prêt dès le démarrage (sinon `sl<SharedPreferences>()` peut crasher).
   sl.registerSingletonAsync<SharedPreferences>(
     () => SharedPreferences.getInstance(),
   );
-
-  sl.registerLazySingleton<Dio>(() => Dio());
-  sl.registerLazySingleton<DioClient>(() => DioClient(sl<Dio>()));
 
   // Permissions
   sl.registerLazySingleton(() => PermissionsService());
 
   // Supabase
-  // Fournir les valeurs via soit:
-  // - `flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...`
-  // - ou un fichier `.env.local` (via `--dart-define-from-file=.env.local`)
-  // On supporte aussi les clés style Expo (`EXPO_PUBLIC_*`) pour éviter les confusions.
-  final supabaseUrlDefine = const String.fromEnvironment(
+  const supabaseUrlDefine = String.fromEnvironment(
     'SUPABASE_URL',
     defaultValue: '',
   );
-  final supabaseUrlExpo = const String.fromEnvironment(
+  const supabaseUrlExpo = String.fromEnvironment(
     'EXPO_PUBLIC_SUPABASE_URL',
     defaultValue: '',
   );
-  final supabaseAnonKeyDefine = const String.fromEnvironment(
+  const supabaseAnonKeyDefine = String.fromEnvironment(
     'SUPABASE_ANON_KEY',
     defaultValue: '',
   );
-  final supabaseKeyDefine = const String.fromEnvironment(
+  const supabaseKeyDefine = String.fromEnvironment(
     'SUPABASE_KEY',
     defaultValue: '',
   );
-  final supabaseKeyExpo = const String.fromEnvironment(
+  const supabaseKeyExpo = String.fromEnvironment(
     'EXPO_PUBLIC_SUPABASE_KEY',
     defaultValue: '',
   );
 
-  final supabaseUrl = supabaseUrlDefine.isNotEmpty
-      ? supabaseUrlDefine
-      : supabaseUrlExpo;
+  final supabaseUrl =
+      supabaseUrlDefine.isNotEmpty ? supabaseUrlDefine : supabaseUrlExpo;
   final supabaseAnonKey = supabaseAnonKeyDefine.isNotEmpty
       ? supabaseAnonKeyDefine
       : (supabaseKeyDefine.isNotEmpty ? supabaseKeyDefine : supabaseKeyExpo);
+
+  if (kDebugMode) {
+    debugPrint('[Dokal] Supabase URL: $supabaseUrl');
+    debugPrint('[Dokal] Supabase key present: ${supabaseAnonKey.isNotEmpty}');
+  }
 
   sl.registerSingletonAsync<SupabaseClient>(() async {
     if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
       throw StateError(
         "Supabase n'est pas configuré. Ajoutez `EXPO_PUBLIC_SUPABASE_URL` et "
-        "`EXPO_PUBLIC_SUPABASE_KEY` dans `.env.local` puis lancez l'app avec "
-        "`--dart-define-from-file=.env.local`.",
+        "`EXPO_PUBLIC_SUPABASE_KEY` dans `.env.prod` puis lancez l'app avec "
+        "`--dart-define-from-file=.env.prod`.",
       );
     }
 
@@ -159,7 +177,19 @@ void configureDependencies() {
     return Supabase.instance.client;
   });
 
-  // Auth
+  // ---------------------------------------------------------------------------
+  // API Client (backend REST)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<ApiClient>(
+    () => ApiClient(
+      dio: Dio(),
+      supabaseClientFuture: sl.getAsync<SupabaseClient>(),
+    ),
+  );
+
+  // ---------------------------------------------------------------------------
+  // Auth (Supabase Auth – remains as-is)
+  // ---------------------------------------------------------------------------
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
       supabaseClientFuture: sl.getAsync<SupabaseClient>(),
@@ -211,12 +241,23 @@ void configureDependencies() {
     ),
   );
 
-  // Messages (démo)
-  sl.registerLazySingleton<MessagesDemoDataSource>(
-    () => MessagesDemoDataSourceImpl(),
+  // ---------------------------------------------------------------------------
+  // Messages (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<MessagesRemoteDataSourceImpl>(
+    () => MessagesRemoteDataSourceImpl(
+      api: sl<ApiClient>(),
+      currentUserId: () {
+        try {
+          return Supabase.instance.client.auth.currentUser?.id ?? '';
+        } catch (_) {
+          return '';
+        }
+      },
+    ),
   );
   sl.registerLazySingleton<MessagesRepository>(
-    () => MessagesRepositoryImpl(demo: sl<MessagesDemoDataSource>()),
+    () => MessagesRepositoryImpl(remote: sl<MessagesRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => GetConversations(sl<MessagesRepository>()));
   sl.registerLazySingleton(
@@ -235,12 +276,16 @@ void configureDependencies() {
     ),
   );
 
-  // Appointments (démo)
-  sl.registerLazySingleton<AppointmentsDemoDataSource>(
-    () => AppointmentsDemoDataSourceImpl(),
+  // ---------------------------------------------------------------------------
+  // Appointments (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<AppointmentsRemoteDataSourceImpl>(
+    () => AppointmentsRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<AppointmentsRepository>(
-    () => AppointmentsRepositoryImpl(demo: sl<AppointmentsDemoDataSource>()),
+    () => AppointmentsRepositoryImpl(
+      remote: sl<AppointmentsRemoteDataSourceImpl>(),
+    ),
   );
   sl.registerLazySingleton(
     () => GetUpcomingAppointments(sl<AppointmentsRepository>()),
@@ -269,12 +314,14 @@ void configureDependencies() {
     ),
   );
 
-  // Account / Settings (local)
-  sl.registerLazySingleton<SettingsLocalDataSource>(
-    () => SettingsLocalDataSourceImpl(prefs: sl<SharedPreferences>()),
+  // ---------------------------------------------------------------------------
+  // Account / Settings (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<SettingsRemoteDataSourceImpl>(
+    () => SettingsRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<SettingsRepository>(
-    () => SettingsRepositoryImpl(local: sl<SettingsLocalDataSource>()),
+    () => SettingsRepositoryImpl(remote: sl<SettingsRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => GetSettings(sl<SettingsRepository>()));
   sl.registerLazySingleton(() => SaveSettings(sl<SettingsRepository>()));
@@ -286,27 +333,39 @@ void configureDependencies() {
     )..load(),
   );
 
-  // Search (démo)
-  sl.registerLazySingleton<SearchDemoDataSource>(
-    () => SearchDemoDataSourceImpl(),
+  // ---------------------------------------------------------------------------
+  // Search (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<SearchRemoteDataSourceImpl>(
+    () => SearchRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<SearchRepository>(
-    () => SearchRepositoryImpl(demo: sl<SearchDemoDataSource>()),
+    () => SearchRepositoryImpl(remote: sl<SearchRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => SearchPractitioners(sl<SearchRepository>()));
   sl.registerFactory(
     () => SearchCubit(searchPractitioners: sl<SearchPractitioners>())..search(),
   );
 
-  // Practitioner (démo)
-  sl.registerLazySingleton<PractitionerDemoDataSource>(
-    () => PractitionerDemoDataSourceImpl(),
+  // ---------------------------------------------------------------------------
+  // Practitioner (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<PractitionerRemoteDataSourceImpl>(
+    () => PractitionerRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<PractitionerRepository>(
-    () => PractitionerRepositoryImpl(demo: sl<PractitionerDemoDataSource>()),
+    () => PractitionerRepositoryImpl(
+      remote: sl<PractitionerRemoteDataSourceImpl>(),
+    ),
   );
   sl.registerLazySingleton(
     () => GetPractitionerProfile(sl<PractitionerRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => GetPractitionerSlots(sl<PractitionerRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => GetPractitionerReviews(sl<PractitionerRepository>()),
   );
   sl.registerFactoryParam<PractitionerCubit, String, void>(
     (practitionerId, _) => PractitionerCubit(
@@ -315,12 +374,14 @@ void configureDependencies() {
     )..load(),
   );
 
-  // Health lists (démo)
-  sl.registerLazySingleton<HealthDemoDataSource>(
-    () => HealthDemoDataSourceImpl(),
+  // ---------------------------------------------------------------------------
+  // Health lists (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<HealthRemoteDataSourceImpl>(
+    () => HealthRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<HealthRepository>(
-    () => HealthRepositoryImpl(demo: sl<HealthDemoDataSource>()),
+    () => HealthRepositoryImpl(remote: sl<HealthRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => GetHealthList(sl<HealthRepository>()));
   sl.registerLazySingleton(() => AddHealthItemDemo(sl<HealthRepository>()));
@@ -332,13 +393,16 @@ void configureDependencies() {
     )..load(),
   );
 
-  // Health profile (local)
-  sl.registerLazySingleton<HealthProfileLocalDataSource>(
-    () => HealthProfileLocalDataSourceImpl(prefs: sl<SharedPreferences>()),
+  // ---------------------------------------------------------------------------
+  // Health profile (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<HealthProfileRemoteDataSourceImpl>(
+    () => HealthProfileRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<HealthProfileRepository>(
-    () =>
-        HealthProfileRepositoryImpl(local: sl<HealthProfileLocalDataSource>()),
+    () => HealthProfileRepositoryImpl(
+      remote: sl<HealthProfileRemoteDataSourceImpl>(),
+    ),
   );
   sl.registerLazySingleton(
     () => GetHealthProfile(sl<HealthProfileRepository>()),
@@ -353,12 +417,14 @@ void configureDependencies() {
     ),
   );
 
-  // Account (démo) : profil / proches / paiement / sécurité
-  sl.registerLazySingleton<AccountDemoDataSource>(
-    () => AccountDemoDataSourceImpl(prefs: sl<SharedPreferences>()),
+  // ---------------------------------------------------------------------------
+  // Account (remote) : profil / proches / paiement / securite
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<AccountRemoteDataSourceImpl>(
+    () => AccountRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<AccountRepository>(
-    () => AccountRepositoryImpl(demo: sl<AccountDemoDataSource>()),
+    () => AccountRepositoryImpl(remote: sl<AccountRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => GetProfile(sl<AccountRepository>()));
   sl.registerLazySingleton(() => GetRelatives(sl<AccountRepository>()));
@@ -367,6 +433,12 @@ void configureDependencies() {
   sl.registerLazySingleton(() => AddPaymentMethodDemo(sl<AccountRepository>()));
   sl.registerLazySingleton(
     () => RequestPasswordChangeDemo(sl<AccountRepository>()),
+  );
+  sl.registerLazySingleton(() => UpdateProfile(sl<AccountRepository>()));
+  sl.registerLazySingleton(() => UploadAvatar(sl<AccountRepository>()));
+  sl.registerLazySingleton(() => DeletePaymentMethod(sl<AccountRepository>()));
+  sl.registerLazySingleton(
+    () => SetDefaultPaymentMethod(sl<AccountRepository>()),
   );
 
   sl.registerFactory(() => ProfileCubit(getProfile: sl<GetProfile>())..load());
@@ -388,12 +460,17 @@ void configureDependencies() {
     ),
   );
 
-  // Home (local)
+  // ---------------------------------------------------------------------------
+  // Home (local + API)
+  // ---------------------------------------------------------------------------
   sl.registerLazySingleton<HomeLocalDataSource>(
     () => HomeLocalDataSourceImpl(prefs: sl<SharedPreferences>()),
   );
   sl.registerLazySingleton<HomeRepository>(
-    () => HomeRepositoryImpl(local: sl<HomeLocalDataSource>()),
+    () => HomeRepositoryImpl(
+      local: sl<HomeLocalDataSource>(),
+      api: sl<ApiClient>(),
+    ),
   );
   sl.registerLazySingleton(() => GetHomeGreetingName(sl<HomeRepository>()));
   sl.registerLazySingleton(() => GetHomeHistoryEnabled(sl<HomeRepository>()));
@@ -409,12 +486,14 @@ void configureDependencies() {
     )..load(),
   );
 
-  // Booking confirm (démo)
-  sl.registerLazySingleton<BookingDemoDataSource>(
-    () => BookingDemoDataSourceImpl(),
+  // ---------------------------------------------------------------------------
+  // Booking (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<BookingRemoteDataSourceImpl>(
+    () => BookingRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<BookingRepository>(
-    () => BookingRepositoryImpl(demo: sl<BookingDemoDataSource>()),
+    () => BookingRepositoryImpl(remote: sl<BookingRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => ConfirmBooking(sl<BookingRepository>()));
   sl.registerFactory(
@@ -426,5 +505,59 @@ void configureDependencies() {
       getRelatives: sl<GetRelatives>(),
       addRelativeDemo: sl<AddRelativeDemo>(),
     )..load(),
+  );
+
+  // ---------------------------------------------------------------------------
+  // Notifications (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<NotificationsRemoteDataSource>(
+    () => NotificationsRemoteDataSourceImpl(api: sl<ApiClient>()),
+  );
+  sl.registerLazySingleton<NotificationsRepository>(
+    () => NotificationsRepositoryImpl(
+      remote: sl<NotificationsRemoteDataSource>(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => GetNotifications(sl<NotificationsRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => GetUnreadCount(sl<NotificationsRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => MarkNotificationRead(sl<NotificationsRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => MarkAllRead(sl<NotificationsRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => RegisterPushToken(sl<NotificationsRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => RemovePushToken(sl<NotificationsRepository>()),
+  );
+  sl.registerFactory(
+    () => NotificationsCubit(
+      getNotifications: sl<GetNotifications>(),
+      getUnreadCount: sl<GetUnreadCount>(),
+      markNotificationRead: sl<MarkNotificationRead>(),
+      markAllRead: sl<MarkAllRead>(),
+      registerPushToken: sl<RegisterPushToken>(),
+      removePushToken: sl<RemovePushToken>(),
+    ),
+  );
+
+  // ---------------------------------------------------------------------------
+  // Reviews (remote)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton<ReviewsRemoteDataSourceImpl>(
+    () => ReviewsRemoteDataSourceImpl(api: sl<ApiClient>()),
+  );
+  sl.registerLazySingleton<ReviewsRepository>(
+    () => ReviewsRepositoryImpl(remote: sl<ReviewsRemoteDataSourceImpl>()),
+  );
+  sl.registerLazySingleton(() => CreateReview(sl<ReviewsRepository>()));
+  sl.registerFactory(
+    () => ReviewsCubit(createReview: sl<CreateReview>()),
   );
 }

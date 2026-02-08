@@ -42,7 +42,7 @@ class BookingPatientsCubit extends Cubit<BookingPatientsState> {
       state.copyWith(
         status: BookingPatientsStatus.success,
         me: profRes.getOrElse(
-          () => const UserProfile(fullName: '—', email: '—', city: '—'),
+          () => const UserProfile(id: '', fullName: '—', email: '—', city: '—'),
         ),
         relatives: relRes.getOrElse(() => const []),
         error: null,

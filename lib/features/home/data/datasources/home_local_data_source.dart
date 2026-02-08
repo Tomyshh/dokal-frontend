@@ -18,7 +18,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
   static const _kHistoryEnabled = 'home_history_enabled';
 
   @override
-  String getGreetingName() => prefs.getString(_kGreetingName) ?? 'Tom';
+  String getGreetingName() => prefs.getString(_kGreetingName) ?? '';
 
   @override
   bool isHistoryEnabled() => prefs.getBool(_kHistoryEnabled) ?? false;

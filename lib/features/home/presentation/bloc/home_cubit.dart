@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/errors/failure.dart';
 import '../../../appointments/domain/entities/appointment.dart';
 import '../../../appointments/domain/usecases/get_past_appointments.dart';
 import '../../../appointments/domain/usecases/get_upcoming_appointments.dart';
@@ -39,9 +42,20 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(status: HomeStatus.loading));
     final nameRes = await _getGreetingName();
     final histRes = await _getHistoryEnabled();
-    final upcomingRes = await _getUpcomingAppointments();
-    final pastRes = await _getPastAppointments();
-    final convRes = await _getConversations();
+
+    // Mode invité: ne pas appeler les endpoints privés (RDV / messages).
+    final hasSession = Supabase.instance.client.auth.currentSession != null;
+    final Either<Failure, List<Appointment>> upcomingRes = hasSession
+        ? await _getUpcomingAppointments()
+        : const Right<Failure, List<Appointment>>(<Appointment>[]);
+    final Either<Failure, List<Appointment>> pastRes = hasSession
+        ? await _getPastAppointments()
+        : const Right<Failure, List<Appointment>>(<Appointment>[]);
+    final Either<Failure, List<ConversationPreview>> convRes = hasSession
+        ? await _getConversations()
+        : const Right<Failure, List<ConversationPreview>>(
+            <ConversationPreview>[],
+          );
 
     String? error;
     String name = '—';

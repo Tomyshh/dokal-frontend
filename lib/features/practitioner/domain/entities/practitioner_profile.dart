@@ -15,6 +15,10 @@ class PractitionerProfile extends Equatable {
     this.languages,
     this.education,
     this.yearsOfExperience,
+    this.consultationDurationMinutes,
+    this.isAcceptingNewPatients = true,
+    this.rating,
+    this.reviewCount = 0,
   });
 
   final String id;
@@ -30,6 +34,10 @@ class PractitionerProfile extends Equatable {
   final List<String>? languages;
   final String? education;
   final int? yearsOfExperience;
+  final int? consultationDurationMinutes;
+  final bool isAcceptingNewPatients;
+  final double? rating;
+  final int reviewCount;
 
   @override
   List<Object?> get props => [
@@ -46,5 +54,9 @@ class PractitionerProfile extends Equatable {
     languages,
     education,
     yearsOfExperience,
+    consultationDurationMinutes,
+    isAcceptingNewPatients,
+    rating,
+    reviewCount,
   ];
 }

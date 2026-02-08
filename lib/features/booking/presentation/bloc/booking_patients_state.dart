@@ -13,6 +13,7 @@ class BookingPatientsState extends Equatable {
   const BookingPatientsState.initial()
     : status = BookingPatientsStatus.initial,
       me = const UserProfile(
+        id: '',
         fullName: 'Tom Jami',
         email: 'tom@domaine.com',
         city: '75019 Paris',

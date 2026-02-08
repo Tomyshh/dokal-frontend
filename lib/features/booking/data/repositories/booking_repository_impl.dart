@@ -1,14 +1,15 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../l10n/l10n_static.dart';
 import '../../domain/repositories/booking_repository.dart';
-import '../datasources/booking_demo_data_source.dart';
+import '../datasources/booking_remote_data_source.dart';
 
 class BookingRepositoryImpl implements BookingRepository {
-  BookingRepositoryImpl({required this.demo});
+  BookingRepositoryImpl({required this.remote});
 
-  final BookingDemoDataSource demo;
+  final BookingRemoteDataSourceImpl remote;
 
   @override
   Future<Either<Failure, String>> confirm({
@@ -22,17 +23,39 @@ class BookingRepositoryImpl implements BookingRepository {
     required bool visitedBefore,
   }) async {
     try {
-      final id = await demo.confirm(
+      // Parse the slotLabel to extract date & times.
+      // The booking flow provides structured data; slotLabel format:
+      // "YYYY-MM-DD|HH:mm|HH:mm" (date|start|end) for real backend calls.
+      String appointmentDate = '';
+      String startTime = '';
+      String endTime = '';
+
+      if (slotLabel.contains('|')) {
+        final parts = slotLabel.split('|');
+        appointmentDate = parts[0];
+        startTime = parts.length > 1 ? parts[1] : '';
+        endTime = parts.length > 2 ? parts[2] : '';
+      } else {
+        // Fallback: use as-is
+        appointmentDate = slotLabel;
+        startTime = '09:00:00';
+        endTime = '09:30:00';
+      }
+
+      final id = await remote.confirmStructured(
         practitionerId: practitionerId,
-        reason: reason,
-        patientLabel: patientLabel,
-        slotLabel: slotLabel,
+        reasonId: reason.isNotEmpty ? reason : null,
+        appointmentDate: appointmentDate,
+        startTime: startTime,
+        endTime: endTime,
         addressLine: addressLine,
         zipCode: zipCode,
         city: city,
         visitedBefore: visitedBefore,
       );
       return Right(id);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
     } catch (_) {
       return Left(Failure(l10nStatic.errorUnableToConfirmAppointment));
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -17,6 +18,7 @@ class MessagesListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final hasSession = Supabase.instance.client.auth.currentSession != null;
     return BlocProvider(
       create: (_) => sl<MessagesCubit>()..load(),
       child: Scaffold(
@@ -99,8 +101,16 @@ class MessagesListPage extends StatelessWidget {
             if (conversations.isEmpty) {
               return DokalEmptyState(
                 title: l10n.messagesEmptyTitle,
-                subtitle: l10n.messagesEmptySubtitle,
+                subtitle: hasSession
+                    ? l10n.messagesEmptySubtitle
+                    : '${l10n.messagesEmptySubtitle}\n${l10n.authLoginSubtitle}',
                 icon: Icons.mail_rounded,
+                action: hasSession
+                    ? null
+                    : ElevatedButton(
+                        onPressed: () => context.push('/account'),
+                        child: Text(l10n.authLoginButton),
+                      ),
               );
             }
             return ListView.builder(
@@ -119,7 +129,8 @@ class MessagesListPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.small(
           heroTag: 'fab_messages',
-          onPressed: () => context.push('/messages/new'),
+          onPressed: () =>
+              hasSession ? context.push('/messages/new') : context.push('/account'),
           backgroundColor: AppColors.primary,
           child: const Icon(Icons.edit_rounded, color: Colors.white, size: 20),
         ),
