@@ -32,10 +32,12 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     emit(state.copyWith(status: NotificationsStatus.loading));
     final result = await getNotifications();
     result.fold(
-      (f) => emit(state.copyWith(
-          status: NotificationsStatus.failure, error: f.message)),
-      (items) => emit(state.copyWith(
-          status: NotificationsStatus.success, items: items)),
+      (f) => emit(
+        state.copyWith(status: NotificationsStatus.failure, error: f.message),
+      ),
+      (items) => emit(
+        state.copyWith(status: NotificationsStatus.success, items: items),
+      ),
     );
   }
 

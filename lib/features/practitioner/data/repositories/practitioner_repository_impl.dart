@@ -48,7 +48,11 @@ class PractitionerRepositoryImpl implements PractitionerRepository {
     int offset = 0,
   }) async {
     try {
-      final reviews = await remote.getReviewsAsync(id, limit: limit, offset: offset);
+      final reviews = await remote.getReviewsAsync(
+        id,
+        limit: limit,
+        offset: offset,
+      );
       return Right(
         reviews
             .map(

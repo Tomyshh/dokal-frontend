@@ -22,13 +22,12 @@ class NotificationsState extends Equatable {
     List<NotificationItem>? items,
     int? unreadCount,
     String? error,
-  }) =>
-      NotificationsState(
-        status: status ?? this.status,
-        items: items ?? this.items,
-        unreadCount: unreadCount ?? this.unreadCount,
-        error: error,
-      );
+  }) => NotificationsState(
+    status: status ?? this.status,
+    items: items ?? this.items,
+    unreadCount: unreadCount ?? this.unreadCount,
+    error: error,
+  );
 
   @override
   List<Object?> get props => [status, items, unreadCount, error];

@@ -15,13 +15,12 @@ class UpdateProfile {
     String? city,
     String? dateOfBirth,
     String? sex,
-  }) =>
-      repo.updateProfile(
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-        city: city,
-        dateOfBirth: dateOfBirth,
-        sex: sex,
-      );
+  }) => repo.updateProfile(
+    firstName: firstName,
+    lastName: lastName,
+    phone: phone,
+    city: city,
+    dateOfBirth: dateOfBirth,
+    sex: sex,
+  );
 }

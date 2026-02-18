@@ -12,6 +12,5 @@ class GetPractitionerReviews {
     String id, {
     int limit = 20,
     int offset = 0,
-  }) =>
-      repo.getReviews(id, limit: limit, offset: offset);
+  }) => repo.getReviews(id, limit: limit, offset: offset);
 }

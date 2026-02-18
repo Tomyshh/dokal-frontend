@@ -19,15 +19,17 @@ class ReviewsRemoteDataSourceImpl {
     required int rating,
     String? comment,
   }) async {
-    final json = await api.post(
-      '/api/v1/reviews',
-      data: {
-        'appointment_id': appointmentId,
-        'practitioner_id': practitionerId,
-        'rating': rating,
-        if (comment != null) 'comment': comment,
-      },
-    ) as Map<String, dynamic>;
+    final json =
+        await api.post(
+              '/api/v1/reviews',
+              data: {
+                'appointment_id': appointmentId,
+                'practitioner_id': practitionerId,
+                'rating': rating,
+                if (comment != null) 'comment': comment,
+              },
+            )
+            as Map<String, dynamic>;
     return _mapReview(json);
   }
 

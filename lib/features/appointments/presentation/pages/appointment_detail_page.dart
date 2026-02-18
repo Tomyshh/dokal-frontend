@@ -370,8 +370,7 @@ class _AppointmentTopCard extends StatelessWidget {
             title: Text(a.practitionerName),
             subtitle: Text(a.specialty),
             trailing: const Icon(Icons.chevron_right_rounded),
-            onTap: () =>
-                context.push('/home/practitioner/${a.practitionerId}'),
+            onTap: () => context.push('/home/practitioner/${a.practitionerId}'),
           ),
           const Divider(height: 1),
           ListTile(

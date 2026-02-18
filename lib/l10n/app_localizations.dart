@@ -220,6 +220,138 @@ abstract class AppLocalizations {
   /// **'שם משפחה'**
   String get authLastName;
 
+  /// No description provided for @profileCompletionTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'השלמת פרופיל'**
+  String get profileCompletionTitle;
+
+  /// No description provided for @profileCompletionSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'הפרטים הבאים נדרשים כדי להמשיך.'**
+  String get profileCompletionSubtitle;
+
+  /// No description provided for @profileCompletionStepLabel.
+  ///
+  /// In he, this message translates to:
+  /// **'{current}/{total}'**
+  String profileCompletionStepLabel(int current, int total);
+
+  /// No description provided for @profileCompletionStepIdentityTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'זהות'**
+  String get profileCompletionStepIdentityTitle;
+
+  /// No description provided for @profileCompletionStepIdentitySubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בוא/י נתחיל בפרטים האישיים.'**
+  String get profileCompletionStepIdentitySubtitle;
+
+  /// No description provided for @profileCompletionDateOfBirth.
+  ///
+  /// In he, this message translates to:
+  /// **'תאריך לידה'**
+  String get profileCompletionDateOfBirth;
+
+  /// No description provided for @profileCompletionStepContactTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'יצירת קשר'**
+  String get profileCompletionStepContactTitle;
+
+  /// No description provided for @profileCompletionStepContactSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'איך נוכל ליצור איתך קשר?'**
+  String get profileCompletionStepContactSubtitle;
+
+  /// No description provided for @profileCompletionEmailLockedHint.
+  ///
+  /// In he, this message translates to:
+  /// **'כתובת האימייל מקושרת לחשבון ולא ניתן לשנות אותה כאן.'**
+  String get profileCompletionEmailLockedHint;
+
+  /// No description provided for @profileCompletionPhone.
+  ///
+  /// In he, this message translates to:
+  /// **'מספר טלפון'**
+  String get profileCompletionPhone;
+
+  /// No description provided for @profileCompletionPhoneHint.
+  ///
+  /// In he, this message translates to:
+  /// **'לדוגמה: +972 50 123 4567'**
+  String get profileCompletionPhoneHint;
+
+  /// No description provided for @profileCompletionPhoneInvalid.
+  ///
+  /// In he, this message translates to:
+  /// **'מספר טלפון לא תקין'**
+  String get profileCompletionPhoneInvalid;
+
+  /// No description provided for @profileCompletionStepIsraelTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'ישראל'**
+  String get profileCompletionStepIsraelTitle;
+
+  /// No description provided for @profileCompletionStepIsraelSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מידע נדרש לטיפול בישראל.'**
+  String get profileCompletionStepIsraelSubtitle;
+
+  /// No description provided for @profileCompletionTeudatHint.
+  ///
+  /// In he, this message translates to:
+  /// **'9 ספרות'**
+  String get profileCompletionTeudatHint;
+
+  /// No description provided for @profileCompletionTeudatInvalid.
+  ///
+  /// In he, this message translates to:
+  /// **'תעודת זהות לא תקינה'**
+  String get profileCompletionTeudatInvalid;
+
+  /// No description provided for @profileCompletionStepInsuranceTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'ביטוח'**
+  String get profileCompletionStepInsuranceTitle;
+
+  /// No description provided for @profileCompletionStepInsuranceSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'אופציונלי (אפשר לדלג).'**
+  String get profileCompletionStepInsuranceSubtitle;
+
+  /// No description provided for @profileCompletionInsurance.
+  ///
+  /// In he, this message translates to:
+  /// **'חברת ביטוח'**
+  String get profileCompletionInsurance;
+
+  /// No description provided for @profileCompletionInsuranceNone.
+  ///
+  /// In he, this message translates to:
+  /// **'ללא / דלג'**
+  String get profileCompletionInsuranceNone;
+
+  /// No description provided for @profileCompletionInsuranceOptionalHint.
+  ///
+  /// In he, this message translates to:
+  /// **'הביטוח אופציונלי. אפשר להוסיף אותו מאוחר יותר בהגדרות.'**
+  String get profileCompletionInsuranceOptionalHint;
+
+  /// No description provided for @profileCompletionFinish.
+  ///
+  /// In he, this message translates to:
+  /// **'סיום'**
+  String get profileCompletionFinish;
+
   /// No description provided for @commonRequired.
   ///
   /// In he, this message translates to:
@@ -406,6 +538,12 @@ abstract class AppLocalizations {
   /// **'תורים קרובים'**
   String get homeUpcomingAppointmentsTitle;
 
+  /// No description provided for @homeFindAppointmentCta.
+  ///
+  /// In he, this message translates to:
+  /// **'מצאו תור'**
+  String get homeFindAppointmentCta;
+
   /// No description provided for @homeLast3AppointmentsTitle.
   ///
   /// In he, this message translates to:
@@ -435,6 +573,12 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'נסה שוב מאוחר יותר.'**
   String get commonTryAgainLater;
+
+  /// No description provided for @commonTryAgain.
+  ///
+  /// In he, this message translates to:
+  /// **'נסה שוב'**
+  String get commonTryAgain;
 
   /// No description provided for @commonUnableToLoad.
   ///

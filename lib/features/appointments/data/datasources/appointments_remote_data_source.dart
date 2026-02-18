@@ -12,20 +12,17 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
   // ---- sync stubs (repo calls async variants) ----
 
   @override
-  List<Appointment> upcoming() =>
-      throw UnimplementedError('Use upcomingAsync');
+  List<Appointment> upcoming() => throw UnimplementedError('Use upcomingAsync');
 
   @override
-  List<Appointment> past() =>
-      throw UnimplementedError('Use pastAsync');
+  List<Appointment> past() => throw UnimplementedError('Use pastAsync');
 
   @override
   Appointment? getById(String id) =>
       throw UnimplementedError('Use getByIdAsync');
 
   @override
-  void cancel(String id) =>
-      throw UnimplementedError('Use cancelAsync');
+  void cancel(String id) => throw UnimplementedError('Use cancelAsync');
 
   // ---- async real implementations ----
 
@@ -47,9 +44,10 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
   }
 
   Future<void> cancelAsync(String id, {String? reason}) async {
-    await api.patch('/api/v1/appointments/$id/cancel', data: {
-      'cancellation_reason': reason,
-    });
+    await api.patch(
+      '/api/v1/appointments/$id/cancel',
+      data: {'cancellation_reason': reason},
+    );
   }
 
   // ---- mapping helper ----
@@ -61,19 +59,16 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
     final practitioners = json['practitioners'] as Map<String, dynamic>?;
     final practitionerProfiles =
         practitioners?['profiles'] as Map<String, dynamic>?;
-    final specialties =
-        practitioners?['specialties'] as Map<String, dynamic>?;
-    final reasons =
-        json['appointment_reasons'] as Map<String, dynamic>?;
+    final specialties = practitioners?['specialties'] as Map<String, dynamic>?;
+    final reasons = json['appointment_reasons'] as Map<String, dynamic>?;
     final relatives = json['relatives'] as Map<String, dynamic>?;
 
-    final practFirstName =
-        practitionerProfiles?['first_name'] as String? ?? '';
-    final practLastName =
-        practitionerProfiles?['last_name'] as String? ?? '';
+    final practFirstName = practitionerProfiles?['first_name'] as String? ?? '';
+    final practLastName = practitionerProfiles?['last_name'] as String? ?? '';
 
     final status = json['status'] as String? ?? 'pending';
-    final computedIsPast = isPast ||
+    final computedIsPast =
+        isPast ||
         status == 'completed' ||
         status == 'cancelled_by_patient' ||
         status == 'cancelled_by_practitioner' ||
@@ -91,15 +86,14 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
       id: json['id'] as String,
       practitionerId: practitioners?['id'] as String? ?? '',
       dateLabel: json['appointment_date'] as String? ?? '',
-      timeLabel:
-          (json['start_time'] as String? ?? '').substring(0, 5), // HH:mm
+      timeLabel: (json['start_time'] as String? ?? '').substring(0, 5), // HH:mm
       practitionerName: '$practFirstName $practLastName'.trim(),
-      specialty: specialties?['name_fr'] as String? ??
+      specialty:
+          specialties?['name_fr'] as String? ??
           specialties?['name'] as String? ??
           '',
-      reason: reasons?['label_fr'] as String? ??
-          reasons?['label'] as String? ??
-          '',
+      reason:
+          reasons?['label_fr'] as String? ?? reasons?['label'] as String? ?? '',
       status: status,
       isPast: computedIsPast,
       patientName: patientName,

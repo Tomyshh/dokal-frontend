@@ -69,6 +69,81 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authLastName => 'Nom';
 
   @override
+  String get profileCompletionTitle => 'Complétez votre profil';
+
+  @override
+  String get profileCompletionSubtitle =>
+      'Ces informations sont obligatoires pour continuer.';
+
+  @override
+  String profileCompletionStepLabel(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get profileCompletionStepIdentityTitle => 'Identité';
+
+  @override
+  String get profileCompletionStepIdentitySubtitle =>
+      'Dites-nous qui vous êtes.';
+
+  @override
+  String get profileCompletionDateOfBirth => 'Date de naissance';
+
+  @override
+  String get profileCompletionStepContactTitle => 'Contact';
+
+  @override
+  String get profileCompletionStepContactSubtitle =>
+      'Comment peut-on vous joindre ?';
+
+  @override
+  String get profileCompletionEmailLockedHint =>
+      'Votre email est lié à votre compte et ne peut pas être modifié ici.';
+
+  @override
+  String get profileCompletionPhone => 'Numéro de téléphone';
+
+  @override
+  String get profileCompletionPhoneHint => 'ex. +972 50 123 4567';
+
+  @override
+  String get profileCompletionPhoneInvalid => 'Numéro de téléphone invalide';
+
+  @override
+  String get profileCompletionStepIsraelTitle => 'Israël';
+
+  @override
+  String get profileCompletionStepIsraelSubtitle =>
+      'Informations requises pour les soins en Israël.';
+
+  @override
+  String get profileCompletionTeudatHint => '9 chiffres';
+
+  @override
+  String get profileCompletionTeudatInvalid => 'Numéro d\'identité invalide';
+
+  @override
+  String get profileCompletionStepInsuranceTitle => 'Assurance';
+
+  @override
+  String get profileCompletionStepInsuranceSubtitle =>
+      'Optionnel (vous pouvez passer).';
+
+  @override
+  String get profileCompletionInsurance => 'Assurance';
+
+  @override
+  String get profileCompletionInsuranceNone => 'Aucune / passer';
+
+  @override
+  String get profileCompletionInsuranceOptionalHint =>
+      'L’assurance est optionnelle. Vous pourrez l’ajouter plus tard dans les paramètres.';
+
+  @override
+  String get profileCompletionFinish => 'Terminer';
+
+  @override
   String get commonRequired => 'Requis';
 
   @override
@@ -173,6 +248,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Rendez-vous à venir';
 
   @override
+  String get homeFindAppointmentCta => 'Trouvez un rendez-vous';
+
+  @override
   String get homeLast3AppointmentsTitle => '3 derniers rendez-vous';
 
   @override
@@ -186,6 +264,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonTryAgainLater => 'Réessayez plus tard.';
+
+  @override
+  String get commonTryAgain => 'Réessayer';
 
   @override
   String get commonUnableToLoad => 'Impossible de charger';

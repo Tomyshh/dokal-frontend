@@ -69,6 +69,79 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authLastName => 'Фамилия';
 
   @override
+  String get profileCompletionTitle => 'Заполните профиль';
+
+  @override
+  String get profileCompletionSubtitle =>
+      'Эти данные обязательны для продолжения.';
+
+  @override
+  String profileCompletionStepLabel(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get profileCompletionStepIdentityTitle => 'Личные данные';
+
+  @override
+  String get profileCompletionStepIdentitySubtitle => 'Расскажите о себе.';
+
+  @override
+  String get profileCompletionDateOfBirth => 'Дата рождения';
+
+  @override
+  String get profileCompletionStepContactTitle => 'Контакты';
+
+  @override
+  String get profileCompletionStepContactSubtitle => 'Как с вами связаться?';
+
+  @override
+  String get profileCompletionEmailLockedHint =>
+      'Email привязан к аккаунту и не может быть изменён здесь.';
+
+  @override
+  String get profileCompletionPhone => 'Телефон';
+
+  @override
+  String get profileCompletionPhoneHint => 'например, +972 50 123 4567';
+
+  @override
+  String get profileCompletionPhoneInvalid => 'Неверный номер телефона';
+
+  @override
+  String get profileCompletionStepIsraelTitle => 'Израиль';
+
+  @override
+  String get profileCompletionStepIsraelSubtitle =>
+      'Данные, необходимые для медицинского обслуживания в Израиле.';
+
+  @override
+  String get profileCompletionTeudatHint => '9 цифр';
+
+  @override
+  String get profileCompletionTeudatInvalid => 'Неверный номер удостоверения';
+
+  @override
+  String get profileCompletionStepInsuranceTitle => 'Страховка';
+
+  @override
+  String get profileCompletionStepInsuranceSubtitle =>
+      'Необязательно (можно пропустить).';
+
+  @override
+  String get profileCompletionInsurance => 'Страховая компания';
+
+  @override
+  String get profileCompletionInsuranceNone => 'Нет / пропустить';
+
+  @override
+  String get profileCompletionInsuranceOptionalHint =>
+      'Страховка необязательна. Можно добавить позже в настройках.';
+
+  @override
+  String get profileCompletionFinish => 'Готово';
+
+  @override
   String get commonRequired => 'Обязательно';
 
   @override
@@ -173,6 +246,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Ближайшие приемы';
 
   @override
+  String get homeFindAppointmentCta => 'Найти прием';
+
+  @override
   String get homeLast3AppointmentsTitle => 'Последние 3 приема';
 
   @override
@@ -186,6 +262,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get commonTryAgainLater => 'Попробуйте позже.';
+
+  @override
+  String get commonTryAgain => 'Повторить';
 
   @override
   String get commonUnableToLoad => 'Не удалось загрузить';

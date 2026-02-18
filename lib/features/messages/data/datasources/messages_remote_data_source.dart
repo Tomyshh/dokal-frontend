@@ -6,7 +6,10 @@ import 'messages_demo_data_source.dart';
 /// Remote implementation of [MessagesDemoDataSource] backed by the Dokal
 /// backend REST API.
 class MessagesRemoteDataSourceImpl implements MessagesDemoDataSource {
-  MessagesRemoteDataSourceImpl({required this.api, required this.currentUserId});
+  MessagesRemoteDataSourceImpl({
+    required this.api,
+    required this.currentUserId,
+  });
 
   final ApiClient api;
   final String Function() currentUserId;
@@ -33,8 +36,7 @@ class MessagesRemoteDataSourceImpl implements MessagesDemoDataSource {
     return data.map((raw) {
       final json = raw as Map<String, dynamic>;
       final practitioners = json['practitioners'] as Map<String, dynamic>?;
-      final practProfiles =
-          practitioners?['profiles'] as Map<String, dynamic>?;
+      final practProfiles = practitioners?['profiles'] as Map<String, dynamic>?;
       final lastMsg = json['last_message'] as Map<String, dynamic>?;
 
       final firstName = practProfiles?['first_name'] as String? ?? '';
@@ -66,10 +68,12 @@ class MessagesRemoteDataSourceImpl implements MessagesDemoDataSource {
   }
 
   Future<List<ChatMessage>> getMessagesAsync(String conversationId) async {
-    final data = await api.get(
-      '/api/v1/conversations/$conversationId/messages',
-      queryParameters: {'limit': 100},
-    ) as List<dynamic>;
+    final data =
+        await api.get(
+              '/api/v1/conversations/$conversationId/messages',
+              queryParameters: {'limit': 100},
+            )
+            as List<dynamic>;
 
     final uid = currentUserId();
     return data.map((raw) {

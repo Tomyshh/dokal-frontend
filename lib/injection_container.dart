@@ -118,6 +118,7 @@ import 'features/reviews/data/repositories/reviews_repository_impl.dart';
 import 'features/reviews/domain/repositories/reviews_repository.dart';
 import 'features/reviews/domain/usecases/create_review.dart';
 import 'features/reviews/presentation/bloc/reviews_cubit.dart';
+import 'core/profile_completion/profile_completion_notifier.dart';
 
 final sl = GetIt.instance;
 
@@ -152,8 +153,9 @@ void configureDependencies() {
     defaultValue: '',
   );
 
-  final supabaseUrl =
-      supabaseUrlDefine.isNotEmpty ? supabaseUrlDefine : supabaseUrlExpo;
+  final supabaseUrl = supabaseUrlDefine.isNotEmpty
+      ? supabaseUrlDefine
+      : supabaseUrlExpo;
   final supabaseAnonKey = supabaseAnonKeyDefine.isNotEmpty
       ? supabaseAnonKeyDefine
       : (supabaseKeyDefine.isNotEmpty ? supabaseKeyDefine : supabaseKeyExpo);
@@ -521,15 +523,11 @@ void configureDependencies() {
   sl.registerLazySingleton(
     () => GetNotifications(sl<NotificationsRepository>()),
   );
-  sl.registerLazySingleton(
-    () => GetUnreadCount(sl<NotificationsRepository>()),
-  );
+  sl.registerLazySingleton(() => GetUnreadCount(sl<NotificationsRepository>()));
   sl.registerLazySingleton(
     () => MarkNotificationRead(sl<NotificationsRepository>()),
   );
-  sl.registerLazySingleton(
-    () => MarkAllRead(sl<NotificationsRepository>()),
-  );
+  sl.registerLazySingleton(() => MarkAllRead(sl<NotificationsRepository>()));
   sl.registerLazySingleton(
     () => RegisterPushToken(sl<NotificationsRepository>()),
   );
@@ -557,7 +555,22 @@ void configureDependencies() {
     () => ReviewsRepositoryImpl(remote: sl<ReviewsRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => CreateReview(sl<ReviewsRepository>()));
-  sl.registerFactory(
-    () => ReviewsCubit(createReview: sl<CreateReview>()),
+  sl.registerFactory(() => ReviewsCubit(createReview: sl<CreateReview>()));
+
+  // ---------------------------------------------------------------------------
+  // Profile completion guard (async, used by router)
+  // ---------------------------------------------------------------------------
+  sl.registerLazySingleton(
+    () => ProfileCompletionNotifier(
+      getProfile: sl<GetProfile>(),
+      getHealthProfile: sl<GetHealthProfile>(),
+      getAuthEmail: () {
+        try {
+          return Supabase.instance.client.auth.currentUser?.email;
+        } catch (_) {
+          return null;
+        }
+      },
+    ),
   );
 }

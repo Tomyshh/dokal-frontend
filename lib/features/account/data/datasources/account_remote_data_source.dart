@@ -28,10 +28,12 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
     final fullName = '$firstName $lastName'.trim();
     return UserProfile(
       id: json['id'] as String? ?? '',
-      fullName:
-          fullName.isNotEmpty ? fullName : (json['email'] as String? ?? ''),
+      fullName: fullName.isNotEmpty
+          ? fullName
+          : (json['email'] as String? ?? ''),
       email: json['email'] as String? ?? '',
       city: json['city'] as String? ?? '',
+      role: json['role'] as String? ?? 'patient',
       firstName: firstName.isNotEmpty ? firstName : null,
       lastName: lastName.isNotEmpty ? lastName : null,
       phone: json['phone'] as String?,
@@ -65,8 +67,9 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
     final formData = FormData.fromMap({
       'avatar': await MultipartFile.fromFile(filePath),
     });
-    final json = await api.post('/api/v1/profile/avatar', data: formData)
-        as Map<String, dynamic>;
+    final json =
+        await api.post('/api/v1/profile/avatar', data: formData)
+            as Map<String, dynamic>;
     return json['avatar_url'] as String?;
   }
 
@@ -105,12 +108,17 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
     required String relation,
     String? dateOfBirth,
   }) async {
-    final json = await api.post('/api/v1/relatives', data: {
-      'first_name': firstName,
-      'last_name': lastName,
-      'relation': relation,
-      if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
-    }) as Map<String, dynamic>;
+    final json =
+        await api.post(
+              '/api/v1/relatives',
+              data: {
+                'first_name': firstName,
+                'last_name': lastName,
+                'relation': relation,
+                if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
+              },
+            )
+            as Map<String, dynamic>;
     final dob = json['date_of_birth'] as String?;
     final year = dob != null && dob.length >= 4 ? dob.substring(0, 4) : '';
     return Relative(
@@ -156,12 +164,17 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
     required int expiryMonth,
     required int expiryYear,
   }) async {
-    final json = await api.post('/api/v1/payments/methods', data: {
-      'brand': brand,
-      'last4': last4,
-      'expiry_month': expiryMonth,
-      'expiry_year': expiryYear,
-    }) as Map<String, dynamic>;
+    final json =
+        await api.post(
+              '/api/v1/payments/methods',
+              data: {
+                'brand': brand,
+                'last4': last4,
+                'expiry_month': expiryMonth,
+                'expiry_year': expiryYear,
+              },
+            )
+            as Map<String, dynamic>;
     return PaymentMethod(
       id: json['id'] as String,
       brandLabel: json['brand'] as String? ?? brand,
@@ -183,7 +196,6 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
   // Password – demo stubs
   // ---------------------------------------------------------------------------
 
-  @override
   void requestPasswordChangeDemo() =>
       throw UnimplementedError('Use Supabase Auth directly');
 }

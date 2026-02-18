@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/appointment_card.dart';
+import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
 import '../bloc/home_cubit.dart';
@@ -15,7 +18,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return BlocProvider(
       create: (_) => sl<HomeCubit>(),
       child: Scaffold(
@@ -30,24 +32,115 @@ class HomePage extends StatelessWidget {
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   SizedBox(height: AppSpacing.md.h),
-                  // Card profil santé (tout en haut)
-                  _HealthProfileCard(),
-                  SizedBox(height: AppSpacing.md.h),
-                  // Rendez-vous à venir
-                  _SectionTitle(title: l10n.homeUpcomingAppointmentsTitle),
-                  SizedBox(height: AppSpacing.xs.h),
-                  _UpcomingAppointmentsSection(),
-                  SizedBox(height: AppSpacing.md.h),
-                  // Nouveau message (3e position)
-                  _NewMessageSection(),
-                  SizedBox(height: AppSpacing.lg.h),
-                  // 3 derniers rendez-vous + CTA
-                  _AppointmentHistorySection(),
+                  _AppointmentsSections(),
                   const SizedBox(height: 100), // Espace pour la navbar
                 ]),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AppointmentsSections extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (p, n) =>
+          p.status != n.status ||
+          p.upcomingAppointments != n.upcomingAppointments ||
+          p.appointmentHistory != n.appointmentHistory,
+      builder: (context, state) {
+        final isLoading =
+            state.status == HomeStatus.initial ||
+            state.status == HomeStatus.loading;
+        final hasUpcoming = state.upcomingAppointments.isNotEmpty;
+        final hasPast = state.appointmentHistory.isNotEmpty;
+
+        final showFindAppointmentCta =
+            state.status == HomeStatus.success && !hasUpcoming && !hasPast;
+
+        if (showFindAppointmentCta) {
+          return _FindAppointmentEmptyState(
+            animationAssetPath: 'assets/lotties/search.json',
+            buttonLabel: l10n.homeFindAppointmentCta,
+            onTap: () => context.push('/home/search'),
+          );
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (hasUpcoming || isLoading) ...[
+              _SectionTitle(title: l10n.homeUpcomingAppointmentsTitle),
+              SizedBox(height: AppSpacing.xs.h),
+              _UpcomingAppointmentsSection(),
+              SizedBox(height: AppSpacing.md.h),
+            ],
+            // Nouveau message (3e position)
+            _NewMessageSection(),
+            SizedBox(height: AppSpacing.lg.h),
+            // 3 derniers rendez-vous + CTA
+            _AppointmentHistorySection(),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _FindAppointmentEmptyState extends StatelessWidget {
+  const _FindAppointmentEmptyState({
+    required this.animationAssetPath,
+    required this.buttonLabel,
+    required this.onTap,
+  });
+
+  final String animationAssetPath;
+  final String buttonLabel;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: AppSpacing.xl.h, bottom: AppSpacing.lg.h),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 420.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 220.w,
+                height: 220.w,
+                child: Lottie.asset(animationAssetPath, fit: BoxFit.contain),
+              ),
+              SizedBox(height: AppSpacing.md.h),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: onTap,
+                  icon: const Icon(Icons.search_rounded),
+                  label: Text(buttonLabel),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg.w,
+                      vertical: 12.h,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -60,9 +153,15 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (p, n) =>
           p.upcomingAppointments != n.upcomingAppointments ||
-          p.greetingName != n.greetingName,
+          p.greetingName != n.greetingName ||
+          p.status != n.status,
       builder: (context, state) {
         final items = state.upcomingAppointments;
+        if ((state.status == HomeStatus.initial ||
+                state.status == HomeStatus.loading) &&
+            items.isEmpty) {
+          return const _UpcomingAppointmentsShimmer();
+        }
         if (items.isEmpty) return const SizedBox.shrink();
 
         return Column(
@@ -86,6 +185,145 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _UpcomingAppointmentsShimmer extends StatelessWidget {
+  const _UpcomingAppointmentsShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    // Valeurs douces pour matcher le thème (fond clair).
+    final baseColor = AppColors.surfaceVariant;
+    final highlightColor = Colors.white.withValues(alpha: 0.9);
+
+    return Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: Column(
+        children: [
+          for (var i = 0; i < 3; i++) ...[
+            const _AppointmentCardSkeleton(),
+            if (i != 2) SizedBox(height: AppSpacing.sm),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _AppointmentCardSkeleton extends StatelessWidget {
+  const _AppointmentCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final block = AppColors.surfaceVariant;
+
+    return DokalCard(
+      padding: EdgeInsets.all(AppSpacing.md.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Date/Time + chip
+          Row(
+            children: [
+              Expanded(
+                child: _SkBlock(height: 26.h, borderRadius: 8.r, color: block),
+              ),
+              SizedBox(width: AppSpacing.sm.w),
+              _SkBlock(
+                height: 26.h,
+                width: 72.w,
+                borderRadius: 999.r,
+                color: block,
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.md.h),
+          // Avatar + lignes texte
+          Row(
+            children: [
+              _SkBlock(
+                height: 40.r,
+                width: 40.r,
+                borderRadius: 12.r,
+                color: block,
+              ),
+              SizedBox(width: AppSpacing.md.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _SkBlock(
+                      height: 14.h,
+                      width: 170.w,
+                      borderRadius: 6.r,
+                      color: block,
+                    ),
+                    SizedBox(height: 8.h),
+                    _SkBlock(
+                      height: 18.h,
+                      width: 130.w,
+                      borderRadius: 6.r,
+                      color: block,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: AppSpacing.sm.w),
+              _SkBlock(
+                height: 18.r,
+                width: 18.r,
+                borderRadius: 6.r,
+                color: block,
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.sm.h),
+          // Reason
+          Row(
+            children: [
+              _SkBlock(
+                height: 14.r,
+                width: 14.r,
+                borderRadius: 4.r,
+                color: block,
+              ),
+              SizedBox(width: 6.w),
+              Expanded(
+                child: _SkBlock(height: 12.h, borderRadius: 6.r, color: block),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SkBlock extends StatelessWidget {
+  const _SkBlock({
+    required this.height,
+    this.width,
+    required this.borderRadius,
+    required this.color,
+  });
+
+  final double height;
+  final double? width;
+  final double borderRadius;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
     );
   }
 }
@@ -163,10 +401,7 @@ class _NewMessageSection extends StatelessWidget {
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.primary,
-                            AppColors.primaryLight,
-                          ],
+                          colors: [AppColors.primary, AppColors.primaryLight],
                         ),
                         borderRadius: BorderRadius.circular(12.r),
                         boxShadow: [
@@ -238,16 +473,19 @@ class _NewMessageSection extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: isPast
-                                      ? AppColors.textSecondary
-                                          .withValues(alpha: 0.1)
+                                      ? AppColors.textSecondary.withValues(
+                                          alpha: 0.1,
+                                        )
                                       : AppColors.accent.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(999.r),
                                   border: Border.all(
                                     color: isPast
-                                        ? AppColors.textSecondary
-                                            .withValues(alpha: 0.2)
-                                        : AppColors.accent
-                                            .withValues(alpha: 0.3),
+                                        ? AppColors.textSecondary.withValues(
+                                            alpha: 0.2,
+                                          )
+                                        : AppColors.accent.withValues(
+                                            alpha: 0.3,
+                                          ),
                                   ),
                                 ),
                                 child: Text(
@@ -265,9 +503,7 @@ class _NewMessageSection extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   apptLabel,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
+                                  style: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
                                         color: AppColors.textSecondary,
                                       ),
@@ -419,152 +655,6 @@ class _StickyHeader extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// Card profil santé - design compact
-class _HealthProfileCard extends StatefulWidget {
-  @override
-  State<_HealthProfileCard> createState() => _HealthProfileCardState();
-}
-
-class _HealthProfileCardState extends State<_HealthProfileCard> {
-  bool _isVisible = true;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    if (!_isVisible) return const SizedBox.shrink();
-
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.md.r),
-      decoration: BoxDecoration(
-        color: AppColors.primaryLightBackground,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Contenu texte
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        l10n.homeCompleteHealthProfile,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => setState(() => _isVisible = false),
-                      child: Icon(
-                        Icons.close,
-                        size: 18.sp,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  l10n.homeCompleteHealthProfileSubtitle,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColors.textSecondary,
-                    height: 1.3,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.sm.h),
-                _CompactButton(
-                  label: l10n.homeStart,
-                  onTap: () => context.push('/home/health-profile'),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: AppSpacing.sm.w),
-          // Icône coeur
-          _HeartPulseIcon(),
-        ],
-      ),
-    );
-  }
-}
-
-/// Bouton compact stylisé
-class _CompactButton extends StatelessWidget {
-  const _CompactButton({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.md.w,
-          vertical: 8.h,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: AppColors.primary, width: 1.5),
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.primary,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Icône coeur avec pulse
-class _HeartPulseIcon extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 50,
-      height: 50,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Icon(Icons.favorite, color: Colors.pinkAccent, size: 28),
-          Positioned(
-            right: 2,
-            bottom: 6,
-            child: Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                color: Colors.orange,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
-              ),
-              child: const Icon(
-                Icons.show_chart,
-                size: 10,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

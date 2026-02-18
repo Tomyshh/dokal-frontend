@@ -74,10 +74,7 @@ class PractitionerProfilePage extends StatelessWidget {
             );
           }
 
-          return _ProfileScaffold(
-            profile: p,
-            practitionerId: practitionerId,
-          );
+          return _ProfileScaffold(profile: p, practitionerId: practitionerId);
         },
       ),
     );
@@ -85,10 +82,7 @@ class PractitionerProfilePage extends StatelessWidget {
 }
 
 class _ProfileScaffold extends StatefulWidget {
-  const _ProfileScaffold({
-    required this.profile,
-    required this.practitionerId,
-  });
+  const _ProfileScaffold({required this.profile, required this.practitionerId});
 
   final PractitionerProfile profile;
   final String practitionerId;
@@ -227,9 +221,9 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                               ),
                               errorWidget: (context, url, error) =>
                                   _AvatarPlaceholder(
-                                initials: _getInitials(),
-                                size: 32.r,
-                              ),
+                                    initials: _getInitials(),
+                                    size: 32.r,
+                                  ),
                             )
                           : _AvatarPlaceholder(
                               initials: _getInitials(),
@@ -263,10 +257,7 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
               child: Column(
                 children: [
                   // Header avec avatar
-                  _HeaderSection(
-                    profile: profile,
-                    initials: _getInitials(),
-                  ),
+                  _HeaderSection(profile: profile, initials: _getInitials()),
                   SizedBox(height: AppSpacing.lg.h),
 
                   // Calendrier de disponibilités
@@ -342,10 +333,7 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
 }
 
 class _HeaderSection extends StatelessWidget {
-  const _HeaderSection({
-    required this.profile,
-    required this.initials,
-  });
+  const _HeaderSection({required this.profile, required this.initials});
 
   final PractitionerProfile profile;
   final String initials;
@@ -374,14 +362,10 @@ class _HeaderSection extends StatelessWidget {
                 ? CachedNetworkImage(
                     imageUrl: profile.avatarUrl!,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => _AvatarPlaceholder(
-                      initials: initials,
-                      size: 100.r,
-                    ),
-                    errorWidget: (context, url, error) => _AvatarPlaceholder(
-                      initials: initials,
-                      size: 100.r,
-                    ),
+                    placeholder: (context, url) =>
+                        _AvatarPlaceholder(initials: initials, size: 100.r),
+                    errorWidget: (context, url, error) =>
+                        _AvatarPlaceholder(initials: initials, size: 100.r),
                   )
                 : _AvatarPlaceholder(initials: initials, size: 100.r),
           ),
@@ -392,9 +376,9 @@ class _HeaderSection extends StatelessWidget {
         Text(
           profile.name,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-              ),
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 8.h),
@@ -409,9 +393,9 @@ class _HeaderSection extends StatelessWidget {
           child: Text(
             profile.specialty,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         SizedBox(height: AppSpacing.md.h),
@@ -443,11 +427,7 @@ class _HeaderSection extends StatelessWidget {
                   ),
                 if (profile.yearsOfExperience != null &&
                     profile.languages != null)
-                  Container(
-                    width: 1,
-                    height: 36.h,
-                    color: AppColors.outline,
-                  ),
+                  Container(width: 1, height: 36.h, color: AppColors.outline),
                 if (profile.languages != null)
                   _StatItem(
                     icon: Icons.translate_rounded,
@@ -488,18 +468,18 @@ class _StatItem extends StatelessWidget {
             Text(
               value,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
             ),
           ],
         ),
         SizedBox(height: 2.h),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
         ),
       ],
     );
@@ -603,17 +583,25 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final daysInMonth =
-        DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
-    final firstDayOfWeek =
-        DateTime(_currentMonth.year, _currentMonth.month, 1).weekday;
+    final daysInMonth = DateTime(
+      _currentMonth.year,
+      _currentMonth.month + 1,
+      0,
+    ).day;
+    final firstDayOfWeek = DateTime(
+      _currentMonth.year,
+      _currentMonth.month,
+      1,
+    ).weekday;
     // Adjust for Sunday start (Hebrew calendar)
     final startOffset = firstDayOfWeek == 7 ? 0 : firstDayOfWeek;
 
-    final canGoBack =
-        _currentMonth.isAfter(DateTime(_today.year, _today.month));
-    final canGoNext =
-        _currentMonth.isBefore(DateTime(_today.year, _today.month + 2));
+    final canGoBack = _currentMonth.isAfter(
+      DateTime(_today.year, _today.month),
+    );
+    final canGoNext = _currentMonth.isBefore(
+      DateTime(_today.year, _today.month + 2),
+    );
 
     return DokalCard(
       padding: EdgeInsets.all(AppSpacing.md.r),
@@ -640,9 +628,9 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                 child: Text(
                   l10n.practitionerAvailabilities,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
             ],
@@ -677,9 +665,9 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
               Text(
                 '${_getHebrewMonth(_currentMonth.month)} ${_currentMonth.year}',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
               ),
               // Right button: goes to PREVIOUS month (past) - shows > arrow
               GestureDetector(
@@ -716,9 +704,9 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                       day,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 )
@@ -742,8 +730,11 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                 return const SizedBox();
               }
               final day = index - startOffset + 1;
-              final date =
-                  DateTime(_currentMonth.year, _currentMonth.month, day);
+              final date = DateTime(
+                _currentMonth.year,
+                _currentMonth.month,
+                day,
+              );
               final isAvailable = _isAvailable(date);
               final isToday = _isToday(date);
               final isSelected = _isSelected(date);
@@ -760,14 +751,11 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                     color: isSelected && isAvailable
                         ? AppColors.primary
                         : isAvailable && !isPast
-                            ? AppColors.accent.withValues(alpha: 0.1)
-                            : Colors.transparent,
+                        ? AppColors.accent.withValues(alpha: 0.1)
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(10.r),
                     border: isToday
-                        ? Border.all(
-                            color: AppColors.primary,
-                            width: 1.5,
-                          )
+                        ? Border.all(color: AppColors.primary, width: 1.5)
                         : null,
                   ),
                   child: Center(
@@ -778,17 +766,18 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                           '$day',
                           style: TextStyle(
                             fontSize: 13.sp,
-                            fontWeight:
-                                isSelected ? FontWeight.w700 : FontWeight.w500,
+                            fontWeight: isSelected
+                                ? FontWeight.w700
+                                : FontWeight.w500,
                             color: isSelected && isAvailable
                                 ? Colors.white
                                 : isPast
-                                    ? AppColors.textSecondary
-                                        .withValues(alpha: 0.4)
-                                    : isAvailable
-                                        ? AppColors.textPrimary
-                                        : AppColors.textSecondary
-                                            .withValues(alpha: 0.6),
+                                ? AppColors.textSecondary.withValues(alpha: 0.4)
+                                : isAvailable
+                                ? AppColors.textPrimary
+                                : AppColors.textSecondary.withValues(
+                                    alpha: 0.6,
+                                  ),
                           ),
                         ),
                         if (isAvailable && !isPast && !isSelected)
@@ -814,10 +803,7 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _LegendItem(
-                color: AppColors.accent,
-                label: 'זמין',
-              ),
+              _LegendItem(color: AppColors.accent, label: 'זמין'),
               SizedBox(width: 20.w),
               _LegendItem(
                 color: AppColors.primary,
@@ -899,15 +885,15 @@ class _TimeSlotSection extends StatelessWidget {
                     Text(
                       'בחר שעה',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
-                          ),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                     Text(
                       _formatDate(),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -926,8 +912,10 @@ class _TimeSlotSection extends StatelessWidget {
                 onTap: () => onTimeSelected(time),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 12.h,
+                  ),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? AppColors.primary
@@ -952,11 +940,11 @@ class _TimeSlotSection extends StatelessWidget {
                   child: Text(
                     time,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: isSelected
-                              ? Colors.white
-                              : const Color(0xFF3B82F6),
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: isSelected
+                          ? Colors.white
+                          : const Color(0xFF3B82F6),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               );
@@ -1020,10 +1008,7 @@ class _BookingConfirmation extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary,
-            AppColors.primaryLight,
-          ],
+          colors: [AppColors.primary, AppColors.primaryLight],
         ),
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
@@ -1059,17 +1044,17 @@ class _BookingConfirmation extends StatelessWidget {
                     Text(
                       'התור שלך',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.8),
-                            fontWeight: FontWeight.w500,
-                          ),
+                        color: Colors.white.withValues(alpha: 0.8),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     SizedBox(height: 2.h),
                     Text(
                       '$selectedTime • ${_formatFullDate()}',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
@@ -1097,10 +1082,7 @@ class _BookingConfirmation extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.event_available_rounded,
-                    size: 20.sp,
-                  ),
+                  Icon(Icons.event_available_rounded, size: 20.sp),
                   SizedBox(width: 8.w),
                   Text(
                     l10n.practitionerBookAppointment,
@@ -1159,9 +1141,9 @@ class _LegendItem extends StatelessWidget {
         SizedBox(width: 6.w),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
         ),
       ],
     );
@@ -1206,9 +1188,9 @@ class _ContactSection extends StatelessWidget {
               Text(
                 'כתובת ויצירת קשר',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
               ),
             ],
           ),
@@ -1276,9 +1258,9 @@ class _ContactItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
           ),
         ),
       ],
@@ -1324,9 +1306,9 @@ class _AboutSection extends StatelessWidget {
               Text(
                 'פרופיל',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
               ),
             ],
           ),
@@ -1336,9 +1318,9 @@ class _AboutSection extends StatelessWidget {
           Text(
             about,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.5,
-                ),
+              color: AppColors.textSecondary,
+              height: 1.5,
+            ),
           ),
 
           // Education
@@ -1401,9 +1383,9 @@ class _InfoChip extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w500,
-                ),
+              color: color,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -1412,10 +1394,7 @@ class _InfoChip extends StatelessWidget {
 }
 
 class _AvatarPlaceholder extends StatelessWidget {
-  const _AvatarPlaceholder({
-    required this.initials,
-    required this.size,
-  });
+  const _AvatarPlaceholder({required this.initials, required this.size});
 
   final String initials;
   final double size;
@@ -1429,10 +1408,7 @@ class _AvatarPlaceholder extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary,
-            AppColors.primaryLight,
-          ],
+          colors: [AppColors.primary, AppColors.primaryLight],
         ),
       ),
       child: Center(

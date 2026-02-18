@@ -74,13 +74,16 @@ class AppointmentCard extends StatelessWidget {
                       Icon(
                         Icons.calendar_today_rounded,
                         size: 14.sp,
-                        color: isPast ? AppColors.textSecondary : AppColors.accent,
+                        color: isPast
+                            ? AppColors.textSecondary
+                            : AppColors.accent,
                       ),
                       SizedBox(width: 6.w),
                       Flexible(
                         child: Text(
                           dateLabel,
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(
                                 color: isPast
                                     ? AppColors.textSecondary
                                     : AppColors.textPrimary,
@@ -93,12 +96,15 @@ class AppointmentCard extends StatelessWidget {
                       Icon(
                         Icons.schedule_rounded,
                         size: 14.sp,
-                        color: isPast ? AppColors.textSecondary : AppColors.primary,
+                        color: isPast
+                            ? AppColors.textSecondary
+                            : AppColors.primary,
                       ),
                       SizedBox(width: 4.w),
                       Text(
                         timeLabel,
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
                               color: isPast
                                   ? AppColors.textSecondary
                                   : AppColors.primary,
@@ -124,7 +130,7 @@ class AppointmentCard extends StatelessWidget {
                 width: 40.r,
                 height: 40.r,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
+                  shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primary.withValues(alpha: 0.15),
@@ -133,11 +139,10 @@ class AppointmentCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child: avatarUrl != null
+                child: ClipOval(
+                  child: (avatarUrl?.trim().isNotEmpty ?? false)
                       ? CachedNetworkImage(
-                          imageUrl: avatarUrl!,
+                          imageUrl: avatarUrl!.trim(),
                           fit: BoxFit.cover,
                           placeholder: (context, url) =>
                               _AvatarPlaceholder(initials: _getInitials()),
@@ -155,9 +160,9 @@ class AppointmentCard extends StatelessWidget {
                     Text(
                       practitionerName,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                          ),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                     SizedBox(height: 3.h),
                     Container(
@@ -172,9 +177,9 @@ class AppointmentCard extends StatelessWidget {
                       child: Text(
                         specialty,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],
@@ -204,8 +209,8 @@ class AppointmentCard extends StatelessWidget {
                 child: Text(
                   reason,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ),
             ],
@@ -228,11 +233,9 @@ class _AvatarPlaceholder extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary,
-            AppColors.primaryLight,
-          ],
+          colors: [AppColors.primary, AppColors.primaryLight],
         ),
+        shape: BoxShape.circle,
       ),
       child: Center(
         child: Text(

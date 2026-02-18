@@ -56,8 +56,13 @@ class PractitionerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final availabilityColor = _getAvailabilityColor();
-    final bool isAvailableToday = nextAvailabilityLabel.contains('היום') ||
+    final bool isAvailableToday =
+        nextAvailabilityLabel.contains('היום') ||
         nextAvailabilityLabel.toLowerCase().contains('today');
+    final sectorText = sector.trim();
+    final availabilityText = nextAvailabilityLabel.trim();
+    final hasSector = sectorText.isNotEmpty;
+    final hasAvailability = availabilityText.isNotEmpty;
 
     return DokalCard(
       padding: EdgeInsets.all(AppSpacing.md.r),
@@ -72,7 +77,7 @@ class PractitionerCard extends StatelessWidget {
                 width: 48.r,
                 height: 48.r,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
+                  shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primary.withValues(alpha: 0.15),
@@ -81,19 +86,15 @@ class PractitionerCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14.r),
-                  child: avatarUrl != null
+                child: ClipOval(
+                  child: (avatarUrl?.trim().isNotEmpty ?? false)
                       ? CachedNetworkImage(
-                          imageUrl: avatarUrl!,
+                          imageUrl: avatarUrl!.trim(),
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => _AvatarPlaceholder(
-                            initials: _getInitials(),
-                          ),
+                          placeholder: (context, url) =>
+                              _AvatarPlaceholder(initials: _getInitials()),
                           errorWidget: (context, url, error) =>
-                              _AvatarPlaceholder(
-                            initials: _getInitials(),
-                          ),
+                              _AvatarPlaceholder(initials: _getInitials()),
                         )
                       : _AvatarPlaceholder(initials: _getInitials()),
                 ),
@@ -106,9 +107,9 @@ class PractitionerCard extends StatelessWidget {
                     Text(
                       name,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                          ),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -125,9 +126,9 @@ class PractitionerCard extends StatelessWidget {
                       child: Text(
                         specialty,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],
@@ -136,10 +137,7 @@ class PractitionerCard extends StatelessWidget {
               if (distanceLabel != null) ...[
                 SizedBox(width: AppSpacing.sm.w),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8.w,
-                    vertical: 4.h,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
                     color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(6.r),
@@ -156,9 +154,9 @@ class PractitionerCard extends StatelessWidget {
                       Text(
                         distanceLabel!,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -180,69 +178,82 @@ class PractitionerCard extends StatelessWidget {
                 child: Text(
                   address,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                    color: AppColors.textSecondary,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-          SizedBox(height: AppSpacing.xs.h),
-          Row(
-            children: [
-              Icon(
-                Icons.health_and_safety_rounded,
-                size: 14.sp,
-                color: AppColors.accent,
-              ),
-              SizedBox(width: 6.w),
-              Text(
-                sector,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-              ),
-              const Spacer(),
-              // Badge de disponibilité avec animation subtile
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                decoration: BoxDecoration(
-                  color: availabilityColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(AppRadii.pill.r),
-                  border: isAvailableToday
-                      ? Border.all(
-                          color: availabilityColor.withValues(alpha: 0.3),
-                          width: 1,
-                        )
-                      : null,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (isAvailableToday) ...[
-                      Container(
-                        width: 6.r,
-                        height: 6.r,
-                        decoration: BoxDecoration(
-                          color: availabilityColor,
-                          shape: BoxShape.circle,
-                        ),
+          if (hasSector || hasAvailability) ...[
+            SizedBox(height: AppSpacing.xs.h),
+            Row(
+              children: [
+                if (hasSector) ...[
+                  Icon(
+                    Icons.health_and_safety_rounded,
+                    size: 14.sp,
+                    color: AppColors.accent,
+                  ),
+                  SizedBox(width: 6.w),
+                  Expanded(
+                    child: Text(
+                      sectorText,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
                       ),
-                      SizedBox(width: 6.w),
-                    ],
-                    Text(
-                      nextAvailabilityLabel,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: availabilityColor,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                  ),
+                ],
+                if (!hasSector && hasAvailability) const Spacer(),
+                if (hasSector && hasAvailability) const Spacer(),
+                if (hasAvailability)
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 5.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: availabilityColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(AppRadii.pill.r),
+                      border: isAvailableToday
+                          ? Border.all(
+                              color: availabilityColor.withValues(alpha: 0.3),
+                              width: 1,
+                            )
+                          : null,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (isAvailableToday) ...[
+                          Container(
+                            width: 6.r,
+                            height: 6.r,
+                            decoration: BoxDecoration(
+                              color: availabilityColor,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          SizedBox(width: 6.w),
+                        ],
+                        Text(
+                          availabilityText,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: availabilityColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -262,11 +273,9 @@ class _AvatarPlaceholder extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary,
-            AppColors.primaryLight,
-          ],
+          colors: [AppColors.primary, AppColors.primaryLight],
         ),
+        shape: BoxShape.circle,
       ),
       child: Center(
         child: Text(

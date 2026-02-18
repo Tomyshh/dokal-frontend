@@ -22,8 +22,10 @@ class PractitionerSearchResult extends Equatable {
   final String nextAvailabilityLabel;
   final String? distanceLabel;
   final String? avatarUrl;
+
   /// Distance en km pour le tri (null = non disponible)
   final double? distanceKm;
+
   /// Ordre de disponibilité (0 = aujourd'hui, 1 = demain, 2 = cette semaine, etc.)
   final int? availabilityOrder;
 

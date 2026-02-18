@@ -68,6 +68,77 @@ class AppLocalizationsHe extends AppLocalizations {
   String get authLastName => 'שם משפחה';
 
   @override
+  String get profileCompletionTitle => 'השלמת פרופיל';
+
+  @override
+  String get profileCompletionSubtitle => 'הפרטים הבאים נדרשים כדי להמשיך.';
+
+  @override
+  String profileCompletionStepLabel(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get profileCompletionStepIdentityTitle => 'זהות';
+
+  @override
+  String get profileCompletionStepIdentitySubtitle =>
+      'בוא/י נתחיל בפרטים האישיים.';
+
+  @override
+  String get profileCompletionDateOfBirth => 'תאריך לידה';
+
+  @override
+  String get profileCompletionStepContactTitle => 'יצירת קשר';
+
+  @override
+  String get profileCompletionStepContactSubtitle => 'איך נוכל ליצור איתך קשר?';
+
+  @override
+  String get profileCompletionEmailLockedHint =>
+      'כתובת האימייל מקושרת לחשבון ולא ניתן לשנות אותה כאן.';
+
+  @override
+  String get profileCompletionPhone => 'מספר טלפון';
+
+  @override
+  String get profileCompletionPhoneHint => 'לדוגמה: +972 50 123 4567';
+
+  @override
+  String get profileCompletionPhoneInvalid => 'מספר טלפון לא תקין';
+
+  @override
+  String get profileCompletionStepIsraelTitle => 'ישראל';
+
+  @override
+  String get profileCompletionStepIsraelSubtitle => 'מידע נדרש לטיפול בישראל.';
+
+  @override
+  String get profileCompletionTeudatHint => '9 ספרות';
+
+  @override
+  String get profileCompletionTeudatInvalid => 'תעודת זהות לא תקינה';
+
+  @override
+  String get profileCompletionStepInsuranceTitle => 'ביטוח';
+
+  @override
+  String get profileCompletionStepInsuranceSubtitle => 'אופציונלי (אפשר לדלג).';
+
+  @override
+  String get profileCompletionInsurance => 'חברת ביטוח';
+
+  @override
+  String get profileCompletionInsuranceNone => 'ללא / דלג';
+
+  @override
+  String get profileCompletionInsuranceOptionalHint =>
+      'הביטוח אופציונלי. אפשר להוסיף אותו מאוחר יותר בהגדרות.';
+
+  @override
+  String get profileCompletionFinish => 'סיום';
+
+  @override
   String get commonRequired => 'חובה';
 
   @override
@@ -169,6 +240,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'תורים קרובים';
 
   @override
+  String get homeFindAppointmentCta => 'מצאו תור';
+
+  @override
   String get homeLast3AppointmentsTitle => '3 התורים האחרונים';
 
   @override
@@ -182,6 +256,9 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get commonTryAgainLater => 'נסה שוב מאוחר יותר.';
+
+  @override
+  String get commonTryAgain => 'נסה שוב';
 
   @override
   String get commonUnableToLoad => 'לא ניתן לטעון';

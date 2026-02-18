@@ -6,6 +6,7 @@ class UserProfile extends Equatable {
     required this.fullName,
     required this.email,
     required this.city,
+    required this.role,
     this.firstName,
     this.lastName,
     this.phone,
@@ -18,6 +19,7 @@ class UserProfile extends Equatable {
   final String fullName;
   final String email;
   final String city;
+  final String role; // "patient" | "practitioner" | "admin"
   final String? firstName;
   final String? lastName;
   final String? phone;
@@ -31,6 +33,7 @@ class UserProfile extends Equatable {
     fullName,
     email,
     city,
+    role,
     firstName,
     lastName,
     phone,

@@ -13,7 +13,8 @@ abstract class NotificationsRemoteDataSource {
   Future<void> removePushToken(String token);
 }
 
-class NotificationsRemoteDataSourceImpl implements NotificationsRemoteDataSource {
+class NotificationsRemoteDataSourceImpl
+    implements NotificationsRemoteDataSource {
   NotificationsRemoteDataSourceImpl({required this.api});
 
   final ApiClient api;
@@ -39,7 +40,9 @@ class NotificationsRemoteDataSourceImpl implements NotificationsRemoteDataSource
 
   @override
   Future<int> getUnreadCount() async {
-    final json = await api.get('/api/v1/notifications/unread-count') as Map<String, dynamic>;
+    final json =
+        await api.get('/api/v1/notifications/unread-count')
+            as Map<String, dynamic>;
     return json['count'] as int? ?? 0;
   }
 
@@ -60,10 +63,7 @@ class NotificationsRemoteDataSourceImpl implements NotificationsRemoteDataSource
   }) async {
     await api.post(
       '/api/v1/notifications/push-tokens',
-      data: {
-        'token': token,
-        'platform': platform,
-      },
+      data: {'token': token, 'platform': platform},
     );
   }
 

@@ -8,5 +8,6 @@ class RemovePushToken {
 
   final NotificationsRepository repo;
 
-  Future<Either<Failure, Unit>> call(String token) => repo.removePushToken(token);
+  Future<Either<Failure, Unit>> call(String token) =>
+      repo.removePushToken(token);
 }

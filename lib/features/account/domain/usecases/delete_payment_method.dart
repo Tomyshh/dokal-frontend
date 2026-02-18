@@ -8,6 +8,5 @@ class DeletePaymentMethod {
 
   final AccountRepository repo;
 
-  Future<Either<Failure, Unit>> call(String id) =>
-      repo.deletePaymentMethod(id);
+  Future<Either<Failure, Unit>> call(String id) => repo.deletePaymentMethod(id);
 }

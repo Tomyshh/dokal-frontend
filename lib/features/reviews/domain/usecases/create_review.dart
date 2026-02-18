@@ -14,11 +14,10 @@ class CreateReview {
     required String practitionerId,
     required int rating,
     String? comment,
-  }) =>
-      repo.createReview(
-        appointmentId: appointmentId,
-        practitionerId: practitionerId,
-        rating: rating,
-        comment: comment,
-      );
+  }) => repo.createReview(
+    appointmentId: appointmentId,
+    practitionerId: practitionerId,
+    rating: rating,
+    comment: comment,
+  );
 }

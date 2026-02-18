@@ -58,14 +58,46 @@ class MessagesDemoDataSourceImpl implements MessagesDemoDataSource {
     final l10n = l10nStatic;
     return switch (conversationId) {
       'demo1' => [
-        ChatMessage(id: 'dm1', fromMe: false, text: l10n.demoMessage1_1, createdAt: '2025-01-01T10:00:00Z'),
-        ChatMessage(id: 'dm2', fromMe: true, text: l10n.demoMessage1_2, createdAt: '2025-01-01T10:01:00Z'),
-        ChatMessage(id: 'dm3', fromMe: false, text: l10n.demoMessage1_3, createdAt: '2025-01-01T10:02:00Z'),
+        ChatMessage(
+          id: 'dm1',
+          fromMe: false,
+          text: l10n.demoMessage1_1,
+          createdAt: '2025-01-01T10:00:00Z',
+        ),
+        ChatMessage(
+          id: 'dm2',
+          fromMe: true,
+          text: l10n.demoMessage1_2,
+          createdAt: '2025-01-01T10:01:00Z',
+        ),
+        ChatMessage(
+          id: 'dm3',
+          fromMe: false,
+          text: l10n.demoMessage1_3,
+          createdAt: '2025-01-01T10:02:00Z',
+        ),
       ],
-      'demo2' => [ChatMessage(id: 'dm4', fromMe: false, text: l10n.demoMessage2_1, createdAt: '2025-01-01T09:00:00Z')],
+      'demo2' => [
+        ChatMessage(
+          id: 'dm4',
+          fromMe: false,
+          text: l10n.demoMessage2_1,
+          createdAt: '2025-01-01T09:00:00Z',
+        ),
+      ],
       'demo3' => [
-        ChatMessage(id: 'dm5', fromMe: false, text: l10n.demoMessage3_1, createdAt: '2025-01-01T08:00:00Z'),
-        ChatMessage(id: 'dm6', fromMe: true, text: l10n.demoMessage3_2, createdAt: '2025-01-01T08:01:00Z'),
+        ChatMessage(
+          id: 'dm5',
+          fromMe: false,
+          text: l10n.demoMessage3_1,
+          createdAt: '2025-01-01T08:00:00Z',
+        ),
+        ChatMessage(
+          id: 'dm6',
+          fromMe: true,
+          text: l10n.demoMessage3_2,
+          createdAt: '2025-01-01T08:01:00Z',
+        ),
       ],
       _ => const <ChatMessage>[],
     };

@@ -5,11 +5,7 @@ import '../../domain/entities/review.dart';
 enum ReviewsStatus { initial, loading, success, failure }
 
 class ReviewsState extends Equatable {
-  const ReviewsState({
-    required this.status,
-    this.review,
-    this.error,
-  });
+  const ReviewsState({required this.status, this.review, this.error});
 
   const ReviewsState.initial()
     : status = ReviewsStatus.initial,

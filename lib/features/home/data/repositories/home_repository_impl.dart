@@ -53,35 +53,34 @@ class HomeRepositoryImpl implements HomeRepository {
 
   @override
   Future<Either<Failure, List<HomePractitioner>>>
-      getRecentPractitioners() async {
+  getRecentPractitioners() async {
     try {
       // Recent practitioners come from past appointments
-      final data =
-          await api.get('/api/v1/appointments/past') as List<dynamic>;
+      final data = await api.get('/api/v1/appointments/past') as List<dynamic>;
       final seen = <String>{};
       final result = <HomePractitioner>[];
       for (final raw in data) {
         final json = raw as Map<String, dynamic>;
-        final practitioners =
-            json['practitioners'] as Map<String, dynamic>?;
+        final practitioners = json['practitioners'] as Map<String, dynamic>?;
         if (practitioners == null) continue;
         final pId = practitioners['id'] as String?;
         if (pId == null || seen.contains(pId)) continue;
         seen.add(pId);
-        final profiles =
-            practitioners['profiles'] as Map<String, dynamic>?;
+        final profiles = practitioners['profiles'] as Map<String, dynamic>?;
         final specialties =
             practitioners['specialties'] as Map<String, dynamic>?;
-        final firstName =
-            profiles?['first_name'] as String? ?? '';
+        final firstName = profiles?['first_name'] as String? ?? '';
         final lastName = profiles?['last_name'] as String? ?? '';
-        result.add(HomePractitioner(
-          id: pId,
-          name: '$firstName $lastName'.trim(),
-          specialty: specialties?['name_fr'] as String? ??
-              specialties?['name'] as String? ??
-              '',
-        ));
+        result.add(
+          HomePractitioner(
+            id: pId,
+            name: '$firstName $lastName'.trim(),
+            specialty:
+                specialties?['name_fr'] as String? ??
+                specialties?['name'] as String? ??
+                '',
+          ),
+        );
         if (result.length >= 3) break;
       }
       return Right(result);

@@ -68,6 +68,77 @@ class AppLocalizationsAm extends AppLocalizations {
   String get authLastName => 'የአባት ስም';
 
   @override
+  String get profileCompletionTitle => 'መረጃዎን ያጠናቅቁ';
+
+  @override
+  String get profileCompletionSubtitle => 'ለመቀጠል እነዚህ መረጃዎች አስፈላጊ ናቸው።';
+
+  @override
+  String profileCompletionStepLabel(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get profileCompletionStepIdentityTitle => 'ማንነት';
+
+  @override
+  String get profileCompletionStepIdentitySubtitle => 'እርስዎን እንወቅ።';
+
+  @override
+  String get profileCompletionDateOfBirth => 'የትውልድ ቀን';
+
+  @override
+  String get profileCompletionStepContactTitle => 'እንገናኝ';
+
+  @override
+  String get profileCompletionStepContactSubtitle => 'እንዴት እንገናኝብዎት?';
+
+  @override
+  String get profileCompletionEmailLockedHint =>
+      'ኢሜይሉ ከመለያዎ ጋር ተያይዟል እና እዚህ መቀየር አይቻልም።';
+
+  @override
+  String get profileCompletionPhone => 'ስልክ ቁጥር';
+
+  @override
+  String get profileCompletionPhoneHint => 'ለምሳሌ +972 50 123 4567';
+
+  @override
+  String get profileCompletionPhoneInvalid => 'የስልክ ቁጥር ትክክል አይደለም';
+
+  @override
+  String get profileCompletionStepIsraelTitle => 'እስራኤል';
+
+  @override
+  String get profileCompletionStepIsraelSubtitle =>
+      'በእስራኤል ሕክምና ለመቀበል የሚያስፈልጉ መረጃዎች።';
+
+  @override
+  String get profileCompletionTeudatHint => '9 አሃዞች';
+
+  @override
+  String get profileCompletionTeudatInvalid => 'የመታወቂያ ቁጥር ትክክል አይደለም';
+
+  @override
+  String get profileCompletionStepInsuranceTitle => 'መድን';
+
+  @override
+  String get profileCompletionStepInsuranceSubtitle => 'አማራጭ (መዝለል ይችላሉ)።';
+
+  @override
+  String get profileCompletionInsurance => 'የመድን ኩባንያ';
+
+  @override
+  String get profileCompletionInsuranceNone => 'መድን የለም / ዝለል';
+
+  @override
+  String get profileCompletionInsuranceOptionalHint =>
+      'መድኑ አማራጭ ነው። በኋላ በቅንብሮች ውስጥ ማከል ይችላሉ።';
+
+  @override
+  String get profileCompletionFinish => 'ጨርስ';
+
+  @override
   String get commonRequired => 'ግዴታ';
 
   @override
@@ -168,6 +239,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'ቀጣይ ቀጠሮዎች';
 
   @override
+  String get homeFindAppointmentCta => 'ቀጠሮ ፈልግ';
+
+  @override
   String get homeLast3AppointmentsTitle => 'የመጨረሻ 3 ቀጠሮዎች';
 
   @override
@@ -181,6 +255,9 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get commonTryAgainLater => 'ቆይተህ እንደገና ሞክር።';
+
+  @override
+  String get commonTryAgain => 'እንደገና ሞክር';
 
   @override
   String get commonUnableToLoad => 'መጫን አልተቻለም';

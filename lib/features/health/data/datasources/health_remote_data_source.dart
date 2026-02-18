@@ -62,19 +62,24 @@ class HealthRemoteDataSourceImpl implements HealthDemoDataSource {
     String? notes,
   }) async {
     final table = _tableMap[type]!;
-    final json = await api.post('/api/v1/health/$table', data: {
-      'name': name,
-      if (reaction != null) 'reaction': reaction,
-      if (severity != null) 'severity': severity,
-      if (dosage != null) 'dosage': dosage,
-      if (frequency != null) 'frequency': frequency,
-      if (diagnosedOn != null) 'diagnosed_on': diagnosedOn,
-      if (startedOn != null) 'started_on': startedOn,
-      if (endedOn != null) 'ended_on': endedOn,
-      if (dose != null) 'dose': dose,
-      if (vaccinatedOn != null) 'vaccinated_on': vaccinatedOn,
-      if (notes != null) 'notes': notes,
-    }) as Map<String, dynamic>;
+    final json =
+        await api.post(
+              '/api/v1/health/$table',
+              data: {
+                'name': name,
+                if (reaction != null) 'reaction': reaction,
+                if (severity != null) 'severity': severity,
+                if (dosage != null) 'dosage': dosage,
+                if (frequency != null) 'frequency': frequency,
+                if (diagnosedOn != null) 'diagnosed_on': diagnosedOn,
+                if (startedOn != null) 'started_on': startedOn,
+                if (endedOn != null) 'ended_on': endedOn,
+                if (dose != null) 'dose': dose,
+                if (vaccinatedOn != null) 'vaccinated_on': vaccinatedOn,
+                if (notes != null) 'notes': notes,
+              },
+            )
+            as Map<String, dynamic>;
     return HealthItem(
       id: json['id'] as String,
       label: json['name'] as String? ?? name,

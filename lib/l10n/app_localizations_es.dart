@@ -68,6 +68,81 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authLastName => 'Apellido';
 
   @override
+  String get profileCompletionTitle => 'Completa tu perfil';
+
+  @override
+  String get profileCompletionSubtitle =>
+      'Estos datos son obligatorios para continuar.';
+
+  @override
+  String profileCompletionStepLabel(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get profileCompletionStepIdentityTitle => 'Identidad';
+
+  @override
+  String get profileCompletionStepIdentitySubtitle => 'Cuéntanos quién eres.';
+
+  @override
+  String get profileCompletionDateOfBirth => 'Fecha de nacimiento';
+
+  @override
+  String get profileCompletionStepContactTitle => 'Contacto';
+
+  @override
+  String get profileCompletionStepContactSubtitle =>
+      '¿Cómo podemos contactarte?';
+
+  @override
+  String get profileCompletionEmailLockedHint =>
+      'Tu correo está vinculado a tu cuenta y no se puede cambiar aquí.';
+
+  @override
+  String get profileCompletionPhone => 'Número de teléfono';
+
+  @override
+  String get profileCompletionPhoneHint => 'p. ej. +972 50 123 4567';
+
+  @override
+  String get profileCompletionPhoneInvalid => 'Número de teléfono inválido';
+
+  @override
+  String get profileCompletionStepIsraelTitle => 'Israel';
+
+  @override
+  String get profileCompletionStepIsraelSubtitle =>
+      'Información requerida para la atención en Israel.';
+
+  @override
+  String get profileCompletionTeudatHint => '9 dígitos';
+
+  @override
+  String get profileCompletionTeudatInvalid =>
+      'Número de identificación inválido';
+
+  @override
+  String get profileCompletionStepInsuranceTitle => 'Seguro';
+
+  @override
+  String get profileCompletionStepInsuranceSubtitle =>
+      'Opcional (puedes omitirlo).';
+
+  @override
+  String get profileCompletionInsurance => 'Aseguradora';
+
+  @override
+  String get profileCompletionInsuranceNone => 'Sin seguro / omitir';
+
+  @override
+  String get profileCompletionInsuranceOptionalHint =>
+      'El seguro es opcional. Podrás agregarlo más tarde en ajustes.';
+
+  @override
+  String get profileCompletionFinish => 'Finalizar';
+
+  @override
   String get commonRequired => 'Obligatorio';
 
   @override
@@ -172,6 +247,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Próximas citas';
 
   @override
+  String get homeFindAppointmentCta => 'Buscar una cita';
+
+  @override
   String get homeLast3AppointmentsTitle => 'Últimas 3 citas';
 
   @override
@@ -185,6 +263,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get commonTryAgainLater => 'Inténtalo más tarde.';
+
+  @override
+  String get commonTryAgain => 'Reintentar';
 
   @override
   String get commonUnableToLoad => 'No se pudo cargar';

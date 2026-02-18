@@ -4,10 +4,9 @@ import '../../domain/usecases/create_review.dart';
 import 'reviews_state.dart';
 
 class ReviewsCubit extends Cubit<ReviewsState> {
-  ReviewsCubit({
-    required CreateReview createReview,
-  })  : _createReview = createReview,
-        super(const ReviewsState.initial());
+  ReviewsCubit({required CreateReview createReview})
+    : _createReview = createReview,
+      super(const ReviewsState.initial());
 
   final CreateReview _createReview;
 
@@ -35,10 +34,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
 
     result.fold(
       (failure) => emit(
-        state.copyWith(
-          status: ReviewsStatus.failure,
-          error: failure.message,
-        ),
+        state.copyWith(status: ReviewsStatus.failure, error: failure.message),
       ),
       (review) => emit(
         state.copyWith(

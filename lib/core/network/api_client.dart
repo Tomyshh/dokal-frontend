@@ -12,8 +12,8 @@ class ApiClient {
   ApiClient({
     required Dio dio,
     required Future<SupabaseClient> supabaseClientFuture,
-  })  : _dio = dio,
-        _supabaseClientFuture = supabaseClientFuture {
+  }) : _dio = dio,
+       _supabaseClientFuture = supabaseClientFuture {
     // Read BACKEND_URL from dart-define / .env.prod
     const backendUrl = String.fromEnvironment(
       'BACKEND_URL',
@@ -63,20 +63,14 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _dio.get(
-        path,
-        queryParameters: queryParameters,
-      );
+      final response = await _dio.get(path, queryParameters: queryParameters);
       return response.data;
     } on DioException catch (e) {
       throw _handleDioError(e);
     }
   }
 
-  Future<dynamic> post(
-    String path, {
-    Object? data,
-  }) async {
+  Future<dynamic> post(String path, {Object? data}) async {
     try {
       final response = await _dio.post(path, data: data);
       return response.data;
@@ -85,10 +79,7 @@ class ApiClient {
     }
   }
 
-  Future<dynamic> patch(
-    String path, {
-    Object? data,
-  }) async {
+  Future<dynamic> patch(String path, {Object? data}) async {
     try {
       final response = await _dio.patch(path, data: data);
       return response.data;
@@ -97,10 +88,7 @@ class ApiClient {
     }
   }
 
-  Future<dynamic> put(
-    String path, {
-    Object? data,
-  }) async {
+  Future<dynamic> put(String path, {Object? data}) async {
     try {
       final response = await _dio.put(path, data: data);
       return response.data;

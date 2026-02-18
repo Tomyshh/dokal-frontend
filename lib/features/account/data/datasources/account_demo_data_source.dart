@@ -53,7 +53,13 @@ class AccountDemoDataSourceImpl implements AccountDemoDataSource {
     final fullName = prefs.getString(_kFullName) ?? l10n.demoProfileFullName;
     final email = prefs.getString(_kEmail) ?? l10n.demoProfileEmail;
     final city = prefs.getString(_kCity) ?? l10n.demoProfileCity;
-    return UserProfile(id: 'demo', fullName: fullName, email: email, city: city);
+    return UserProfile(
+      id: 'demo',
+      fullName: fullName,
+      email: email,
+      city: city,
+      role: 'patient',
+    );
   }
 
   @override

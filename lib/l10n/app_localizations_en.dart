@@ -69,6 +69,79 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authLastName => 'Last name';
 
   @override
+  String get profileCompletionTitle => 'Complete your profile';
+
+  @override
+  String get profileCompletionSubtitle =>
+      'These details are required to continue.';
+
+  @override
+  String profileCompletionStepLabel(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String get profileCompletionStepIdentityTitle => 'Identity';
+
+  @override
+  String get profileCompletionStepIdentitySubtitle => 'Tell us who you are.';
+
+  @override
+  String get profileCompletionDateOfBirth => 'Date of birth';
+
+  @override
+  String get profileCompletionStepContactTitle => 'Contact';
+
+  @override
+  String get profileCompletionStepContactSubtitle => 'How can we reach you?';
+
+  @override
+  String get profileCompletionEmailLockedHint =>
+      'Your email is linked to your account and cannot be changed here.';
+
+  @override
+  String get profileCompletionPhone => 'Phone number';
+
+  @override
+  String get profileCompletionPhoneHint => 'e.g. +972 50 123 4567';
+
+  @override
+  String get profileCompletionPhoneInvalid => 'Invalid phone number';
+
+  @override
+  String get profileCompletionStepIsraelTitle => 'Israel';
+
+  @override
+  String get profileCompletionStepIsraelSubtitle =>
+      'Required info for care in Israel.';
+
+  @override
+  String get profileCompletionTeudatHint => '9 digits';
+
+  @override
+  String get profileCompletionTeudatInvalid => 'Invalid ID number';
+
+  @override
+  String get profileCompletionStepInsuranceTitle => 'Insurance';
+
+  @override
+  String get profileCompletionStepInsuranceSubtitle =>
+      'Optional (you can skip).';
+
+  @override
+  String get profileCompletionInsurance => 'Insurance provider';
+
+  @override
+  String get profileCompletionInsuranceNone => 'No insurance / skip';
+
+  @override
+  String get profileCompletionInsuranceOptionalHint =>
+      'Insurance is optional. You can add it later in your settings.';
+
+  @override
+  String get profileCompletionFinish => 'Finish';
+
+  @override
   String get commonRequired => 'Required';
 
   @override
@@ -171,6 +244,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Upcoming appointments';
 
   @override
+  String get homeFindAppointmentCta => 'Find an appointment';
+
+  @override
   String get homeLast3AppointmentsTitle => 'Last 3 appointments';
 
   @override
@@ -184,6 +260,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonTryAgainLater => 'Try again later.';
+
+  @override
+  String get commonTryAgain => 'Try again';
 
   @override
   String get commonUnableToLoad => 'Unable to load';

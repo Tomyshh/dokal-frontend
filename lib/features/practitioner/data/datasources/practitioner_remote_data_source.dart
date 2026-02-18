@@ -26,8 +26,8 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
     final Map<String, dynamic>? specialties = specRaw is Map<String, dynamic>
         ? specRaw
         : specRaw is List && specRaw.isNotEmpty
-            ? specRaw.first as Map<String, dynamic>
-            : null;
+        ? specRaw.first as Map<String, dynamic>
+        : null;
 
     final firstName = profiles?['first_name'] as String? ?? '';
     final lastName = profiles?['last_name'] as String? ?? '';
@@ -37,8 +37,7 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
     final availabilities = rawSlots.take(6).map((s) {
       final slot = s as Map<String, dynamic>;
       final date = slot['slot_date'] as String? ?? '';
-      final time =
-          (slot['slot_start'] as String? ?? '').substring(0, 5);
+      final time = (slot['slot_start'] as String? ?? '').substring(0, 5);
       return '$date $time';
     }).toList();
 
@@ -63,7 +62,8 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
     return PractitionerProfile(
       id: json['id'] as String,
       name: '$firstName $lastName'.trim(),
-      specialty: specialties?['name_fr'] as String? ??
+      specialty:
+          specialties?['name_fr'] as String? ??
           specialties?['name'] as String? ??
           '',
       address:
@@ -93,10 +93,12 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
     required String from,
     required String to,
   }) async {
-    final data = await api.get(
-      '/api/v1/practitioners/$id/slots',
-      queryParameters: {'from': from, 'to': to},
-    ) as List<dynamic>;
+    final data =
+        await api.get(
+              '/api/v1/practitioners/$id/slots',
+              queryParameters: {'from': from, 'to': to},
+            )
+            as List<dynamic>;
 
     return data.map((raw) {
       final slot = raw as Map<String, dynamic>;
@@ -114,10 +116,12 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
     int limit = 20,
     int offset = 0,
   }) async {
-    final response = await api.get(
-      '/api/v1/practitioners/$id/reviews',
-      queryParameters: {'limit': limit, 'offset': offset},
-    ) as Map<String, dynamic>;
+    final response =
+        await api.get(
+              '/api/v1/practitioners/$id/reviews',
+              queryParameters: {'limit': limit, 'offset': offset},
+            )
+            as Map<String, dynamic>;
     final data = response['reviews'] as List<dynamic>? ?? [];
 
     return data.map((raw) {

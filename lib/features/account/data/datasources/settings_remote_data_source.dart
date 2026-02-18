@@ -10,8 +10,7 @@ class SettingsRemoteDataSourceImpl implements SettingsLocalDataSource {
   final ApiClient api;
 
   @override
-  AppSettings getSettings() =>
-      throw UnimplementedError('Use getSettingsAsync');
+  AppSettings getSettings() => throw UnimplementedError('Use getSettingsAsync');
 
   @override
   Future<void> saveSettings(AppSettings settings) =>
@@ -26,9 +25,12 @@ class SettingsRemoteDataSourceImpl implements SettingsLocalDataSource {
   }
 
   Future<void> saveSettingsAsync(AppSettings settings) async {
-    await api.patch('/api/v1/settings', data: {
-      'notifications_enabled': settings.notificationsEnabled,
-      'reminders_enabled': settings.remindersEnabled,
-    });
+    await api.patch(
+      '/api/v1/settings',
+      data: {
+        'notifications_enabled': settings.notificationsEnabled,
+        'reminders_enabled': settings.remindersEnabled,
+      },
+    );
   }
 }

@@ -17,12 +17,7 @@ import '../../domain/entities/practitioner_search_result.dart';
 import '../bloc/search_cubit.dart';
 
 /// Options de tri disponibles
-enum SortOption {
-  availability,
-  distance,
-  name,
-  rating,
-}
+enum SortOption { availability, distance, name, rating }
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -126,7 +121,9 @@ class _SearchPageState extends State<SearchPage> {
                               // La page search est utilisée à la fois sur `/search`
                               // (root) et sur `/home/search` (branche Home). On
                               // pousse vers la route cohérente avec le contexte.
-                              final fromPath = GoRouterState.of(context).uri.path;
+                              final fromPath = GoRouterState.of(
+                                context,
+                              ).uri.path;
                               final target = fromPath.startsWith('/home')
                                   ? '/home/practitioner/${p.id}'
                                   : '/practitioner/${p.id}';
@@ -148,10 +145,7 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({
-    required this.currentSort,
-    required this.onSortChanged,
-  });
+  const _SearchBar({required this.currentSort, required this.onSortChanged});
 
   final SortOption currentSort;
   final ValueChanged<SortOption> onSortChanged;
@@ -245,11 +239,11 @@ class _SearchBar extends StatelessWidget {
                       Text(
                         _getSortLabel(context, currentSort),
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: currentSort != SortOption.availability
-                                  ? AppColors.accent
-                                  : AppColors.textSecondary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: currentSort != SortOption.availability
+                              ? AppColors.accent
+                              : AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),
@@ -334,11 +328,11 @@ class _SearchBar extends StatelessWidget {
                         SizedBox(width: 10.w),
                         Text(
                           l10n.searchSortTitle,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
                         ),
                       ],
                     ),
@@ -438,7 +432,9 @@ class _SortOptionTile extends StatelessWidget {
           color: isSelected ? color.withValues(alpha: 0.08) : Colors.white,
           borderRadius: BorderRadius.circular(14.r),
           border: Border.all(
-            color: isSelected ? color.withValues(alpha: 0.3) : AppColors.outline,
+            color: isSelected
+                ? color.withValues(alpha: 0.3)
+                : AppColors.outline,
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -451,11 +447,7 @@ class _SortOptionTile extends StatelessWidget {
                 color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10.r),
               ),
-              child: Icon(
-                icon,
-                color: color,
-                size: 20.sp,
-              ),
+              child: Icon(icon, color: color, size: 20.sp),
             ),
             SizedBox(width: 12.w),
             Expanded(
@@ -465,16 +457,16 @@ class _SortOptionTile extends StatelessWidget {
                   Text(
                     label,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: isSelected ? color : AppColors.textPrimary,
-                        ),
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? color : AppColors.textPrimary,
+                    ),
                   ),
                   SizedBox(height: 2.h),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ],
               ),
@@ -483,10 +475,7 @@ class _SortOptionTile extends StatelessWidget {
               Container(
                 width: 24.r,
                 height: 24.r,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                 child: Icon(
                   Icons.check_rounded,
                   color: Colors.white,
@@ -526,12 +515,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
     'פסיכיאטר',
   ];
 
-  static const List<String> _kupatHolim = [
-    'כללית',
-    'מכבי',
-    'מאוחדת',
-    'לאומית',
-  ];
+  static const List<String> _kupatHolim = ['כללית', 'מכבי', 'מאוחדת', 'לאומית'];
 
   int get _activeFilterCount {
     int count = 0;
@@ -575,14 +559,16 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                 Text(
                   l10n.searchFilterTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
                 if (_activeFilterCount > 0)
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 4.h,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.accent.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadii.pill.r),
@@ -590,9 +576,9 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                     child: Text(
                       l10n.searchFilterActiveCount(_activeFilterCount),
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.accent,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: AppColors.accent,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
               ],
@@ -623,8 +609,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                         _FilterChip(
                           label: l10n.searchFilterDateToday,
                           isSelected: _selectedDate == 'today',
-                          onTap: () =>
-                              setState(() => _selectedDate = 'today'),
+                          onTap: () => setState(() => _selectedDate = 'today'),
                           accentColor: AppColors.accent,
                         ),
                         _FilterChip(
@@ -668,8 +653,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                           (s) => _FilterChip(
                             label: s,
                             isSelected: _selectedSpecialty == s,
-                            onTap: () =>
-                                setState(() => _selectedSpecialty = s),
+                            onTap: () => setState(() => _selectedSpecialty = s),
                           ),
                         ),
                       ],
@@ -715,9 +699,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                               _maxDistance >= 50
                                   ? l10n.searchFilterDistanceAny
                                   : '${_maxDistance.round()} ק"מ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
+                              style: Theme.of(context).textTheme.titleSmall
                                   ?.copyWith(
                                     color: _maxDistance < 50
                                         ? AppColors.primary
@@ -731,11 +713,13 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                         SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             activeTrackColor: AppColors.primary,
-                            inactiveTrackColor:
-                                AppColors.primary.withValues(alpha: 0.15),
+                            inactiveTrackColor: AppColors.primary.withValues(
+                              alpha: 0.15,
+                            ),
                             thumbColor: AppColors.primary,
-                            overlayColor:
-                                AppColors.primary.withValues(alpha: 0.1),
+                            overlayColor: AppColors.primary.withValues(
+                              alpha: 0.1,
+                            ),
                             trackHeight: 4.h,
                             thumbShape: RoundSliderThumbShape(
                               enabledThumbRadius: 10.r,
@@ -746,8 +730,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                             min: 1,
                             max: 50,
                             divisions: 49,
-                            onChanged: (v) =>
-                                setState(() => _maxDistance = v),
+                            onChanged: (v) => setState(() => _maxDistance = v),
                           ),
                         ),
                         Padding(
@@ -757,21 +740,13 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                             children: [
                               Text(
                                 '1 ק"מ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: AppColors.textSecondary,
-                                    ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: AppColors.textSecondary),
                               ),
                               Text(
                                 '50+ ק"מ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: AppColors.textSecondary,
-                                    ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: AppColors.textSecondary),
                               ),
                             ],
                           ),
@@ -868,19 +843,15 @@ class _FilterSection extends StatelessWidget {
                 color: iconColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Icon(
-                icon,
-                size: 16.sp,
-                color: iconColor,
-              ),
+              child: Icon(icon, size: 16.sp, color: iconColor),
             ),
             SizedBox(width: 10.w),
             Text(
               title,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
             ),
           ],
         ),
@@ -923,9 +894,9 @@ class _FilterChip extends StatelessWidget {
         child: Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: isSelected ? color : AppColors.textSecondary,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              ),
+            color: isSelected ? color : AppColors.textSecondary,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+          ),
         ),
       ),
     );

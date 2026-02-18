@@ -15,13 +15,12 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
   }
 
   Future<List<PractitionerSearchResult>> searchAsync(String query) async {
-    final data = await api.get(
-      '/api/v1/practitioners/search',
-      queryParameters: {
-        if (query.isNotEmpty) 'q': query,
-        'limit': 50,
-      },
-    ) as List<dynamic>;
+    final data =
+        await api.get(
+              '/api/v1/practitioners/search',
+              queryParameters: {if (query.isNotEmpty) 'q': query, 'limit': 50},
+            )
+            as List<dynamic>;
 
     return data.map((raw) {
       final json = raw as Map<String, dynamic>;
@@ -32,8 +31,8 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
       final Map<String, dynamic>? spec = specRaw is Map<String, dynamic>
           ? specRaw
           : specRaw is List && specRaw.isNotEmpty
-              ? specRaw.first as Map<String, dynamic>
-              : null;
+          ? specRaw.first as Map<String, dynamic>
+          : null;
 
       final firstName = profiles?['first_name'] as String? ?? '';
       final lastName = profiles?['last_name'] as String? ?? '';
@@ -41,11 +40,9 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
       return PractitionerSearchResult(
         id: json['id'] as String,
         name: '$firstName $lastName'.trim(),
-        specialty: spec?['name_fr'] as String? ??
-            spec?['name'] as String? ??
-            '',
-        address:
-            '${json['address_line'] ?? ''}, ${json['city'] ?? ''}'.trim(),
+        specialty:
+            spec?['name_fr'] as String? ?? spec?['name'] as String? ?? '',
+        address: '${json['address_line'] ?? ''}, ${json['city'] ?? ''}'.trim(),
         sector: json['sector'] as String? ?? '',
         nextAvailabilityLabel: '',
         avatarUrl: profiles?['avatar_url'] as String?,

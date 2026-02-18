@@ -40,18 +40,23 @@ class BookingRemoteDataSourceImpl implements BookingDemoDataSource {
     required String city,
     required bool visitedBefore,
   }) async {
-    final json = await api.post('/api/v1/appointments', data: {
-      'practitioner_id': practitionerId,
-      'relative_id': relativeId,
-      'reason_id': reasonId,
-      'appointment_date': appointmentDate,
-      'start_time': startTime,
-      'end_time': endTime,
-      'patient_address_line': addressLine,
-      'patient_zip_code': zipCode,
-      'patient_city': city,
-      'visited_before': visitedBefore,
-    }) as Map<String, dynamic>;
+    final json =
+        await api.post(
+              '/api/v1/appointments',
+              data: {
+                'practitioner_id': practitionerId,
+                'relative_id': relativeId,
+                'reason_id': reasonId,
+                'appointment_date': appointmentDate,
+                'start_time': startTime,
+                'end_time': endTime,
+                'patient_address_line': addressLine,
+                'patient_zip_code': zipCode,
+                'patient_city': city,
+                'visited_before': visitedBefore,
+              },
+            )
+            as Map<String, dynamic>;
     return json['id'] as String;
   }
 }

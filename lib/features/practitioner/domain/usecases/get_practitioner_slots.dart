@@ -12,6 +12,5 @@ class GetPractitionerSlots {
     String id, {
     required String from,
     required String to,
-  }) =>
-      repo.getSlots(id, from: from, to: to);
+  }) => repo.getSlots(id, from: from, to: to);
 }

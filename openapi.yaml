@@ -1325,6 +1325,10 @@ components:
         sex: { $ref: "#/components/schemas/SexType", nullable: true }
         blood_type: { type: string, nullable: true }
         kupat_holim: { type: string, nullable: true }
+        insurance_provider:
+          type: string
+          nullable: true
+          description: Optional private insurance provider (e.g. AIG, הראל, מגדל...)
         kupat_member_id: { type: string, nullable: true }
         family_doctor_name: { type: string, nullable: true }
         emergency_contact_name: { type: string, nullable: true }

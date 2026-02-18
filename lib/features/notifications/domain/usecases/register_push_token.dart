@@ -11,6 +11,5 @@ class RegisterPushToken {
   Future<Either<Failure, Unit>> call({
     required String token,
     required String platform,
-  }) =>
-      repo.registerPushToken(token: token, platform: platform);
+  }) => repo.registerPushToken(token: token, platform: platform);
 }

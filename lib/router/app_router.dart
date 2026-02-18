@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/utils/go_router_refresh_stream.dart';
+import '../core/profile_completion/profile_completion_notifier.dart';
 import '../core/widgets/main_shell.dart';
 import '../features/account/presentation/pages/account_page.dart';
 import '../features/appointments/presentation/pages/appointments_page.dart';
@@ -41,10 +42,12 @@ import '../features/account/presentation/pages/security/change_password_page.dar
 import '../features/account/presentation/pages/payment_page.dart';
 import '../features/account/presentation/pages/settings_page.dart';
 import '../features/account/presentation/pages/privacy_page.dart';
+import '../features/account/presentation/pages/complete_patient_profile_wizard_page.dart';
 
 late final GoRouter appRouter;
 late final AuthBloc _authBloc;
 late final bool Function() _isOnboardingCompleted;
+late final ProfileCompletionNotifier _profileCompletion;
 
 final _rootNavKey = GlobalKey<NavigatorState>();
 final _homeTabNavKey = GlobalKey<NavigatorState>(debugLabel: 'homeTab');
@@ -56,7 +59,7 @@ final _accountTabNavKey = GlobalKey<NavigatorState>(debugLabel: 'accountTab');
 
 /// Routes qui nécessitent une authentification
 /// Seulement le booking - l'onglet Compte affiche le login inline si besoin
-const _protectedRoutes = ['/booking'];
+const _protectedRoutes = ['/booking', '/complete-profile'];
 
 /// Vérifie si une route nécessite une authentification
 bool _isProtectedRoute(String location) {
@@ -101,16 +104,30 @@ String? _safeRedirectTarget(GoRouterState state) {
 void initAppRouter(
   AuthBloc authBloc, {
   required bool Function() isOnboardingCompleted,
+  required ProfileCompletionNotifier profileCompletion,
 }) {
   _authBloc = authBloc;
   _isOnboardingCompleted = isOnboardingCompleted;
+  _profileCompletion = profileCompletion;
+
+  // Keep profile completion state in sync with auth.
+  _authBloc.stream.listen((state) {
+    if (state.isAuthenticated) {
+      _profileCompletion.refresh();
+    } else {
+      _profileCompletion.reset();
+    }
+  });
 
   appRouter = GoRouter(
     navigatorKey: _rootNavKey,
     // On démarre sur un splash qui décide (auth + onboarding).
     initialLocation: '/splash',
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(authBloc.stream),
+    refreshListenable: Listenable.merge([
+      GoRouterRefreshStream(authBloc.stream),
+      _profileCompletion,
+    ]),
     redirect: (context, state) {
       // `path` = chemin courant sans query (stable pour les checks)
       // `full` = destination complète à restaurer après login (avec query)
@@ -125,6 +142,25 @@ void initAppRouter(
 
       final isAuthed = authBloc.state.isAuthenticated;
       final onboardingCompleted = _isOnboardingCompleted();
+
+      // Enforce required patient info completion once authenticated.
+      const completionPath = '/complete-profile';
+      if (isAuthed) {
+        // Trigger a refresh the first time we need the info.
+        if (_profileCompletion.status == ProfileGuardStatus.unknown) {
+          _profileCompletion.refresh();
+        }
+
+        if (_profileCompletion.needsCompletion && path != completionPath) {
+          return '$completionPath?redirect=${Uri.encodeComponent(full)}';
+        }
+        if (!_profileCompletion.needsCompletion && path == completionPath) {
+          final target = _safeRedirectTarget(state);
+          return target ?? '/home';
+        }
+      } else {
+        if (path == completionPath) return '/home';
+      }
 
       // Si quelqu'un arrive sur /splash, on le sort immédiatement.
       if (path == '/splash') {
@@ -164,6 +200,10 @@ void initAppRouter(
         },
       ),
       GoRoute(path: '/splash', builder: (context, state) => const SplashPage()),
+      GoRoute(
+        path: '/complete-profile',
+        builder: (context, state) => const CompletePatientProfileWizardPage(),
+      ),
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingPage(),

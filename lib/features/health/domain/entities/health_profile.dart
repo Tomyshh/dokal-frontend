@@ -9,6 +9,7 @@ class HealthProfile extends Equatable {
     required this.dateOfBirth,
     required this.sex,
     required this.kupatHolim,
+    this.insuranceProvider = '',
     required this.kupatMemberId,
     required this.familyDoctorName,
     required this.bloodType,
@@ -26,6 +27,7 @@ class HealthProfile extends Equatable {
 
   /// Israeli HMO: Clalit / Maccabi / Meuhedet / Leumit (or "other")
   final String kupatHolim;
+  final String insuranceProvider;
   final String kupatMemberId;
 
   final String familyDoctorName;
@@ -44,6 +46,7 @@ class HealthProfile extends Equatable {
     'dateOfBirth': dateOfBirth,
     'sex': sex,
     'kupatHolim': kupatHolim,
+    'insuranceProvider': insuranceProvider,
     'kupatMemberId': kupatMemberId,
     'familyDoctorName': familyDoctorName,
     'bloodType': bloodType,
@@ -61,6 +64,7 @@ class HealthProfile extends Equatable {
       dateOfBirth: (json['dateOfBirth'] as String?) ?? '',
       sex: (json['sex'] as String?) ?? 'other',
       kupatHolim: (json['kupatHolim'] as String?) ?? 'other',
+      insuranceProvider: (json['insuranceProvider'] as String?) ?? '',
       kupatMemberId: (json['kupatMemberId'] as String?) ?? '',
       familyDoctorName: (json['familyDoctorName'] as String?) ?? '',
       bloodType: (json['bloodType'] as String?) ?? '',
@@ -84,6 +88,7 @@ class HealthProfile extends Equatable {
     dateOfBirth,
     sex,
     kupatHolim,
+    insuranceProvider,
     kupatMemberId,
     familyDoctorName,
     bloodType,

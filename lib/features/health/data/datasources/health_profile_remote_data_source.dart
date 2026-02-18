@@ -4,7 +4,8 @@ import 'health_profile_local_data_source.dart';
 
 /// Remote implementation of [HealthProfileLocalDataSource] backed by the Dokal
 /// backend REST API.
-class HealthProfileRemoteDataSourceImpl implements HealthProfileLocalDataSource {
+class HealthProfileRemoteDataSourceImpl
+    implements HealthProfileLocalDataSource {
   HealthProfileRemoteDataSourceImpl({required this.api});
 
   final ApiClient api;
@@ -28,6 +29,7 @@ class HealthProfileRemoteDataSourceImpl implements HealthProfileLocalDataSource 
       dateOfBirth: json['date_of_birth'] as String? ?? '',
       sex: json['sex'] as String? ?? 'other',
       kupatHolim: json['kupat_holim'] as String? ?? '',
+      insuranceProvider: json['insurance_provider'] as String? ?? '',
       kupatMemberId: json['kupat_member_id'] as String? ?? '',
       familyDoctorName: json['family_doctor_name'] as String? ?? '',
       bloodType: json['blood_type'] as String? ?? '',
@@ -40,16 +42,21 @@ class HealthProfileRemoteDataSourceImpl implements HealthProfileLocalDataSource 
   }
 
   Future<void> saveProfileAsync(HealthProfile profile) async {
-    await api.put('/api/v1/health/profile', data: {
-      'teudat_zehut': profile.teudatZehut,
-      'date_of_birth': profile.dateOfBirth,
-      'sex': profile.sex,
-      'blood_type': profile.bloodType,
-      'kupat_holim': profile.kupatHolim,
-      'kupat_member_id': profile.kupatMemberId,
-      'family_doctor_name': profile.familyDoctorName,
-      'emergency_contact_name': profile.emergencyContactName,
-      'emergency_contact_phone': profile.emergencyContactPhone,
-    });
+    await api.put(
+      '/api/v1/health/profile',
+      data: {
+        'teudat_zehut': profile.teudatZehut,
+        'date_of_birth': profile.dateOfBirth,
+        'sex': profile.sex,
+        'blood_type': profile.bloodType,
+        'kupat_holim': profile.kupatHolim,
+        if (profile.insuranceProvider.trim().isNotEmpty)
+          'insurance_provider': profile.insuranceProvider.trim(),
+        'kupat_member_id': profile.kupatMemberId,
+        'family_doctor_name': profile.familyDoctorName,
+        'emergency_contact_name': profile.emergencyContactName,
+        'emergency_contact_phone': profile.emergencyContactPhone,
+      },
+    );
   }
 }

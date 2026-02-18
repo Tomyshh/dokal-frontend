@@ -129,8 +129,9 @@ class MessagesListPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.small(
           heroTag: 'fab_messages',
-          onPressed: () =>
-              hasSession ? context.push('/messages/new') : context.push('/account'),
+          onPressed: () => hasSession
+              ? context.push('/messages/new')
+              : context.push('/account'),
           backgroundColor: AppColors.primary,
           child: const Icon(Icons.edit_rounded, color: Colors.white, size: 20),
         ),

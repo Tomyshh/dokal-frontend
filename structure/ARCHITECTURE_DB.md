@@ -36,7 +36,7 @@ CREATE TABLE public.appointment_reasons (
 );
 CREATE TABLE public.appointments (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  patient_id uuid NOT NULL,
+  patient_id uuid,
   practitioner_id uuid NOT NULL,
   relative_id uuid,
   reason_id uuid,
@@ -55,11 +55,23 @@ CREATE TABLE public.appointments (
   completed_at timestamp with time zone,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  organization_id uuid,
+  site_id uuid,
+  source text NOT NULL DEFAULT 'legacy_unknown'::text CHECK (source = ANY (ARRAY['dokal_crm'::text, 'dokal_app'::text, 'google_calendar_sync'::text, 'legacy_unknown'::text])),
+  patient_record_id uuid NOT NULL,
+  patient_info_missing boolean NOT NULL DEFAULT false,
+  patient_missing_fields ARRAY NOT NULL DEFAULT ARRAY[]::text[],
+  external_title text,
+  external_description text,
+  external_location text,
   CONSTRAINT appointments_pkey PRIMARY KEY (id),
   CONSTRAINT appointments_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.profiles(id),
   CONSTRAINT appointments_practitioner_id_fkey FOREIGN KEY (practitioner_id) REFERENCES public.practitioners(id),
   CONSTRAINT appointments_relative_id_fkey FOREIGN KEY (relative_id) REFERENCES public.relatives(id),
-  CONSTRAINT appointments_reason_id_fkey FOREIGN KEY (reason_id) REFERENCES public.appointment_reasons(id)
+  CONSTRAINT appointments_reason_id_fkey FOREIGN KEY (reason_id) REFERENCES public.appointment_reasons(id),
+  CONSTRAINT appointments_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id),
+  CONSTRAINT appointments_site_id_fkey FOREIGN KEY (site_id) REFERENCES public.organization_sites(id),
+  CONSTRAINT appointments_patient_record_id_fkey FOREIGN KEY (patient_record_id) REFERENCES public.patients(id)
 );
 CREATE TABLE public.audit_log (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -83,6 +95,62 @@ CREATE TABLE public.conversations (
   CONSTRAINT conversations_patient_id_fkey FOREIGN KEY (patient_id) REFERENCES public.profiles(id),
   CONSTRAINT conversations_practitioner_id_fkey FOREIGN KEY (practitioner_id) REFERENCES public.practitioners(id),
   CONSTRAINT conversations_appointment_id_fkey FOREIGN KEY (appointment_id) REFERENCES public.appointments(id)
+);
+CREATE TABLE public.crm_external_events (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  practitioner_id uuid NOT NULL,
+  google_event_id text NOT NULL,
+  title text NOT NULL DEFAULT ''::text,
+  description text,
+  location text,
+  start_at timestamp with time zone NOT NULL,
+  end_at timestamp with time zone NOT NULL,
+  date date NOT NULL,
+  source text NOT NULL DEFAULT 'google'::text,
+  type_detected text NOT NULL DEFAULT 'busy'::text CHECK (type_detected = ANY (ARRAY['appointment'::text, 'busy'::text])),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT crm_external_events_pkey PRIMARY KEY (id),
+  CONSTRAINT crm_external_events_practitioner_id_fkey FOREIGN KEY (practitioner_id) REFERENCES public.practitioners(id)
+);
+CREATE TABLE public.google_calendar_connections (
+  user_id uuid NOT NULL,
+  google_email text,
+  refresh_token text,
+  access_token text,
+  token_expiry timestamp with time zone,
+  calendar_id text NOT NULL DEFAULT 'primary'::text,
+  calendar_name text,
+  sync_token text,
+  watch_channel_id text UNIQUE,
+  watch_resource_id text,
+  watch_expiration timestamp with time zone,
+  watch_token text,
+  sync_crm_to_google boolean NOT NULL DEFAULT true,
+  sync_google_to_crm boolean NOT NULL DEFAULT true,
+  keywords_appointment ARRAY NOT NULL DEFAULT ARRAY['rdv'::text, 'consultation'::text, 'patient'::text],
+  keywords_busy ARRAY NOT NULL DEFAULT ARRAY['perso'::text, 'vacances'::text, 'congé'::text],
+  ai_enabled boolean NOT NULL DEFAULT true,
+  ai_prompt text,
+  last_sync_at timestamp with time zone,
+  last_error text,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT google_calendar_connections_pkey PRIMARY KEY (user_id),
+  CONSTRAINT google_calendar_connections_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.google_calendar_event_links (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  google_event_id text NOT NULL,
+  crm_appointment_id uuid,
+  crm_external_event_id uuid,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT google_calendar_event_links_pkey PRIMARY KEY (id),
+  CONSTRAINT google_calendar_event_links_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT google_calendar_event_links_crm_appointment_id_fkey FOREIGN KEY (crm_appointment_id) REFERENCES public.appointments(id),
+  CONSTRAINT google_calendar_event_links_crm_external_event_id_fkey FOREIGN KEY (crm_external_event_id) REFERENCES public.crm_external_events(id)
 );
 CREATE TABLE public.health_allergies (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -131,6 +199,7 @@ CREATE TABLE public.health_profiles (
   emergency_contact_name text,
   emergency_contact_phone text,
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  insurance_provider text,
   CONSTRAINT health_profiles_pkey PRIMARY KEY (user_id),
   CONSTRAINT health_profiles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
 );
@@ -144,6 +213,19 @@ CREATE TABLE public.health_vaccinations (
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   CONSTRAINT health_vaccinations_pkey PRIMARY KEY (id),
   CONSTRAINT health_vaccinations_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.lead (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  full_name character varying NOT NULL,
+  email character varying NOT NULL,
+  phone character varying,
+  message text,
+  source character varying NOT NULL DEFAULT 'welcome_page'::character varying,
+  locale character varying,
+  status character varying NOT NULL DEFAULT 'new'::character varying,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT lead_pkey PRIMARY KEY (id)
 );
 CREATE TABLE public.messages (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -172,6 +254,81 @@ CREATE TABLE public.notifications (
   CONSTRAINT notifications_pkey PRIMARY KEY (id),
   CONSTRAINT notifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
 );
+CREATE TABLE public.organization_members (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  organization_id uuid NOT NULL,
+  user_id uuid NOT NULL,
+  role USER-DEFINED NOT NULL DEFAULT 'member'::organization_role,
+  joined_at timestamp with time zone NOT NULL DEFAULT now(),
+  staff_type text NOT NULL DEFAULT 'practitioner'::text CHECK (staff_type = ANY (ARRAY['practitioner'::text, 'secretary'::text])),
+  invited_by uuid,
+  is_active boolean NOT NULL DEFAULT true,
+  site_id uuid,
+  CONSTRAINT organization_members_pkey PRIMARY KEY (id),
+  CONSTRAINT organization_members_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id),
+  CONSTRAINT organization_members_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT organization_members_invited_by_fkey FOREIGN KEY (invited_by) REFERENCES public.profiles(id),
+  CONSTRAINT organization_members_site_id_fkey FOREIGN KEY (site_id) REFERENCES public.organization_sites(id)
+);
+CREATE TABLE public.organization_sites (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  organization_id uuid NOT NULL,
+  name text NOT NULL,
+  address_line text,
+  zip_code text,
+  city text,
+  latitude double precision,
+  longitude double precision,
+  phone text,
+  email text,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT organization_sites_pkey PRIMARY KEY (id),
+  CONSTRAINT organization_sites_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id)
+);
+CREATE TABLE public.organizations (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  slug text UNIQUE,
+  email text,
+  phone text,
+  address_line text,
+  zip_code text,
+  city text,
+  latitude double precision,
+  longitude double precision,
+  avatar_url text,
+  type USER-DEFINED NOT NULL DEFAULT 'individual'::organization_type,
+  license_number text,
+  description text,
+  website text,
+  owner_id uuid NOT NULL,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT organizations_pkey PRIMARY KEY (id),
+  CONSTRAINT organizations_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.patients (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  auth_user_id uuid UNIQUE,
+  first_name text,
+  last_name text,
+  email text,
+  phone text,
+  date_of_birth date,
+  sex text CHECK (sex IS NULL OR (sex = ANY (ARRAY['male'::text, 'female'::text, 'other'::text]))),
+  city text,
+  avatar_url text,
+  teudat_zehut_encrypted text,
+  teudat_zehut_hash text,
+  status text NOT NULL DEFAULT 'draft'::text CHECK (status = ANY (ARRAY['draft'::text, 'linked'::text])),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT patients_pkey PRIMARY KEY (id),
+  CONSTRAINT patients_auth_user_id_fkey FOREIGN KEY (auth_user_id) REFERENCES auth.users(id)
+);
 CREATE TABLE public.payment_methods (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL,
@@ -180,10 +337,30 @@ CREATE TABLE public.payment_methods (
   expiry_month integer NOT NULL CHECK (expiry_month >= 1 AND expiry_month <= 12),
   expiry_year integer NOT NULL CHECK (expiry_year >= 2000 AND expiry_year <= 2100),
   is_default boolean NOT NULL DEFAULT false,
-  stripe_payment_method_id text,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
+  buyer_key text,
+  label text,
+  buyer_card_mask text,
   CONSTRAINT payment_methods_pkey PRIMARY KEY (id),
   CONSTRAINT payment_methods_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.payment_transactions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  subscription_id uuid,
+  payment_method_id uuid,
+  type text NOT NULL DEFAULT 'sale'::text CHECK (type = ANY (ARRAY['sale'::text, 'subscription_payment'::text, 'refund'::text])),
+  amount_agorot integer NOT NULL,
+  currency text NOT NULL DEFAULT 'ILS'::text,
+  description text,
+  payme_sale_id text,
+  status text NOT NULL DEFAULT 'pending'::text CHECK (status = ANY (ARRAY['pending'::text, 'completed'::text, 'failed'::text, 'refunded'::text])),
+  metadata jsonb NOT NULL DEFAULT '{}'::jsonb,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT payment_transactions_pkey PRIMARY KEY (id),
+  CONSTRAINT payment_transactions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT payment_transactions_subscription_id_fkey FOREIGN KEY (subscription_id) REFERENCES public.subscriptions(id),
+  CONSTRAINT payment_transactions_payment_method_id_fkey FOREIGN KEY (payment_method_id) REFERENCES public.payment_methods(id)
 );
 CREATE TABLE public.practitioner_schedule_overrides (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -231,9 +408,18 @@ CREATE TABLE public.practitioners (
   is_active boolean NOT NULL DEFAULT true,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  trial_start timestamp with time zone,
+  trial_end timestamp with time zone,
+  trial_used boolean NOT NULL DEFAULT false,
+  organization_id uuid NOT NULL,
+  license_number text,
+  site_id uuid,
+  specialization_license text,
   CONSTRAINT practitioners_pkey PRIMARY KEY (id),
   CONSTRAINT practitioners_id_fkey FOREIGN KEY (id) REFERENCES public.profiles(id),
-  CONSTRAINT practitioners_specialty_id_fkey FOREIGN KEY (specialty_id) REFERENCES public.specialties(id)
+  CONSTRAINT practitioners_specialty_id_fkey FOREIGN KEY (specialty_id) REFERENCES public.specialties(id),
+  CONSTRAINT practitioners_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id),
+  CONSTRAINT practitioners_site_id_fkey FOREIGN KEY (site_id) REFERENCES public.organization_sites(id)
 );
 CREATE TABLE public.profiles (
   id uuid NOT NULL,
@@ -283,7 +469,51 @@ CREATE TABLE public.specialties (
   name_fr text,
   icon_url text,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
+  name_ru text,
+  name_en text,
+  name_am text,
+  name_es text,
   CONSTRAINT specialties_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.subscription_plans (
+  id text NOT NULL,
+  name text NOT NULL,
+  base_price_agorot integer NOT NULL,
+  practitioner_seat_price_agorot integer NOT NULL DEFAULT 0,
+  secretary_seat_price_agorot integer NOT NULL DEFAULT 0,
+  max_sites integer NOT NULL DEFAULT 1,
+  trial_duration_days integer NOT NULL DEFAULT 60,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT subscription_plans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.subscriptions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  payment_method_id uuid,
+  plan text NOT NULL DEFAULT 'individual'::text CHECK (plan = ANY (ARRAY['individual'::text, 'clinic'::text, 'enterprise'::text])),
+  price_agorot integer NOT NULL DEFAULT 29000,
+  status text NOT NULL DEFAULT 'active'::text CHECK (status = ANY (ARRAY['active'::text, 'trialing'::text, 'cancelled'::text, 'paused'::text, 'past_due'::text, 'expired'::text])),
+  payme_sub_id text,
+  payme_sub_code text,
+  payme_sale_id text,
+  current_period_start timestamp with time zone NOT NULL DEFAULT now(),
+  current_period_end timestamp with time zone,
+  next_payment_date date,
+  cancelled_at timestamp with time zone,
+  paused_at timestamp with time zone,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  organization_id uuid NOT NULL UNIQUE,
+  practitioner_seats integer NOT NULL DEFAULT 1,
+  secretary_seats integer NOT NULL DEFAULT 0,
+  total_price_agorot integer NOT NULL DEFAULT 32900,
+  trial_start timestamp with time zone,
+  trial_end timestamp with time zone,
+  CONSTRAINT subscriptions_pkey PRIMARY KEY (id),
+  CONSTRAINT subscriptions_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id),
+  CONSTRAINT subscriptions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT subscriptions_payment_method_id_fkey FOREIGN KEY (payment_method_id) REFERENCES public.payment_methods(id)
 );
 CREATE TABLE public.user_settings (
   user_id uuid NOT NULL,

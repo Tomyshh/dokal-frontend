@@ -17,6 +17,7 @@ class BookingPatientsState extends Equatable {
         fullName: 'Tom Jami',
         email: 'tom@domaine.com',
         city: '75019 Paris',
+        role: 'patient',
       ),
       relatives = const [],
       error = null;
