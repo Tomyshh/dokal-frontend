@@ -88,9 +88,9 @@ class _NewMessagePageState extends State<NewMessagePage> {
                               labelText: l10n.messagesMessageLabel,
                               hintText: l10n.messagesMessageHint,
                               alignLabelWithHint: true,
-                              prefixIcon: const Icon(
+                              prefixIcon: Icon(
                                 Icons.chat_bubble_rounded,
-                                size: 18,
+                                size: 18.sp,
                               ),
                               hintStyle: Theme.of(context).textTheme.bodySmall,
                             ),

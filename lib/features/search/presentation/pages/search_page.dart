@@ -184,8 +184,8 @@ class _SearchBar extends StatelessWidget {
                   buildWhen: (p, n) => p.query != n.query,
                   builder: (context, state) {
                     return TextField(
-                      style: const TextStyle(
-                        fontSize: 15,
+                      style: TextStyle(
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textPrimary,
                       ),
@@ -222,6 +222,7 @@ class _SearchBar extends StatelessWidget {
                     border: currentSort != SortOption.availability
                         ? Border.all(
                             color: AppColors.accent.withValues(alpha: 0.3),
+                            width: 1.r,
                           )
                         : null,
                   ),
@@ -435,7 +436,7 @@ class _SortOptionTile extends StatelessWidget {
             color: isSelected
                 ? color.withValues(alpha: 0.3)
                 : AppColors.outline,
-            width: isSelected ? 1.5 : 1,
+            width: isSelected ? 1.5.r : 1.r,
           ),
         ),
         child: Row(
@@ -584,7 +585,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
               ],
             ),
           ),
-          Divider(color: AppColors.outline, height: 1),
+          Divider(color: AppColors.outline, height: 1.h),
           // Content
           Flexible(
             child: SingleChildScrollView(
@@ -888,7 +889,7 @@ class _FilterChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadii.md.r),
           border: Border.all(
             color: isSelected ? color : AppColors.outline,
-            width: isSelected ? 1.5 : 1,
+            width: isSelected ? 1.5.r : 1.r,
           ),
         ),
         child: Text(

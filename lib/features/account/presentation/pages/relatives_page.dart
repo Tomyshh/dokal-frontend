@@ -106,7 +106,7 @@ class RelativesPage extends StatelessWidget {
             floatingActionButton: FloatingActionButton.small(
               heroTag: 'fab_relatives',
               onPressed: () => context.read<RelativesCubit>().addDemo(),
-              child: const Icon(Icons.add_rounded, size: 20),
+              child: Icon(Icons.add_rounded, size: 20.sp),
             ),
           );
         },

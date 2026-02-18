@@ -21,12 +21,12 @@ Future<T?> showDokalModal<T>({
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadii.xl.r),
-          border: Border.all(color: AppColors.outline),
-          boxShadow: const [
+          border: Border.all(color: AppColors.outline, width: 1.r),
+          boxShadow: [
             BoxShadow(
               color: AppColors.shadow,
-              blurRadius: 20,
-              offset: Offset(0, 12),
+              blurRadius: 20.r,
+              offset: Offset(0, 12.h),
             ),
           ],
         ),

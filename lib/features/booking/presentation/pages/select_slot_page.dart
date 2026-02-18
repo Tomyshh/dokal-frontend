@@ -189,7 +189,7 @@ class _TimeBox extends StatelessWidget {
         decoration: BoxDecoration(
           color: bg,
           borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(color: border, width: 1.2),
+          border: Border.all(color: border, width: 1.2.w),
         ),
         child: Text(
           label,

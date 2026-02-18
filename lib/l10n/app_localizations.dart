@@ -190,6 +190,12 @@ abstract class AppLocalizations {
   /// **'צור חשבון'**
   String get authCreateAccountCta;
 
+  /// No description provided for @authContinueWithGoogle.
+  ///
+  /// In he, this message translates to:
+  /// **'המשך עם Google'**
+  String get authContinueWithGoogle;
+
   /// No description provided for @authContinueWithoutAccount.
   ///
   /// In he, this message translates to:
@@ -255,6 +261,42 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'תאריך לידה'**
   String get profileCompletionDateOfBirth;
+
+  /// No description provided for @profileCompletionCity.
+  ///
+  /// In he, this message translates to:
+  /// **'עיר (אופציונלי)'**
+  String get profileCompletionCity;
+
+  /// No description provided for @profileCompletionSex.
+  ///
+  /// In he, this message translates to:
+  /// **'מין (אופציונלי)'**
+  String get profileCompletionSex;
+
+  /// No description provided for @profileCompletionSexMale.
+  ///
+  /// In he, this message translates to:
+  /// **'זכר'**
+  String get profileCompletionSexMale;
+
+  /// No description provided for @profileCompletionSexFemale.
+  ///
+  /// In he, this message translates to:
+  /// **'נקבה'**
+  String get profileCompletionSexFemale;
+
+  /// No description provided for @profileCompletionSexOther.
+  ///
+  /// In he, this message translates to:
+  /// **'אחר'**
+  String get profileCompletionSexOther;
+
+  /// No description provided for @profileCompletionAvatar.
+  ///
+  /// In he, this message translates to:
+  /// **'תמונת פרופיל (אופציונלי)'**
+  String get profileCompletionAvatar;
 
   /// No description provided for @profileCompletionStepContactTitle.
   ///
@@ -543,6 +585,12 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'מצאו תור'**
   String get homeFindAppointmentCta;
+
+  /// No description provided for @homeNoAppointmentsEmptyDescription.
+  ///
+  /// In he, this message translates to:
+  /// **'כרגע אין לך תורים. חפשו רופא וקבעו את התור הראשון שלכם.'**
+  String get homeNoAppointmentsEmptyDescription;
 
   /// No description provided for @homeLast3AppointmentsTitle.
   ///
@@ -841,7 +889,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingStep1Title.
   ///
   /// In he, this message translates to:
-  /// **'קבעו תורים בקלות'**
+  /// **'מצאו וקבעו תורים רפואיים בקלות'**
   String get onboardingStep1Title;
 
   /// No description provided for @onboardingStep2Title.
@@ -850,11 +898,23 @@ abstract class AppLocalizations {
   /// **'התכתבו בקלות עם הרופאים שלכם'**
   String get onboardingStep2Title;
 
+  /// No description provided for @onboardingStep2Subtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'התכתבות מאובטחת ומהירה עם הרופאים שלכם.'**
+  String get onboardingStep2Subtitle;
+
   /// No description provided for @onboardingStep3Title.
   ///
   /// In he, this message translates to:
-  /// **'גישה לתיק הרפואי בכל זמן'**
+  /// **'תזכורות וסיכום הפגישות האחרונות'**
   String get onboardingStep3Title;
+
+  /// No description provided for @onboardingStep3Subtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'אל תפספסו: תזכורות וסיכומים קצרים של הביקורים האחרונים.'**
+  String get onboardingStep3Subtitle;
 
   /// No description provided for @onboardingContinueButton.
   ///

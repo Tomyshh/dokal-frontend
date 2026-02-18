@@ -39,23 +39,29 @@ class HomeCubit extends Cubit<HomeState> {
   final GetConversations _getConversations;
 
   Future<void> load() async {
+    if (isClosed) return;
     emit(state.copyWith(status: HomeStatus.loading));
     final nameRes = await _getGreetingName();
+    if (isClosed) return;
     final histRes = await _getHistoryEnabled();
+    if (isClosed) return;
 
     // Mode invité: ne pas appeler les endpoints privés (RDV / messages).
     final hasSession = Supabase.instance.client.auth.currentSession != null;
     final Either<Failure, List<Appointment>> upcomingRes = hasSession
         ? await _getUpcomingAppointments()
         : const Right<Failure, List<Appointment>>(<Appointment>[]);
+    if (isClosed) return;
     final Either<Failure, List<Appointment>> pastRes = hasSession
         ? await _getPastAppointments()
         : const Right<Failure, List<Appointment>>(<Appointment>[]);
+    if (isClosed) return;
     final Either<Failure, List<ConversationPreview>> convRes = hasSession
         ? await _getConversations()
         : const Right<Failure, List<ConversationPreview>>(
             <ConversationPreview>[],
           );
+    if (isClosed) return;
 
     String? error;
     String name = '—';
@@ -65,7 +71,7 @@ class HomeCubit extends Cubit<HomeState> {
     histRes.fold((f) => error ??= f.message, (v) => enabled = v);
 
     if (error != null) {
-      emit(state.copyWith(status: HomeStatus.failure, error: error));
+      if (!isClosed) emit(state.copyWith(status: HomeStatus.failure, error: error));
       return;
     }
 
@@ -84,31 +90,41 @@ class HomeCubit extends Cubit<HomeState> {
       orElse: () => null,
     );
 
-    emit(
-      state.copyWith(
-        status: HomeStatus.success,
-        greetingName: name,
-        historyEnabled: enabled,
-        upcomingAppointments: upcomingList,
-        newMessageConversation: newMessage,
-        appointmentHistory: history,
-        error: null,
-      ),
-    );
+    if (!isClosed) {
+      emit(
+        state.copyWith(
+          status: HomeStatus.success,
+          greetingName: name,
+          historyEnabled: enabled,
+          upcomingAppointments: upcomingList,
+          newMessageConversation: newMessage,
+          appointmentHistory: history,
+          error: null,
+        ),
+      );
+    }
   }
 
   Future<void> activateHistory() async {
+    if (isClosed) return;
     emit(state.copyWith(status: HomeStatus.loading));
     final res = await _enableHistory();
+    if (isClosed) return;
     res.fold(
-      (f) => emit(state.copyWith(status: HomeStatus.failure, error: f.message)),
-      (_) => emit(
-        state.copyWith(
-          status: HomeStatus.success,
-          historyEnabled: true,
-          error: null,
-        ),
-      ),
+      (f) {
+        if (!isClosed) emit(state.copyWith(status: HomeStatus.failure, error: f.message));
+      },
+      (_) {
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              status: HomeStatus.success,
+              historyEnabled: true,
+              error: null,
+            ),
+          );
+        }
+      },
     );
   }
 }

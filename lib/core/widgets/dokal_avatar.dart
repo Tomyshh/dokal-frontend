@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 
@@ -11,6 +12,7 @@ class DokalAvatar extends StatelessWidget {
   });
 
   final String name;
+  /// Taille logique (design) ; le widget applique .r et .sp en interne.
   final double size;
   final Color? backgroundColor;
 
@@ -25,8 +27,8 @@ class DokalAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size,
-      height: size,
+      width: size.r,
+      height: size.r,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: backgroundColor ?? AppColors.primary.withValues(alpha: 0.10),
@@ -37,7 +39,7 @@ class DokalAvatar extends StatelessWidget {
         style: TextStyle(
           color: AppColors.primary,
           fontWeight: FontWeight.w800,
-          fontSize: size * 0.34,
+          fontSize: (size * 0.34).sp,
         ),
       ),
     );

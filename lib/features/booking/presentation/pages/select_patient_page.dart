@@ -103,7 +103,7 @@ class SelectPatientPage extends StatelessWidget {
                                 );
                               },
                             ),
-                            const Divider(height: 1),
+                            Divider(height: 1.h),
                             ListTile(
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: AppSpacing.lg.w,
@@ -128,7 +128,7 @@ class SelectPatientPage extends StatelessWidget {
                                   .addRelativeDemo(),
                             ),
                             if (pState.relatives.isNotEmpty) ...[
-                              const Divider(height: 1),
+                              Divider(height: 1.h),
                               for (final r in pState.relatives)
                                 ListTile(
                                   contentPadding: EdgeInsets.symmetric(

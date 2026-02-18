@@ -53,6 +53,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get authCreateAccountCta => 'መለያ ፍጠር';
 
   @override
+  String get authContinueWithGoogle => 'በGoogle ቀጥል';
+
+  @override
   String get authContinueWithoutAccount => 'ያለ መለያ ቀጥል';
 
   @override
@@ -86,6 +89,24 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get profileCompletionDateOfBirth => 'የትውልድ ቀን';
+
+  @override
+  String get profileCompletionCity => 'ከተማ (አማራጭ)';
+
+  @override
+  String get profileCompletionSex => 'ጾታ (አማራጭ)';
+
+  @override
+  String get profileCompletionSexMale => 'ወንድ';
+
+  @override
+  String get profileCompletionSexFemale => 'ሴት';
+
+  @override
+  String get profileCompletionSexOther => 'ሌላ';
+
+  @override
+  String get profileCompletionAvatar => 'የመገለጫ ፎቶ (አማራጭ)';
 
   @override
   String get profileCompletionStepContactTitle => 'እንገናኝ';
@@ -242,6 +263,10 @@ class AppLocalizationsAm extends AppLocalizations {
   String get homeFindAppointmentCta => 'ቀጠሮ ፈልግ';
 
   @override
+  String get homeNoAppointmentsEmptyDescription =>
+      'እስካሁን ቀጠሮ የለዎትም። ሐኪም ፈልጉ እና የመጀመሪያዎን ቀጠሮ ያስይዙ።';
+
+  @override
   String get homeLast3AppointmentsTitle => 'የመጨረሻ 3 ቀጠሮዎች';
 
   @override
@@ -393,13 +418,19 @@ class AppLocalizationsAm extends AppLocalizations {
   String get searchSortRating => 'ደረጃ';
 
   @override
-  String get onboardingStep1Title => 'ቀጠሮ በቀላሉ ያስያዙ';
+  String get onboardingStep1Title => 'የሕክምና ቀጠሮ ያግኙ እና በቀላሉ ያስያዙ';
 
   @override
   String get onboardingStep2Title => 'ከሐኪሞችዎ ጋር በቀላሉ ይወያዩ';
 
   @override
-  String get onboardingStep3Title => 'የሕክምና ሰነዶችዎን ማንኛውንም ጊዜ ያግኙ';
+  String get onboardingStep2Subtitle => 'ፈጣን እና ደህንነቱ የተጠበቀ መልዕክት ልውውጥ።';
+
+  @override
+  String get onboardingStep3Title => 'ማስታወሻዎች እና የቅርብ ጊዜ የሕክምና ማጠቃለያ';
+
+  @override
+  String get onboardingStep3Subtitle => 'ቀጠሮ እንዳትረሱ፦ ማስታወሻ እና አጭር ማጠቃለያዎች።';
 
   @override
   String get onboardingContinueButton => 'ቀጥል';

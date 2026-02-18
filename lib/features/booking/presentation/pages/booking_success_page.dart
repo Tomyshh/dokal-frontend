@@ -69,7 +69,7 @@ class BookingSuccessPage extends StatelessWidget {
                   );
                 },
               ),
-              const Divider(height: 1),
+              Divider(height: 1.h),
               ListTile(
                 leading: const Icon(
                   Icons.refresh_rounded,
@@ -91,7 +91,7 @@ class BookingSuccessPage extends StatelessWidget {
               title: l10n.appointmentDetailPrepQuestionnaire,
               statusLabel: l10n.commonTodo,
             ),
-            const Divider(height: 1),
+            Divider(height: 1.h),
             _PrepTile(
               icon: Icons.info_outline_rounded,
               title: l10n.appointmentDetailPrepInstructions,
@@ -194,7 +194,7 @@ class _AppointmentSummaryCard extends StatelessWidget {
             subtitle: Text(specialty),
             trailing: const Icon(Icons.chevron_right_rounded),
           ),
-          const Divider(height: 1),
+          Divider(height: 1.h),
           ListTile(
             leading: const Icon(Icons.person_outline_rounded),
             title: Text(patientLabel),

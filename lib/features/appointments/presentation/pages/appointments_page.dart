@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/appointment_card.dart';
+import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../injection_container.dart';
@@ -29,18 +30,29 @@ class AppointmentsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 48.h,
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              surfaceTintColor: Colors.transparent,
+              scrolledUnderElevation: 0,
             title: Text(
               l10n.appointmentsTitle,
               style: Theme.of(
                 context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                ).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
             ),
             centerTitle: true,
             bottom: TabBar(
               dividerColor: Colors.transparent,
               labelStyle: Theme.of(context).textTheme.labelLarge,
               unselectedLabelStyle: Theme.of(context).textTheme.labelMedium,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white.withValues(alpha: 0.75),
               indicatorSize: TabBarIndicatorSize.label,
+                indicatorColor: Colors.white,
+                indicatorWeight: 3.r,
               tabs: [
                 Tab(text: l10n.appointmentsTabUpcoming),
                 Tab(text: l10n.appointmentsTabPast),
@@ -52,7 +64,7 @@ class AppointmentsPage extends StatelessWidget {
             onPressed: () => context.push('/home/search'),
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
-            child: const Icon(Icons.add_rounded, size: 20),
+            child: Icon(Icons.add_rounded, size: 20.sp),
           ),
           body: const TabBarView(children: [_UpcomingTab(), _PastTab()]),
         ),
@@ -93,8 +105,9 @@ class _UpcomingTab extends StatelessWidget {
             icon: Icons.event_available_rounded,
             action: hasSession
                 ? null
-                : ElevatedButton(
-                    onPressed: () => context.push('/account'),
+                : DokalButton.primary(
+                    onPressed: () => context.go('/account'),
+                    leading: const Icon(Icons.login_rounded),
                     child: Text(l10n.authLoginButton),
                   ),
           );
@@ -153,8 +166,9 @@ class _PastTab extends StatelessWidget {
             icon: Icons.event_busy_rounded,
             action: hasSession
                 ? null
-                : ElevatedButton(
-                    onPressed: () => context.push('/account'),
+                : DokalButton.primary(
+                    onPressed: () => context.go('/account'),
+                    leading: const Icon(Icons.login_rounded),
                     child: Text(l10n.authLoginButton),
                   ),
           );

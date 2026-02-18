@@ -54,6 +54,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authCreateAccountCta => 'Create an account';
 
   @override
+  String get authContinueWithGoogle => 'Continue with Google';
+
+  @override
   String get authContinueWithoutAccount => 'Continue without an account';
 
   @override
@@ -88,6 +91,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileCompletionDateOfBirth => 'Date of birth';
+
+  @override
+  String get profileCompletionCity => 'City (optional)';
+
+  @override
+  String get profileCompletionSex => 'Sex (optional)';
+
+  @override
+  String get profileCompletionSexMale => 'Male';
+
+  @override
+  String get profileCompletionSexFemale => 'Female';
+
+  @override
+  String get profileCompletionSexOther => 'Other';
+
+  @override
+  String get profileCompletionAvatar => 'Profile photo (optional)';
 
   @override
   String get profileCompletionStepContactTitle => 'Contact';
@@ -247,6 +268,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeFindAppointmentCta => 'Find an appointment';
 
   @override
+  String get homeNoAppointmentsEmptyDescription =>
+      'You don’t have any appointments yet. Search for a practitioner and book your first slot.';
+
+  @override
   String get homeLast3AppointmentsTitle => 'Last 3 appointments';
 
   @override
@@ -400,13 +425,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchSortRating => 'Rating';
 
   @override
-  String get onboardingStep1Title => 'Book appointments easily';
+  String get onboardingStep1Title =>
+      'Find and book medical appointments easily';
 
   @override
   String get onboardingStep2Title => 'Chat easily with your practitioners';
 
   @override
-  String get onboardingStep3Title => 'Access your medical records anytime';
+  String get onboardingStep2Subtitle =>
+      'Secure, fast messaging with your doctors.';
+
+  @override
+  String get onboardingStep3Title =>
+      'Reminders and summary of your recent consultations';
+
+  @override
+  String get onboardingStep3Subtitle =>
+      'Never miss a visit—get reminders and quick summaries.';
 
   @override
   String get onboardingContinueButton => 'Continue';

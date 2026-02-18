@@ -16,3 +16,7 @@ class LoginSubmitted extends LoginEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+class LoginWithGoogleRequested extends LoginEvent {
+  const LoginWithGoogleRequested();
+}

@@ -64,17 +64,17 @@ class BookingFlowShell extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Prendre rendez-vous',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         name,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
@@ -83,7 +83,7 @@ class BookingFlowShell extends StatelessWidget {
                 },
               ),
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back_rounded),
+                icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
                 onPressed: () {
                   if (context.canPop()) {
                     context.pop();
@@ -200,7 +200,7 @@ class BookingFlowShell extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Divider(height: 1),
+                  Divider(height: 1.h),
                   Expanded(child: child),
                 ],
               ),
@@ -260,6 +260,7 @@ class _SummaryPill extends StatelessWidget {
           color: isActive
               ? AppColors.accent.withValues(alpha: 0.22)
               : AppColors.outline,
+          width: 1.r,
         ),
       ),
       child: Row(

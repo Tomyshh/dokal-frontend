@@ -39,7 +39,7 @@ class SettingsPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
                 child: Row(
                   children: [
-                    const Icon(Icons.language_rounded, size: 20),
+                    Icon(Icons.language_rounded, size: 20.sp),
                     SizedBox(width: AppSpacing.sm.w),
                     Text(
                       l10n.settingsLanguageTitle,
@@ -189,7 +189,7 @@ class SettingsPage extends StatelessWidget {
                           },
                           child: Row(
                             children: [
-                              const Icon(Icons.language_rounded, size: 20),
+                              Icon(Icons.language_rounded, size: 20.sp),
                               SizedBox(width: AppSpacing.md.w),
                               Expanded(
                                 child: Text(

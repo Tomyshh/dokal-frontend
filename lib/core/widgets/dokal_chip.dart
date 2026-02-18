@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 
@@ -25,25 +26,25 @@ class DokalChip extends StatelessWidget {
     final fg = selected ? AppColors.primary : AppColors.textPrimary;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(999),
+      borderRadius: BorderRadius.circular(999.r),
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         decoration: BoxDecoration(
           color: bg,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: border),
+          borderRadius: BorderRadius.circular(999.r),
+          border: Border.all(color: border, width: 1.r),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (icon != null) ...[
-              Icon(icon, size: 18, color: fg),
-              const SizedBox(width: 8),
+              Icon(icon, size: 18.sp, color: fg),
+              SizedBox(width: 8.w),
             ],
             Text(
               label,
-              style: TextStyle(color: fg, fontWeight: FontWeight.w700),
+              style: TextStyle(color: fg, fontWeight: FontWeight.w700, fontSize: 14.sp),
             ),
           ],
         ),

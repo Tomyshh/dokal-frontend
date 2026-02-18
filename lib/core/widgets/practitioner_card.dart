@@ -222,7 +222,7 @@ class PractitionerCard extends StatelessWidget {
                       border: isAvailableToday
                           ? Border.all(
                               color: availabilityColor.withValues(alpha: 0.3),
-                              width: 1,
+                              width: 1.w,
                             )
                           : null,
                     ),

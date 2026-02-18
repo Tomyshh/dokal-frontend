@@ -18,6 +18,7 @@ import 'features/auth/domain/usecases/get_onboarding_completed.dart';
 import 'features/auth/domain/usecases/request_password_reset.dart';
 import 'features/auth/domain/usecases/resend_signup_confirmation_email.dart';
 import 'features/auth/domain/usecases/sign_in.dart';
+import 'features/auth/domain/usecases/sign_in_with_google.dart';
 import 'features/auth/domain/usecases/sign_out.dart';
 import 'features/auth/domain/usecases/sign_up.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
@@ -160,9 +161,34 @@ void configureDependencies() {
       ? supabaseAnonKeyDefine
       : (supabaseKeyDefine.isNotEmpty ? supabaseKeyDefine : supabaseKeyExpo);
 
+  // Support GOOGLE_WEB_CLIENT_ID ou EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
+  // (certains setups ne passent que les clés EXPO_PUBLIC_* depuis le .env)
+  const _googleWebRaw = String.fromEnvironment(
+    'GOOGLE_WEB_CLIENT_ID',
+    defaultValue: '',
+  );
+  const _googleWebExpo = String.fromEnvironment(
+    'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID',
+    defaultValue: '',
+  );
+  final googleWebClientId =
+      _googleWebRaw.isNotEmpty ? _googleWebRaw : _googleWebExpo;
+  const googleIosClientId = String.fromEnvironment(
+    'GOOGLE_IOS_CLIENT_ID',
+    defaultValue: '',
+  );
+  const _googleIosExpo = String.fromEnvironment(
+    'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID',
+    defaultValue: '',
+  );
+  final googleIosClientIdResolved = googleIosClientId.isNotEmpty
+      ? googleIosClientId
+      : _googleIosExpo;
+
   if (kDebugMode) {
     debugPrint('[Dokal] Supabase URL: $supabaseUrl');
     debugPrint('[Dokal] Supabase key present: ${supabaseAnonKey.isNotEmpty}');
+    debugPrint('[Dokal] Google Sign-In: ${googleWebClientId.isNotEmpty ? "configuré" : "non configuré"}');
   }
 
   sl.registerSingletonAsync<SupabaseClient>(() async {
@@ -195,6 +221,10 @@ void configureDependencies() {
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
       supabaseClientFuture: sl.getAsync<SupabaseClient>(),
+      googleWebClientId: googleWebClientId,
+      googleIosClientId: googleIosClientIdResolved.isEmpty
+          ? null
+          : googleIosClientIdResolved,
     ),
   );
   sl.registerLazySingleton<AuthRepository>(
@@ -210,6 +240,7 @@ void configureDependencies() {
   );
 
   sl.registerLazySingleton(() => SignIn(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => SignInWithGoogle(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignUp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignOut(sl<AuthRepository>()));
   sl.registerLazySingleton(() => GetSession(sl<AuthRepository>()));
@@ -228,7 +259,12 @@ void configureDependencies() {
     () => AuthBloc(getSession: sl<GetSession>(), signOut: sl<SignOut>()),
   );
 
-  sl.registerFactory(() => LoginBloc(signIn: sl<SignIn>()));
+  sl.registerFactory(
+    () => LoginBloc(
+      signIn: sl<SignIn>(),
+      signInWithGoogle: sl<SignInWithGoogle>(),
+    ),
+  );
   sl.registerFactory(() => RegisterBloc(signUp: sl<SignUp>()));
   sl.registerFactory(
     () => ForgotPasswordCubit(requestPasswordReset: sl<RequestPasswordReset>()),

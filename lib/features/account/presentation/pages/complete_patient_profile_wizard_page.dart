@@ -1,11 +1,16 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/widgets/dokal_avatar.dart';
 import '../../../../core/profile_completion/profile_completion_notifier.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
@@ -24,6 +29,7 @@ class CompletePatientProfileWizardPage extends StatelessWidget {
         getProfile: sl(),
         getHealthProfile: sl(),
         updateProfile: sl(),
+        uploadAvatar: sl(),
         saveHealthProfile: sl(),
         prefs: sl(),
       )..load(),
@@ -51,12 +57,16 @@ class _WizardViewState extends State<_WizardView> {
   final _firstName = TextEditingController();
   final _lastName = TextEditingController();
   final _dateOfBirth = TextEditingController();
+  final _city = TextEditingController();
   final _email = TextEditingController();
   final _phone = TextEditingController();
   final _teudatZehut = TextEditingController();
 
   String _kupatHolim = 'clalit';
   String? _insuranceProvider;
+  String _sex = 'other';
+  String? _avatarFilePath;
+  String? _avatarUrlFromProfile;
 
   @override
   void dispose() {
@@ -64,6 +74,7 @@ class _WizardViewState extends State<_WizardView> {
     _firstName.dispose();
     _lastName.dispose();
     _dateOfBirth.dispose();
+    _city.dispose();
     _email.dispose();
     _phone.dispose();
     _teudatZehut.dispose();
@@ -78,6 +89,9 @@ class _WizardViewState extends State<_WizardView> {
 
     _firstName.text = (p.firstName ?? '').trim();
     _lastName.text = (p.lastName ?? '').trim();
+    _city.text = p.city.trim();
+    _sex = _normalizeSex(p.sex);
+    _avatarUrlFromProfile = p.avatarUrl;
     _phone.text = (p.phone ?? '').trim();
     final authEmail = Supabase.instance.client.auth.currentUser?.email;
     _email.text = ((p.email).trim().isNotEmpty ? p.email : (authEmail ?? ''))
@@ -113,8 +127,15 @@ class _WizardViewState extends State<_WizardView> {
             final target = GoRouterState.of(
               context,
             ).uri.queryParameters['redirect'];
-            await sl<ProfileCompletionNotifier>().refresh();
+            final notifier = sl<ProfileCompletionNotifier>();
+            await notifier.refresh();
             if (!context.mounted) return;
+            if (notifier.needsCompletion) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.commonTryAgainLater)),
+              );
+              return;
+            }
             context.read<ProfileCompletionCubit>().clearSuccess();
             context.go(target ?? '/home');
           }
@@ -164,6 +185,8 @@ class _WizardViewState extends State<_WizardView> {
           return Scaffold(
             backgroundColor: AppColors.background,
             body: SafeArea(
+              top: false,
+              bottom: true,
               child: Column(
                 children: [
                   _WizardHeader(
@@ -185,6 +208,14 @@ class _WizardViewState extends State<_WizardView> {
                           firstName: _firstName,
                           lastName: _lastName,
                           dateOfBirth: _dateOfBirth,
+                          city: _city,
+                          sex: _sex,
+                          onSexChanged: (v) => setState(() => _sex = v),
+                          avatarUrl: _avatarFilePath != null
+                              ? null
+                              : _avatarUrlFromProfile,
+                          avatarFilePath: _avatarFilePath,
+                          onPickAvatar: _pickAvatar,
                           onPickDob: _pickDob,
                         ),
                         _ContactStep(
@@ -256,6 +287,7 @@ class _WizardViewState extends State<_WizardView> {
     }
 
     final dobIso = _normalizeIsoDate(_dateOfBirth.text.trim());
+    final cityTrim = _city.text.trim();
     context.read<ProfileCompletionCubit>().saveRequiredInfo(
       firstName: _firstName.text.trim(),
       lastName: _lastName.text.trim(),
@@ -264,7 +296,32 @@ class _WizardViewState extends State<_WizardView> {
       teudatZehut: _digitsOnly(_teudatZehut.text),
       kupatHolim: _kupatHolim.trim(),
       insuranceProvider: _insuranceProvider,
+      city: cityTrim.isEmpty ? null : cityTrim,
+      sex: _sex,
+      avatarFilePath: _avatarFilePath,
     );
+  }
+
+  Future<void> _pickAvatar() async {
+    final picker = ImagePicker();
+    final xFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 800,
+      imageQuality: 85,
+    );
+    if (xFile == null) return;
+    final path = xFile.path;
+    if (path.isEmpty) return;
+    setState(() {
+      _avatarFilePath = path;
+      _avatarUrlFromProfile = null;
+    });
+  }
+
+  static String _normalizeSex(String? value) {
+    final v = (value ?? '').trim().toLowerCase();
+    if (v == 'male' || v == 'female' || v == 'other') return v;
+    return 'other';
   }
 
   Future<void> _pickDob() async {
@@ -272,14 +329,102 @@ class _WizardViewState extends State<_WizardView> {
     final initial =
         _tryParseIsoDate(_dateOfBirth.text) ??
         DateTime(now.year - 30, now.month, now.day);
-    final picked = await showDatePicker(
+    final picked = await _showCupertinoDatePicker(
       context: context,
       initialDate: initial,
-      firstDate: DateTime(1900, 1, 1),
-      lastDate: now,
+      minimumDate: DateTime(1900, 1, 1),
+      maximumDate: now,
     );
     if (picked == null) return;
     setState(() => _dateOfBirth.text = _formatIsoDate(picked));
+  }
+
+  static Future<DateTime?> _showCupertinoDatePicker({
+    required BuildContext context,
+    required DateTime initialDate,
+    required DateTime minimumDate,
+    required DateTime maximumDate,
+  }) async {
+    final l10n = context.l10n;
+    DateTime selected = initialDate;
+    return showModalBottomSheet<DateTime>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CupertinoTheme(
+        data: CupertinoThemeData(
+          primaryColor: AppColors.primary,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: AppColors.surface,
+        ),
+        child: Container(
+          height: 280.h,
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 16.r,
+                offset: Offset(0, -2.h),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg.w,
+                  vertical: AppSpacing.sm.h,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border(
+                    bottom: BorderSide(color: AppColors.outline),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(
+                        l10n.commonCancel,
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () => Navigator.of(context).pop(selected),
+                      child: Text(
+                        l10n.commonContinue,
+                        style: const TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: initialDate,
+                  minimumDate: minimumDate,
+                  maximumDate: maximumDate,
+                  onDateTimeChanged: (DateTime value) => selected = value,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).padding.bottom),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -298,11 +443,12 @@ class _WizardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topSafe = MediaQuery.of(context).padding.top;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(
         AppSpacing.lg.w,
-        AppSpacing.md.h,
+        topSafe + AppSpacing.md.h,
         AppSpacing.lg.w,
         AppSpacing.md.h,
       ),
@@ -334,16 +480,51 @@ class _WizardHeader extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(999.r),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 8.h,
-                    backgroundColor: Colors.white.withValues(alpha: 0.18),
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      Colors.white,
-                    ),
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final w = constraints.maxWidth;
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(999.r),
+                      child: SizedBox(
+                        height: 8.h,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: w,
+                              height: 8.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.18),
+                                borderRadius:
+                                    BorderRadius.circular(999.r),
+                              ),
+                            ),
+                            Positioned(
+                              left: 0,
+                              top: 0,
+                              bottom: 0,
+                              width: w * progress.clamp(0.0, 1.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(999.r),
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xFFB8860B), // dark goldenrod
+                                      Color(0xFFD4AF37), // gold
+                                      Color(0xFFF4E4BC), // light gold
+                                      Color(0xFFD4AF37), // gold
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               SizedBox(width: AppSpacing.sm.w),
@@ -354,6 +535,7 @@ class _WizardHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999.r),
                   border: Border.all(
                     color: Colors.white.withValues(alpha: 0.25),
+                    width: 1.r,
                   ),
                 ),
                 child: Text(
@@ -403,8 +585,8 @@ class _WizardFooter extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, -2),
+            blurRadius: 12.r,
+            offset: Offset(0, -2.h),
           ),
         ],
       ),
@@ -487,6 +669,12 @@ class _IdentityStep extends StatelessWidget {
     required this.firstName,
     required this.lastName,
     required this.dateOfBirth,
+    required this.city,
+    required this.sex,
+    required this.onSexChanged,
+    required this.avatarUrl,
+    required this.avatarFilePath,
+    required this.onPickAvatar,
     required this.onPickDob,
   });
 
@@ -494,6 +682,12 @@ class _IdentityStep extends StatelessWidget {
   final TextEditingController firstName;
   final TextEditingController lastName;
   final TextEditingController dateOfBirth;
+  final TextEditingController city;
+  final String sex;
+  final ValueChanged<String> onSexChanged;
+  final String? avatarUrl;
+  final String? avatarFilePath;
+  final VoidCallback onPickAvatar;
   final VoidCallback onPickDob;
 
   @override
@@ -506,6 +700,45 @@ class _IdentityStep extends StatelessWidget {
         key: formKey,
         child: Column(
           children: [
+            Center(
+              child: GestureDetector(
+                onTap: onPickAvatar,
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    _buildAvatar(),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(6.r),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.surface,
+                            width: 2.r,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.camera_alt_rounded,
+                          size: 18.r,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: AppSpacing.md.h),
+            Text(
+              l10n.profileCompletionAvatar,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
+            SizedBox(height: AppSpacing.lg.h),
             Row(
               children: [
                 Expanded(
@@ -544,9 +777,77 @@ class _IdentityStep extends StatelessWidget {
                 suffixIcon: const Icon(Icons.calendar_today_rounded),
               ),
             ),
+            SizedBox(height: AppSpacing.md.h),
+            DokalTextField(
+              controller: city,
+              label: l10n.profileCompletionCity,
+              prefixIcon: Icons.location_city_rounded,
+              textInputAction: TextInputAction.next,
+            ),
+            SizedBox(height: AppSpacing.md.h),
+            DropdownButtonFormField<String>(
+              value: sex,
+              decoration: InputDecoration(
+                labelText: l10n.profileCompletionSex,
+                prefixIcon: const Icon(Icons.wc_rounded),
+              ),
+              items: [
+                DropdownMenuItem(
+                  value: 'male',
+                  child: Text(l10n.profileCompletionSexMale),
+                ),
+                DropdownMenuItem(
+                  value: 'female',
+                  child: Text(l10n.profileCompletionSexFemale),
+                ),
+                DropdownMenuItem(
+                  value: 'other',
+                  child: Text(l10n.profileCompletionSexOther),
+                ),
+              ],
+              onChanged: (v) => onSexChanged(v ?? 'other'),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAvatar() {
+    final displayPath = avatarFilePath;
+    final displayUrl = avatarUrl;
+    final name = '${firstName.text} ${lastName.text}'.trim();
+    if (displayPath != null && displayPath.isNotEmpty) {
+      return ClipOval(
+        child: SizedBox(
+          width: 96.r,
+          height: 96.r,
+          child: Image.file(
+            File(displayPath),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
+    if (displayUrl != null && displayUrl.isNotEmpty) {
+      return ClipOval(
+        child: SizedBox(
+          width: 96.r,
+          height: 96.r,
+          child: Image.network(
+            displayUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => DokalAvatar(
+              name: name.isEmpty ? '?' : name,
+              size: 96,
+            ),
+          ),
+        ),
+      );
+    }
+    return DokalAvatar(
+      name: name.isEmpty ? '?' : name,
+      size: 96,
     );
   }
 }
@@ -741,6 +1042,7 @@ class _InsuranceStep extends StatelessWidget {
               borderRadius: BorderRadius.circular(14.r),
               border: Border.all(
                 color: AppColors.primary.withValues(alpha: 0.12),
+                width: 1.r,
               ),
             ),
             child: Row(

@@ -427,7 +427,7 @@ class _HeaderSection extends StatelessWidget {
                   ),
                 if (profile.yearsOfExperience != null &&
                     profile.languages != null)
-                  Container(width: 1, height: 36.h, color: AppColors.outline),
+                  Container(width: 1.w, height: 36.h, color: AppColors.outline),
                 if (profile.languages != null)
                   _StatItem(
                     icon: Icons.translate_rounded,
@@ -755,7 +755,7 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(10.r),
                     border: isToday
-                        ? Border.all(color: AppColors.primary, width: 1.5)
+                        ? Border.all(color: AppColors.primary, width: 1.5.w)
                         : null,
                   ),
                   child: Center(
@@ -925,7 +925,7 @@ class _TimeSlotSection extends StatelessWidget {
                       color: isSelected
                           ? AppColors.primary
                           : const Color(0xFF3B82F6).withValues(alpha: 0.2),
-                      width: isSelected ? 2 : 1,
+                      width: isSelected ? 2.r : 1.r,
                     ),
                     boxShadow: isSelected
                         ? [
@@ -1123,7 +1123,7 @@ class _LegendItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: isFilled ? color : color.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(4.r),
-            border: !isFilled ? Border.all(color: color, width: 1) : null,
+            border: !isFilled ? Border.all(color: color, width: 1.w) : null,
           ),
           child: isFilled
               ? null

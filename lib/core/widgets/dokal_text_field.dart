@@ -6,6 +6,7 @@ class DokalTextField extends StatelessWidget {
     required this.controller,
     required this.label,
     this.hint,
+    this.focusNode,
     this.keyboardType,
     this.obscureText = false,
     this.textInputAction,
@@ -18,6 +19,7 @@ class DokalTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String? hint;
+  final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final bool obscureText;
   final TextInputAction? textInputAction;
@@ -30,6 +32,7 @@ class DokalTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      focusNode: focusNode,
       keyboardType: keyboardType,
       obscureText: obscureText,
       textInputAction: textInputAction,

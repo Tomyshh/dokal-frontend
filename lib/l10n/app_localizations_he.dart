@@ -53,6 +53,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get authCreateAccountCta => 'צור חשבון';
 
   @override
+  String get authContinueWithGoogle => 'המשך עם Google';
+
+  @override
   String get authContinueWithoutAccount => 'המשך ללא חשבון';
 
   @override
@@ -87,6 +90,24 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get profileCompletionDateOfBirth => 'תאריך לידה';
+
+  @override
+  String get profileCompletionCity => 'עיר (אופציונלי)';
+
+  @override
+  String get profileCompletionSex => 'מין (אופציונלי)';
+
+  @override
+  String get profileCompletionSexMale => 'זכר';
+
+  @override
+  String get profileCompletionSexFemale => 'נקבה';
+
+  @override
+  String get profileCompletionSexOther => 'אחר';
+
+  @override
+  String get profileCompletionAvatar => 'תמונת פרופיל (אופציונלי)';
 
   @override
   String get profileCompletionStepContactTitle => 'יצירת קשר';
@@ -243,6 +264,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homeFindAppointmentCta => 'מצאו תור';
 
   @override
+  String get homeNoAppointmentsEmptyDescription =>
+      'כרגע אין לך תורים. חפשו רופא וקבעו את התור הראשון שלכם.';
+
+  @override
   String get homeLast3AppointmentsTitle => '3 התורים האחרונים';
 
   @override
@@ -394,13 +419,21 @@ class AppLocalizationsHe extends AppLocalizations {
   String get searchSortRating => 'דירוג';
 
   @override
-  String get onboardingStep1Title => 'קבעו תורים בקלות';
+  String get onboardingStep1Title => 'מצאו וקבעו תורים רפואיים בקלות';
 
   @override
   String get onboardingStep2Title => 'התכתבו בקלות עם הרופאים שלכם';
 
   @override
-  String get onboardingStep3Title => 'גישה לתיק הרפואי בכל זמן';
+  String get onboardingStep2Subtitle =>
+      'התכתבות מאובטחת ומהירה עם הרופאים שלכם.';
+
+  @override
+  String get onboardingStep3Title => 'תזכורות וסיכום הפגישות האחרונות';
+
+  @override
+  String get onboardingStep3Subtitle =>
+      'אל תפספסו: תזכורות וסיכומים קצרים של הביקורים האחרונים.';
 
   @override
   String get onboardingContinueButton => 'המשך';

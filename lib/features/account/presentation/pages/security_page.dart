@@ -69,7 +69,7 @@ class SecurityPage extends StatelessWidget {
               onTap: () => context.go('/account/security/change-password'),
               child: Row(
                 children: [
-                  const Icon(Icons.lock_rounded, size: 20),
+                  Icon(Icons.lock_rounded, size: 20.sp),
                   SizedBox(width: AppSpacing.md.w),
                   Expanded(
                     child: Text(
@@ -89,7 +89,7 @@ class SecurityPage extends StatelessWidget {
             DokalButton.outline(
               onPressed: () =>
                   context.read<AuthBloc>().add(const AuthLogoutRequested()),
-              leading: const Icon(Icons.logout_rounded, size: 18),
+              leading: Icon(Icons.logout_rounded, size: 18.sp),
               child: Text(l10n.authLogout),
             ),
           ],

@@ -318,7 +318,7 @@ class _YesNoButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: bg,
           borderRadius: BorderRadius.circular(10.r),
-          border: Border.all(color: border),
+          border: Border.all(color: border, width: 1.r),
         ),
         alignment: Alignment.center,
         child: Text(

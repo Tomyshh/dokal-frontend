@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
                 delegate: SliverChildListDelegate([
                   SizedBox(height: AppSpacing.md.h),
                   _AppointmentsSections(),
-                  const SizedBox(height: 100), // Espace pour la navbar
+                  SizedBox(height: 100.h), // Espace pour la navbar
                 ]),
               ),
             ),
@@ -105,6 +105,7 @@ class _FindAppointmentEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: EdgeInsets.only(top: AppSpacing.xl.h, bottom: AppSpacing.lg.h),
       child: Center(
@@ -117,6 +118,19 @@ class _FindAppointmentEmptyState extends StatelessWidget {
                 width: 220.w,
                 height: 220.w,
                 child: Lottie.asset(animationAssetPath, fit: BoxFit.contain),
+              ),
+              SizedBox(height: AppSpacing.md.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
+                child: Text(
+                  l10n.homeNoAppointmentsEmptyDescription,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    height: 1.35,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ),
               SizedBox(height: AppSpacing.md.h),
               SizedBox(
@@ -340,7 +354,7 @@ class _PatientChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(999.r),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25), width: 1.r),
       ),
       child: Text(
         name,
@@ -388,6 +402,7 @@ class _NewMessageSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(
                     color: AppColors.primary.withValues(alpha: 0.15),
+                    width: 1.r,
                   ),
                 ),
                 child: Row(
@@ -432,7 +447,7 @@ class _NewMessageSection extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.white,
-                                  width: 2,
+                                  width: 2.r,
                                 ),
                               ),
                             ),
@@ -486,6 +501,7 @@ class _NewMessageSection extends StatelessWidget {
                                         : AppColors.accent.withValues(
                                             alpha: 0.3,
                                           ),
+                                    width: 1.r,
                                   ),
                                 ),
                                 child: Text(
@@ -543,13 +559,14 @@ class _StickyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final headerHeight = (144.h < 144) ? 144.0 : 144.h;
 
     return SliverAppBar(
       pinned: true,
       floating: false,
-      expandedHeight: 140,
-      collapsedHeight: 140,
-      toolbarHeight: 140,
+      expandedHeight: headerHeight,
+      collapsedHeight: headerHeight,
+      toolbarHeight: headerHeight,
       backgroundColor: const Color(0xFF005044),
       flexibleSpace: Container(
         decoration: const BoxDecoration(

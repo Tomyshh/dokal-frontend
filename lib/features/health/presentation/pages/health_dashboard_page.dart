@@ -161,10 +161,10 @@ class _StatusCard extends StatelessWidget {
             AppColors.primaryLightBackground.withValues(alpha: 0.6),
           ],
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.1),
-          width: 1,
+          width: 1.w,
         ),
       ),
       child: Row(

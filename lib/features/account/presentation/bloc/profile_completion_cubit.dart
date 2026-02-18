@@ -7,6 +7,7 @@ import '../../domain/entities/user_profile.dart';
 import '../../domain/usecases/get_profile.dart';
 import '../../../health/domain/usecases/get_health_profile.dart';
 import '../../domain/usecases/update_profile.dart';
+import '../../domain/usecases/upload_avatar.dart';
 import '../../../health/domain/usecases/save_health_profile.dart';
 
 part 'profile_completion_state.dart';
@@ -16,11 +17,13 @@ class ProfileCompletionCubit extends Cubit<ProfileCompletionState> {
     required GetProfile getProfile,
     required GetHealthProfile getHealthProfile,
     required UpdateProfile updateProfile,
+    required UploadAvatar uploadAvatar,
     required SaveHealthProfile saveHealthProfile,
     required SharedPreferences prefs,
   }) : _getProfile = getProfile,
        _getHealthProfile = getHealthProfile,
        _updateProfile = updateProfile,
+       _uploadAvatar = uploadAvatar,
        _saveHealthProfile = saveHealthProfile,
        _prefs = prefs,
        super(const ProfileCompletionState.initial());
@@ -28,6 +31,7 @@ class ProfileCompletionCubit extends Cubit<ProfileCompletionState> {
   final GetProfile _getProfile;
   final GetHealthProfile _getHealthProfile;
   final UpdateProfile _updateProfile;
+  final UploadAvatar _uploadAvatar;
   final SaveHealthProfile _saveHealthProfile;
   final SharedPreferences _prefs;
 
@@ -68,14 +72,21 @@ class ProfileCompletionCubit extends Cubit<ProfileCompletionState> {
     required String teudatZehut,
     required String kupatHolim,
     String? insuranceProvider,
+    String? city,
+    String? sex,
+    String? avatarFilePath,
   }) async {
     emit(state.copyWith(status: ProfileCompletionStatus.saving, error: null));
+
+    final effectiveSex = (sex ?? '').trim().isEmpty ? 'other' : sex!.trim();
 
     final updRes = await _updateProfile(
       firstName: firstName,
       lastName: lastName,
       phone: phone,
       dateOfBirth: dateOfBirthIso,
+      city: (city ?? '').trim().isEmpty ? null : city!.trim(),
+      sex: effectiveSex,
     );
 
     if (updRes.isLeft()) {
@@ -88,11 +99,24 @@ class ProfileCompletionCubit extends Cubit<ProfileCompletionState> {
       return;
     }
 
+    if (avatarFilePath != null && avatarFilePath.trim().isNotEmpty) {
+      final avatarRes = await _uploadAvatar(avatarFilePath.trim());
+      if (avatarRes.isLeft()) {
+        emit(
+          state.copyWith(
+            status: ProfileCompletionStatus.failure,
+            error: avatarRes.fold((l) => l.message, (_) => null),
+          ),
+        );
+        return;
+      }
+    }
+
     final hp = HealthProfile(
       fullName: '',
       teudatZehut: teudatZehut,
       dateOfBirth: dateOfBirthIso,
-      sex: 'other',
+      sex: effectiveSex,
       kupatHolim: kupatHolim,
       insuranceProvider: (insuranceProvider ?? '').trim(),
       kupatMemberId: '',

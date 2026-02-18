@@ -25,40 +25,43 @@ class AppTheme {
       fontFamily: 'Montserrat',
     );
 
+    // TextTheme de base (le scaling global se fait via MediaQuery.textScaler)
+    final text = base.textTheme;
+
     return base.copyWith(
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: base.textTheme.titleLarge?.copyWith(
+        titleTextStyle: text.titleLarge?.copyWith(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w700,
         ),
       ),
-      textTheme: base.textTheme.copyWith(
-        headlineMedium: base.textTheme.headlineMedium?.copyWith(
+      textTheme: text.copyWith(
+        headlineMedium: text.headlineMedium?.copyWith(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w800,
           letterSpacing: -0.2,
         ),
-        titleLarge: base.textTheme.titleLarge?.copyWith(
+        titleLarge: text.titleLarge?.copyWith(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w700,
         ),
-        titleMedium: base.textTheme.titleMedium?.copyWith(
+        titleMedium: text.titleMedium?.copyWith(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w600,
         ),
-        bodyLarge: base.textTheme.bodyLarge?.copyWith(
+        bodyLarge: text.bodyLarge?.copyWith(
           color: AppColors.textPrimary,
           height: 1.25,
         ),
-        bodyMedium: base.textTheme.bodyMedium?.copyWith(
+        bodyMedium: text.bodyMedium?.copyWith(
           color: AppColors.textSecondary,
           height: 1.25,
         ),
-        labelLarge: base.textTheme.labelLarge?.copyWith(
+        labelLarge: text.labelLarge?.copyWith(
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -79,7 +82,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadii.lg.r),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5.r),
         ),
         hintStyle: const TextStyle(color: AppColors.textSecondary),
       ),
@@ -97,7 +100,7 @@ class AppTheme {
         elevation: 0,
         indicatorColor: AppColors.primary.withValues(alpha: 0.10),
         labelTextStyle: WidgetStatePropertyAll(
-          base.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700),
+          text.labelSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
       ),
     );

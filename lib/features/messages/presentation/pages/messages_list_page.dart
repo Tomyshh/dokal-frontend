@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
@@ -24,15 +25,20 @@ class MessagesListPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
+          scrolledUnderElevation: 0,
           toolbarHeight: 48.h,
           centerTitle: true,
           title: Text(
             l10n.messagesTitle,
             style: Theme.of(
               context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+            ).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
           ),
           actions: [
             IconButton(
@@ -46,9 +52,9 @@ class MessagesListPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ListTile(
-                            leading: const Icon(
+                            leading: Icon(
                               Icons.done_all_rounded,
-                              size: 20,
+                              size: 20.sp,
                             ),
                             title: Text(
                               l10n.messagesMarkAllRead,
@@ -64,7 +70,7 @@ class MessagesListPage extends StatelessWidget {
                             },
                           ),
                           ListTile(
-                            leading: const Icon(Icons.tune_rounded, size: 20),
+                            leading: Icon(Icons.tune_rounded, size: 20.sp),
                             title: Text(
                               l10n.commonSettings,
                               style: Theme.of(context).textTheme.titleSmall,
@@ -81,7 +87,7 @@ class MessagesListPage extends StatelessWidget {
                   },
                 );
               },
-              icon: const Icon(Icons.more_vert, size: 20),
+              icon: Icon(Icons.more_vert, size: 20.sp),
             ),
           ],
         ),
@@ -107,8 +113,9 @@ class MessagesListPage extends StatelessWidget {
                 icon: Icons.mail_rounded,
                 action: hasSession
                     ? null
-                    : ElevatedButton(
-                        onPressed: () => context.push('/account'),
+                    : DokalButton.primary(
+                        onPressed: () => context.go('/account'),
+                        leading: const Icon(Icons.login_rounded),
                         child: Text(l10n.authLoginButton),
                       ),
               );
@@ -131,9 +138,9 @@ class MessagesListPage extends StatelessWidget {
           heroTag: 'fab_messages',
           onPressed: () => hasSession
               ? context.push('/messages/new')
-              : context.push('/account'),
+              : context.go('/account'),
           backgroundColor: AppColors.primary,
-          child: const Icon(Icons.edit_rounded, color: Colors.white, size: 20),
+          child: Icon(Icons.edit_rounded, color: Colors.white, size: 20.sp),
         ),
       ),
     );
@@ -238,8 +245,8 @@ class _ConversationTile extends StatelessWidget {
             ),
             if (showDivider)
               Divider(
-                height: 1,
-                thickness: 1,
+                height: 1.h,
+                thickness: 1.r,
                 indent: 64.w,
                 color: AppColors.outline.withValues(alpha: 0.5),
               ),
@@ -299,7 +306,7 @@ class _Avatar extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.accent,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 1.5),
+                  border: Border.all(color: Colors.white, width: 1.5.w),
                 ),
               ),
             ),

@@ -54,6 +54,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authCreateAccountCta => 'Créer un compte';
 
   @override
+  String get authContinueWithGoogle => 'Continuer avec Google';
+
+  @override
   String get authContinueWithoutAccount => 'Continuer sans compte';
 
   @override
@@ -89,6 +92,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profileCompletionDateOfBirth => 'Date de naissance';
+
+  @override
+  String get profileCompletionCity => 'Ville (optionnel)';
+
+  @override
+  String get profileCompletionSex => 'Sexe (optionnel)';
+
+  @override
+  String get profileCompletionSexMale => 'Homme';
+
+  @override
+  String get profileCompletionSexFemale => 'Femme';
+
+  @override
+  String get profileCompletionSexOther => 'Autre';
+
+  @override
+  String get profileCompletionAvatar => 'Photo de profil (optionnel)';
 
   @override
   String get profileCompletionStepContactTitle => 'Contact';
@@ -251,6 +272,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeFindAppointmentCta => 'Trouvez un rendez-vous';
 
   @override
+  String get homeNoAppointmentsEmptyDescription =>
+      'Pour le moment, vous n’avez pas de rendez-vous. Cherchez un praticien et réservez votre premier créneau.';
+
+  @override
   String get homeLast3AppointmentsTitle => '3 derniers rendez-vous';
 
   @override
@@ -403,14 +428,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get searchSortRating => 'דירוג';
 
   @override
-  String get onboardingStep1Title => 'Réservez facilement vos rendez-vous';
+  String get onboardingStep1Title =>
+      'Trouvez et réservez vos rendez-vous médicaux facilement';
 
   @override
   String get onboardingStep2Title => 'Échangez facilement avec vos praticiens';
 
   @override
+  String get onboardingStep2Subtitle =>
+      'Un échange simple, rapide et sécurisé.';
+
+  @override
   String get onboardingStep3Title =>
-      'Accédez à vos dossiers médicaux à tout moment';
+      'Rappels et résumé de vos dernières consultations';
+
+  @override
+  String get onboardingStep3Subtitle =>
+      'Recevez des rappels et retrouvez l’essentiel en un coup d’œil.';
 
   @override
   String get onboardingContinueButton => 'Continuer';

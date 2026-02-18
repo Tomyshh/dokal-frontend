@@ -155,6 +155,10 @@ void initAppRouter(
           return '$completionPath?redirect=${Uri.encodeComponent(full)}';
         }
         if (!_profileCompletion.needsCompletion && path == completionPath) {
+          // Ne pas quitter le wizard pendant le refresh (ex. après sauvegarde).
+          if (_profileCompletion.status == ProfileGuardStatus.loading) {
+            return null;
+          }
           final target = _safeRedirectTarget(state);
           return target ?? '/home';
         }

@@ -59,7 +59,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     padding: EdgeInsets.all(AppSpacing.md.r),
                     child: Row(
                       children: [
-                        DokalAvatar(name: 'Cabinet Benhamou', size: 36.r),
+                        DokalAvatar(name: 'Cabinet Benhamou', size: 36),
                         SizedBox(width: AppSpacing.md.w),
                         Expanded(
                           child: Column(
@@ -101,13 +101,13 @@ class _ConversationPageState extends State<ConversationPage> {
                     ),
                   ),
                 ),
-                const Divider(height: 1),
+                Divider(height: 1.h),
                 Expanded(
                   child: BlocBuilder<ConversationCubit, ConversationState>(
                     builder: (context, state) {
                       if (state.status == ConversationStatus.loading) {
-                        return const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                        return Center(
+                          child: CircularProgressIndicator(strokeWidth: 2.r),
                         );
                       }
                       final messages = state.messages;
@@ -127,7 +127,7 @@ class _ConversationPageState extends State<ConversationPage> {
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     border: Border(
-                      top: BorderSide(color: AppColors.outline, width: 1),
+                      top: BorderSide(color: AppColors.outline, width: 1.w),
                     ),
                   ),
                   child: Row(
@@ -198,7 +198,7 @@ class _MessageBubble extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadii.lg.r),
           border: Border.all(
             color: m.fromMe ? AppColors.primary : AppColors.outline,
-            width: 1,
+            width: 1.w,
           ),
         ),
         child: Text(

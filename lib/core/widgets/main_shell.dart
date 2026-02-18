@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_colors.dart';
@@ -47,15 +48,15 @@ class MainShell extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.06),
-              blurRadius: 12,
-              offset: const Offset(0, -2),
+              blurRadius: 12.r,
+              offset: Offset(0, -2.h),
             ),
           ],
         ),
         child: SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
+            padding: EdgeInsets.symmetric(vertical: 6.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(tabs.length, (index) {
@@ -103,7 +104,7 @@ class _NavBarItem extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
-        width: 56,
+        width: 56.w,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -112,28 +113,28 @@ class _NavBarItem extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  size: 24,
+                  size: 24.sp,
                   color: isSelected
                       ? AppColors.primary
                       : AppColors.textSecondary,
                 ),
                 if (hasBadge)
                   Positioned(
-                    right: -8,
-                    top: -4,
+                    right: -8.w,
+                    top: -4.h,
                     child: Container(
-                      width: 16,
-                      height: 16,
+                      width: 16.w,
+                      height: 16.h,
                       decoration: const BoxDecoration(
                         color: Colors.red,
                         shape: BoxShape.circle,
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           '1',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 9,
+                            fontSize: 9.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -142,11 +143,11 @@ class _NavBarItem extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 2),
+            SizedBox(height: 2.h),
             Text(
               label,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 10.sp,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                 color: isSelected ? AppColors.primary : AppColors.textSecondary,
               ),

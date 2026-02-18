@@ -36,7 +36,7 @@ class DokalCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: effectiveColor,
         borderRadius: effectiveRadius,
-        border: Border.all(color: effectiveBorderColor, width: 1),
+        border: Border.all(color: effectiveBorderColor, width: 1.w),
       ),
       child: ClipRRect(
         borderRadius: effectiveRadius,

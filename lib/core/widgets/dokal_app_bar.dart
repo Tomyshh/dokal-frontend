@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_colors.dart';
@@ -61,7 +62,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
             title,
             style: TextStyle(
               color: effectiveFg,
-              fontSize: 15,
+              fontSize: 15.sp,
               fontWeight: FontWeight.w600,
               height: 1.2,
             ),
@@ -70,7 +71,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
             subtitle!,
             style: TextStyle(
               color: effectiveFg.withValues(alpha: 0.7),
-              fontSize: 12,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -81,7 +82,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
         title,
         style: TextStyle(
           color: effectiveFg,
-          fontSize: 16,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w600,
         ),
       );
@@ -96,19 +97,19 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       leading: showBack
           ? Padding(
-              padding: const EdgeInsets.only(left: 4),
+              padding: EdgeInsets.only(left: 4.w),
               child: IconButton(
                 onPressed: () => _handleBack(context),
                 icon: Container(
-                  width: 36,
-                  height: 36,
+                  width: 36.r,
+                  height: 36.r,
                   decoration: BoxDecoration(
                     color: effectiveFg.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    size: 16,
+                    size: 16.sp,
                     color: effectiveFg,
                   ),
                 ),

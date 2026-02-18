@@ -51,7 +51,7 @@ class AppointmentDetailPage extends StatelessWidget {
               title: l10n.appointmentDetailTitle,
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.share_rounded, size: 20),
+                  icon: Icon(Icons.share_rounded, size: 20.sp),
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(l10n.commonAvailableSoon)),
@@ -271,7 +271,7 @@ class AppointmentDetailPage extends StatelessWidget {
                                   '/appointments/${a.id}/questionnaire',
                                 ),
                               ),
-                              const Divider(height: 1),
+                              Divider(height: 1.h),
                               _PrepTile(
                                 icon: Icons.info_outline_rounded,
                                 title: l10n.appointmentDetailPrepInstructions,
@@ -372,13 +372,13 @@ class _AppointmentTopCard extends StatelessWidget {
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => context.push('/home/practitioner/${a.practitionerId}'),
           ),
-          const Divider(height: 1),
+          Divider(height: 1.h),
           ListTile(
             leading: const Icon(Icons.medical_information_rounded),
             title: Text(a.reason),
           ),
           if (a.address != null) ...[
-            const Divider(height: 1),
+            Divider(height: 1.h),
             ListTile(
               leading: const Icon(Icons.location_on_rounded),
               title: Text(a.address!),

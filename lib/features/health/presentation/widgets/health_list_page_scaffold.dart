@@ -97,7 +97,7 @@ class HealthListPageScaffold extends StatelessWidget {
           floatingActionButton: FloatingActionButton.small(
             heroTag: 'fab_health_list',
             onPressed: () => context.read<HealthListCubit>().addDemo(),
-            child: const Icon(Icons.add_rounded, size: 20),
+            child: Icon(Icons.add_rounded, size: 20.sp),
           ),
         );
       },

@@ -84,7 +84,7 @@ class DokalButton extends StatelessWidget {
             width: loaderSize,
             height: loaderSize,
             child: CircularProgressIndicator(
-              strokeWidth: 2,
+              strokeWidth: 2.r,
               color: _variant == _Variant.primary
                   ? Colors.white
                   : AppColors.primary,
