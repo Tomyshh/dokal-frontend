@@ -11,7 +11,8 @@ import java.util.Properties
 
 android {
     namespace = "com.yapio.dokal"
-    compileSdk = flutter.compileSdkVersion
+    // Certains plugins AndroidX récents exigent compileSdk 36 (attrs/resources).
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -29,7 +30,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

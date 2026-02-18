@@ -1122,6 +1122,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authSignUpFailedTryAgain => 'Sign-up failed. Try again.';
 
   @override
+  String get authOnlyPatientsAllowed =>
+      'Only patients are allowed to sign in for now.';
+
+  @override
   String get errorUnableToConfirmAppointment =>
       'Unable to confirm the appointment.';
 

@@ -1082,6 +1082,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get authSignUpFailedTryAgain => 'መመዝገብ አልተሳካም። እንደገና ሞክር።';
 
   @override
+  String get authOnlyPatientsAllowed => 'አሁን ታካሚዎች ብቻ መግባት ይችላሉ።';
+
+  @override
   String get errorUnableToConfirmAppointment => 'ቀጠሮውን ማረጋገጥ አልተቻለም።';
 
   @override

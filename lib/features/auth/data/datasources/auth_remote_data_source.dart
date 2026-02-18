@@ -69,10 +69,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
     }
     final client = await _client;
+    return _signInWithGoogleLegacy(client);
+  }
+
+  /// Ancienne API (google_sign_in) : dialogue centré "Choose an account".
+  Future<AuthSession> _signInWithGoogleLegacy(SupabaseClient client) async {
     final googleSignIn = GoogleSignIn(
       serverClientId: googleWebClientId,
       clientId: googleIosClientId,
     );
+    // Force l'affichage du sélecteur de compte à chaque tentative.
+    // Sinon, GoogleSignIn garde le dernier compte "en mémoire" (et `signIn()`
+    // peut réutiliser silencieusement l'ancien compte).
+    try {
+      await googleSignIn.signOut();
+    } catch (_) {}
     final account = await googleSignIn.signIn();
     if (account == null) {
       throw const AuthException('Connexion Google annulée.');
@@ -91,6 +102,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (user == null) {
       throw AuthException(l10nStatic.authSignInFailedTryAgain);
     }
+    // Nettoie la session Google côté plugin pour que la prochaine connexion
+    // ré-affiche le sélecteur de compte.
+    try {
+      await googleSignIn.signOut();
+    } catch (_) {}
     return AuthSession(userId: user.id, email: user.email);
   }
 

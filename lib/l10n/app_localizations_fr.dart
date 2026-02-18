@@ -1134,6 +1134,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authSignUpFailedTryAgain => 'Inscription échouée. Réessayez.';
 
   @override
+  String get authOnlyPatientsAllowed =>
+      'Seuls les patients sont autorisés à se connecter pour le moment.';
+
+  @override
   String get errorUnableToConfirmAppointment =>
       'Impossible de confirmer le rendez-vous.';
 

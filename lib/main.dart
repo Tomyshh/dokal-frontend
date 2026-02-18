@@ -23,16 +23,5 @@ Future<void> main() async {
   );
   // Déclenche le check session dès le démarrage.
   authBloc.add(const AuthStarted());
-  runApp(
-    Builder(
-      builder: (context) => MediaQuery(
-        // Forcer le textScaler à 1.0 pour ignorer les paramètres système
-        // (taille de police / zoom de l'utilisateur).
-        data: MediaQueryData.fromView(View.of(context)).copyWith(
-          textScaler: TextScaler.linear(1.0),
-        ),
-        child: const DokalApp(),
-      ),
-    ),
-  );
+  runApp(const DokalApp());
 }

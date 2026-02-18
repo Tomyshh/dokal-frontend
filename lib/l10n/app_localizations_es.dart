@@ -1133,6 +1133,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Error al registrarse. Inténtalo de nuevo.';
 
   @override
+  String get authOnlyPatientsAllowed =>
+      'Por ahora, solo los pacientes pueden iniciar sesión.';
+
+  @override
   String get errorUnableToConfirmAppointment => 'No se pudo confirmar la cita.';
 
   @override

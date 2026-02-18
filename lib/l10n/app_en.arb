@@ -431,6 +431,7 @@
   "errorGenericTryAgain": "An error occurred. Try again.",
   "authSignInFailedTryAgain": "Sign-in failed. Try again.",
   "authSignUpFailedTryAgain": "Sign-up failed. Try again.",
+  "authOnlyPatientsAllowed": "Only patients are allowed to sign in for now.",
 
   "errorUnableToConfirmAppointment": "Unable to confirm the appointment.",
   "errorUnableToLoadProfile": "Unable to load the profile.",

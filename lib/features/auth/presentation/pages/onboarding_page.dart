@@ -97,10 +97,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 Expanded(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      final artHeight = (constraints.maxHeight * 0.62)
-                          .clamp(320.0.h, constraints.maxHeight);
-                      final topAreaHeight =
-                          (constraints.maxHeight - artHeight).clamp(0.0, constraints.maxHeight);
+                      final maxH = constraints.maxHeight;
+                      final minArt = 320.0.h;
+                      // Au premier frame, maxH peut être < minArt (safe area non appliquée) :
+                      // clamp(min, max) exige min <= max.
+                      final safeMinArt = minArt <= maxH ? minArt : maxH;
+                      final artHeight = (maxH * 0.62).clamp(safeMinArt, maxH);
+                      final topAreaHeight = (maxH - artHeight).clamp(0.0, maxH);
 
                       return Stack(
                         children: [

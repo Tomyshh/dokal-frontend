@@ -431,6 +431,7 @@
   "errorGenericTryAgain": "אירעה שגיאה. נסה שוב.",
   "authSignInFailedTryAgain": "ההתחברות נכשלה. נסה שוב.",
   "authSignUpFailedTryAgain": "ההרשמה נכשלה. נסה שוב.",
+  "authOnlyPatientsAllowed": "כרגע רק מטופלים יכולים להתחבר.",
 
   "errorUnableToConfirmAppointment": "לא ניתן לאשר את התור.",
   "errorUnableToLoadProfile": "לא ניתן לטעון את הפרופיל.",

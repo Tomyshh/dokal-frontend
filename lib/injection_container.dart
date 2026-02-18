@@ -163,27 +163,27 @@ void configureDependencies() {
 
   // Support GOOGLE_WEB_CLIENT_ID ou EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
   // (certains setups ne passent que les clés EXPO_PUBLIC_* depuis le .env)
-  const _googleWebRaw = String.fromEnvironment(
+  const googleWebRaw = String.fromEnvironment(
     'GOOGLE_WEB_CLIENT_ID',
     defaultValue: '',
   );
-  const _googleWebExpo = String.fromEnvironment(
+  const googleWebExpo = String.fromEnvironment(
     'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID',
     defaultValue: '',
   );
   final googleWebClientId =
-      _googleWebRaw.isNotEmpty ? _googleWebRaw : _googleWebExpo;
+      googleWebRaw.isNotEmpty ? googleWebRaw : googleWebExpo;
   const googleIosClientId = String.fromEnvironment(
     'GOOGLE_IOS_CLIENT_ID',
     defaultValue: '',
   );
-  const _googleIosExpo = String.fromEnvironment(
+  const googleIosExpo = String.fromEnvironment(
     'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID',
     defaultValue: '',
   );
   final googleIosClientIdResolved = googleIosClientId.isNotEmpty
       ? googleIosClientId
-      : _googleIosExpo;
+      : googleIosExpo;
 
   if (kDebugMode) {
     debugPrint('[Dokal] Supabase URL: $supabaseUrl');
@@ -228,7 +228,7 @@ void configureDependencies() {
     ),
   );
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(remote: sl<AuthRemoteDataSource>()),
+    () => AuthRepositoryImpl(remote: sl<AuthRemoteDataSource>(), api: sl<ApiClient>()),
   );
 
   // Onboarding (local)

@@ -1093,6 +1093,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get authSignUpFailedTryAgain => 'ההרשמה נכשלה. נסה שוב.';
 
   @override
+  String get authOnlyPatientsAllowed => 'כרגע רק מטופלים יכולים להתחבר.';
+
+  @override
   String get errorUnableToConfirmAppointment => 'לא ניתן לאשר את התור.';
 
   @override

@@ -401,6 +401,7 @@
   "errorGenericTryAgain": "Une erreur est survenue. Réessayez.",
   "authSignInFailedTryAgain": "Connexion échouée. Réessayez.",
   "authSignUpFailedTryAgain": "Inscription échouée. Réessayez.",
+  "authOnlyPatientsAllowed": "Seuls les patients sont autorisés à se connecter pour le moment.",
 
   "errorUnableToConfirmAppointment": "Impossible de confirmer le rendez-vous.",
   "errorUnableToLoadProfile": "Impossible de charger le profil.",

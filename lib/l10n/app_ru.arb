@@ -431,6 +431,7 @@
   "errorGenericTryAgain": "Произошла ошибка. Попробуйте снова.",
   "authSignInFailedTryAgain": "Не удалось войти. Попробуйте снова.",
   "authSignUpFailedTryAgain": "Не удалось зарегистрироваться. Попробуйте снова.",
+  "authOnlyPatientsAllowed": "Пока вход доступен только пациентам.",
 
   "errorUnableToConfirmAppointment": "Не удалось подтвердить прием.",
   "errorUnableToLoadProfile": "Не удалось загрузить профиль.",

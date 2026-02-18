@@ -431,6 +431,7 @@
   "errorGenericTryAgain": "ስህተት ተከስቷል። እንደገና ሞክር።",
   "authSignInFailedTryAgain": "መግባት አልተሳካም። እንደገና ሞክር።",
   "authSignUpFailedTryAgain": "መመዝገብ አልተሳካም። እንደገና ሞክር።",
+  "authOnlyPatientsAllowed": "አሁን ታካሚዎች ብቻ መግባት ይችላሉ።",
 
   "errorUnableToConfirmAppointment": "ቀጠሮውን ማረጋገጥ አልተቻለም።",
   "errorUnableToLoadProfile": "መገለጫውን መጫን አልተቻለም።",

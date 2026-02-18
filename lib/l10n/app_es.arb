@@ -431,6 +431,7 @@
   "errorGenericTryAgain": "Ocurrió un error. Inténtalo de nuevo.",
   "authSignInFailedTryAgain": "Error al iniciar sesión. Inténtalo de nuevo.",
   "authSignUpFailedTryAgain": "Error al registrarse. Inténtalo de nuevo.",
+  "authOnlyPatientsAllowed": "Por ahora, solo los pacientes pueden iniciar sesión.",
 
   "errorUnableToConfirmAppointment": "No se pudo confirmar la cita.",
   "errorUnableToLoadProfile": "No se pudo cargar el perfil.",

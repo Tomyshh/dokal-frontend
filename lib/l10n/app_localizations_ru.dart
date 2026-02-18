@@ -1127,6 +1127,9 @@ class AppLocalizationsRu extends AppLocalizations {
       'Не удалось зарегистрироваться. Попробуйте снова.';
 
   @override
+  String get authOnlyPatientsAllowed => 'Пока вход доступен только пациентам.';
+
+  @override
   String get errorUnableToConfirmAppointment => 'Не удалось подтвердить прием.';
 
   @override

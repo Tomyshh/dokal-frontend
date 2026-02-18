@@ -2194,6 +2194,12 @@ abstract class AppLocalizations {
   /// **'ההרשמה נכשלה. נסה שוב.'**
   String get authSignUpFailedTryAgain;
 
+  /// No description provided for @authOnlyPatientsAllowed.
+  ///
+  /// In he, this message translates to:
+  /// **'כרגע רק מטופלים יכולים להתחבר.'**
+  String get authOnlyPatientsAllowed;
+
   /// No description provided for @errorUnableToConfirmAppointment.
   ///
   /// In he, this message translates to:
