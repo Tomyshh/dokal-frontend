@@ -91,6 +91,7 @@
   "homeMyPractitioners": "የእኔ ሐኪሞች",
   "homeHistory": "ታሪክ",
   "homeGreeting": "ሰላም {name}",
+  "homeGreetingGuest": "ሰላም!",
   "@homeGreeting": {
     "placeholders": {
       "name": {}

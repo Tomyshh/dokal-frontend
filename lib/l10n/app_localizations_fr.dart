@@ -223,6 +223,9 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get homeGreetingGuest => 'Bonjour !';
+
+  @override
   String get homeSearchHint => 'Praticien, spécialité...';
 
   @override

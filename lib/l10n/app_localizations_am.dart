@@ -215,6 +215,9 @@ class AppLocalizationsAm extends AppLocalizations {
   }
 
   @override
+  String get homeGreetingGuest => 'ሰላም!';
+
+  @override
   String get homeSearchHint => 'ሐኪም፣ ስፔሻሊቲ...';
 
   @override

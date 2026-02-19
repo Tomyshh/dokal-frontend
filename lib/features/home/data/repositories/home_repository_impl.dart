@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
@@ -17,6 +18,11 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<Either<Failure, String>> getGreetingName() async {
     try {
+      // Mode invité: pas de session => pas de prénom, et surtout ne pas réutiliser
+      // un ancien cache local (risque de rester sur "Tom" après logout).
+      final hasSession = Supabase.instance.client.auth.currentSession != null;
+      if (!hasSession) return const Right('');
+
       // Fetch real name from backend profile
       final json = await api.get('/api/v1/profile') as Map<String, dynamic>;
       final firstName = json['first_name'] as String?;

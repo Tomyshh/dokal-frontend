@@ -58,6 +58,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Profile" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
     patch:
       tags: [Profile]
       summary: Update my profile
@@ -74,6 +75,17 @@ paths:
               schema: { $ref: "#/components/schemas/Profile" }
         "400": { $ref: "#/components/responses/BadRequest" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /api/v1/account:
+    delete:
+      tags: [Account]
+      summary: Delete my account (hard delete)
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
 
   /api/v1/profile/avatar:
     post:
@@ -98,6 +110,7 @@ paths:
               schema: { $ref: "#/components/schemas/Profile" }
         "400": { $ref: "#/components/responses/BadRequest" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
 
   /api/v1/relatives:
     get:
@@ -1909,6 +1922,11 @@ components:
           schema: { $ref: "#/components/schemas/ErrorResponse" }
     NotFound:
       description: Not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Conflict:
+      description: Conflict
       content:
         application/json:
           schema: { $ref: "#/components/schemas/ErrorResponse" }

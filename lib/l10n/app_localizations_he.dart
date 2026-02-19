@@ -216,6 +216,9 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
+  String get homeGreetingGuest => 'שלום!';
+
+  @override
   String get homeSearchHint => 'רופא, התמחות...';
 
   @override

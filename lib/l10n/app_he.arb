@@ -91,6 +91,7 @@
   "homeMyPractitioners": "הרופאים שלי",
   "homeHistory": "היסטוריה",
   "homeGreeting": "שלום {name}",
+  "homeGreetingGuest": "שלום!",
   "@homeGreeting": {
     "placeholders": {
       "name": {}

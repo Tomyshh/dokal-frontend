@@ -496,6 +496,12 @@ abstract class AppLocalizations {
   /// **'שלום {name}'**
   String homeGreeting(Object name);
 
+  /// No description provided for @homeGreetingGuest.
+  ///
+  /// In he, this message translates to:
+  /// **'שלום!'**
+  String get homeGreetingGuest;
+
   /// No description provided for @homeSearchHint.
   ///
   /// In he, this message translates to:

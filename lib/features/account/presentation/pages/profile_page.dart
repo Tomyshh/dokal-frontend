@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -26,7 +27,7 @@ class ProfilePage extends StatelessWidget {
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listenWhen: (prev, next) =>
             prev.deleteAccountStatus != next.deleteAccountStatus,
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state.deleteAccountStatus == DeleteAccountStatus.failure) {
             final msg = state.deleteAccountError ?? l10n.errorUnableToDeleteAccount;
             ScaffoldMessenger.of(
@@ -35,7 +36,9 @@ class ProfilePage extends StatelessWidget {
           }
 
           if (state.deleteAccountStatus == DeleteAccountStatus.success) {
-            context.read<AuthBloc>().add(const AuthLogoutRequested());
+            await Supabase.instance.client.auth.signOut();
+            if (!context.mounted) return;
+            context.read<AuthBloc>().add(const AuthRefreshRequested());
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(l10n.profileAccountDeletedSnack)),
             );

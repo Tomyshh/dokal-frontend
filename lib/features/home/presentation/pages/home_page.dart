@@ -11,6 +11,7 @@ import '../../../../core/widgets/appointment_card.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/home_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,24 +21,28 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<HomeCubit>(),
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: CustomScrollView(
-          slivers: [
-            // Header avec gradient bleu - sticky au top
-            const _StickyHeader(),
-            // Contenu
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  SizedBox(height: AppSpacing.md.h),
-                  _AppointmentsSections(),
-                  SizedBox(height: 100.h), // Espace pour la navbar
-                ]),
+      child: BlocListener<AuthBloc, AuthState>(
+        listenWhen: (p, n) => p.isAuthenticated != n.isAuthenticated,
+        listener: (context, _) => context.read<HomeCubit>().load(),
+        child: Scaffold(
+          backgroundColor: AppColors.background,
+          body: CustomScrollView(
+            slivers: [
+              // Header avec gradient bleu - sticky au top
+              const _StickyHeader(),
+              // Contenu
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    SizedBox(height: AppSpacing.md.h),
+                    _AppointmentsSections(),
+                    SizedBox(height: 100.h), // Espace pour la navbar
+                  ]),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -593,9 +598,12 @@ class _StickyHeader extends StatelessWidget {
                   buildWhen: (p, n) =>
                       p.greetingName != n.greetingName || p.status != n.status,
                   builder: (context, state) {
+                    final isAuthed = context.read<AuthBloc>().state.isAuthenticated;
                     final name = state.greetingName;
                     return Text(
-                      l10n.homeGreeting(name),
+                      (!isAuthed || name.trim().isEmpty)
+                          ? l10n.homeGreetingGuest
+                          : l10n.homeGreeting(name),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22.sp,

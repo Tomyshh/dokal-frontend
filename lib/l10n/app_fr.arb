@@ -91,6 +91,7 @@
   "homeMyPractitioners": "Mes praticiens",
   "homeHistory": "Historique",
   "homeGreeting": "Bonjour {name}",
+  "homeGreetingGuest": "Bonjour !",
   "@homeGreeting": {
     "placeholders": {
       "name": {}

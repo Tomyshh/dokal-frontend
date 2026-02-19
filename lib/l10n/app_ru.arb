@@ -91,6 +91,7 @@
   "homeMyPractitioners": "Мои специалисты",
   "homeHistory": "История",
   "homeGreeting": "Привет, {name}",
+  "homeGreetingGuest": "Здравствуйте!",
   "@homeGreeting": {
     "placeholders": {
       "name": {}

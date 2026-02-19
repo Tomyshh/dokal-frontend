@@ -221,6 +221,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get homeGreetingGuest => 'Здравствуйте!';
+
+  @override
   String get homeSearchHint => 'Врач, специальность...';
 
   @override

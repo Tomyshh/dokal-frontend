@@ -288,8 +288,13 @@ void initAppRouter(
             routes: [
               GoRoute(
                 path: '/home',
-                pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: HomePage()),
+                pageBuilder: (context, state) {
+                  final isAuthed = _authBloc.state.isAuthenticated;
+                  return NoTransitionPage(
+                    key: ValueKey('home-$isAuthed'),
+                    child: const HomePage(),
+                  );
+                },
                 routes: [
                   GoRoute(
                     path: 'search',
@@ -385,6 +390,7 @@ void initAppRouter(
                 pageBuilder: (context, state) {
                   final isAuthed = _authBloc.state.isAuthenticated;
                   return NoTransitionPage(
+                    key: ValueKey('account-$isAuthed'),
                     child: isAuthed
                         ? const AccountPage()
                         : const LoginPage(redirectTo: '/account'),
