@@ -172,34 +172,66 @@ class AppLocalizationsHe extends AppLocalizations {
   String get authForgotPasswordTitle => 'שכחת סיסמה';
 
   @override
-  String get authForgotPasswordSubtitle => 'נשלח לך קישור לאיפוס.';
+  String get authForgotPasswordSubtitle => 'נשלח לך קוד בן 6 ספרות בדוא\"ל.';
 
   @override
-  String get authForgotPasswordSendLink => 'שלח קישור';
+  String get authForgotPasswordSendLink => 'שלח קוד';
 
   @override
   String get authBackToLogin => 'חזרה להתחברות';
 
   @override
-  String get authForgotPasswordEmailSent =>
-      'האימייל נשלח. בדוק את תיבת הדואר שלך.';
+  String get authForgotPasswordEmailSent => 'הקוד נשלח. בדוק את תיבת הדואר.';
+
+  @override
+  String get authResetPasswordVerifyTitle => 'הזן את הקוד';
+
+  @override
+  String authResetPasswordVerifyDescription(Object email) {
+    return 'שלחנו קוד בן 6 ספרות ל־$email. הזן אותו כדי להמשיך.';
+  }
+
+  @override
+  String get authResetPasswordNewTitle => 'סיסמה חדשה';
+
+  @override
+  String get authResetPasswordNewSubtitle => 'בחר סיסמה חדשה.';
+
+  @override
+  String get authResetPasswordConfirmPassword => 'אשר סיסמה';
+
+  @override
+  String get authResetPasswordPasswordsDoNotMatch => 'הסיסמאות אינן תואמות';
+
+  @override
+  String get authResetPasswordUpdateButton => 'עדכן סיסמה';
+
+  @override
+  String get authResetPasswordUpdatedSnack =>
+      'הסיסמה עודכנה. אפשר להתחבר מחדש.';
 
   @override
   String get authVerifyEmailTitle => 'אמת את האימייל שלך';
 
   @override
   String authVerifyEmailDescription(Object email) {
-    return 'שלחנו אימייל אימות לכתובת $email. לחץ על הקישור באימייל וחזור לאפליקציה.';
+    return 'שלחנו קוד בן 6 ספרות לכתובת $email. הזן אותו למטה.';
   }
+
+  @override
+  String get authVerifyEmailOtpHint => '000000';
+
+  @override
+  String get authVerifyEmailVerify => 'אימות';
 
   @override
   String get authVerifyEmailCheckedBackToLogin => 'אישרתי, חזרה להתחברות';
 
   @override
-  String get authVerifyEmailResend => 'שלח שוב את האימייל';
+  String get authVerifyEmailResend => 'שלח שוב את הקוד';
 
   @override
-  String get authVerifyEmailResentSnack => 'אימייל האימות נשלח מחדש.';
+  String get authVerifyEmailResentSnack => 'קוד האימות נשלח מחדש.';
 
   @override
   String get commonBack => 'חזרה';
@@ -274,7 +306,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homeLast3AppointmentsTitle => '3 התורים האחרונים';
 
   @override
-  String get homeSeeAllPastAppointments => 'צפה בכל התורים שעברו';
+  String get homeSeeAllPastAppointments => 'צפה';
 
   @override
   String get homeAppointmentHistoryTitle => 'היסטוריית תורים';
@@ -420,6 +452,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get searchSortRating => 'דירוג';
+
+  @override
+  String get searchFeesLabel => 'עלות';
+
+  @override
+  String get searchBookNow => 'קבע תור';
 
   @override
   String get onboardingStep1Title => 'מצאו וקבעו תורים רפואיים בקלות';
@@ -778,6 +816,24 @@ class AppLocalizationsHe extends AppLocalizations {
   String get practitionerProfileSection => 'פרופיל';
 
   @override
+  String get practitionerTabAvailability => 'זמינות';
+
+  @override
+  String get practitionerTabReviews => 'ביקורות';
+
+  @override
+  String get practitionerMyAppointmentsWithDoctor => 'התורים שלי עם הרופא';
+
+  @override
+  String get practitionerNoAppointmentsWithDoctor => 'אין תורים עם רופא זה';
+
+  @override
+  String get practitionerLoginToSeeHistory => 'התחבר כדי לראות את ההיסטוריה';
+
+  @override
+  String get practitionerNoReviews => 'אין ביקורות עדיין';
+
+  @override
   String get documentsTitle => 'מסמכים';
 
   @override
@@ -794,6 +850,21 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get authLogout => 'התנתק';
+
+  @override
+  String get authLoggingOut => 'מתנתק…';
+
+  @override
+  String get authLogoutConfirmTitle => 'התנתקות';
+
+  @override
+  String get authLogoutConfirmMessage => 'האם אתה בטוח שברצונך להתנתק?';
+
+  @override
+  String get authLogoutSuccess => 'התנתקת בהצלחה';
+
+  @override
+  String get authLoginSuccess => 'ברוך הבא!';
 
   @override
   String get securityTitle => 'אבטחה';

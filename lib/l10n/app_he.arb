@@ -71,21 +71,37 @@
   "authAlreadyHaveAccount": "כבר יש לי חשבון",
 
   "authForgotPasswordTitle": "שכחת סיסמה",
-  "authForgotPasswordSubtitle": "נשלח לך קישור לאיפוס.",
-  "authForgotPasswordSendLink": "שלח קישור",
+  "authForgotPasswordSubtitle": "נשלח לך קוד בן 6 ספרות בדוא\"ל.",
+  "authForgotPasswordSendLink": "שלח קוד",
   "authBackToLogin": "חזרה להתחברות",
-  "authForgotPasswordEmailSent": "האימייל נשלח. בדוק את תיבת הדואר שלך.",
+  "authForgotPasswordEmailSent": "הקוד נשלח. בדוק את תיבת הדואר.",
+
+  "authResetPasswordVerifyTitle": "הזן את הקוד",
+  "authResetPasswordVerifyDescription": "שלחנו קוד בן 6 ספרות ל־{email}. הזן אותו כדי להמשיך.",
+  "@authResetPasswordVerifyDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authResetPasswordNewTitle": "סיסמה חדשה",
+  "authResetPasswordNewSubtitle": "בחר סיסמה חדשה.",
+  "authResetPasswordConfirmPassword": "אשר סיסמה",
+  "authResetPasswordPasswordsDoNotMatch": "הסיסמאות אינן תואמות",
+  "authResetPasswordUpdateButton": "עדכן סיסמה",
+  "authResetPasswordUpdatedSnack": "הסיסמה עודכנה. אפשר להתחבר מחדש.",
 
   "authVerifyEmailTitle": "אמת את האימייל שלך",
-  "authVerifyEmailDescription": "שלחנו אימייל אימות לכתובת {email}. לחץ על הקישור באימייל וחזור לאפליקציה.",
+  "authVerifyEmailDescription": "שלחנו קוד בן 6 ספרות לכתובת {email}. הזן אותו למטה.",
   "@authVerifyEmailDescription": {
     "placeholders": {
       "email": {}
     }
   },
+  "authVerifyEmailOtpHint": "000000",
+  "authVerifyEmailVerify": "אימות",
   "authVerifyEmailCheckedBackToLogin": "אישרתי, חזרה להתחברות",
-  "authVerifyEmailResend": "שלח שוב את האימייל",
-  "authVerifyEmailResentSnack": "אימייל האימות נשלח מחדש.",
+  "authVerifyEmailResend": "שלח שוב את הקוד",
+  "authVerifyEmailResentSnack": "קוד האימות נשלח מחדש.",
   "commonBack": "חזרה",
 
   "homeMyPractitioners": "הרופאים שלי",
@@ -119,7 +135,7 @@
   "homeFindAppointmentCta": "מצאו תור",
   "homeNoAppointmentsEmptyDescription": "כרגע אין לך תורים. חפשו רופא וקבעו את התור הראשון שלכם.",
   "homeLast3AppointmentsTitle": "3 התורים האחרונים",
-  "homeSeeAllPastAppointments": "צפה בכל התורים שעברו",
+  "homeSeeAllPastAppointments": "צפה",
   "homeAppointmentHistoryTitle": "היסטוריית תורים",
   "homeNoAppointmentHistory": "אין היסטוריית תורים",
 
@@ -186,6 +202,8 @@
   "searchSortDistance": "מרחק",
   "searchSortName": "שם",
   "searchSortRating": "דירוג",
+  "searchFeesLabel": "עלות",
+  "searchBookNow": "קבע תור",
 
   "onboardingStep1Title": "מצאו וקבעו תורים רפואיים בקלות",
   "onboardingStep2Title": "התכתבו בקלות עם הרופאים שלכם",
@@ -306,6 +324,12 @@
   "practitionerAvailabilities": "זמינות",
   "practitionerAddress": "כתובת",
   "practitionerProfileSection": "פרופיל",
+  "practitionerTabAvailability": "זמינות",
+  "practitionerTabReviews": "ביקורות",
+  "practitionerMyAppointmentsWithDoctor": "התורים שלי עם הרופא",
+  "practitionerNoAppointmentsWithDoctor": "אין תורים עם רופא זה",
+  "practitionerLoginToSeeHistory": "התחבר כדי לראות את ההיסטוריה",
+  "practitionerNoReviews": "אין ביקורות עדיין",
 
   "documentsTitle": "מסמכים",
   "documentsEmptyTitle": "אין מסמך",
@@ -314,6 +338,11 @@
   "documentsShare": "שתף",
 
   "authLogout": "התנתק",
+  "authLoggingOut": "מתנתק…",
+  "authLogoutConfirmTitle": "התנתקות",
+  "authLogoutConfirmMessage": "האם אתה בטוח שברצונך להתנתק?",
+  "authLogoutSuccess": "התנתקת בהצלחה",
+  "authLoginSuccess": "ברוך הבא!",
 
   "securityTitle": "אבטחה",
   "securitySecureAccountTitle": "אבטח את החשבון שלך",

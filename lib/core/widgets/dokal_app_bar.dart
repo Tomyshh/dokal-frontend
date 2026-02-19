@@ -49,6 +49,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
     final effectiveBg = backgroundColor ?? AppColors.background;
     final effectiveFg = foregroundColor ?? AppColors.textPrimary;
     final showBack = showBackButton;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     Widget? titleWidget;
     if (subtitle != null) {
@@ -97,7 +98,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       leading: showBack
           ? Padding(
-              padding: EdgeInsets.only(left: 4.w),
+              padding: EdgeInsetsDirectional.only(start: 4.w),
               child: IconButton(
                 onPressed: () => _handleBack(context),
                 icon: Container(
@@ -107,10 +108,15 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: effectiveFg.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(10.r),
                   ),
-                  child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    size: 16.sp,
-                    color: effectiveFg,
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Icon(
+                      isRtl
+                          ? Icons.arrow_forward_ios_rounded
+                          : Icons.arrow_back_ios_new_rounded,
+                      size: 16.sp,
+                      color: effectiveFg,
+                    ),
                   ),
                 ),
                 tooltip: context.l10n.commonBack,

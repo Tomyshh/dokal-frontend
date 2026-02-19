@@ -1,9 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../account/domain/usecases/get_profile.dart';
 import '../../../appointments/domain/entities/appointment.dart';
 import '../../../appointments/domain/usecases/get_past_appointments.dart';
 import '../../../appointments/domain/usecases/get_upcoming_appointments.dart';
@@ -23,12 +26,14 @@ class HomeCubit extends Cubit<HomeState> {
     required GetUpcomingAppointments getUpcomingAppointments,
     required GetPastAppointments getPastAppointments,
     required GetConversations getConversations,
+    required GetProfile getProfile,
   }) : _getGreetingName = getGreetingName,
        _getHistoryEnabled = getHistoryEnabled,
        _enableHistory = enableHistory,
        _getUpcomingAppointments = getUpcomingAppointments,
        _getPastAppointments = getPastAppointments,
        _getConversations = getConversations,
+       _getProfile = getProfile,
        super(const HomeState.initial());
 
   final GetHomeGreetingName _getGreetingName;
@@ -37,6 +42,7 @@ class HomeCubit extends Cubit<HomeState> {
   final GetUpcomingAppointments _getUpcomingAppointments;
   final GetPastAppointments _getPastAppointments;
   final GetConversations _getConversations;
+  final GetProfile _getProfile;
 
   Future<void> load() async {
     if (isClosed) return;
@@ -62,6 +68,17 @@ class HomeCubit extends Cubit<HomeState> {
             <ConversationPreview>[],
           );
     if (isClosed) return;
+
+    // Profil (best effort pour récupérer l'avatar)
+    String? avatarUrl;
+    if (hasSession) {
+      final profileRes = await _getProfile();
+      profileRes.fold((_) {}, (p) => avatarUrl = p.avatarUrl);
+    }
+    if (isClosed) return;
+
+    // Localisation (best effort)
+    final location = await _fetchLocation();
 
     String? error;
     String name = '—';
@@ -99,9 +116,47 @@ class HomeCubit extends Cubit<HomeState> {
           upcomingAppointments: upcomingList,
           newMessageConversation: newMessage,
           appointmentHistory: history,
+          avatarUrl: avatarUrl,
+          city: location.$1,
+          country: location.$2,
           error: null,
         ),
       );
+    }
+  }
+
+  Future<(String, String)> _fetchLocation() async {
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return ('', '');
+
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return ('', '');
+      }
+      if (permission == LocationPermission.deniedForever) return ('', '');
+
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.low,
+          timeLimit: Duration(seconds: 8),
+        ),
+      );
+
+      final placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      if (placemarks.isEmpty) return ('', '');
+      final p = placemarks.first;
+      final city = p.locality?.isNotEmpty == true
+          ? p.locality!
+          : (p.subAdministrativeArea ?? '');
+      final country = p.country ?? '';
+      return (city, country);
+    } catch (_) {
+      return ('', '');
     }
   }
 

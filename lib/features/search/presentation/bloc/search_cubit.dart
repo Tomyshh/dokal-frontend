@@ -17,24 +17,39 @@ class SearchCubit extends Cubit<SearchState> {
   Timer? _debounce;
 
   void setQuery(String q) {
+    if (isClosed) return;
     emit(state.copyWith(query: q));
     _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 250), () => search());
+    _debounce = Timer(const Duration(milliseconds: 250), () {
+      if (isClosed) return;
+      search();
+    });
   }
 
   Future<void> search() async {
+    if (isClosed) return;
     emit(state.copyWith(status: SearchStatus.loading));
     final res = await _searchPractitioners(state.query);
+    if (isClosed) return;
     res.fold(
       (f) =>
-          emit(state.copyWith(status: SearchStatus.failure, error: f.message)),
-      (items) => emit(
-        state.copyWith(
-          status: SearchStatus.success,
-          results: items,
-          error: null,
-        ),
-      ),
+          isClosed
+              ? null
+              : emit(
+                  state.copyWith(
+                    status: SearchStatus.failure,
+                    error: f.message,
+                  ),
+                ),
+      (items) => isClosed
+          ? null
+          : emit(
+              state.copyWith(
+                status: SearchStatus.success,
+                results: items,
+                error: null,
+              ),
+            ),
     );
   }
 

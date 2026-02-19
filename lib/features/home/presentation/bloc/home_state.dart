@@ -10,6 +10,9 @@ class HomeState extends Equatable {
     required this.upcomingAppointments,
     required this.newMessageConversation,
     required this.appointmentHistory,
+    this.avatarUrl,
+    this.city,
+    this.country,
     this.error,
   });
 
@@ -20,6 +23,9 @@ class HomeState extends Equatable {
       upcomingAppointments = const [],
       newMessageConversation = null,
       appointmentHistory = const [],
+      avatarUrl = null,
+      city = null,
+      country = null,
       error = null;
 
   final HomeStatus status;
@@ -28,6 +34,9 @@ class HomeState extends Equatable {
   final List<Appointment> upcomingAppointments;
   final ConversationPreview? newMessageConversation;
   final List<Appointment> appointmentHistory;
+  final String? avatarUrl;
+  final String? city;
+  final String? country;
   final String? error;
 
   HomeState copyWith({
@@ -37,6 +46,9 @@ class HomeState extends Equatable {
     List<Appointment>? upcomingAppointments,
     ConversationPreview? newMessageConversation,
     List<Appointment>? appointmentHistory,
+    String? avatarUrl,
+    String? city,
+    String? country,
     String? error,
   }) {
     return HomeState(
@@ -47,6 +59,9 @@ class HomeState extends Equatable {
       newMessageConversation:
           newMessageConversation ?? this.newMessageConversation,
       appointmentHistory: appointmentHistory ?? this.appointmentHistory,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      city: city ?? this.city,
+      country: country ?? this.country,
       error: error,
     );
   }
@@ -59,6 +74,9 @@ class HomeState extends Equatable {
     upcomingAppointments,
     newMessageConversation,
     appointmentHistory,
+    avatarUrl,
+    city,
+    country,
     error,
   ];
 }

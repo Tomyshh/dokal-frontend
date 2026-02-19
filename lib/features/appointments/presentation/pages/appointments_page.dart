@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/appointment_card.dart';
 import '../../../../core/widgets/dokal_button.dart';
@@ -28,46 +29,137 @@ class AppointmentsPage extends StatelessWidget {
         length: 2,
         initialIndex: initialIndex,
         child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 48.h,
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              surfaceTintColor: Colors.transparent,
-              scrolledUnderElevation: 0,
-            title: Text(
-              l10n.appointmentsTitle,
-              style: Theme.of(
-                context,
-                ).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+          backgroundColor: AppColors.background,
+          body: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                _AppointmentsHeader(l10n: l10n),
+                Expanded(
+                  child: const TabBarView(
+                    children: [_UpcomingTab(), _PastTab()],
+                  ),
                 ),
-            ),
-            centerTitle: true,
-            bottom: TabBar(
-              dividerColor: Colors.transparent,
-              labelStyle: Theme.of(context).textTheme.labelLarge,
-              unselectedLabelStyle: Theme.of(context).textTheme.labelMedium,
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.white.withValues(alpha: 0.75),
-              indicatorSize: TabBarIndicatorSize.label,
-                indicatorColor: Colors.white,
-                indicatorWeight: 3.r,
-              tabs: [
-                Tab(text: l10n.appointmentsTabUpcoming),
-                Tab(text: l10n.appointmentsTabPast),
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton.small(
+          floatingActionButton: FloatingActionButton(
             heroTag: 'fab_appointments',
             onPressed: () => context.push('/home/search'),
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
-            child: Icon(Icons.add_rounded, size: 20.sp),
+            elevation: 4,
+            shape: const CircleBorder(),
+            child: Icon(Icons.add_rounded, size: 26.sp),
           ),
-          body: const TabBarView(children: [_UpcomingTab(), _PastTab()]),
         ),
+      ),
+    );
+  }
+}
+
+class _AppointmentsHeader extends StatelessWidget {
+  const _AppointmentsHeader({required this.l10n});
+
+  final dynamic l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 10.r,
+            offset: Offset(0, 2.h),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg.w,
+              AppSpacing.md.h,
+              AppSpacing.lg.w,
+              AppSpacing.sm.h,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 42.r,
+                  height: 42.r,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        AppColors.brandGradientStart,
+                        AppColors.brandGradientEnd,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadii.lg.r),
+                  ),
+                  child: Icon(
+                    Icons.calendar_today_rounded,
+                    color: Colors.white,
+                    size: 20.sp,
+                  ),
+                ),
+                SizedBox(width: AppSpacing.md.w),
+                Text(
+                  l10n.appointmentsTitle,
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg.w,
+              vertical: AppSpacing.xs.h,
+            ),
+            padding: EdgeInsets.all(4.r),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceVariant,
+              borderRadius: BorderRadius.circular(AppRadii.xl.r),
+            ),
+            child: TabBar(
+              dividerColor: Colors.transparent,
+              labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w700,
+              ),
+              unselectedLabelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              labelColor: Colors.white,
+              unselectedLabelColor: AppColors.textSecondary,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(AppRadii.lg.r),
+              ),
+              indicatorPadding: EdgeInsets.zero,
+              splashBorderRadius: BorderRadius.circular(AppRadii.lg.r),
+              tabs: [
+                Tab(
+                  height: 36.h,
+                  text: l10n.appointmentsTabUpcoming,
+                ),
+                Tab(
+                  height: 36.h,
+                  text: l10n.appointmentsTabPast,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: AppSpacing.xs.h),
+        ],
       ),
     );
   }
@@ -81,7 +173,8 @@ class _UpcomingTab extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<AppointmentsCubit, AppointmentsState>(
       builder: (context, state) {
-        final hasSession = Supabase.instance.client.auth.currentSession != null;
+        final hasSession =
+            Supabase.instance.client.auth.currentSession != null;
         if (state.status == AppointmentsStatus.loading) {
           return Padding(
             padding: EdgeInsets.all(AppSpacing.lg.r),
@@ -113,7 +206,12 @@ class _UpcomingTab extends StatelessWidget {
           );
         }
         return ListView.separated(
-          padding: EdgeInsets.all(AppSpacing.lg.r),
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.lg.w,
+            AppSpacing.lg.h,
+            AppSpacing.lg.w,
+            AppSpacing.lg.h + 100.h,
+          ),
           itemCount: items.length,
           separatorBuilder: (context, index) =>
               SizedBox(height: AppSpacing.sm.h),
@@ -142,7 +240,8 @@ class _PastTab extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<AppointmentsCubit, AppointmentsState>(
       builder: (context, state) {
-        final hasSession = Supabase.instance.client.auth.currentSession != null;
+        final hasSession =
+            Supabase.instance.client.auth.currentSession != null;
         if (state.status == AppointmentsStatus.loading) {
           return Padding(
             padding: EdgeInsets.all(AppSpacing.lg.r),
@@ -174,7 +273,12 @@ class _PastTab extends StatelessWidget {
           );
         }
         return ListView.separated(
-          padding: EdgeInsets.all(AppSpacing.lg.r),
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.lg.w,
+            AppSpacing.lg.h,
+            AppSpacing.lg.w,
+            AppSpacing.lg.h + 100.h,
+          ),
           itemCount: items.length,
           separatorBuilder: (context, index) =>
               SizedBox(height: AppSpacing.sm.h),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -135,86 +136,171 @@ class SettingsPage extends StatelessWidget {
                   : ListView(
                       padding: EdgeInsets.all(AppSpacing.lg.r),
                       children: [
-                        DokalCard(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md.w,
-                            vertical: AppSpacing.xs.h,
-                          ),
-                          child: SwitchListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(
-                              l10n.settingsNotificationsTitle,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                            subtitle: Text(
-                              l10n.settingsNotificationsSubtitle,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            value: settings.notificationsEnabled,
-                            onChanged: (v) => context
-                                .read<SettingsCubit>()
-                                .setNotificationsEnabled(v),
-                          ),
+                        _SettingsSwitchCard(
+                          icon: Icons.notifications_rounded,
+                          title: l10n.settingsNotificationsTitle,
+                          subtitle: l10n.settingsNotificationsSubtitle,
+                          value: settings.notificationsEnabled,
+                          onChanged: (v) => context
+                              .read<SettingsCubit>()
+                              .setNotificationsEnabled(v),
                         ),
                         SizedBox(height: AppSpacing.sm.h),
-                        DokalCard(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md.w,
-                            vertical: AppSpacing.xs.h,
-                          ),
-                          child: SwitchListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(
-                              l10n.settingsRemindersTitle,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                            subtitle: Text(
-                              l10n.settingsRemindersSubtitle,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            value: settings.remindersEnabled,
-                            onChanged: (v) => context
-                                .read<SettingsCubit>()
-                                .setRemindersEnabled(v),
-                          ),
+                        _SettingsSwitchCard(
+                          icon: Icons.alarm_rounded,
+                          title: l10n.settingsRemindersTitle,
+                          subtitle: l10n.settingsRemindersSubtitle,
+                          value: settings.remindersEnabled,
+                          onChanged: (v) =>
+                              context.read<SettingsCubit>().setRemindersEnabled(v),
                         ),
                         SizedBox(height: AppSpacing.sm.h),
-                        DokalCard(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg.w,
-                            vertical: AppSpacing.md.h,
+                        _SettingsLinkCard(
+                          icon: Icons.language_rounded,
+                          title: l10n.settingsLanguageTitle,
+                          valueText: _languageName(
+                            l10n,
+                            AppLocaleController.locale.value.languageCode,
                           ),
-                          onTap: () {
-                            _showLanguageBottomSheet(context, l10n);
-                          },
-                          child: Row(
-                            children: [
-                              Icon(Icons.language_rounded, size: 20.sp),
-                              SizedBox(width: AppSpacing.md.w),
-                              Expanded(
-                                child: Text(
-                                  l10n.settingsLanguageTitle,
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                              ),
-                              Text(
-                                l10n.settingsLanguageShortLabel,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              SizedBox(width: 4.w),
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                size: 18.sp,
-                                color: AppColors.textSecondary,
-                              ),
-                            ],
-                          ),
+                          onTap: () => _showLanguageBottomSheet(context, l10n),
                         ),
                       ],
                     ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _SettingsSwitchCard extends StatelessWidget {
+  const _SettingsSwitchCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return DokalCard(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.md.w,
+        vertical: AppSpacing.md.h,
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 38.r,
+            height: 38.r,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.10),
+              borderRadius: BorderRadius.circular(AppRadii.md.r),
+            ),
+            child: Icon(icon, size: 20.sp, color: AppColors.primary),
+          ),
+          SizedBox(width: AppSpacing.md.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 3.h),
+                Text(
+                  subtitle,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.25,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(value: value, onChanged: onChanged),
+        ],
+      ),
+    );
+  }
+}
+
+class _SettingsLinkCard extends StatelessWidget {
+  const _SettingsLinkCard({
+    required this.icon,
+    required this.title,
+    required this.valueText,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String valueText;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return DokalCard(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.md.w,
+        vertical: AppSpacing.md.h,
+      ),
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            width: 38.r,
+            height: 38.r,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.10),
+              borderRadius: BorderRadius.circular(AppRadii.md.r),
+            ),
+            child: Icon(icon, size: 20.sp, color: AppColors.primary),
+          ),
+          SizedBox(width: AppSpacing.md.w),
+          Expanded(
+            child: Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Text(
+            valueText,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(width: 6.w),
+          Container(
+            width: 28.r,
+            height: 28.r,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceVariant,
+              borderRadius: BorderRadius.circular(AppRadii.pill.r),
+            ),
+            child: Icon(
+              Icons.chevron_right_rounded,
+              size: 18.sp,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
       ),
     );
   }

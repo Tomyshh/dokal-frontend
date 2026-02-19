@@ -71,21 +71,37 @@
   "authAlreadyHaveAccount": "Ya tengo una cuenta",
 
   "authForgotPasswordTitle": "Olvidé mi contraseña",
-  "authForgotPasswordSubtitle": "Te enviaremos un enlace para restablecerla.",
-  "authForgotPasswordSendLink": "Enviar enlace",
+  "authForgotPasswordSubtitle": "Te enviaremos un código de 6 dígitos por correo.",
+  "authForgotPasswordSendLink": "Enviar código",
   "authBackToLogin": "Volver a iniciar sesión",
-  "authForgotPasswordEmailSent": "Correo enviado. Revisa tu bandeja de entrada.",
+  "authForgotPasswordEmailSent": "Código enviado. Revisa tu bandeja de entrada.",
+
+  "authResetPasswordVerifyTitle": "Introduce el código",
+  "authResetPasswordVerifyDescription": "Enviamos un código de 6 dígitos a {email}. Introdúcelo para continuar.",
+  "@authResetPasswordVerifyDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authResetPasswordNewTitle": "Nueva contraseña",
+  "authResetPasswordNewSubtitle": "Elige una nueva contraseña.",
+  "authResetPasswordConfirmPassword": "Confirmar contraseña",
+  "authResetPasswordPasswordsDoNotMatch": "Las contraseñas no coinciden",
+  "authResetPasswordUpdateButton": "Actualizar contraseña",
+  "authResetPasswordUpdatedSnack": "Contraseña actualizada. Puedes iniciar sesión de nuevo.",
 
   "authVerifyEmailTitle": "Verifica tu correo",
-  "authVerifyEmailDescription": "Enviamos un correo de confirmación a {email}. Haz clic en el enlace del correo y vuelve a la app.",
+  "authVerifyEmailDescription": "Enviamos un código de 6 dígitos a {email}. Introdúcelo abajo.",
   "@authVerifyEmailDescription": {
     "placeholders": {
       "email": {}
     }
   },
+  "authVerifyEmailOtpHint": "000000",
+  "authVerifyEmailVerify": "Verificar",
   "authVerifyEmailCheckedBackToLogin": "Ya lo verifiqué, volver a iniciar sesión",
-  "authVerifyEmailResend": "Reenviar correo",
-  "authVerifyEmailResentSnack": "Correo de confirmación reenviado.",
+  "authVerifyEmailResend": "Reenviar código",
+  "authVerifyEmailResentSnack": "Código de confirmación reenviado.",
   "commonBack": "Atrás",
 
   "homeMyPractitioners": "Mis profesionales",
@@ -119,7 +135,7 @@
   "homeFindAppointmentCta": "Buscar una cita",
   "homeNoAppointmentsEmptyDescription": "Por el momento no tienes citas. Busca un profesional y reserva tu primera cita.",
   "homeLast3AppointmentsTitle": "Últimas 3 citas",
-  "homeSeeAllPastAppointments": "Ver todas las citas pasadas",
+  "homeSeeAllPastAppointments": "Ver",
   "homeAppointmentHistoryTitle": "Historial de citas",
   "homeNoAppointmentHistory": "No hay citas pasadas",
 
@@ -186,6 +202,8 @@
   "searchSortDistance": "Distancia",
   "searchSortName": "Nombre",
   "searchSortRating": "Valoración",
+  "searchFeesLabel": "Honorarios",
+  "searchBookNow": "Reservar",
 
   "onboardingStep1Title": "Encuentra y reserva citas médicas fácilmente",
   "onboardingStep2Title": "Chatea fácilmente con tus profesionales",
@@ -306,6 +324,12 @@
   "practitionerAvailabilities": "Disponibilidad",
   "practitionerAddress": "Dirección",
   "practitionerProfileSection": "Perfil",
+  "practitionerTabAvailability": "Disponibilidad",
+  "practitionerTabReviews": "Reseñas",
+  "practitionerMyAppointmentsWithDoctor": "Mis citas con este doctor",
+  "practitionerNoAppointmentsWithDoctor": "No hay citas con este doctor",
+  "practitionerLoginToSeeHistory": "Inicia sesión para ver tu historial",
+  "practitionerNoReviews": "Aún no hay reseñas",
 
   "documentsTitle": "Documentos",
   "documentsEmptyTitle": "Sin documentos",
@@ -314,6 +338,11 @@
   "documentsShare": "Compartir",
 
   "authLogout": "Cerrar sesión",
+  "authLoggingOut": "Cerrando sesión…",
+  "authLogoutConfirmTitle": "Cerrar sesión",
+  "authLogoutConfirmMessage": "¿Estás seguro de que quieres cerrar sesión?",
+  "authLogoutSuccess": "Has cerrado sesión",
+  "authLoginSuccess": "¡Bienvenido de nuevo!",
 
   "securityTitle": "Seguridad",
   "securitySecureAccountTitle": "Protege tu cuenta",

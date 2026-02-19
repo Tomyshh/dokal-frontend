@@ -71,21 +71,37 @@
   "authAlreadyHaveAccount": "አስቀድሞ መለያ አለኝ",
 
   "authForgotPasswordTitle": "የይለፍ ቃል ረሳሁ",
-  "authForgotPasswordSubtitle": "የመመለሻ አገናኝ እንልካለን።",
-  "authForgotPasswordSendLink": "አገናኝ ላክ",
+  "authForgotPasswordSubtitle": "በኢሜይል 6 አሃዝ ኮድ እንልካለን።",
+  "authForgotPasswordSendLink": "ኮድ ላክ",
   "authBackToLogin": "ወደ መግቢያ ተመለስ",
-  "authForgotPasswordEmailSent": "ኢሜይል ተልኳል። ገቢ ፖስታዎን ያረጋግጡ።",
+  "authForgotPasswordEmailSent": "ኮድ ተልኳል። ገቢ ፖስታዎን ያረጋግጡ።",
+
+  "authResetPasswordVerifyTitle": "ኮዱን ያስገቡ",
+  "authResetPasswordVerifyDescription": "6 አሃዝ ኮድ ወደ {email} ልከናል። ለመቀጠል አስገቡት።",
+  "@authResetPasswordVerifyDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authResetPasswordNewTitle": "አዲስ የይለፍ ቃል",
+  "authResetPasswordNewSubtitle": "አዲስ የይለፍ ቃል ይምረጡ።",
+  "authResetPasswordConfirmPassword": "የይለፍ ቃልን ያረጋግጡ",
+  "authResetPasswordPasswordsDoNotMatch": "የይለፍ ቃላት አይዛመዱም",
+  "authResetPasswordUpdateButton": "የይለፍ ቃል አዘምን",
+  "authResetPasswordUpdatedSnack": "የይለፍ ቃል ተዘምኗል። እንደገና መግባት ይችላሉ።",
 
   "authVerifyEmailTitle": "ኢሜይልዎን ያረጋግጡ",
-  "authVerifyEmailDescription": "ወደ {email} የማረጋገጫ ኢሜይል ላክን። በኢሜይሉ ውስጥ ያለውን አገናኝ ጫን እና ወደ መተግበሪያው ተመለስ።",
+  "authVerifyEmailDescription": "ወደ {email} የ6 አሃዝ ኮድ ላክን። ከታች ያስገቡ።",
   "@authVerifyEmailDescription": {
     "placeholders": {
       "email": {}
     }
   },
+  "authVerifyEmailOtpHint": "000000",
+  "authVerifyEmailVerify": "አረጋግጥ",
   "authVerifyEmailCheckedBackToLogin": "አረጋግጫለሁ፣ ወደ መግቢያ ተመለስ",
-  "authVerifyEmailResend": "ኢሜይል ደግመህ ላክ",
-  "authVerifyEmailResentSnack": "የማረጋገጫ ኢሜይል ደግመን ላክን።",
+  "authVerifyEmailResend": "ኮድ ደግመህ ላክ",
+  "authVerifyEmailResentSnack": "የማረጋገጫ ኮድ ደግመን ላክን።",
   "commonBack": "ተመለስ",
 
   "homeMyPractitioners": "የእኔ ሐኪሞች",
@@ -119,7 +135,7 @@
   "homeFindAppointmentCta": "ቀጠሮ ፈልግ",
   "homeNoAppointmentsEmptyDescription": "እስካሁን ቀጠሮ የለዎትም። ሐኪም ፈልጉ እና የመጀመሪያዎን ቀጠሮ ያስይዙ።",
   "homeLast3AppointmentsTitle": "የመጨረሻ 3 ቀጠሮዎች",
-  "homeSeeAllPastAppointments": "ሁሉንም ያለፉ ቀጠሮዎች ይመልከቱ",
+  "homeSeeAllPastAppointments": "ይመልከቱ",
   "homeAppointmentHistoryTitle": "የቀጠሮ ታሪክ",
   "homeNoAppointmentHistory": "ያለፉ ቀጠሮዎች የሉም",
 
@@ -186,6 +202,8 @@
   "searchSortDistance": "ርቀት",
   "searchSortName": "ስም",
   "searchSortRating": "ደረጃ",
+  "searchFeesLabel": "ዋጋ",
+  "searchBookNow": "ቀጠሮ ያስያዙ",
 
   "onboardingStep1Title": "የሕክምና ቀጠሮ ያግኙ እና በቀላሉ ያስያዙ",
   "onboardingStep2Title": "ከሐኪሞችዎ ጋር በቀላሉ ይወያዩ",
@@ -306,6 +324,12 @@
   "practitionerAvailabilities": "መገኘት",
   "practitionerAddress": "አድራሻ",
   "practitionerProfileSection": "መገለጫ",
+  "practitionerTabAvailability": "መገኘት",
+  "practitionerTabReviews": "ግምገማዎች",
+  "practitionerMyAppointmentsWithDoctor": "ጉብኝቶቼ ከዚህ ዶክተር ጋር",
+  "practitionerNoAppointmentsWithDoctor": "ከዚህ ዶክተር ጋር ጉብኝት የለም",
+  "practitionerLoginToSeeHistory": "ታሪክህን ለማየት ግባ",
+  "practitionerNoReviews": "ግምገማ የለም",
 
   "documentsTitle": "ሰነዶች",
   "documentsEmptyTitle": "ሰነዶች የሉም",
@@ -314,6 +338,11 @@
   "documentsShare": "አጋራ",
 
   "authLogout": "ውጣ",
+  "authLoggingOut": "በመውጣት ላይ…",
+  "authLogoutConfirmTitle": "ውጣ",
+  "authLogoutConfirmMessage": "እርግጠኛ ነህ መውጣት ትፈልጋለህ?",
+  "authLogoutSuccess": "ወጥተዋል",
+  "authLoginSuccess": "እንኳን ደህና መጡ!",
 
   "securityTitle": "ደህንነት",
   "securitySecureAccountTitle": "መለያዎን ያስጠብቁ",

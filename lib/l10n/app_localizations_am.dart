@@ -172,33 +172,65 @@ class AppLocalizationsAm extends AppLocalizations {
   String get authForgotPasswordTitle => 'የይለፍ ቃል ረሳሁ';
 
   @override
-  String get authForgotPasswordSubtitle => 'የመመለሻ አገናኝ እንልካለን።';
+  String get authForgotPasswordSubtitle => 'በኢሜይል 6 አሃዝ ኮድ እንልካለን።';
 
   @override
-  String get authForgotPasswordSendLink => 'አገናኝ ላክ';
+  String get authForgotPasswordSendLink => 'ኮድ ላክ';
 
   @override
   String get authBackToLogin => 'ወደ መግቢያ ተመለስ';
 
   @override
-  String get authForgotPasswordEmailSent => 'ኢሜይል ተልኳል። ገቢ ፖስታዎን ያረጋግጡ።';
+  String get authForgotPasswordEmailSent => 'ኮድ ተልኳል። ገቢ ፖስታዎን ያረጋግጡ።';
+
+  @override
+  String get authResetPasswordVerifyTitle => 'ኮዱን ያስገቡ';
+
+  @override
+  String authResetPasswordVerifyDescription(Object email) {
+    return '6 አሃዝ ኮድ ወደ $email ልከናል። ለመቀጠል አስገቡት።';
+  }
+
+  @override
+  String get authResetPasswordNewTitle => 'አዲስ የይለፍ ቃል';
+
+  @override
+  String get authResetPasswordNewSubtitle => 'አዲስ የይለፍ ቃል ይምረጡ።';
+
+  @override
+  String get authResetPasswordConfirmPassword => 'የይለፍ ቃልን ያረጋግጡ';
+
+  @override
+  String get authResetPasswordPasswordsDoNotMatch => 'የይለፍ ቃላት አይዛመዱም';
+
+  @override
+  String get authResetPasswordUpdateButton => 'የይለፍ ቃል አዘምን';
+
+  @override
+  String get authResetPasswordUpdatedSnack => 'የይለፍ ቃል ተዘምኗል። እንደገና መግባት ይችላሉ።';
 
   @override
   String get authVerifyEmailTitle => 'ኢሜይልዎን ያረጋግጡ';
 
   @override
   String authVerifyEmailDescription(Object email) {
-    return 'ወደ $email የማረጋገጫ ኢሜይል ላክን። በኢሜይሉ ውስጥ ያለውን አገናኝ ጫን እና ወደ መተግበሪያው ተመለስ።';
+    return 'ወደ $email የ6 አሃዝ ኮድ ላክን። ከታች ያስገቡ።';
   }
+
+  @override
+  String get authVerifyEmailOtpHint => '000000';
+
+  @override
+  String get authVerifyEmailVerify => 'አረጋግጥ';
 
   @override
   String get authVerifyEmailCheckedBackToLogin => 'አረጋግጫለሁ፣ ወደ መግቢያ ተመለስ';
 
   @override
-  String get authVerifyEmailResend => 'ኢሜይል ደግመህ ላክ';
+  String get authVerifyEmailResend => 'ኮድ ደግመህ ላክ';
 
   @override
-  String get authVerifyEmailResentSnack => 'የማረጋገጫ ኢሜይል ደግመን ላክን።';
+  String get authVerifyEmailResentSnack => 'የማረጋገጫ ኮድ ደግመን ላክን።';
 
   @override
   String get commonBack => 'ተመለስ';
@@ -273,7 +305,7 @@ class AppLocalizationsAm extends AppLocalizations {
   String get homeLast3AppointmentsTitle => 'የመጨረሻ 3 ቀጠሮዎች';
 
   @override
-  String get homeSeeAllPastAppointments => 'ሁሉንም ያለፉ ቀጠሮዎች ይመልከቱ';
+  String get homeSeeAllPastAppointments => 'ይመልከቱ';
 
   @override
   String get homeAppointmentHistoryTitle => 'የቀጠሮ ታሪክ';
@@ -419,6 +451,12 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get searchSortRating => 'ደረጃ';
+
+  @override
+  String get searchFeesLabel => 'ዋጋ';
+
+  @override
+  String get searchBookNow => 'ቀጠሮ ያስያዙ';
 
   @override
   String get onboardingStep1Title => 'የሕክምና ቀጠሮ ያግኙ እና በቀላሉ ያስያዙ';
@@ -770,6 +808,24 @@ class AppLocalizationsAm extends AppLocalizations {
   String get practitionerProfileSection => 'መገለጫ';
 
   @override
+  String get practitionerTabAvailability => 'መገኘት';
+
+  @override
+  String get practitionerTabReviews => 'ግምገማዎች';
+
+  @override
+  String get practitionerMyAppointmentsWithDoctor => 'ጉብኝቶቼ ከዚህ ዶክተር ጋር';
+
+  @override
+  String get practitionerNoAppointmentsWithDoctor => 'ከዚህ ዶክተር ጋር ጉብኝት የለም';
+
+  @override
+  String get practitionerLoginToSeeHistory => 'ታሪክህን ለማየት ግባ';
+
+  @override
+  String get practitionerNoReviews => 'ግምገማ የለም';
+
+  @override
   String get documentsTitle => 'ሰነዶች';
 
   @override
@@ -786,6 +842,21 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get authLogout => 'ውጣ';
+
+  @override
+  String get authLoggingOut => 'በመውጣት ላይ…';
+
+  @override
+  String get authLogoutConfirmTitle => 'ውጣ';
+
+  @override
+  String get authLogoutConfirmMessage => 'እርግጠኛ ነህ መውጣት ትፈልጋለህ?';
+
+  @override
+  String get authLogoutSuccess => 'ወጥተዋል';
+
+  @override
+  String get authLoginSuccess => 'እንኳን ደህና መጡ!';
 
   @override
   String get securityTitle => 'ደህንነት';

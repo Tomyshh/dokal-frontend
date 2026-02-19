@@ -1,6 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-enum VerifyEmailStatus { initial, loading, success, failure }
+enum VerifyEmailStatus {
+  initial,
+  loading,
+  success,
+  verifySuccess,
+  failure,
+}
 
 class VerifyEmailState extends Equatable {
   const VerifyEmailState._({required this.status, this.errorMessage});
@@ -8,6 +14,8 @@ class VerifyEmailState extends Equatable {
   const VerifyEmailState.initial() : this._(status: VerifyEmailStatus.initial);
   const VerifyEmailState.loading() : this._(status: VerifyEmailStatus.loading);
   const VerifyEmailState.success() : this._(status: VerifyEmailStatus.success);
+  const VerifyEmailState.verifySuccess()
+    : this._(status: VerifyEmailStatus.verifySuccess);
   const VerifyEmailState.failure(String message)
     : this._(status: VerifyEmailStatus.failure, errorMessage: message);
 

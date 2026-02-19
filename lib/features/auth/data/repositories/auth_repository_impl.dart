@@ -36,6 +36,12 @@ class AuthRepositoryImpl implements AuthRepository {
       final session = await remote.signIn(email: email, password: password);
       await _assertPatientRoleOrLogout();
       return Right(session);
+    } on AuthException catch (e) {
+      final msg = e.message.trim().toLowerCase();
+      if (msg.contains('not confirmed') || msg.contains('email not confirmed')) {
+        return Left(Failure(e.message, code: 'EMAIL_NOT_CONFIRMED'));
+      }
+      return Left(Failure(e.message));
     } catch (e) {
       return Left(Failure(_messageFrom(e)));
     }
@@ -95,12 +101,51 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, Unit>> verifyPasswordResetOtp({
+    required String email,
+    required String token,
+  }) async {
+    try {
+      await remote.verifyPasswordResetOtp(email: email, token: token);
+      return const Right(unit);
+    } catch (e) {
+      return Left(Failure(_messageFrom(e)));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> updatePassword({
+    required String newPassword,
+  }) async {
+    try {
+      await remote.updatePassword(newPassword: newPassword);
+      return const Right(unit);
+    } catch (e) {
+      return Left(Failure(_messageFrom(e)));
+    }
+  }
+
+  @override
   Future<Either<Failure, Unit>> resendSignupConfirmationEmail({
     required String email,
   }) async {
     try {
       await remote.resendSignupConfirmationEmail(email: email);
       return const Right(unit);
+    } catch (e) {
+      return Left(Failure(_messageFrom(e)));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthSession>> verifySignupOtp({
+    required String email,
+    required String token,
+  }) async {
+    try {
+      final session = await remote.verifySignupOtp(email: email, token: token);
+      await _assertPatientRoleOrLogout();
+      return Right(session);
     } catch (e) {
       return Left(Failure(_messageFrom(e)));
     }

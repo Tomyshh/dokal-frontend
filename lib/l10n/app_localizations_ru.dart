@@ -175,36 +175,68 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authForgotPasswordTitle => 'Забыли пароль';
 
   @override
-  String get authForgotPasswordSubtitle => 'Мы отправим вам ссылку для сброса.';
+  String get authForgotPasswordSubtitle =>
+      'Мы отправим вам код из 6 цифр по email.';
 
   @override
-  String get authForgotPasswordSendLink => 'Отправить ссылку';
+  String get authForgotPasswordSendLink => 'Отправить код';
 
   @override
   String get authBackToLogin => 'Назад ко входу';
 
   @override
-  String get authForgotPasswordEmailSent =>
-      'Письмо отправлено. Проверьте почту.';
+  String get authForgotPasswordEmailSent => 'Код отправлен. Проверьте почту.';
+
+  @override
+  String get authResetPasswordVerifyTitle => 'Введите код';
+
+  @override
+  String authResetPasswordVerifyDescription(Object email) {
+    return 'Мы отправили 6‑значный код на $email. Введите его, чтобы продолжить.';
+  }
+
+  @override
+  String get authResetPasswordNewTitle => 'Новый пароль';
+
+  @override
+  String get authResetPasswordNewSubtitle => 'Придумайте новый пароль.';
+
+  @override
+  String get authResetPasswordConfirmPassword => 'Подтвердите пароль';
+
+  @override
+  String get authResetPasswordPasswordsDoNotMatch => 'Пароли не совпадают';
+
+  @override
+  String get authResetPasswordUpdateButton => 'Обновить пароль';
+
+  @override
+  String get authResetPasswordUpdatedSnack =>
+      'Пароль обновлён. Вы можете войти снова.';
 
   @override
   String get authVerifyEmailTitle => 'Подтвердите email';
 
   @override
   String authVerifyEmailDescription(Object email) {
-    return 'Мы отправили письмо подтверждения на $email. Нажмите ссылку в письме и вернитесь в приложение.';
+    return 'Мы отправили 6-значный код на $email. Введите его ниже.';
   }
+
+  @override
+  String get authVerifyEmailOtpHint => '000000';
+
+  @override
+  String get authVerifyEmailVerify => 'Подтвердить';
 
   @override
   String get authVerifyEmailCheckedBackToLogin =>
       'Подтвердил(а), назад ко входу';
 
   @override
-  String get authVerifyEmailResend => 'Отправить письмо снова';
+  String get authVerifyEmailResend => 'Отправить код снова';
 
   @override
-  String get authVerifyEmailResentSnack =>
-      'Письмо подтверждения отправлено снова.';
+  String get authVerifyEmailResentSnack => 'Код подтверждения отправлен снова.';
 
   @override
   String get commonBack => 'Назад';
@@ -280,7 +312,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homeLast3AppointmentsTitle => 'Последние 3 приема';
 
   @override
-  String get homeSeeAllPastAppointments => 'Посмотреть все прошедшие приемы';
+  String get homeSeeAllPastAppointments => 'Смотреть';
 
   @override
   String get homeAppointmentHistoryTitle => 'История приемов';
@@ -427,6 +459,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get searchSortRating => 'Рейтингу';
+
+  @override
+  String get searchFeesLabel => 'Стоимость';
+
+  @override
+  String get searchBookNow => 'Записаться';
 
   @override
   String get onboardingStep1Title =>
@@ -796,6 +834,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get practitionerProfileSection => 'Профиль';
 
   @override
+  String get practitionerTabAvailability => 'Доступность';
+
+  @override
+  String get practitionerTabReviews => 'Отзывы';
+
+  @override
+  String get practitionerMyAppointmentsWithDoctor => 'Мои записи к этому врачу';
+
+  @override
+  String get practitionerNoAppointmentsWithDoctor =>
+      'Нет записей к этому врачу';
+
+  @override
+  String get practitionerLoginToSeeHistory => 'Войдите, чтобы увидеть историю';
+
+  @override
+  String get practitionerNoReviews => 'Пока нет отзывов';
+
+  @override
   String get documentsTitle => 'Документы';
 
   @override
@@ -813,6 +870,21 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get authLogout => 'Выйти';
+
+  @override
+  String get authLoggingOut => 'Выход…';
+
+  @override
+  String get authLogoutConfirmTitle => 'Выход';
+
+  @override
+  String get authLogoutConfirmMessage => 'Вы уверены, что хотите выйти?';
+
+  @override
+  String get authLogoutSuccess => 'Вы вышли из аккаунта';
+
+  @override
+  String get authLoginSuccess => 'Добро пожаловать!';
 
   @override
   String get securityTitle => 'Безопасность';

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entities/auth_session.dart';
 import '../../domain/usecases/sign_in.dart';
 import '../../domain/usecases/sign_in_with_google.dart';
 
@@ -29,7 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final res = await _signInWithGoogle();
     res.fold(
       (f) => emit(LoginState.failure(f.message)),
-      (_) => emit(const LoginState.success()),
+      (session) => emit(LoginState.success(session)),
     );
   }
 
@@ -40,8 +41,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(const LoginState.loading());
     final res = await _signIn(email: event.email, password: event.password);
     res.fold(
-      (f) => emit(LoginState.failure(f.message)),
-      (_) => emit(const LoginState.success()),
+      (f) {
+        if (f.code == 'EMAIL_NOT_CONFIRMED') {
+          emit(LoginState.needsEmailVerification(event.email));
+        } else {
+          emit(LoginState.failure(f.message));
+        }
+      },
+      (session) => emit(LoginState.success(session)),
     );
   }
 }

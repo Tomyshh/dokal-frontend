@@ -37,6 +37,30 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
       final firstName = profiles?['first_name'] as String? ?? '';
       final lastName = profiles?['last_name'] as String? ?? '';
 
+      // Parse rating from embedded reviews if available
+      final rawReviews = json['reviews'] as List<dynamic>? ?? [];
+      double? rating;
+      if (rawReviews.isNotEmpty) {
+        final total = rawReviews.fold<double>(0, (sum, r) {
+          final rev = r as Map<String, dynamic>;
+          return sum + (rev['rating'] as num? ?? 0).toDouble();
+        });
+        rating = total / rawReviews.length;
+      }
+
+      // Parse first slot for next availability
+      final rawSlots = json['slots'] as List<dynamic>? ?? [];
+      String nextAvailabilityLabel = '';
+      if (rawSlots.isNotEmpty) {
+        final slot = rawSlots.first as Map<String, dynamic>;
+        final date = slot['slot_date'] as String? ?? '';
+        final start = slot['slot_start'] as String? ?? '';
+        if (date.isNotEmpty && start.isNotEmpty) {
+          final time = start.length >= 5 ? start.substring(0, 5) : start;
+          nextAvailabilityLabel = '$date $time';
+        }
+      }
+
       return PractitionerSearchResult(
         id: json['id'] as String,
         name: '$firstName $lastName'.trim(),
@@ -44,10 +68,12 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
             spec?['name_fr'] as String? ?? spec?['name'] as String? ?? '',
         address: '${json['address_line'] ?? ''}, ${json['city'] ?? ''}'.trim(),
         sector: json['sector'] as String? ?? '',
-        nextAvailabilityLabel: '',
+        nextAvailabilityLabel: nextAvailabilityLabel,
         avatarUrl: profiles?['avatar_url'] as String?,
         distanceKm: null,
         availabilityOrder: null,
+        rating: rating ?? 4.5,
+        reviewCount: rawReviews.isNotEmpty ? rawReviews.length : null,
       );
     }).toList();
   }

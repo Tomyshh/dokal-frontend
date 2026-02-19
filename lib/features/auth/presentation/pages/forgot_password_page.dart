@@ -94,6 +94,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   ),
                                 ),
                               );
+                              context.go(
+                                '/forgot-password/verify',
+                                extra: _email.text.trim(),
+                              );
                             }
                             if (state.status == ForgotPasswordStatus.failure) {
                               ScaffoldMessenger.of(context).showSnackBar(

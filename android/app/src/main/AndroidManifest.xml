@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Android 13+ notifications permission (géré via permission_handler) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Localisation -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Préparation upload documents / avatar -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- Android 13+ -->

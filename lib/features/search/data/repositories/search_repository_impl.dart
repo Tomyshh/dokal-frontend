@@ -17,7 +17,18 @@ class SearchRepositoryImpl implements SearchRepository {
     required String query,
   }) async {
     try {
-      final results = await remote.searchAsync(query);
+      var results = await remote.searchAsync(query);
+      // Si le backend retourne vide avec une requête, tenter sans filtre
+      // puis filtrer côté client (le backend peut être trop strict)
+      if (results.isEmpty && query.trim().isNotEmpty) {
+        final all = await remote.searchAsync('');
+        final q = query.trim().toLowerCase();
+        results = all.where((p) {
+          return p.name.toLowerCase().contains(q) ||
+              p.specialty.toLowerCase().contains(q) ||
+              (p.address.toLowerCase().contains(q));
+        }).toList();
+      }
       return Right(results);
     } on ServerException catch (e) {
       return Left(Failure(e.message));

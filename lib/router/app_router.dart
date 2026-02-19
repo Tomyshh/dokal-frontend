@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/utils/go_router_refresh_stream.dart';
@@ -11,6 +12,8 @@ import '../features/auth/presentation/pages/login_page.dart';
 import '../features/auth/presentation/pages/onboarding_page.dart';
 import '../features/auth/presentation/pages/register_page.dart';
 import '../features/auth/presentation/pages/forgot_password_page.dart';
+import '../features/auth/presentation/pages/reset_password_page.dart';
+import '../features/auth/presentation/pages/verify_password_reset_otp_page.dart';
 import '../features/auth/presentation/pages/verify_email_page.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
 import '../features/health/presentation/pages/health_dashboard_page.dart';
@@ -93,6 +96,8 @@ String? _safeRedirectTarget(GoRouterState state) {
     '/login',
     '/register',
     '/forgot-password',
+    '/forgot-password/verify',
+    '/forgot-password/reset',
     '/verify-email',
     '/splash',
   };
@@ -138,6 +143,8 @@ void initAppRouter(
           path == '/login' ||
           path == '/register' ||
           path == '/forgot-password' ||
+          path == '/forgot-password/verify' ||
+          path == '/forgot-password/reset' ||
           path == '/verify-email';
 
       final isAuthed = authBloc.state.isAuthenticated;
@@ -229,6 +236,17 @@ void initAppRouter(
       GoRoute(
         path: '/forgot-password',
         builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      GoRoute(
+        path: '/forgot-password/verify',
+        builder: (context, state) => VerifyPasswordResetOtpPage(
+          email: (state.extra as String?) ?? '',
+        ),
+      ),
+      GoRoute(
+        path: '/forgot-password/reset',
+        builder: (context, state) =>
+            ResetPasswordPage(email: (state.extra as String?) ?? ''),
       ),
       GoRoute(
         path: '/verify-email',
@@ -388,12 +406,17 @@ void initAppRouter(
                   return null;
                 },
                 pageBuilder: (context, state) {
-                  final isAuthed = _authBloc.state.isAuthenticated;
                   return NoTransitionPage(
-                    key: ValueKey('account-$isAuthed'),
-                    child: isAuthed
-                        ? const AccountPage()
-                        : const LoginPage(redirectTo: '/account'),
+                    key: const ValueKey('account'),
+                    child: BlocBuilder<AuthBloc, AuthState>(
+                      buildWhen: (prev, curr) =>
+                          prev.isAuthenticated != curr.isAuthenticated,
+                      builder: (context, authState) {
+                        return authState.isAuthenticated
+                            ? const AccountPage()
+                            : const LoginPage(redirectTo: '/account');
+                      },
+                    ),
                   );
                 },
                 routes: [

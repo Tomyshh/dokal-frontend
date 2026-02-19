@@ -18,6 +18,22 @@ abstract class AuthRemoteDataSource {
   Future<void> signOut();
   Future<void> requestPasswordReset({required String email});
   Future<void> resendSignupConfirmationEmail({required String email});
+
+  /// Vérifie le code OTP à 6 chiffres envoyé par email après signup (config Supabase OTP).
+  Future<AuthSession> verifySignupOtp({
+    required String email,
+    required String token,
+  });
+
+  /// Vérifie le code OTP à 6 chiffres envoyé par email pour récupérer le compte (reset mot de passe).
+  /// Après succès, Supabase crée une session temporaire utilisée pour `updatePassword`.
+  Future<void> verifyPasswordResetOtp({
+    required String email,
+    required String token,
+  });
+
+  /// Met à jour le mot de passe de l'utilisateur courant (session requise).
+  Future<void> updatePassword({required String newPassword});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -149,5 +165,51 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> resendSignupConfirmationEmail({required String email}) async {
     final client = await _client;
     await client.auth.resend(type: OtpType.signup, email: email);
+  }
+
+  @override
+  Future<AuthSession> verifySignupOtp({
+    required String email,
+    required String token,
+  }) async {
+    final client = await _client;
+    final res = await client.auth.verifyOTP(
+      email: email,
+      token: token,
+      type: OtpType.signup,
+    );
+    final user = res.user;
+    if (user == null) {
+      throw AuthException(l10nStatic.authSignInFailedTryAgain);
+    }
+    return AuthSession(userId: user.id, email: user.email);
+  }
+
+  @override
+  Future<void> verifyPasswordResetOtp({
+    required String email,
+    required String token,
+  }) async {
+    final client = await _client;
+    final res = await client.auth.verifyOTP(
+      email: email,
+      token: token,
+      type: OtpType.recovery,
+    );
+    final user = res.user;
+    if (user == null) {
+      throw AuthException(l10nStatic.authSignInFailedTryAgain);
+    }
+  }
+
+  @override
+  Future<void> updatePassword({required String newPassword}) async {
+    final client = await _client;
+    final res = await client.auth.updateUser(
+      UserAttributes(password: newPassword),
+    );
+    if (res.user == null) {
+      throw AuthException(l10nStatic.authSignInFailedTryAgain);
+    }
   }
 }

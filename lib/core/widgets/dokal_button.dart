@@ -126,7 +126,6 @@ class DokalButton extends StatelessWidget {
       elevation: const WidgetStatePropertyAll(0),
       textStyle: WidgetStatePropertyAll(
         TextStyle(
-          fontFamily: 'Inter',
           fontSize: (compact ? 12.0 : 13.0).sp,
           fontWeight: FontWeight.w600,
         ),

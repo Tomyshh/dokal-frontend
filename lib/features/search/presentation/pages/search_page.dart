@@ -10,7 +10,7 @@ import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
-import '../../../../core/widgets/practitioner_card.dart';
+import '../widgets/search_practitioner_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/practitioner_search_result.dart';
@@ -109,18 +109,9 @@ class _SearchPageState extends State<SearchPage> {
                             SizedBox(height: AppSpacing.sm.h),
                         itemBuilder: (context, index) {
                           final p = results[index];
-                          return PractitionerCard(
-                            name: p.name,
-                            specialty: p.specialty,
-                            address: p.address,
-                            sector: p.sector,
-                            nextAvailabilityLabel: p.nextAvailabilityLabel,
-                            distanceLabel: p.distanceLabel,
-                            avatarUrl: p.avatarUrl,
+                          return SearchPractitionerCard(
+                            practitioner: p,
                             onTap: () {
-                              // La page search est utilisée à la fois sur `/search`
-                              // (root) et sur `/home/search` (branche Home). On
-                              // pousse vers la route cohérente avec le contexte.
                               final fromPath = GoRouterState.of(
                                 context,
                               ).uri.path;
@@ -128,6 +119,9 @@ class _SearchPageState extends State<SearchPage> {
                                   ? '/home/practitioner/${p.id}'
                                   : '/practitioner/${p.id}';
                               context.push(target);
+                            },
+                            onBookTap: () {
+                              context.push('/booking/${p.id}');
                             },
                           );
                         },
@@ -185,7 +179,7 @@ class _SearchBar extends StatelessWidget {
                   builder: (context, state) {
                     return TextField(
                       style: TextStyle(
-                        fontSize: 15.sp,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textPrimary,
                       ),
@@ -197,7 +191,7 @@ class _SearchBar extends StatelessWidget {
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
                         hintStyle: TextStyle(
-                          fontSize: 15.sp,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
                           color: AppColors.textSecondary.withValues(alpha: 0.7),
                           letterSpacing: 0.1,
@@ -212,8 +206,8 @@ class _SearchBar extends StatelessWidget {
               GestureDetector(
                 onTap: () => _showSortMenu(context),
                 child: Container(
+                  width: 36.r,
                   height: 36.r,
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
                   decoration: BoxDecoration(
                     color: currentSort != SortOption.availability
                         ? AppColors.accent.withValues(alpha: 0.1)
@@ -226,27 +220,12 @@ class _SearchBar extends StatelessWidget {
                           )
                         : null,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.swap_vert_rounded,
-                        color: currentSort != SortOption.availability
-                            ? AppColors.accent
-                            : AppColors.textSecondary,
-                        size: 18.sp,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        _getSortLabel(context, currentSort),
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: currentSort != SortOption.availability
-                              ? AppColors.accent
-                              : AppColors.textSecondary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                  child: Icon(
+                    Icons.swap_vert_rounded,
+                    color: currentSort != SortOption.availability
+                        ? AppColors.accent
+                        : AppColors.textSecondary,
+                    size: 18.sp,
                   ),
                 ),
               ),
@@ -275,120 +254,115 @@ class _SearchBar extends StatelessWidget {
     );
   }
 
-  String _getSortLabel(BuildContext context, SortOption sort) {
-    final l10n = context.l10n;
-    switch (sort) {
-      case SortOption.availability:
-        return l10n.searchSortAvailability;
-      case SortOption.distance:
-        return l10n.searchSortDistance;
-      case SortOption.name:
-        return l10n.searchSortName;
-      case SortOption.rating:
-        return l10n.searchSortRating;
-    }
-  }
-
   void _showSortMenu(BuildContext context) {
     final l10n = context.l10n;
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Container(
-                margin: EdgeInsets.only(top: 12.h),
-                width: 40.w,
-                height: 4.h,
-                decoration: BoxDecoration(
-                  color: AppColors.outline,
-                  borderRadius: BorderRadius.circular(2.r),
+      builder: (ctx) => DraggableScrollableSheet(
+        initialChildSize: 0.65,
+        minChildSize: 0.3,
+        maxChildSize: 0.85,
+        expand: false,
+        builder: (_, scrollController) => Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+          ),
+          child: SafeArea(
+            top: false,
+            child: Column(
+              children: [
+                // Handle bar
+                Container(
+                  margin: EdgeInsets.only(top: 12.h),
+                  width: 40.w,
+                  height: 4.h,
+                  decoration: BoxDecoration(
+                    color: AppColors.outline,
+                    borderRadius: BorderRadius.circular(2.r),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: EdgeInsets.all(20.r),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.swap_vert_rounded,
-                          color: AppColors.primary,
-                          size: 22.sp,
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.swap_vert_rounded,
+                              color: AppColors.primary,
+                              size: 22.sp,
+                            ),
+                            SizedBox(width: 10.w),
+                            Text(
+                              l10n.searchSortTitle,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textPrimary,
+                                  ),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 10.w),
-                        Text(
-                          l10n.searchSortTitle,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
-                              ),
+                        SizedBox(height: 16.h),
+                        _SortOptionTile(
+                          icon: Icons.schedule_rounded,
+                          label: l10n.searchSortAvailability,
+                          subtitle: 'מהזמין ביותר לזמין פחות',
+                          isSelected: currentSort == SortOption.availability,
+                          color: AppColors.accent,
+                          onTap: () {
+                            onSortChanged(SortOption.availability);
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
+                        SizedBox(height: 8.h),
+                        _SortOptionTile(
+                          icon: Icons.near_me_rounded,
+                          label: l10n.searchSortDistance,
+                          subtitle: 'מהקרוב ביותר לרחוק',
+                          isSelected: currentSort == SortOption.distance,
+                          color: AppColors.warning,
+                          onTap: () {
+                            onSortChanged(SortOption.distance);
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
+                        SizedBox(height: 8.h),
+                        _SortOptionTile(
+                          icon: Icons.sort_by_alpha_rounded,
+                          label: l10n.searchSortName,
+                          subtitle: 'לפי סדר א-ב',
+                          isSelected: currentSort == SortOption.name,
+                          color: AppColors.primary,
+                          onTap: () {
+                            onSortChanged(SortOption.name);
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
+                        SizedBox(height: 8.h),
+                        _SortOptionTile(
+                          icon: Icons.star_rounded,
+                          label: l10n.searchSortRating,
+                          subtitle: 'מהמדורג ביותר',
+                          isSelected: currentSort == SortOption.rating,
+                          color: const Color(0xFFF59E0B),
+                          onTap: () {
+                            onSortChanged(SortOption.rating);
+                            Navigator.of(ctx).pop();
+                          },
                         ),
                       ],
                     ),
-                    SizedBox(height: 16.h),
-                    _SortOptionTile(
-                      icon: Icons.schedule_rounded,
-                      label: l10n.searchSortAvailability,
-                      subtitle: 'מהזמין ביותר לזמין פחות',
-                      isSelected: currentSort == SortOption.availability,
-                      color: AppColors.accent,
-                      onTap: () {
-                        onSortChanged(SortOption.availability);
-                        Navigator.of(ctx).pop();
-                      },
-                    ),
-                    SizedBox(height: 8.h),
-                    _SortOptionTile(
-                      icon: Icons.near_me_rounded,
-                      label: l10n.searchSortDistance,
-                      subtitle: 'מהקרוב ביותר לרחוק',
-                      isSelected: currentSort == SortOption.distance,
-                      color: AppColors.warning,
-                      onTap: () {
-                        onSortChanged(SortOption.distance);
-                        Navigator.of(ctx).pop();
-                      },
-                    ),
-                    SizedBox(height: 8.h),
-                    _SortOptionTile(
-                      icon: Icons.sort_by_alpha_rounded,
-                      label: l10n.searchSortName,
-                      subtitle: 'לפי סדר א-ב',
-                      isSelected: currentSort == SortOption.name,
-                      color: AppColors.primary,
-                      onTap: () {
-                        onSortChanged(SortOption.name);
-                        Navigator.of(ctx).pop();
-                      },
-                    ),
-                    SizedBox(height: 8.h),
-                    _SortOptionTile(
-                      icon: Icons.star_rounded,
-                      label: l10n.searchSortRating,
-                      subtitle: 'מהמדורג ביותר',
-                      isSelected: currentSort == SortOption.rating,
-                      color: const Color(0xFFF59E0B),
-                      onTap: () {
-                        onSortChanged(SortOption.rating);
-                        Navigator.of(ctx).pop();
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

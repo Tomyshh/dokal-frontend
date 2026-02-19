@@ -71,21 +71,37 @@
   "authAlreadyHaveAccount": "J'ai déjà un compte",
 
   "authForgotPasswordTitle": "Mot de passe oublié",
-  "authForgotPasswordSubtitle": "Nous vous enverrons un lien de réinitialisation.",
-  "authForgotPasswordSendLink": "Envoyer le lien",
+  "authForgotPasswordSubtitle": "Nous vous enverrons un code à 6 chiffres par email.",
+  "authForgotPasswordSendLink": "Envoyer le code",
   "authBackToLogin": "Retour à la connexion",
-  "authForgotPasswordEmailSent": "Email envoyé. Vérifiez votre boîte de réception.",
+  "authForgotPasswordEmailSent": "Code envoyé. Vérifiez votre boîte mail.",
+
+  "authResetPasswordVerifyTitle": "Saisissez le code",
+  "authResetPasswordVerifyDescription": "Nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le pour continuer.",
+  "@authResetPasswordVerifyDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authResetPasswordNewTitle": "Nouveau mot de passe",
+  "authResetPasswordNewSubtitle": "Choisissez un nouveau mot de passe.",
+  "authResetPasswordConfirmPassword": "Confirmer le mot de passe",
+  "authResetPasswordPasswordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "authResetPasswordUpdateButton": "Mettre à jour le mot de passe",
+  "authResetPasswordUpdatedSnack": "Mot de passe mis à jour. Vous pouvez vous reconnecter.",
 
   "authVerifyEmailTitle": "Vérifiez votre email",
-  "authVerifyEmailDescription": "Nous avons envoyé un email de confirmation à {email}. Cliquez sur le lien dans l'email puis revenez dans l'application.",
+  "authVerifyEmailDescription": "Nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le ci-dessous.",
   "@authVerifyEmailDescription": {
     "placeholders": {
       "email": {}
     }
   },
+  "authVerifyEmailOtpHint": "000000",
+  "authVerifyEmailVerify": "Vérifier",
   "authVerifyEmailCheckedBackToLogin": "J'ai vérifié, retourner à la connexion",
-  "authVerifyEmailResend": "Renvoyer l'email",
-  "authVerifyEmailResentSnack": "Email de confirmation renvoyé.",
+  "authVerifyEmailResend": "Renvoyer le code",
+  "authVerifyEmailResentSnack": "Code de confirmation renvoyé.",
   "commonBack": "Retour",
 
   "homeMyPractitioners": "Mes praticiens",
@@ -119,7 +135,7 @@
   "homeFindAppointmentCta": "Trouvez un rendez-vous",
   "homeNoAppointmentsEmptyDescription": "Pour le moment, vous n’avez pas de rendez-vous. Cherchez un praticien et réservez votre premier créneau.",
   "homeLast3AppointmentsTitle": "3 derniers rendez-vous",
-  "homeSeeAllPastAppointments": "Voir tous les rendez-vous passés",
+  "homeSeeAllPastAppointments": "Voir",
   "homeAppointmentHistoryTitle": "Historique de rendez-vous",
   "homeNoAppointmentHistory": "Aucun rendez-vous passé",
 
@@ -156,6 +172,8 @@
   "searchUnavailableTitle": "Recherche indisponible",
   "searchNoResultsTitle": "Aucun résultat",
   "searchNoResultsSubtitle": "Essayez avec un autre terme.",
+  "searchFeesLabel": "Honoraires",
+  "searchBookNow": "Réserver",
 
   "onboardingStep1Title": "Trouvez et réservez vos rendez-vous médicaux facilement",
   "onboardingStep2Title": "Échangez facilement avec vos praticiens",
@@ -276,6 +294,12 @@
   "practitionerAvailabilities": "Disponibilités",
   "practitionerAddress": "Adresse",
   "practitionerProfileSection": "Profil",
+  "practitionerTabAvailability": "Disponibilité",
+  "practitionerTabReviews": "Avis",
+  "practitionerMyAppointmentsWithDoctor": "Mes rendez-vous avec ce docteur",
+  "practitionerNoAppointmentsWithDoctor": "Aucun rendez-vous avec ce docteur",
+  "practitionerLoginToSeeHistory": "Connectez-vous pour voir votre historique",
+  "practitionerNoReviews": "Aucun avis pour le moment",
 
   "documentsTitle": "Documents",
   "documentsEmptyTitle": "Aucun document",
@@ -284,6 +308,11 @@
   "documentsShare": "Partager",
 
   "authLogout": "Se déconnecter",
+  "authLoggingOut": "Déconnexion…",
+  "authLogoutConfirmTitle": "Déconnexion",
+  "authLogoutConfirmMessage": "Êtes-vous sûr de vouloir vous déconnecter ?",
+  "authLogoutSuccess": "Vous avez été déconnecté",
+  "authLoginSuccess": "Bienvenue !",
 
   "securityTitle": "Sécurité",
   "securitySecureAccountTitle": "Sécurisez votre compte",

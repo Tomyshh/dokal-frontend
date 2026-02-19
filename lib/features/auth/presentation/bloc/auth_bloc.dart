@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       super(const AuthState.unauthenticated()) {
     on<AuthStarted>(_onStarted);
     on<AuthRefreshRequested>(_onRefreshRequested);
+    on<AuthSessionRestored>(_onSessionRestored);
     on<AuthLogoutRequested>(_onLogout);
   }
 
@@ -34,6 +35,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _checkSession(emit);
   }
 
+  void _onSessionRestored(
+    AuthSessionRestored event,
+    Emitter<AuthState> emit,
+  ) {
+    emit(AuthState.authenticated(event.session));
+  }
+
   Future<void> _checkSession(Emitter<AuthState> emit) async {
     final res = await _getSession();
     res.fold((_) => emit(const AuthState.unauthenticated()), (session) {
@@ -49,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLogoutRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthState.loggingOut());
     final res = await _signOut();
     res.fold(
       (_) => emit(const AuthState.unauthenticated()),

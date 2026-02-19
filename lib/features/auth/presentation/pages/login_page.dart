@@ -8,6 +8,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_text_field.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../../router/app_router.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/login_bloc.dart';
 import '../bloc/register_bloc.dart';
@@ -372,14 +373,39 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         SizedBox(height: AppSpacing.sm.h),
-                        BlocConsumer<LoginBloc, LoginState>(
+                          BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
                             if (state.status == LoginStatus.success) {
-                              context
-                                  .read<AuthBloc>()
-                                  .add(const AuthRefreshRequested());
-                              final redirect = _safeRedirectTo;
-                              if (redirect != null) context.go(redirect);
+                              final authBloc = context.read<AuthBloc>();
+                              if (state.session != null) {
+                                authBloc.add(
+                                  AuthSessionRestored(state.session!),
+                                );
+                              } else {
+                                authBloc.add(const AuthRefreshRequested());
+                              }
+                              // Toujours rediriger vers l'onglet Home après connexion.
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(context.l10n.authLoginSuccess),
+                                ),
+                              );
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                appRouter.go('/home');
+                              });
+                            }
+                            if (state.status == LoginStatus.needsEmailVerification &&
+                                state.email != null &&
+                                state.email!.isNotEmpty) {
+                              final email = state.email;
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (context.mounted) {
+                                  GoRouter.of(context).go(
+                                    '/verify-email',
+                                    extra: email,
+                                  );
+                                }
+                              });
                             }
                             if (state.status == LoginStatus.failure) {
                               ScaffoldMessenger.of(context).showSnackBar(

@@ -160,6 +160,8 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
         avatarUrl: _avatarUrls[i % _avatarUrls.length],
         distanceKm: p.distanceKm,
         availabilityOrder: p.availabilityOrder,
+        rating: 4.0 + (i % 5) * 0.1,
+        reviewCount: 100 + i * 300,
       );
     }).toList();
   }

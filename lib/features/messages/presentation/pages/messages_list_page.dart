@@ -121,7 +121,10 @@ class MessagesListPage extends StatelessWidget {
               );
             }
             return ListView.builder(
-              padding: EdgeInsets.only(top: AppSpacing.sm.h),
+              padding: EdgeInsets.only(
+                top: AppSpacing.sm.h,
+                bottom: 100.h,
+              ),
               itemCount: conversations.length,
               itemBuilder: (context, index) {
                 final conv = conversations[index];

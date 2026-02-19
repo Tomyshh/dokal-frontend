@@ -71,21 +71,37 @@
   "authAlreadyHaveAccount": "У меня уже есть аккаунт",
 
   "authForgotPasswordTitle": "Забыли пароль",
-  "authForgotPasswordSubtitle": "Мы отправим вам ссылку для сброса.",
-  "authForgotPasswordSendLink": "Отправить ссылку",
+  "authForgotPasswordSubtitle": "Мы отправим вам код из 6 цифр по email.",
+  "authForgotPasswordSendLink": "Отправить код",
   "authBackToLogin": "Назад ко входу",
-  "authForgotPasswordEmailSent": "Письмо отправлено. Проверьте почту.",
+  "authForgotPasswordEmailSent": "Код отправлен. Проверьте почту.",
+
+  "authResetPasswordVerifyTitle": "Введите код",
+  "authResetPasswordVerifyDescription": "Мы отправили 6‑значный код на {email}. Введите его, чтобы продолжить.",
+  "@authResetPasswordVerifyDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authResetPasswordNewTitle": "Новый пароль",
+  "authResetPasswordNewSubtitle": "Придумайте новый пароль.",
+  "authResetPasswordConfirmPassword": "Подтвердите пароль",
+  "authResetPasswordPasswordsDoNotMatch": "Пароли не совпадают",
+  "authResetPasswordUpdateButton": "Обновить пароль",
+  "authResetPasswordUpdatedSnack": "Пароль обновлён. Вы можете войти снова.",
 
   "authVerifyEmailTitle": "Подтвердите email",
-  "authVerifyEmailDescription": "Мы отправили письмо подтверждения на {email}. Нажмите ссылку в письме и вернитесь в приложение.",
+  "authVerifyEmailDescription": "Мы отправили 6-значный код на {email}. Введите его ниже.",
   "@authVerifyEmailDescription": {
     "placeholders": {
       "email": {}
     }
   },
+  "authVerifyEmailOtpHint": "000000",
+  "authVerifyEmailVerify": "Подтвердить",
   "authVerifyEmailCheckedBackToLogin": "Подтвердил(а), назад ко входу",
-  "authVerifyEmailResend": "Отправить письмо снова",
-  "authVerifyEmailResentSnack": "Письмо подтверждения отправлено снова.",
+  "authVerifyEmailResend": "Отправить код снова",
+  "authVerifyEmailResentSnack": "Код подтверждения отправлен снова.",
   "commonBack": "Назад",
 
   "homeMyPractitioners": "Мои специалисты",
@@ -119,7 +135,7 @@
   "homeFindAppointmentCta": "Найти прием",
   "homeNoAppointmentsEmptyDescription": "Пока у вас нет записей. Найдите специалиста и запишитесь на первый приём.",
   "homeLast3AppointmentsTitle": "Последние 3 приема",
-  "homeSeeAllPastAppointments": "Посмотреть все прошедшие приемы",
+  "homeSeeAllPastAppointments": "Смотреть",
   "homeAppointmentHistoryTitle": "История приемов",
   "homeNoAppointmentHistory": "Нет прошедших приемов",
 
@@ -186,6 +202,8 @@
   "searchSortDistance": "Расстоянию",
   "searchSortName": "Имени",
   "searchSortRating": "Рейтингу",
+  "searchFeesLabel": "Стоимость",
+  "searchBookNow": "Записаться",
 
   "onboardingStep1Title": "Легко находите и записывайтесь на приём к врачу",
   "onboardingStep2Title": "Легко общайтесь с вашими специалистами",
@@ -306,6 +324,12 @@
   "practitionerAvailabilities": "Доступность",
   "practitionerAddress": "Адрес",
   "practitionerProfileSection": "Профиль",
+  "practitionerTabAvailability": "Доступность",
+  "practitionerTabReviews": "Отзывы",
+  "practitionerMyAppointmentsWithDoctor": "Мои записи к этому врачу",
+  "practitionerNoAppointmentsWithDoctor": "Нет записей к этому врачу",
+  "practitionerLoginToSeeHistory": "Войдите, чтобы увидеть историю",
+  "practitionerNoReviews": "Пока нет отзывов",
 
   "documentsTitle": "Документы",
   "documentsEmptyTitle": "Нет документов",
@@ -314,6 +338,11 @@
   "documentsShare": "Поделиться",
 
   "authLogout": "Выйти",
+  "authLoggingOut": "Выход…",
+  "authLogoutConfirmTitle": "Выход",
+  "authLogoutConfirmMessage": "Вы уверены, что хотите выйти?",
+  "authLogoutSuccess": "Вы вышли из аккаунта",
+  "authLoginSuccess": "Добро пожаловать!",
 
   "securityTitle": "Безопасность",
   "securitySecureAccountTitle": "Защитите аккаунт",

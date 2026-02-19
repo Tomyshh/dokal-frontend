@@ -175,34 +175,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authForgotPasswordTitle => 'Forgot password';
 
   @override
-  String get authForgotPasswordSubtitle => 'We\'ll send you a reset link.';
+  String get authForgotPasswordSubtitle =>
+      'We\'ll send you a 6-digit code by email.';
 
   @override
-  String get authForgotPasswordSendLink => 'Send link';
+  String get authForgotPasswordSendLink => 'Send code';
 
   @override
   String get authBackToLogin => 'Back to sign in';
 
   @override
-  String get authForgotPasswordEmailSent => 'Email sent. Check your inbox.';
+  String get authForgotPasswordEmailSent => 'Code sent. Check your inbox.';
+
+  @override
+  String get authResetPasswordVerifyTitle => 'Enter the code';
+
+  @override
+  String authResetPasswordVerifyDescription(Object email) {
+    return 'We sent a 6-digit code to $email. Enter it to continue.';
+  }
+
+  @override
+  String get authResetPasswordNewTitle => 'New password';
+
+  @override
+  String get authResetPasswordNewSubtitle => 'Choose a new password.';
+
+  @override
+  String get authResetPasswordConfirmPassword => 'Confirm password';
+
+  @override
+  String get authResetPasswordPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get authResetPasswordUpdateButton => 'Update password';
+
+  @override
+  String get authResetPasswordUpdatedSnack =>
+      'Password updated. You can sign in again.';
 
   @override
   String get authVerifyEmailTitle => 'Verify your email';
 
   @override
   String authVerifyEmailDescription(Object email) {
-    return 'We sent a confirmation email to $email. Click the link in the email, then return to the app.';
+    return 'We sent a 6-digit code to $email. Enter it below.';
   }
+
+  @override
+  String get authVerifyEmailOtpHint => '000000';
+
+  @override
+  String get authVerifyEmailVerify => 'Verify';
 
   @override
   String get authVerifyEmailCheckedBackToLogin =>
       'I\'ve verified it, back to sign in';
 
   @override
-  String get authVerifyEmailResend => 'Resend email';
+  String get authVerifyEmailResend => 'Resend code';
 
   @override
-  String get authVerifyEmailResentSnack => 'Confirmation email resent.';
+  String get authVerifyEmailResentSnack => 'Confirmation code resent.';
 
   @override
   String get commonBack => 'Back';
@@ -278,7 +312,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeLast3AppointmentsTitle => 'Last 3 appointments';
 
   @override
-  String get homeSeeAllPastAppointments => 'See all past appointments';
+  String get homeSeeAllPastAppointments => 'See';
 
   @override
   String get homeAppointmentHistoryTitle => 'Appointment history';
@@ -426,6 +460,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchSortRating => 'Rating';
+
+  @override
+  String get searchFeesLabel => 'Fees';
+
+  @override
+  String get searchBookNow => 'Book Now';
 
   @override
   String get onboardingStep1Title =>
@@ -796,6 +836,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get practitionerProfileSection => 'Profile';
 
   @override
+  String get practitionerTabAvailability => 'Availability';
+
+  @override
+  String get practitionerTabReviews => 'Reviews';
+
+  @override
+  String get practitionerMyAppointmentsWithDoctor =>
+      'My appointments with this doctor';
+
+  @override
+  String get practitionerNoAppointmentsWithDoctor =>
+      'No appointments with this doctor';
+
+  @override
+  String get practitionerLoginToSeeHistory => 'Log in to see your history';
+
+  @override
+  String get practitionerNoReviews => 'No reviews yet';
+
+  @override
   String get documentsTitle => 'Documents';
 
   @override
@@ -813,6 +873,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authLogout => 'Log out';
+
+  @override
+  String get authLoggingOut => 'Logging out…';
+
+  @override
+  String get authLogoutConfirmTitle => 'Log out';
+
+  @override
+  String get authLogoutConfirmMessage => 'Are you sure you want to log out?';
+
+  @override
+  String get authLogoutSuccess => 'You\'ve been logged out';
+
+  @override
+  String get authLoginSuccess => 'Welcome back!';
 
   @override
   String get securityTitle => 'Security';

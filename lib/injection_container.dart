@@ -21,11 +21,16 @@ import 'features/auth/domain/usecases/sign_in.dart';
 import 'features/auth/domain/usecases/sign_in_with_google.dart';
 import 'features/auth/domain/usecases/sign_out.dart';
 import 'features/auth/domain/usecases/sign_up.dart';
+import 'features/auth/domain/usecases/update_password.dart';
+import 'features/auth/domain/usecases/verify_password_reset_otp.dart';
+import 'features/auth/domain/usecases/verify_signup_otp.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/bloc/forgot_password_cubit.dart';
 import 'features/auth/presentation/bloc/login_bloc.dart';
 import 'features/auth/presentation/bloc/onboarding_cubit.dart';
 import 'features/auth/presentation/bloc/register_bloc.dart';
+import 'features/auth/presentation/bloc/reset_password_cubit.dart';
+import 'features/auth/presentation/bloc/verify_password_reset_cubit.dart';
 import 'features/auth/presentation/bloc/verify_email_cubit.dart';
 import 'features/messages/data/datasources/messages_remote_data_source.dart';
 import 'features/messages/data/repositories/messages_repository_impl.dart';
@@ -246,9 +251,12 @@ void configureDependencies() {
   sl.registerLazySingleton(() => SignOut(sl<AuthRepository>()));
   sl.registerLazySingleton(() => GetSession(sl<AuthRepository>()));
   sl.registerLazySingleton(() => RequestPasswordReset(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => VerifyPasswordResetOtp(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => UpdatePassword(sl<AuthRepository>()));
   sl.registerLazySingleton(
     () => ResendSignupConfirmationEmail(sl<AuthRepository>()),
   );
+  sl.registerLazySingleton(() => VerifySignupOtp(sl<AuthRepository>()));
   sl.registerLazySingleton(
     () => GetOnboardingCompleted(sl<OnboardingRepository>()),
   );
@@ -271,7 +279,22 @@ void configureDependencies() {
     () => ForgotPasswordCubit(requestPasswordReset: sl<RequestPasswordReset>()),
   );
   sl.registerFactory(
-    () => VerifyEmailCubit(resend: sl<ResendSignupConfirmationEmail>()),
+    () => VerifyPasswordResetCubit(
+      resendCode: sl<RequestPasswordReset>(),
+      verifyOtp: sl<VerifyPasswordResetOtp>(),
+    ),
+  );
+  sl.registerFactory(
+    () => ResetPasswordCubit(
+      updatePassword: sl<UpdatePassword>(),
+      signOut: sl<SignOut>(),
+    ),
+  );
+  sl.registerFactory(
+    () => VerifyEmailCubit(
+      resend: sl<ResendSignupConfirmationEmail>(),
+      verifyOtp: sl<VerifySignupOtp>(),
+    ),
   );
   sl.registerFactory(
     () => OnboardingCubit(
@@ -528,6 +551,7 @@ void configureDependencies() {
       getUpcomingAppointments: sl<GetUpcomingAppointments>(),
       getPastAppointments: sl<GetPastAppointments>(),
       getConversations: sl<GetConversations>(),
+      getProfile: sl<GetProfile>(),
     )..load(),
   );
 

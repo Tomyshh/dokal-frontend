@@ -71,21 +71,37 @@
   "authAlreadyHaveAccount": "I already have an account",
 
   "authForgotPasswordTitle": "Forgot password",
-  "authForgotPasswordSubtitle": "We'll send you a reset link.",
-  "authForgotPasswordSendLink": "Send link",
+  "authForgotPasswordSubtitle": "We'll send you a 6-digit code by email.",
+  "authForgotPasswordSendLink": "Send code",
   "authBackToLogin": "Back to sign in",
-  "authForgotPasswordEmailSent": "Email sent. Check your inbox.",
+  "authForgotPasswordEmailSent": "Code sent. Check your inbox.",
+
+  "authResetPasswordVerifyTitle": "Enter the code",
+  "authResetPasswordVerifyDescription": "We sent a 6-digit code to {email}. Enter it to continue.",
+  "@authResetPasswordVerifyDescription": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "authResetPasswordNewTitle": "New password",
+  "authResetPasswordNewSubtitle": "Choose a new password.",
+  "authResetPasswordConfirmPassword": "Confirm password",
+  "authResetPasswordPasswordsDoNotMatch": "Passwords do not match",
+  "authResetPasswordUpdateButton": "Update password",
+  "authResetPasswordUpdatedSnack": "Password updated. You can sign in again.",
 
   "authVerifyEmailTitle": "Verify your email",
-  "authVerifyEmailDescription": "We sent a confirmation email to {email}. Click the link in the email, then return to the app.",
+  "authVerifyEmailDescription": "We sent a 6-digit code to {email}. Enter it below.",
   "@authVerifyEmailDescription": {
     "placeholders": {
       "email": {}
     }
   },
+  "authVerifyEmailOtpHint": "000000",
+  "authVerifyEmailVerify": "Verify",
   "authVerifyEmailCheckedBackToLogin": "I've verified it, back to sign in",
-  "authVerifyEmailResend": "Resend email",
-  "authVerifyEmailResentSnack": "Confirmation email resent.",
+  "authVerifyEmailResend": "Resend code",
+  "authVerifyEmailResentSnack": "Confirmation code resent.",
   "commonBack": "Back",
 
   "homeMyPractitioners": "My practitioners",
@@ -119,7 +135,7 @@
   "homeFindAppointmentCta": "Find an appointment",
   "homeNoAppointmentsEmptyDescription": "You don’t have any appointments yet. Search for a practitioner and book your first slot.",
   "homeLast3AppointmentsTitle": "Last 3 appointments",
-  "homeSeeAllPastAppointments": "See all past appointments",
+  "homeSeeAllPastAppointments": "See",
   "homeAppointmentHistoryTitle": "Appointment history",
   "homeNoAppointmentHistory": "No past appointments",
 
@@ -186,6 +202,8 @@
   "searchSortDistance": "Distance",
   "searchSortName": "Name",
   "searchSortRating": "Rating",
+  "searchFeesLabel": "Fees",
+  "searchBookNow": "Book Now",
 
   "onboardingStep1Title": "Find and book medical appointments easily",
   "onboardingStep2Title": "Chat easily with your practitioners",
@@ -306,6 +324,12 @@
   "practitionerAvailabilities": "Availability",
   "practitionerAddress": "Address",
   "practitionerProfileSection": "Profile",
+  "practitionerTabAvailability": "Availability",
+  "practitionerTabReviews": "Reviews",
+  "practitionerMyAppointmentsWithDoctor": "My appointments with this doctor",
+  "practitionerNoAppointmentsWithDoctor": "No appointments with this doctor",
+  "practitionerLoginToSeeHistory": "Log in to see your history",
+  "practitionerNoReviews": "No reviews yet",
 
   "documentsTitle": "Documents",
   "documentsEmptyTitle": "No documents",
@@ -314,6 +338,11 @@
   "documentsShare": "Share",
 
   "authLogout": "Log out",
+  "authLoggingOut": "Logging out…",
+  "authLogoutConfirmTitle": "Log out",
+  "authLogoutConfirmMessage": "Are you sure you want to log out?",
+  "authLogoutSuccess": "You've been logged out",
+  "authLoginSuccess": "Welcome back!",
 
   "securityTitle": "Security",
   "securitySecureAccountTitle": "Secure your account",

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
@@ -40,6 +41,8 @@ class BookingFlowShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -55,20 +58,25 @@ class BookingFlowShell extends StatelessWidget {
           final idx = _stepIndexFromLocation(location);
 
           return Scaffold(
+            backgroundColor: AppColors.background,
             appBar: AppBar(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
+              backgroundColor: AppColors.surface,
+              foregroundColor: AppColors.textPrimary,
+              surfaceTintColor: Colors.transparent,
+              scrolledUnderElevation: 0,
+              elevation: 0,
               title: BlocBuilder<PractitionerCubit, PractitionerState>(
                 builder: (context, pState) {
-                  final name = pState.profile?.name ?? 'Praticien';
+                  final name = pState.profile?.name ?? '—';
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Prendre rendez-vous',
                         style: TextStyle(
-                          fontSize: 12.sp,
+                          fontSize: 11.sp,
                           fontWeight: FontWeight.w500,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                       Text(
@@ -76,6 +84,7 @@ class BookingFlowShell extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
                         ),
                       ),
                     ],
@@ -83,7 +92,12 @@ class BookingFlowShell extends StatelessWidget {
                 },
               ),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+                icon: Icon(
+                  isRtl
+                      ? Icons.arrow_forward_ios_rounded
+                      : Icons.arrow_back_ios_new_rounded,
+                  size: 18.sp,
+                ),
                 onPressed: () {
                   if (context.canPop()) {
                     context.pop();
@@ -98,96 +112,108 @@ class BookingFlowShell extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.fromLTRB(
-                      AppSpacing.xl.w,
-                      AppSpacing.md.h,
-                      AppSpacing.xl.w,
-                      AppSpacing.md.h,
+                      AppSpacing.lg.w,
+                      AppSpacing.sm.h,
+                      AppSpacing.lg.w,
+                      AppSpacing.sm.h,
                     ),
                     child: Column(
                       children: [
-                        _ProgressBar(current: idx, total: _steps.length),
+                        _StepIndicator(current: idx, total: _steps.length),
                         SizedBox(height: AppSpacing.md.h),
                         BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
                             return DokalCard(
-                              padding: EdgeInsets.all(AppSpacing.lg.r),
+                              padding: EdgeInsets.all(AppSpacing.md.r),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       Container(
-                                        width: 44.r,
-                                        height: 44.r,
+                                        width: 42.r,
+                                        height: 42.r,
                                         decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white.withValues(
-                                            alpha: 0.18,
+                                          gradient: const LinearGradient(
+                                            colors: [
+                                              AppColors.brandGradientStart,
+                                              AppColors.brandGradientEnd,
+                                            ],
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            AppRadii.lg.r,
                                           ),
                                         ),
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.medical_services_rounded,
-                                          color: AppColors.primary,
+                                          color: Colors.white,
+                                          size: 20.sp,
                                         ),
                                       ),
                                       SizedBox(width: AppSpacing.md.w),
                                       Expanded(
-                                        child:
-                                            BlocBuilder<
-                                              PractitionerCubit,
-                                              PractitionerState
-                                            >(
-                                              builder: (context, pState) {
-                                                final p = pState.profile;
-                                                return Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      p?.name ?? '—',
-                                                      style: Theme.of(
-                                                        context,
-                                                      ).textTheme.titleMedium,
-                                                    ),
-                                                    SizedBox(height: 2.h),
-                                                    Text(
-                                                      '${p?.specialty ?? '—'} • ${p?.address ?? '—'}',
-                                                      style: Theme.of(
-                                                        context,
-                                                      ).textTheme.bodyMedium,
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            ),
+                                        child: BlocBuilder<PractitionerCubit,
+                                            PractitionerState>(
+                                          builder: (context, pState) {
+                                            final p = pState.profile;
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  p?.name ?? '—',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall
+                                                      ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                ),
+                                                SizedBox(height: 2.h),
+                                                Text(
+                                                  '${p?.specialty ?? '—'} • ${p?.address ?? '—'}',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall,
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: AppSpacing.md.h),
+                                  SizedBox(height: AppSpacing.sm.h),
                                   Wrap(
                                     spacing: 8.w,
                                     runSpacing: 8.h,
                                     children: [
                                       _SummaryPill(
-                                        icon: Icons.medical_information_rounded,
+                                        icon:
+                                            Icons.medical_information_rounded,
                                         label: state.reason ?? 'Motif',
                                         isActive: state.reason != null,
                                       ),
                                       _SummaryPill(
                                         icon: Icons.person_rounded,
-                                        label: state.patientLabel ?? 'Patient',
-                                        isActive: state.patientLabel != null,
+                                        label:
+                                            state.patientLabel ?? 'Patient',
+                                        isActive:
+                                            state.patientLabel != null,
                                       ),
                                       _SummaryPill(
                                         icon: Icons.info_rounded,
                                         label: state.instructionsAccepted
                                             ? 'Instructions OK'
                                             : 'Instructions',
-                                        isActive: state.instructionsAccepted,
+                                        isActive:
+                                            state.instructionsAccepted,
                                       ),
                                       _SummaryPill(
                                         icon: Icons.schedule_rounded,
-                                        label: state.slotLabel ?? 'Créneau',
+                                        label:
+                                            state.slotLabel ?? 'Créneau',
                                         isActive: state.slotLabel != null,
                                       ),
                                     ],
@@ -212,23 +238,32 @@ class BookingFlowShell extends StatelessWidget {
   }
 }
 
-class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({required this.current, required this.total});
+class _StepIndicator extends StatelessWidget {
+  const _StepIndicator({required this.current, required this.total});
 
   final int current;
   final int total;
 
   @override
   Widget build(BuildContext context) {
-    final progress = (current + 1) / total;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(999.r),
-      child: LinearProgressIndicator(
-        value: progress,
-        minHeight: 10.h,
-        backgroundColor: AppColors.outline,
-        valueColor: const AlwaysStoppedAnimation(AppColors.primary),
-      ),
+    return Row(
+      children: List.generate(total, (i) {
+        final isCompleted = i <= current;
+        return Expanded(
+          child: Container(
+            margin: EdgeInsetsDirectional.only(
+              end: i < total - 1 ? 4.w : 0,
+            ),
+            height: 4.h,
+            decoration: BoxDecoration(
+              color: isCompleted
+                  ? AppColors.primary
+                  : AppColors.outline,
+              borderRadius: BorderRadius.circular(999.r),
+            ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -248,11 +283,11 @@ class _SummaryPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final bg = isActive
         ? AppColors.accent.withValues(alpha: 0.10)
-        : AppColors.textPrimary.withValues(alpha: 0.06);
+        : AppColors.surfaceVariant;
     final fg = isActive ? AppColors.accent : AppColors.textSecondary;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(999.r),
@@ -266,17 +301,18 @@ class _SummaryPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16.sp, color: fg),
-          SizedBox(width: 8.w),
+          Icon(icon, size: 14.sp, color: fg),
+          SizedBox(width: 6.w),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 170.w),
+            constraints: BoxConstraints(maxWidth: 160.w),
             child: Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(
-                context,
-              ).textTheme.labelLarge?.copyWith(color: fg),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: fg, fontWeight: FontWeight.w600),
             ),
           ),
         ],

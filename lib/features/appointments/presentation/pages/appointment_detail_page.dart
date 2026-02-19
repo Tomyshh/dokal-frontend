@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
@@ -67,253 +68,181 @@ class AppointmentDetailPage extends StatelessWidget {
                       child: const DokalLoader(lines: 6),
                     )
                   : a == null
-                  ? DokalEmptyState(
-                      title: l10n.appointmentDetailNotFoundTitle,
-                      subtitle: l10n.appointmentDetailNotFoundSubtitle,
-                      icon: Icons.event_busy_rounded,
-                    )
-                  : ListView(
-                      padding: EdgeInsets.all(AppSpacing.lg.r),
-                      children: [
-                        _AppointmentTopCard(a: a),
-                        SizedBox(height: AppSpacing.sm.h),
-                        if (!a.isPast) ...[
-                          DokalCard(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: AppSpacing.sm.w,
-                              vertical: AppSpacing.xs.h,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextButton.icon(
-                                    onPressed: () =>
-                                        context.push('/home/search'),
-                                    icon: Icon(Icons.sync_rounded, size: 16.sp),
-                                    label: Text(
-                                      l10n.appointmentDetailReschedule,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.labelMedium,
+                      ? DokalEmptyState(
+                          title: l10n.appointmentDetailNotFoundTitle,
+                          subtitle: l10n.appointmentDetailNotFoundSubtitle,
+                          icon: Icons.event_busy_rounded,
+                        )
+                      : ListView(
+                          padding: EdgeInsets.all(AppSpacing.lg.r),
+                          children: [
+                            _AppointmentTopCard(a: a),
+                            SizedBox(height: AppSpacing.sm.h),
+                            if (!a.isPast) ...[
+                              _ActionBar(a: a),
+                              SizedBox(height: AppSpacing.md.h),
+                            ] else ...[
+                              _SectionCard(
+                                title:
+                                    l10n.appointmentDetailVisitSummaryTitle,
+                                subtitle:
+                                    l10n.appointmentDetailVisitSummarySubtitle,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                      AppSpacing.lg.w,
+                                      0,
+                                      AppSpacing.lg.w,
+                                      AppSpacing.lg.h,
                                     ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 1.w,
-                                  height: 24.h,
-                                  color: AppColors.outline,
-                                ),
-                                Expanded(
-                                  child: TextButton.icon(
-                                    onPressed: () async {
-                                      final ok = await showDialog<bool>(
-                                        context: context,
-                                        builder: (ctx) {
-                                          return AlertDialog(
-                                            title: Text(
-                                              l10n.appointmentDetailCancelQuestion,
-                                              style: Theme.of(
-                                                context,
-                                              ).textTheme.titleMedium,
-                                            ),
-                                            content: Text(
-                                              l10n.commonActionIsFinal,
-                                              style: Theme.of(
-                                                context,
-                                              ).textTheme.bodySmall,
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.of(
-                                                  ctx,
-                                                ).pop(false),
-                                                child: Text(l10n.commonBack),
-                                              ),
-                                              FilledButton(
-                                                onPressed: () =>
-                                                    Navigator.of(ctx).pop(true),
-                                                child: Text(l10n.commonCancel),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                      if (ok == true && context.mounted) {
-                                        context
-                                            .read<AppointmentDetailCubit>()
-                                            .cancel();
-                                      }
-                                    },
-                                    icon: Icon(
-                                      Icons.close_rounded,
-                                      size: 16.sp,
-                                      color: Colors.red,
-                                    ),
-                                    label: Text(
-                                      l10n.commonCancel,
+                                    child: Text(
+                                      l10n.appointmentDetailVisitSummaryDemo,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .labelMedium
-                                          ?.copyWith(color: Colors.red),
+                                          .bodyMedium,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: AppSpacing.md.h),
-                        ] else ...[
-                          _SectionCard(
-                            title: l10n.appointmentDetailVisitSummaryTitle,
-                            subtitle:
-                                l10n.appointmentDetailVisitSummarySubtitle,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                  AppSpacing.lg.w,
-                                  0,
-                                  AppSpacing.lg.w,
-                                  AppSpacing.lg.h,
-                                ),
-                                child: Text(
-                                  l10n.appointmentDetailVisitSummaryDemo,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                          SizedBox(height: AppSpacing.md.h),
-                          _SectionCard(
-                            title: l10n.appointmentDetailDoctorReportTitle,
-                            subtitle:
-                                l10n.appointmentDetailDoctorReportSubtitle,
-                            children: [
-                              ListTile(
-                                leading: const Icon(
-                                  Icons.description_rounded,
-                                  color: AppColors.primary,
-                                ),
-                                title: Text(
-                                  l10n.appointmentDetailOpenVisitReport,
-                                ),
-                                onTap: () => showDialog<void>(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                    title: Text(
-                                      l10n.appointmentDetailDoctorReportTitle,
-                                    ),
-                                    content: Text(
-                                      l10n.appointmentDetailDoctorReportDemo,
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(ctx).pop(),
-                                        child: Text(l10n.commonBack),
+                              SizedBox(height: AppSpacing.md.h),
+                              _SectionCard(
+                                title:
+                                    l10n.appointmentDetailDoctorReportTitle,
+                                subtitle:
+                                    l10n.appointmentDetailDoctorReportSubtitle,
+                                children: [
+                                  _DetailTile(
+                                    icon: Icons.description_rounded,
+                                    title:
+                                        l10n.appointmentDetailOpenVisitReport,
+                                    onTap: () => showDialog<void>(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: Text(
+                                          l10n.appointmentDetailDoctorReportTitle,
+                                        ),
+                                        content: Text(
+                                          l10n.appointmentDetailDoctorReportDemo,
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(ctx).pop(),
+                                            child: Text(l10n.commonBack),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                          SizedBox(height: AppSpacing.md.h),
-                          _SectionCard(
-                            title: l10n.appointmentDetailDocumentsAndRxTitle,
-                            subtitle:
-                                l10n.appointmentDetailDocumentsAndRxSubtitle,
-                            children: [
-                              ListTile(
-                                leading: const Icon(
-                                  Icons.receipt_long_rounded,
-                                  color: AppColors.primary,
-                                ),
-                                title: Text(
-                                  l10n.appointmentDetailOpenPrescription,
-                                ),
-                                onTap: () =>
-                                    ScaffoldMessenger.of(context).showSnackBar(
+                              SizedBox(height: AppSpacing.md.h),
+                              _SectionCard(
+                                title:
+                                    l10n.appointmentDetailDocumentsAndRxTitle,
+                                subtitle:
+                                    l10n.appointmentDetailDocumentsAndRxSubtitle,
+                                children: [
+                                  _DetailTile(
+                                    icon: Icons.receipt_long_rounded,
+                                    title:
+                                        l10n.appointmentDetailOpenPrescription,
+                                    onTap: () => ScaffoldMessenger.of(context)
+                                        .showSnackBar(
                                       SnackBar(
-                                        content: Text(l10n.commonAvailableSoon),
+                                        content:
+                                            Text(l10n.commonAvailableSoon),
                                       ),
                                     ),
+                                  ),
+                                ],
                               ),
+                              SizedBox(height: AppSpacing.lg.h),
+                              DokalButton.primary(
+                                onPressed: () {
+                                  final subject = Uri.encodeComponent(
+                                    '${a.practitionerName} • ${a.dateLabel}',
+                                  );
+                                  final msg = Uri.encodeComponent(
+                                    l10n.appointmentDetailDoctorReportTitle,
+                                  );
+                                  context.push(
+                                    '/messages/new?subject=$subject&message=$msg',
+                                  );
+                                },
+                                leading: const Icon(Icons.mail_rounded),
+                                child: Text(
+                                    l10n.appointmentDetailSendMessageCta),
+                              ),
+                              SizedBox(height: AppSpacing.md.h),
                             ],
-                          ),
-                          SizedBox(height: AppSpacing.lg.h),
-                          DokalButton.primary(
-                            onPressed: () {
-                              final subject = Uri.encodeComponent(
-                                '${a.practitionerName} • ${a.dateLabel}',
-                              );
-                              final msg = Uri.encodeComponent(
-                                l10n.appointmentDetailDoctorReportTitle,
-                              );
-                              context.push(
-                                '/messages/new?subject=$subject&message=$msg',
-                              );
-                            },
-                            leading: const Icon(Icons.mail_rounded),
-                            child: Text(l10n.appointmentDetailSendMessageCta),
-                          ),
-                          SizedBox(height: AppSpacing.md.h),
-                        ],
-                        if (!a.isPast) ...[
-                          _SectionCard(
-                            title: l10n.appointmentDetailPreparationTitle,
-                            subtitle: l10n.appointmentDetailPreparationSubtitle,
-                            children: [
-                              _PrepTile(
-                                icon: Icons.assignment_rounded,
-                                title: l10n.appointmentDetailPrepQuestionnaire,
-                                statusLabel: l10n.commonTodo,
-                                onTap: () => context.push(
-                                  '/appointments/${a.id}/questionnaire',
-                                ),
-                              ),
-                              Divider(height: 1.h),
-                              _PrepTile(
-                                icon: Icons.info_outline_rounded,
-                                title: l10n.appointmentDetailPrepInstructions,
-                                statusLabel: l10n.commonToRead,
-                                onTap: () => context.push(
-                                  '/appointments/${a.id}/instructions',
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: AppSpacing.md.h),
-                          _SectionCard(
-                            title: l10n.appointmentDetailEarlierSlotTitle,
-                            subtitle: l10n.appointmentDetailEarlierSlotSubtitle,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.lg.w,
-                                  vertical: AppSpacing.md.h,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        l10n.appointmentDetailEnableAlerts,
-                                      ),
+                            if (!a.isPast) ...[
+                              _SectionCard(
+                                title:
+                                    l10n.appointmentDetailPreparationTitle,
+                                subtitle:
+                                    l10n.appointmentDetailPreparationSubtitle,
+                                children: [
+                                  _PrepTile(
+                                    icon: Icons.assignment_rounded,
+                                    title:
+                                        l10n.appointmentDetailPrepQuestionnaire,
+                                    statusLabel: l10n.commonTodo,
+                                    onTap: () => context.push(
+                                      '/appointments/${a.id}/questionnaire',
                                     ),
-                                    const Switch(value: false, onChanged: null),
-                                  ],
-                                ),
+                                  ),
+                                  Divider(height: 1.h),
+                                  _PrepTile(
+                                    icon: Icons.info_outline_rounded,
+                                    title:
+                                        l10n.appointmentDetailPrepInstructions,
+                                    statusLabel: l10n.commonToRead,
+                                    onTap: () => context.push(
+                                      '/appointments/${a.id}/instructions',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: AppSpacing.md.h),
+                              _SectionCard(
+                                title:
+                                    l10n.appointmentDetailEarlierSlotTitle,
+                                subtitle:
+                                    l10n.appointmentDetailEarlierSlotSubtitle,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: AppSpacing.lg.w,
+                                      vertical: AppSpacing.md.h,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            l10n.appointmentDetailEnableAlerts,
+                                          ),
+                                        ),
+                                        const Switch(
+                                          value: false,
+                                          onChanged: null,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: AppSpacing.lg.h),
+                              DokalButton.primary(
+                                onPressed: () =>
+                                    context.push('/messages/c/demo1'),
+                                leading: const Icon(Icons.mail_rounded),
+                                child: Text(
+                                    l10n.appointmentDetailContactOffice),
                               ),
                             ],
-                          ),
-                          SizedBox(height: AppSpacing.lg.h),
-                          DokalButton.primary(
-                            onPressed: () => context.push('/messages/c/demo1'),
-                            leading: const Icon(Icons.mail_rounded),
-                            child: Text(l10n.appointmentDetailContactOffice),
-                          ),
-                        ],
-                      ],
-                    ),
+                          ],
+                        ),
             ),
           );
         },
@@ -339,8 +268,14 @@ class _AppointmentTopCard extends StatelessWidget {
               vertical: AppSpacing.md.h,
             ),
             decoration: BoxDecoration(
-              color: AppColors.textPrimary.withValues(alpha: 0.85),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+              gradient: const LinearGradient(
+                colors: [
+                  AppColors.brandGradientStart,
+                  AppColors.brandGradientEnd,
+                ],
+              ),
+              borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(AppRadii.lg.r)),
             ),
             child: Row(
               children: [
@@ -362,30 +297,147 @@ class _AppointmentTopCard extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: AppColors.primary.withValues(alpha: 0.12),
-              child: const Icon(Icons.person_rounded, color: AppColors.primary),
-            ),
-            title: Text(a.practitionerName),
-            subtitle: Text(a.specialty),
-            trailing: const Icon(Icons.chevron_right_rounded),
-            onTap: () => context.push('/home/practitioner/${a.practitionerId}'),
+          _DetailTile(
+            icon: Icons.person_rounded,
+            title: a.practitionerName,
+            subtitle: a.specialty,
+            trailing: Icons.chevron_right_rounded,
+            onTap: () =>
+                context.push('/home/practitioner/${a.practitionerId}'),
           ),
           Divider(height: 1.h),
-          ListTile(
-            leading: const Icon(Icons.medical_information_rounded),
-            title: Text(a.reason),
+          _DetailTile(
+            icon: Icons.medical_information_rounded,
+            title: a.reason,
           ),
           if (a.address != null) ...[
             Divider(height: 1.h),
-            ListTile(
-              leading: const Icon(Icons.location_on_rounded),
-              title: Text(a.address!),
+            _DetailTile(
+              icon: Icons.location_on_rounded,
+              title: a.address!,
             ),
           ],
         ],
       ),
+    );
+  }
+}
+
+class _ActionBar extends StatelessWidget {
+  const _ActionBar({required this.a});
+  final Appointment a;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return DokalCard(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm.w,
+        vertical: AppSpacing.xs.h,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextButton.icon(
+              onPressed: () => context.push('/home/search'),
+              icon: Icon(Icons.sync_rounded, size: 16.sp),
+              label: Text(
+                l10n.appointmentDetailReschedule,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+          ),
+          Container(width: 1.w, height: 24.h, color: AppColors.outline),
+          Expanded(
+            child: TextButton.icon(
+              onPressed: () async {
+                final ok = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) {
+                    return AlertDialog(
+                      title: Text(
+                        l10n.appointmentDetailCancelQuestion,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      content: Text(
+                        l10n.commonActionIsFinal,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(ctx).pop(false),
+                          child: Text(l10n.commonBack),
+                        ),
+                        FilledButton(
+                          onPressed: () => Navigator.of(ctx).pop(true),
+                          child: Text(l10n.commonCancel),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                if (ok == true && context.mounted) {
+                  context.read<AppointmentDetailCubit>().cancel();
+                }
+              },
+              icon: Icon(
+                Icons.close_rounded,
+                size: 16.sp,
+                color: AppColors.error,
+              ),
+              label: Text(
+                l10n.commonCancel,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(color: AppColors.error),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DetailTile extends StatelessWidget {
+  const _DetailTile({
+    required this.icon,
+    required this.title,
+    this.subtitle,
+    this.trailing,
+    this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String? subtitle;
+  final IconData? trailing;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        width: 38.r,
+        height: 38.r,
+        decoration: BoxDecoration(
+          color: AppColors.primary.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(AppRadii.md.r),
+        ),
+        child: Icon(icon, color: AppColors.primary, size: 18.sp),
+      ),
+      title: Text(
+        title,
+        style: Theme.of(context)
+            .textTheme
+            .titleSmall
+            ?.copyWith(fontWeight: FontWeight.w600),
+      ),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
+      trailing:
+          trailing != null ? Icon(trailing, color: AppColors.textSecondary) : null,
+      onTap: onTap,
     );
   }
 }
@@ -409,7 +461,7 @@ class _SectionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(
+            padding: EdgeInsetsDirectional.fromSTEB(
               AppSpacing.lg.w,
               AppSpacing.lg.h,
               AppSpacing.lg.w,
@@ -418,9 +470,18 @@ class _SectionCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w800),
+                ),
                 SizedBox(height: 4.h),
-                Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
+                Text(
+                  subtitle,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ],
             ),
           ),
@@ -448,7 +509,15 @@ class _PrepTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ListTile(
-      leading: Icon(icon, color: AppColors.primary),
+      leading: Container(
+        width: 38.r,
+        height: 38.r,
+        decoration: BoxDecoration(
+          color: AppColors.primary.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(AppRadii.md.r),
+        ),
+        child: Icon(icon, color: AppColors.primary, size: 18.sp),
+      ),
       title: Text(title),
       trailing: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
@@ -465,12 +534,11 @@ class _PrepTile extends StatelessWidget {
           ),
         ),
       ),
-      onTap:
-          onTap ??
+      onTap: onTap ??
           () {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(l10n.commonAvailableSoon)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(l10n.commonAvailableSoon)),
+            );
           },
     );
   }

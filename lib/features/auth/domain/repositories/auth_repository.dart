@@ -24,7 +24,19 @@ abstract class AuthRepository {
 
   Future<Either<Failure, Unit>> requestPasswordReset({required String email});
 
+  Future<Either<Failure, Unit>> verifyPasswordResetOtp({
+    required String email,
+    required String token,
+  });
+
+  Future<Either<Failure, Unit>> updatePassword({required String newPassword});
+
   Future<Either<Failure, Unit>> resendSignupConfirmationEmail({
     required String email,
+  });
+
+  Future<Either<Failure, AuthSession>> verifySignupOtp({
+    required String email,
+    required String token,
   });
 }

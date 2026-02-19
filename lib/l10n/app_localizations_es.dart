@@ -177,35 +177,69 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get authForgotPasswordSubtitle =>
-      'Te enviaremos un enlace para restablecerla.';
+      'Te enviaremos un código de 6 dígitos por correo.';
 
   @override
-  String get authForgotPasswordSendLink => 'Enviar enlace';
+  String get authForgotPasswordSendLink => 'Enviar código';
 
   @override
   String get authBackToLogin => 'Volver a iniciar sesión';
 
   @override
   String get authForgotPasswordEmailSent =>
-      'Correo enviado. Revisa tu bandeja de entrada.';
+      'Código enviado. Revisa tu bandeja de entrada.';
+
+  @override
+  String get authResetPasswordVerifyTitle => 'Introduce el código';
+
+  @override
+  String authResetPasswordVerifyDescription(Object email) {
+    return 'Enviamos un código de 6 dígitos a $email. Introdúcelo para continuar.';
+  }
+
+  @override
+  String get authResetPasswordNewTitle => 'Nueva contraseña';
+
+  @override
+  String get authResetPasswordNewSubtitle => 'Elige una nueva contraseña.';
+
+  @override
+  String get authResetPasswordConfirmPassword => 'Confirmar contraseña';
+
+  @override
+  String get authResetPasswordPasswordsDoNotMatch =>
+      'Las contraseñas no coinciden';
+
+  @override
+  String get authResetPasswordUpdateButton => 'Actualizar contraseña';
+
+  @override
+  String get authResetPasswordUpdatedSnack =>
+      'Contraseña actualizada. Puedes iniciar sesión de nuevo.';
 
   @override
   String get authVerifyEmailTitle => 'Verifica tu correo';
 
   @override
   String authVerifyEmailDescription(Object email) {
-    return 'Enviamos un correo de confirmación a $email. Haz clic en el enlace del correo y vuelve a la app.';
+    return 'Enviamos un código de 6 dígitos a $email. Introdúcelo abajo.';
   }
+
+  @override
+  String get authVerifyEmailOtpHint => '000000';
+
+  @override
+  String get authVerifyEmailVerify => 'Verificar';
 
   @override
   String get authVerifyEmailCheckedBackToLogin =>
       'Ya lo verifiqué, volver a iniciar sesión';
 
   @override
-  String get authVerifyEmailResend => 'Reenviar correo';
+  String get authVerifyEmailResend => 'Reenviar código';
 
   @override
-  String get authVerifyEmailResentSnack => 'Correo de confirmación reenviado.';
+  String get authVerifyEmailResentSnack => 'Código de confirmación reenviado.';
 
   @override
   String get commonBack => 'Atrás';
@@ -281,7 +315,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeLast3AppointmentsTitle => 'Últimas 3 citas';
 
   @override
-  String get homeSeeAllPastAppointments => 'Ver todas las citas pasadas';
+  String get homeSeeAllPastAppointments => 'Ver';
 
   @override
   String get homeAppointmentHistoryTitle => 'Historial de citas';
@@ -429,6 +463,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get searchSortRating => 'Valoración';
+
+  @override
+  String get searchFeesLabel => 'Honorarios';
+
+  @override
+  String get searchBookNow => 'Reservar';
 
   @override
   String get onboardingStep1Title =>
@@ -800,6 +840,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get practitionerProfileSection => 'Perfil';
 
   @override
+  String get practitionerTabAvailability => 'Disponibilidad';
+
+  @override
+  String get practitionerTabReviews => 'Reseñas';
+
+  @override
+  String get practitionerMyAppointmentsWithDoctor =>
+      'Mis citas con este doctor';
+
+  @override
+  String get practitionerNoAppointmentsWithDoctor =>
+      'No hay citas con este doctor';
+
+  @override
+  String get practitionerLoginToSeeHistory =>
+      'Inicia sesión para ver tu historial';
+
+  @override
+  String get practitionerNoReviews => 'Aún no hay reseñas';
+
+  @override
   String get documentsTitle => 'Documentos';
 
   @override
@@ -817,6 +878,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get authLogout => 'Cerrar sesión';
+
+  @override
+  String get authLoggingOut => 'Cerrando sesión…';
+
+  @override
+  String get authLogoutConfirmTitle => 'Cerrar sesión';
+
+  @override
+  String get authLogoutConfirmMessage =>
+      '¿Estás seguro de que quieres cerrar sesión?';
+
+  @override
+  String get authLogoutSuccess => 'Has cerrado sesión';
+
+  @override
+  String get authLoginSuccess => '¡Bienvenido de nuevo!';
 
   @override
   String get securityTitle => 'Seguridad';

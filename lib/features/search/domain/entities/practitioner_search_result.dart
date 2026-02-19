@@ -12,6 +12,8 @@ class PractitionerSearchResult extends Equatable {
     this.avatarUrl,
     this.distanceKm,
     this.availabilityOrder,
+    this.rating,
+    this.reviewCount,
   });
 
   final String id;
@@ -29,6 +31,12 @@ class PractitionerSearchResult extends Equatable {
   /// Ordre de disponibilité (0 = aujourd'hui, 1 = demain, 2 = cette semaine, etc.)
   final int? availabilityOrder;
 
+  /// Note moyenne (ex: 4.5)
+  final double? rating;
+
+  /// Nombre d'avis
+  final int? reviewCount;
+
   @override
   List<Object?> get props => [
     id,
@@ -41,5 +49,7 @@ class PractitionerSearchResult extends Equatable {
     avatarUrl,
     distanceKm,
     availabilityOrder,
+    rating,
+    reviewCount,
   ];
 }

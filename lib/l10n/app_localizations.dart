@@ -421,13 +421,13 @@ abstract class AppLocalizations {
   /// No description provided for @authForgotPasswordSubtitle.
   ///
   /// In he, this message translates to:
-  /// **'נשלח לך קישור לאיפוס.'**
+  /// **'נשלח לך קוד בן 6 ספרות בדוא\"ל.'**
   String get authForgotPasswordSubtitle;
 
   /// No description provided for @authForgotPasswordSendLink.
   ///
   /// In he, this message translates to:
-  /// **'שלח קישור'**
+  /// **'שלח קוד'**
   String get authForgotPasswordSendLink;
 
   /// No description provided for @authBackToLogin.
@@ -439,8 +439,56 @@ abstract class AppLocalizations {
   /// No description provided for @authForgotPasswordEmailSent.
   ///
   /// In he, this message translates to:
-  /// **'האימייל נשלח. בדוק את תיבת הדואר שלך.'**
+  /// **'הקוד נשלח. בדוק את תיבת הדואר.'**
   String get authForgotPasswordEmailSent;
+
+  /// No description provided for @authResetPasswordVerifyTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'הזן את הקוד'**
+  String get authResetPasswordVerifyTitle;
+
+  /// No description provided for @authResetPasswordVerifyDescription.
+  ///
+  /// In he, this message translates to:
+  /// **'שלחנו קוד בן 6 ספרות ל־{email}. הזן אותו כדי להמשיך.'**
+  String authResetPasswordVerifyDescription(Object email);
+
+  /// No description provided for @authResetPasswordNewTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'סיסמה חדשה'**
+  String get authResetPasswordNewTitle;
+
+  /// No description provided for @authResetPasswordNewSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בחר סיסמה חדשה.'**
+  String get authResetPasswordNewSubtitle;
+
+  /// No description provided for @authResetPasswordConfirmPassword.
+  ///
+  /// In he, this message translates to:
+  /// **'אשר סיסמה'**
+  String get authResetPasswordConfirmPassword;
+
+  /// No description provided for @authResetPasswordPasswordsDoNotMatch.
+  ///
+  /// In he, this message translates to:
+  /// **'הסיסמאות אינן תואמות'**
+  String get authResetPasswordPasswordsDoNotMatch;
+
+  /// No description provided for @authResetPasswordUpdateButton.
+  ///
+  /// In he, this message translates to:
+  /// **'עדכן סיסמה'**
+  String get authResetPasswordUpdateButton;
+
+  /// No description provided for @authResetPasswordUpdatedSnack.
+  ///
+  /// In he, this message translates to:
+  /// **'הסיסמה עודכנה. אפשר להתחבר מחדש.'**
+  String get authResetPasswordUpdatedSnack;
 
   /// No description provided for @authVerifyEmailTitle.
   ///
@@ -451,8 +499,20 @@ abstract class AppLocalizations {
   /// No description provided for @authVerifyEmailDescription.
   ///
   /// In he, this message translates to:
-  /// **'שלחנו אימייל אימות לכתובת {email}. לחץ על הקישור באימייל וחזור לאפליקציה.'**
+  /// **'שלחנו קוד בן 6 ספרות לכתובת {email}. הזן אותו למטה.'**
   String authVerifyEmailDescription(Object email);
+
+  /// No description provided for @authVerifyEmailOtpHint.
+  ///
+  /// In he, this message translates to:
+  /// **'000000'**
+  String get authVerifyEmailOtpHint;
+
+  /// No description provided for @authVerifyEmailVerify.
+  ///
+  /// In he, this message translates to:
+  /// **'אימות'**
+  String get authVerifyEmailVerify;
 
   /// No description provided for @authVerifyEmailCheckedBackToLogin.
   ///
@@ -463,13 +523,13 @@ abstract class AppLocalizations {
   /// No description provided for @authVerifyEmailResend.
   ///
   /// In he, this message translates to:
-  /// **'שלח שוב את האימייל'**
+  /// **'שלח שוב את הקוד'**
   String get authVerifyEmailResend;
 
   /// No description provided for @authVerifyEmailResentSnack.
   ///
   /// In he, this message translates to:
-  /// **'אימייל האימות נשלח מחדש.'**
+  /// **'קוד האימות נשלח מחדש.'**
   String get authVerifyEmailResentSnack;
 
   /// No description provided for @commonBack.
@@ -607,7 +667,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeSeeAllPastAppointments.
   ///
   /// In he, this message translates to:
-  /// **'צפה בכל התורים שעברו'**
+  /// **'צפה'**
   String get homeSeeAllPastAppointments;
 
   /// No description provided for @homeAppointmentHistoryTitle.
@@ -891,6 +951,18 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'דירוג'**
   String get searchSortRating;
+
+  /// No description provided for @searchFeesLabel.
+  ///
+  /// In he, this message translates to:
+  /// **'עלות'**
+  String get searchFeesLabel;
+
+  /// No description provided for @searchBookNow.
+  ///
+  /// In he, this message translates to:
+  /// **'קבע תור'**
+  String get searchBookNow;
 
   /// No description provided for @onboardingStep1Title.
   ///
@@ -1576,6 +1648,42 @@ abstract class AppLocalizations {
   /// **'פרופיל'**
   String get practitionerProfileSection;
 
+  /// No description provided for @practitionerTabAvailability.
+  ///
+  /// In he, this message translates to:
+  /// **'זמינות'**
+  String get practitionerTabAvailability;
+
+  /// No description provided for @practitionerTabReviews.
+  ///
+  /// In he, this message translates to:
+  /// **'ביקורות'**
+  String get practitionerTabReviews;
+
+  /// No description provided for @practitionerMyAppointmentsWithDoctor.
+  ///
+  /// In he, this message translates to:
+  /// **'התורים שלי עם הרופא'**
+  String get practitionerMyAppointmentsWithDoctor;
+
+  /// No description provided for @practitionerNoAppointmentsWithDoctor.
+  ///
+  /// In he, this message translates to:
+  /// **'אין תורים עם רופא זה'**
+  String get practitionerNoAppointmentsWithDoctor;
+
+  /// No description provided for @practitionerLoginToSeeHistory.
+  ///
+  /// In he, this message translates to:
+  /// **'התחבר כדי לראות את ההיסטוריה'**
+  String get practitionerLoginToSeeHistory;
+
+  /// No description provided for @practitionerNoReviews.
+  ///
+  /// In he, this message translates to:
+  /// **'אין ביקורות עדיין'**
+  String get practitionerNoReviews;
+
   /// No description provided for @documentsTitle.
   ///
   /// In he, this message translates to:
@@ -1611,6 +1719,36 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'התנתק'**
   String get authLogout;
+
+  /// No description provided for @authLoggingOut.
+  ///
+  /// In he, this message translates to:
+  /// **'מתנתק…'**
+  String get authLoggingOut;
+
+  /// No description provided for @authLogoutConfirmTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'התנתקות'**
+  String get authLogoutConfirmTitle;
+
+  /// No description provided for @authLogoutConfirmMessage.
+  ///
+  /// In he, this message translates to:
+  /// **'האם אתה בטוח שברצונך להתנתק?'**
+  String get authLogoutConfirmMessage;
+
+  /// No description provided for @authLogoutSuccess.
+  ///
+  /// In he, this message translates to:
+  /// **'התנתקת בהצלחה'**
+  String get authLogoutSuccess;
+
+  /// No description provided for @authLoginSuccess.
+  ///
+  /// In he, this message translates to:
+  /// **'ברוך הבא!'**
+  String get authLoginSuccess;
 
   /// No description provided for @securityTitle.
   ///

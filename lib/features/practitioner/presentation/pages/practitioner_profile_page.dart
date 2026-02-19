@@ -12,7 +12,12 @@ import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../appointments/domain/entities/appointment.dart';
+import '../../../appointments/domain/usecases/get_past_appointments.dart';
+import '../../../appointments/domain/usecases/get_upcoming_appointments.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entities/practitioner_profile.dart';
+import '../../domain/usecases/get_practitioner_reviews.dart';
 import '../bloc/practitioner_cubit.dart';
 
 class PractitionerProfilePage extends StatelessWidget {
@@ -260,49 +265,87 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                   _HeaderSection(profile: profile, initials: _getInitials()),
                   SizedBox(height: AppSpacing.lg.h),
 
-                  // Calendrier de disponibilités
-                  _AvailabilityCalendar(
-                    onDateSelected: _onDateSelected,
-                    selectedDate: _selectedDate,
-                  ),
-
-                  // Section horaires (apparaît après sélection de date)
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    child: _selectedDate != null
-                        ? Column(
+                  // TabBar (Disponibilité | Reviews)
+                  DefaultTabController(
+                    length: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TabBar(
+                          labelColor: AppColors.primary,
+                          unselectedLabelColor: AppColors.textSecondary,
+                          indicatorColor: AppColors.primary,
+                          dividerColor: Colors.transparent,
+                          tabs: [
+                            Tab(text: context.l10n.practitionerTabAvailability),
+                            Tab(text: context.l10n.practitionerTabReviews),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 500.h,
+                          child: TabBarView(
                             children: [
-                              SizedBox(height: AppSpacing.sm.h),
-                              _TimeSlotSection(
-                                selectedDate: _selectedDate!,
-                                selectedTime: _selectedTime,
-                                onTimeSelected: _onTimeSelected,
+                              // Tab 0: Disponibilité
+                              SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: AppSpacing.sm.h),
+                                    _AvailabilityCalendar(
+                                      onDateSelected: _onDateSelected,
+                                      selectedDate: _selectedDate,
+                                    ),
+                                    AnimatedSize(
+                                      duration: const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                      child: _selectedDate != null
+                                          ? Column(
+                                              children: [
+                                                SizedBox(height: AppSpacing.sm.h),
+                                                _TimeSlotSection(
+                                                  selectedDate: _selectedDate!,
+                                                  selectedTime: _selectedTime,
+                                                  onTimeSelected: _onTimeSelected,
+                                                ),
+                                              ],
+                                            )
+                                          : const SizedBox.shrink(),
+                                    ),
+                                    AnimatedSize(
+                                      duration: const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                      child: canBook
+                                          ? Column(
+                                              children: [
+                                                SizedBox(height: AppSpacing.md.h),
+                                                _BookingConfirmation(
+                                                  selectedDate: _selectedDate!,
+                                                  selectedTime: _selectedTime!,
+                                                  practitionerId: widget.practitionerId,
+                                                  practitionerName: profile.name,
+                                                ),
+                                              ],
+                                            )
+                                          : const SizedBox.shrink(),
+                                    ),
+                                    SizedBox(height: AppSpacing.md.h),
+                                    _AppointmentHistorySection(
+                                      practitionerId: widget.practitionerId,
+                                    ),
+                                    SizedBox(height: AppSpacing.md.h),
+                                  ],
+                                ),
                               ),
-                            ],
-                          )
-                        : const SizedBox.shrink(),
-                  ),
-
-                  // Bouton de réservation (apparaît après sélection de date ET heure)
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    child: canBook
-                        ? Column(
-                            children: [
-                              SizedBox(height: AppSpacing.md.h),
-                              _BookingConfirmation(
-                                selectedDate: _selectedDate!,
-                                selectedTime: _selectedTime!,
+                              // Tab 1: Reviews
+                              _ReviewsTabSection(
                                 practitionerId: widget.practitionerId,
-                                practitionerName: profile.name,
                               ),
                             ],
-                          )
-                        : const SizedBox.shrink(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-
                   SizedBox(height: AppSpacing.md.h),
 
                   // Section Contact
@@ -314,13 +357,17 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                   ),
                   SizedBox(height: AppSpacing.sm.h),
 
-                  // Section Profil
-                  _AboutSection(
-                    about: profile.about,
-                    languages: profile.languages,
-                    education: profile.education,
-                    yearsOfExperience: profile.yearsOfExperience,
-                  ),
+                  // Section Profil (masquée si vide)
+                  if (profile.about.isNotEmpty ||
+                      profile.education != null ||
+                      (profile.languages != null &&
+                          profile.languages!.isNotEmpty))
+                    _AboutSection(
+                      about: profile.about,
+                      languages: profile.languages,
+                      education: profile.education,
+                      yearsOfExperience: profile.yearsOfExperience,
+                    ),
                   SizedBox(height: AppSpacing.xl.h),
                 ],
               ),
@@ -381,6 +428,13 @@ class _HeaderSection extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
+        if (profile.rating != null || profile.reviewCount > 0) ...[
+          SizedBox(height: 8.h),
+          _RatingStars(
+            rating: profile.rating ?? 0,
+            reviewCount: profile.reviewCount,
+          ),
+        ],
         SizedBox(height: 8.h),
 
         // Spécialité badge
@@ -443,6 +497,61 @@ class _HeaderSection extends StatelessWidget {
   }
 }
 
+/// Affiche la note du praticien avec étoiles jaunes (1-5).
+class _RatingStars extends StatelessWidget {
+  const _RatingStars({
+    required this.rating,
+    required this.reviewCount,
+  });
+
+  final double rating;
+  final int reviewCount;
+
+  static const Color _starColor = Color(0xFFFFB800);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ...List.generate(5, (i) {
+          final starValue = i + 1.0;
+          IconData icon;
+          if (rating >= starValue) {
+            icon = Icons.star_rounded;
+          } else if (rating >= starValue - 0.5) {
+            icon = Icons.star_half_rounded;
+          } else {
+            icon = Icons.star_border_rounded;
+          }
+          return Padding(
+            padding: EdgeInsets.only(right: 2.w),
+            child: Icon(icon, size: 18.sp, color: _starColor),
+          );
+        }),
+        SizedBox(width: 8.w),
+        Text(
+          rating.toStringAsFixed(1),
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        if (reviewCount > 0) ...[
+          SizedBox(width: 4.w),
+          Text(
+            '($reviewCount)',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
 class _StatItem extends StatelessWidget {
   const _StatItem({
     required this.icon,
@@ -482,6 +591,475 @@ class _StatItem extends StatelessWidget {
           ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
         ),
       ],
+    );
+  }
+}
+
+class _AppointmentHistorySection extends StatelessWidget {
+  const _AppointmentHistorySection({required this.practitionerId});
+
+  final String practitionerId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, authState) {
+        if (!authState.isAuthenticated) {
+          return DokalCard(
+            padding: EdgeInsets.all(AppSpacing.md.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.history_rounded,
+                      size: 18.sp,
+                      color: AppColors.textSecondary,
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      context.l10n.practitionerMyAppointmentsWithDoctor,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: AppSpacing.sm.h),
+                Text(
+                  context.l10n.practitionerLoginToSeeHistory,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return _AppointmentHistoryContent(practitionerId: practitionerId);
+      },
+    );
+  }
+}
+
+class _AppointmentHistoryContent extends StatelessWidget {
+  const _AppointmentHistoryContent({required this.practitionerId});
+
+  final String practitionerId;
+
+  @override
+  Widget build(BuildContext context) {
+    final getPast = sl<GetPastAppointments>();
+    final getUpcoming = sl<GetUpcomingAppointments>();
+
+    return FutureBuilder(
+      future: Future.wait([getPast(), getUpcoming()]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return DokalCard(
+            padding: EdgeInsets.all(AppSpacing.md.r),
+            child: const DokalLoader(lines: 3),
+          );
+        }
+        final results = snapshot.data;
+        if (results == null) {
+          return const SizedBox.shrink();
+        }
+        final pastResult = results[0];
+        final upcomingResult = results[1];
+
+        List<Appointment> appointments = [];
+        pastResult.fold((_) => null, (list) => appointments.addAll(list));
+        upcomingResult.fold((_) => null, (list) => appointments.addAll(list));
+        appointments = appointments
+            .where((a) => a.practitionerId == practitionerId)
+            .toList()
+          ..sort((a, b) {
+            final da = '${a.dateLabel} ${a.timeLabel}';
+            final db = '${b.dateLabel} ${b.timeLabel}';
+            return db.compareTo(da);
+          });
+
+        if (appointments.isEmpty) {
+          return DokalCard(
+            padding: EdgeInsets.all(AppSpacing.md.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.history_rounded,
+                      size: 18.sp,
+                      color: AppColors.textSecondary,
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      context.l10n.practitionerMyAppointmentsWithDoctor,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: AppSpacing.sm.h),
+                Text(
+                  context.l10n.practitionerNoAppointmentsWithDoctor,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return DokalCard(
+          padding: EdgeInsets.all(AppSpacing.md.r),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.history_rounded,
+                    size: 18.sp,
+                    color: AppColors.primary,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    context.l10n.practitionerMyAppointmentsWithDoctor,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSpacing.sm.h),
+              ...appointments.map(
+                (a) => Padding(
+                  padding: EdgeInsets.only(bottom: AppSpacing.sm.h),
+                  child: _AppointmentHistoryItem(appointment: a),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _AppointmentHistoryItem extends StatelessWidget {
+  const _AppointmentHistoryItem({required this.appointment});
+
+  final Appointment appointment;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(AppSpacing.sm.r),
+      decoration: BoxDecoration(
+        color: appointment.isPast
+            ? AppColors.textSecondary.withValues(alpha: 0.05)
+            : AppColors.accent.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.calendar_today_rounded,
+                size: 14.sp,
+                color: appointment.isPast
+                    ? AppColors.textSecondary
+                    : AppColors.accent,
+              ),
+              SizedBox(width: 6.w),
+              Text(
+                '${appointment.dateLabel} • ${appointment.timeLabel}',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.w,
+                  vertical: 2.h,
+                ),
+                decoration: BoxDecoration(
+                  color: _statusColor(appointment.status)
+                      .withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(6.r),
+                ),
+                child: Text(
+                  _statusLabel(appointment.status),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: _statusColor(appointment.status),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (appointment.reason.isNotEmpty) ...[
+            SizedBox(height: 6.h),
+            Text(
+              appointment.reason,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+          if (appointment.practitionerNotes != null &&
+              appointment.practitionerNotes!.isNotEmpty) ...[
+            SizedBox(height: 6.h),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.note_rounded,
+                  size: 12.sp,
+                  color: AppColors.textSecondary,
+                ),
+                SizedBox(width: 4.w),
+                Expanded(
+                  child: Text(
+                    appointment.practitionerNotes!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Color _statusColor(String status) {
+    if (status == 'completed') return AppColors.accent;
+    if (status == 'confirmed' || status == 'pending') return AppColors.primary;
+    if (status.contains('cancelled') || status == 'no_show') {
+      return AppColors.textSecondary;
+    }
+    return AppColors.textPrimary;
+  }
+
+  String _statusLabel(String status) {
+    if (status == 'completed') return 'הושלם';
+    if (status == 'confirmed') return 'אושר';
+    if (status == 'pending') return 'ממתין';
+    if (status == 'cancelled_by_patient') return 'בוטל';
+    if (status == 'cancelled_by_practitioner') return 'בוטל';
+    if (status == 'no_show') return 'לא הופיע';
+    return status;
+  }
+}
+
+class _ReviewsTabSection extends StatelessWidget {
+  const _ReviewsTabSection({required this.practitionerId});
+
+  final String practitionerId;
+
+  @override
+  Widget build(BuildContext context) {
+    final getReviews = sl<GetPractitionerReviews>();
+
+    return FutureBuilder(
+      future: getReviews(practitionerId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: DokalLoader(lines: 5));
+        }
+        final result = snapshot.data;
+        if (result == null) {
+          return Center(
+            child: Text(
+              context.l10n.commonTryAgainLater,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          );
+        }
+        return result.fold(
+          (failure) => Center(
+            child: Text(
+              failure.message,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          (reviews) {
+            if (reviews.isEmpty) {
+              return Center(
+                child: Text(
+                  context.l10n.practitionerNoReviews,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              );
+            }
+            return ListView.builder(
+              padding: EdgeInsets.only(top: AppSpacing.sm.h),
+              itemCount: reviews.length,
+              itemBuilder: (context, index) {
+                final r = reviews[index];
+                return _ReviewCard(
+                  patientName: r['patient_name'] as String? ?? '—',
+                  rating: r['rating'] as int? ?? 0,
+                  comment: r['comment'] as String?,
+                  practitionerReply: r['practitioner_reply'] as String?,
+                  createdAt: r['created_at'] as String? ?? '',
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ReviewCard extends StatelessWidget {
+  const _ReviewCard({
+    required this.patientName,
+    required this.rating,
+    this.comment,
+    this.practitionerReply,
+    required this.createdAt,
+  });
+
+  final String patientName;
+  final int rating;
+  final String? comment;
+  final String? practitionerReply;
+  final String createdAt;
+
+  static const Color _starColor = Color(0xFFFFB800);
+
+  String _formatDate(String iso) {
+    if (iso.isEmpty) return '';
+    try {
+      final dt = DateTime.parse(iso);
+      return '${dt.day}/${dt.month}/${dt.year}';
+    } catch (_) {
+      return iso;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final initials = patientName.isNotEmpty
+        ? patientName.split(' ').map((s) => s.isNotEmpty ? s[0] : '').take(2).join('').toUpperCase()
+        : '?';
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: AppSpacing.sm.h),
+      child: DokalCard(
+        padding: EdgeInsets.all(AppSpacing.md.r),
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20.r,
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                child: Text(
+                  initials,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      patientName,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    Row(
+                      children: List.generate(
+                        5,
+                        (i) => Icon(
+                          i < rating ? Icons.star_rounded : Icons.star_border_rounded,
+                          size: 14.sp,
+                          color: _starColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                _formatDate(createdAt),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+          if (comment != null && comment!.isNotEmpty) ...[
+            SizedBox(height: AppSpacing.sm.h),
+            Text(
+              comment!,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+          if (practitionerReply != null && practitionerReply!.isNotEmpty) ...[
+            SizedBox(height: AppSpacing.sm.h),
+            Container(
+              padding: EdgeInsets.all(AppSpacing.sm.r),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.reply_rounded, size: 16.sp, color: AppColors.primary),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      practitionerReply!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+      ),
     );
   }
 }

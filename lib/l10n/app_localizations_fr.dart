@@ -178,35 +178,70 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get authForgotPasswordSubtitle =>
-      'Nous vous enverrons un lien de réinitialisation.';
+      'Nous vous enverrons un code à 6 chiffres par email.';
 
   @override
-  String get authForgotPasswordSendLink => 'Envoyer le lien';
+  String get authForgotPasswordSendLink => 'Envoyer le code';
 
   @override
   String get authBackToLogin => 'Retour à la connexion';
 
   @override
   String get authForgotPasswordEmailSent =>
-      'Email envoyé. Vérifiez votre boîte de réception.';
+      'Code envoyé. Vérifiez votre boîte mail.';
+
+  @override
+  String get authResetPasswordVerifyTitle => 'Saisissez le code';
+
+  @override
+  String authResetPasswordVerifyDescription(Object email) {
+    return 'Nous avons envoyé un code à 6 chiffres à $email. Saisissez-le pour continuer.';
+  }
+
+  @override
+  String get authResetPasswordNewTitle => 'Nouveau mot de passe';
+
+  @override
+  String get authResetPasswordNewSubtitle =>
+      'Choisissez un nouveau mot de passe.';
+
+  @override
+  String get authResetPasswordConfirmPassword => 'Confirmer le mot de passe';
+
+  @override
+  String get authResetPasswordPasswordsDoNotMatch =>
+      'Les mots de passe ne correspondent pas';
+
+  @override
+  String get authResetPasswordUpdateButton => 'Mettre à jour le mot de passe';
+
+  @override
+  String get authResetPasswordUpdatedSnack =>
+      'Mot de passe mis à jour. Vous pouvez vous reconnecter.';
 
   @override
   String get authVerifyEmailTitle => 'Vérifiez votre email';
 
   @override
   String authVerifyEmailDescription(Object email) {
-    return 'Nous avons envoyé un email de confirmation à $email. Cliquez sur le lien dans l\'email puis revenez dans l\'application.';
+    return 'Nous avons envoyé un code à 6 chiffres à $email. Saisissez-le ci-dessous.';
   }
+
+  @override
+  String get authVerifyEmailOtpHint => '000000';
+
+  @override
+  String get authVerifyEmailVerify => 'Vérifier';
 
   @override
   String get authVerifyEmailCheckedBackToLogin =>
       'J\'ai vérifié, retourner à la connexion';
 
   @override
-  String get authVerifyEmailResend => 'Renvoyer l\'email';
+  String get authVerifyEmailResend => 'Renvoyer le code';
 
   @override
-  String get authVerifyEmailResentSnack => 'Email de confirmation renvoyé.';
+  String get authVerifyEmailResentSnack => 'Code de confirmation renvoyé.';
 
   @override
   String get commonBack => 'Retour';
@@ -282,7 +317,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeLast3AppointmentsTitle => '3 derniers rendez-vous';
 
   @override
-  String get homeSeeAllPastAppointments => 'Voir tous les rendez-vous passés';
+  String get homeSeeAllPastAppointments => 'Voir';
 
   @override
   String get homeAppointmentHistoryTitle => 'Historique de rendez-vous';
@@ -429,6 +464,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get searchSortRating => 'דירוג';
+
+  @override
+  String get searchFeesLabel => 'Honoraires';
+
+  @override
+  String get searchBookNow => 'Réserver';
 
   @override
   String get onboardingStep1Title =>
@@ -803,6 +844,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String get practitionerProfileSection => 'Profil';
 
   @override
+  String get practitionerTabAvailability => 'Disponibilité';
+
+  @override
+  String get practitionerTabReviews => 'Avis';
+
+  @override
+  String get practitionerMyAppointmentsWithDoctor =>
+      'Mes rendez-vous avec ce docteur';
+
+  @override
+  String get practitionerNoAppointmentsWithDoctor =>
+      'Aucun rendez-vous avec ce docteur';
+
+  @override
+  String get practitionerLoginToSeeHistory =>
+      'Connectez-vous pour voir votre historique';
+
+  @override
+  String get practitionerNoReviews => 'Aucun avis pour le moment';
+
+  @override
   String get documentsTitle => 'Documents';
 
   @override
@@ -820,6 +882,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get authLogout => 'Se déconnecter';
+
+  @override
+  String get authLoggingOut => 'Déconnexion…';
+
+  @override
+  String get authLogoutConfirmTitle => 'Déconnexion';
+
+  @override
+  String get authLogoutConfirmMessage =>
+      'Êtes-vous sûr de vouloir vous déconnecter ?';
+
+  @override
+  String get authLogoutSuccess => 'Vous avez été déconnecté';
+
+  @override
+  String get authLoginSuccess => 'Bienvenue !';
 
   @override
   String get securityTitle => 'Sécurité';

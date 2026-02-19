@@ -52,6 +52,10 @@
 		<string>Nous avons besoin d’accéder à vos photos pour ajouter des documents ou une photo de profil.</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
 		<string>Nous avons besoin d’enregistrer des éléments dans votre photothèque si vous le demandez.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Nous utilisons votre localisation pour afficher votre ville et pays dans l'application.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Nous utilisons votre localisation pour afficher votre ville et pays dans l'application.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>

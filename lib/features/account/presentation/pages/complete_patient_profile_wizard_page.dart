@@ -786,7 +786,8 @@ class _IdentityStep extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.md.h),
             DropdownButtonFormField<String>(
-              value: sex,
+              key: ValueKey<String?>(sex),
+              initialValue: sex,
               decoration: InputDecoration(
                 labelText: l10n.profileCompletionSex,
                 prefixIcon: const Icon(Icons.wc_rounded),
@@ -837,7 +838,7 @@ class _IdentityStep extends StatelessWidget {
           child: Image.network(
             displayUrl,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => DokalAvatar(
+            errorBuilder: (context, error, stackTrace) => DokalAvatar(
               name: name.isEmpty ? '?' : name,
               size: 96,
             ),
