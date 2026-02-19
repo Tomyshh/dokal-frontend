@@ -85,6 +85,7 @@ import 'features/account/domain/usecases/get_profile.dart';
 import 'features/account/domain/usecases/get_relatives.dart';
 import 'features/account/domain/usecases/request_password_change_demo.dart';
 import 'features/account/domain/usecases/set_default_payment_method.dart';
+import 'features/account/domain/usecases/delete_account.dart';
 import 'features/account/domain/usecases/update_profile.dart';
 import 'features/account/domain/usecases/upload_avatar.dart';
 import 'features/account/presentation/bloc/change_password_cubit.dart';
@@ -478,8 +479,14 @@ void configureDependencies() {
   sl.registerLazySingleton(
     () => SetDefaultPaymentMethod(sl<AccountRepository>()),
   );
+  sl.registerLazySingleton(() => DeleteAccount(sl<AccountRepository>()));
 
-  sl.registerFactory(() => ProfileCubit(getProfile: sl<GetProfile>())..load());
+  sl.registerFactory(
+    () => ProfileCubit(
+      getProfile: sl<GetProfile>(),
+      deleteAccount: sl<DeleteAccount>(),
+    )..load(),
+  );
   sl.registerFactory(
     () => RelativesCubit(
       getRelatives: sl<GetRelatives>(),

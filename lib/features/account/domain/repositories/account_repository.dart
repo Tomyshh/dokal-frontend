@@ -30,4 +30,7 @@ abstract class AccountRepository {
   Future<Either<Failure, Unit>> deletePaymentMethod(String id);
 
   Future<Either<Failure, Unit>> setDefaultPaymentMethod(String id);
+
+  /// Supprime définitivement le compte courant (et ses entités associées).
+  Future<Either<Failure, Unit>> deleteAccount();
 }

@@ -973,6 +973,36 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileWeight => 'Poids';
 
   @override
+  String get profileDangerZoneTitle => 'Zone dangereuse';
+
+  @override
+  String get profileDeleteAccountHint =>
+      'Supprimez définitivement votre compte et toutes vos données.';
+
+  @override
+  String get profileDeleteAccountButton => 'Supprimer le compte';
+
+  @override
+  String get profileDeleteAccountDialogTitle => 'Supprimer le compte ?';
+
+  @override
+  String get profileDeleteAccountDialogBody =>
+      'Votre compte et toutes les données associées seront supprimés définitivement. Cette action est irréversible.';
+
+  @override
+  String get profileDeleteAccountConfirm => 'Supprimer';
+
+  @override
+  String get profileDeleteAccountLoading => 'Suppression du compte…';
+
+  @override
+  String get profileAccountDeletedSnack =>
+      'Compte supprimé. Vous avez été déconnecté.';
+
+  @override
+  String get errorUnableToDeleteAccount => 'Impossible de supprimer le compte.';
+
+  @override
   String get bookingSelectPatientTitle => 'Pour qui est ce rendez-vous ?';
 
   @override

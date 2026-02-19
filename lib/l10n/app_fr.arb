@@ -344,6 +344,16 @@
   "profileHeight": "Taille",
   "profileWeight": "Poids",
 
+  "profileDangerZoneTitle": "Zone dangereuse",
+  "profileDeleteAccountHint": "Supprimez définitivement votre compte et toutes vos données.",
+  "profileDeleteAccountButton": "Supprimer le compte",
+  "profileDeleteAccountDialogTitle": "Supprimer le compte ?",
+  "profileDeleteAccountDialogBody": "Votre compte et toutes les données associées seront supprimés définitivement. Cette action est irréversible.",
+  "profileDeleteAccountConfirm": "Supprimer",
+  "profileDeleteAccountLoading": "Suppression du compte…",
+  "profileAccountDeletedSnack": "Compte supprimé. Vous avez été déconnecté.",
+  "errorUnableToDeleteAccount": "Impossible de supprimer le compte.",
+
   "bookingSelectPatientTitle": "Pour qui est ce rendez-vous ?",
   "bookingPatientsUnavailableTitle": "Patients indisponibles",
   "bookingAddRelative": "Ajouter un proche",

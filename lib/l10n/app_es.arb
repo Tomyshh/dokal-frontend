@@ -374,6 +374,16 @@
   "profileHeight": "Altura",
   "profileWeight": "Peso",
 
+  "profileDangerZoneTitle": "Zona de riesgo",
+  "profileDeleteAccountHint": "Elimina permanentemente tu cuenta y todos tus datos.",
+  "profileDeleteAccountButton": "Eliminar cuenta",
+  "profileDeleteAccountDialogTitle": "¿Eliminar la cuenta?",
+  "profileDeleteAccountDialogBody": "Tu cuenta y todos los datos asociados se eliminarán permanentemente. Esta acción no se puede deshacer.",
+  "profileDeleteAccountConfirm": "Eliminar",
+  "profileDeleteAccountLoading": "Eliminando cuenta…",
+  "profileAccountDeletedSnack": "Cuenta eliminada. Se ha cerrado tu sesión.",
+  "errorUnableToDeleteAccount": "No se pudo eliminar la cuenta.",
+
   "bookingSelectPatientTitle": "¿Para quién es esta cita?",
   "bookingPatientsUnavailableTitle": "Pacientes no disponibles",
   "bookingAddRelative": "Añadir un familiar",

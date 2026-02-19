@@ -153,4 +153,16 @@ class AccountRepositoryImpl implements AccountRepository {
       return Left(Failure(l10nStatic.errorGenericTryAgain));
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> deleteAccount() async {
+    try {
+      await remote.deleteAccountAsync();
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    } catch (_) {
+      return Left(Failure(l10nStatic.errorUnableToDeleteAccount));
+    }
+  }
 }

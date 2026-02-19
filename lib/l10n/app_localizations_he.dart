@@ -940,6 +940,35 @@ class AppLocalizationsHe extends AppLocalizations {
   String get profileWeight => 'משקל';
 
   @override
+  String get profileDangerZoneTitle => 'אזור מסוכן';
+
+  @override
+  String get profileDeleteAccountHint =>
+      'מחק לצמיתות את החשבון שלך ואת כל הנתונים שלך.';
+
+  @override
+  String get profileDeleteAccountButton => 'מחק חשבון';
+
+  @override
+  String get profileDeleteAccountDialogTitle => 'למחוק את החשבון?';
+
+  @override
+  String get profileDeleteAccountDialogBody =>
+      'החשבון שלך וכל הנתונים המשויכים יימחקו לצמיתות. לא ניתן לבטל פעולה זו.';
+
+  @override
+  String get profileDeleteAccountConfirm => 'מחק';
+
+  @override
+  String get profileDeleteAccountLoading => 'מוחק חשבון…';
+
+  @override
+  String get profileAccountDeletedSnack => 'החשבון נמחק. נותקת מהמערכת.';
+
+  @override
+  String get errorUnableToDeleteAccount => 'לא ניתן למחוק את החשבון.';
+
+  @override
   String get bookingSelectPatientTitle => 'למי מיועד התור הזה?';
 
   @override

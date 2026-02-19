@@ -374,6 +374,16 @@
   "profileHeight": "גובה",
   "profileWeight": "משקל",
 
+  "profileDangerZoneTitle": "אזור מסוכן",
+  "profileDeleteAccountHint": "מחק לצמיתות את החשבון שלך ואת כל הנתונים שלך.",
+  "profileDeleteAccountButton": "מחק חשבון",
+  "profileDeleteAccountDialogTitle": "למחוק את החשבון?",
+  "profileDeleteAccountDialogBody": "החשבון שלך וכל הנתונים המשויכים יימחקו לצמיתות. לא ניתן לבטל פעולה זו.",
+  "profileDeleteAccountConfirm": "מחק",
+  "profileDeleteAccountLoading": "מוחק חשבון…",
+  "profileAccountDeletedSnack": "החשבון נמחק. נותקת מהמערכת.",
+  "errorUnableToDeleteAccount": "לא ניתן למחוק את החשבון.",
+
   "bookingSelectPatientTitle": "למי מיועד התור הזה?",
   "bookingPatientsUnavailableTitle": "המטופלים אינם זמינים",
   "bookingAddRelative": "הוסף קרוב",

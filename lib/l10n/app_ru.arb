@@ -374,6 +374,16 @@
   "profileHeight": "Рост",
   "profileWeight": "Вес",
 
+  "profileDangerZoneTitle": "Опасная зона",
+  "profileDeleteAccountHint": "Удалите аккаунт навсегда и все ваши данные.",
+  "profileDeleteAccountButton": "Удалить аккаунт",
+  "profileDeleteAccountDialogTitle": "Удалить аккаунт?",
+  "profileDeleteAccountDialogBody": "Ваш аккаунт и все связанные данные будут удалены навсегда. Это действие нельзя отменить.",
+  "profileDeleteAccountConfirm": "Удалить",
+  "profileDeleteAccountLoading": "Удаление аккаунта…",
+  "profileAccountDeletedSnack": "Аккаунт удален. Вы вышли из системы.",
+  "errorUnableToDeleteAccount": "Не удалось удалить аккаунт.",
+
   "bookingSelectPatientTitle": "Для кого этот прием?",
   "bookingPatientsUnavailableTitle": "Пациенты недоступны",
   "bookingAddRelative": "Добавить близкого",

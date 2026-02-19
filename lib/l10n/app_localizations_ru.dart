@@ -965,6 +965,36 @@ class AppLocalizationsRu extends AppLocalizations {
   String get profileWeight => 'Вес';
 
   @override
+  String get profileDangerZoneTitle => 'Опасная зона';
+
+  @override
+  String get profileDeleteAccountHint =>
+      'Удалите аккаунт навсегда и все ваши данные.';
+
+  @override
+  String get profileDeleteAccountButton => 'Удалить аккаунт';
+
+  @override
+  String get profileDeleteAccountDialogTitle => 'Удалить аккаунт?';
+
+  @override
+  String get profileDeleteAccountDialogBody =>
+      'Ваш аккаунт и все связанные данные будут удалены навсегда. Это действие нельзя отменить.';
+
+  @override
+  String get profileDeleteAccountConfirm => 'Удалить';
+
+  @override
+  String get profileDeleteAccountLoading => 'Удаление аккаунта…';
+
+  @override
+  String get profileAccountDeletedSnack =>
+      'Аккаунт удален. Вы вышли из системы.';
+
+  @override
+  String get errorUnableToDeleteAccount => 'Не удалось удалить аккаунт.';
+
+  @override
   String get bookingSelectPatientTitle => 'Для кого этот прием?';
 
   @override

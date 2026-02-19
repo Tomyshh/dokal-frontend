@@ -931,6 +931,34 @@ class AppLocalizationsAm extends AppLocalizations {
   String get profileWeight => 'ክብደት';
 
   @override
+  String get profileDangerZoneTitle => 'አደገኛ ክፍል';
+
+  @override
+  String get profileDeleteAccountHint => 'መለያዎን እና ሁሉንም ውሂብዎን ለዘላለም ይሰርዙ።';
+
+  @override
+  String get profileDeleteAccountButton => 'መለያ ሰርዝ';
+
+  @override
+  String get profileDeleteAccountDialogTitle => 'መለያውን ሰርዝ?';
+
+  @override
+  String get profileDeleteAccountDialogBody =>
+      'መለያዎ እና ተያያዥ ውሂቦች ሁሉ ለዘላለም ይሰረዛሉ። ይህን እርምጃ መመለስ አይቻልም።';
+
+  @override
+  String get profileDeleteAccountConfirm => 'ሰርዝ';
+
+  @override
+  String get profileDeleteAccountLoading => 'መለያ በመሰረዝ ላይ…';
+
+  @override
+  String get profileAccountDeletedSnack => 'መለያው ተሰርዟል። ወጥተዋል።';
+
+  @override
+  String get errorUnableToDeleteAccount => 'መለያውን ማሰረዝ አልተቻለም።';
+
+  @override
   String get bookingSelectPatientTitle => 'ይህ ቀጠሮ ለማን ነው?';
 
   @override

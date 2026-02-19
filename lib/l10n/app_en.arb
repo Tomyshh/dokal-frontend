@@ -374,6 +374,16 @@
   "profileHeight": "Height",
   "profileWeight": "Weight",
 
+  "profileDangerZoneTitle": "Danger zone",
+  "profileDeleteAccountHint": "Permanently delete your account and all your data.",
+  "profileDeleteAccountButton": "Delete account",
+  "profileDeleteAccountDialogTitle": "Delete account?",
+  "profileDeleteAccountDialogBody": "Your account and all associated data will be permanently deleted. This action cannot be undone.",
+  "profileDeleteAccountConfirm": "Delete",
+  "profileDeleteAccountLoading": "Deleting account…",
+  "profileAccountDeletedSnack": "Account deleted. You have been logged out.",
+  "errorUnableToDeleteAccount": "Unable to delete the account.",
+
   "bookingSelectPatientTitle": "Who is this appointment for?",
   "bookingPatientsUnavailableTitle": "Patients unavailable",
   "bookingAddRelative": "Add a relative",

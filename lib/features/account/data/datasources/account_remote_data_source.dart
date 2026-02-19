@@ -198,4 +198,13 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
 
   void requestPasswordChangeDemo() =>
       throw UnimplementedError('Use Supabase Auth directly');
+
+  // ---------------------------------------------------------------------------
+  // Account deletion
+  // ---------------------------------------------------------------------------
+
+  Future<void> deleteAccountAsync() async {
+    // Backend must delete the authenticated user and all associated data.
+    await api.delete('/api/v1/account');
+  }
 }

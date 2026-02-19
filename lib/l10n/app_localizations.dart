@@ -1894,6 +1894,60 @@ abstract class AppLocalizations {
   /// **'משקל'**
   String get profileWeight;
 
+  /// No description provided for @profileDangerZoneTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'אזור מסוכן'**
+  String get profileDangerZoneTitle;
+
+  /// No description provided for @profileDeleteAccountHint.
+  ///
+  /// In he, this message translates to:
+  /// **'מחק לצמיתות את החשבון שלך ואת כל הנתונים שלך.'**
+  String get profileDeleteAccountHint;
+
+  /// No description provided for @profileDeleteAccountButton.
+  ///
+  /// In he, this message translates to:
+  /// **'מחק חשבון'**
+  String get profileDeleteAccountButton;
+
+  /// No description provided for @profileDeleteAccountDialogTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'למחוק את החשבון?'**
+  String get profileDeleteAccountDialogTitle;
+
+  /// No description provided for @profileDeleteAccountDialogBody.
+  ///
+  /// In he, this message translates to:
+  /// **'החשבון שלך וכל הנתונים המשויכים יימחקו לצמיתות. לא ניתן לבטל פעולה זו.'**
+  String get profileDeleteAccountDialogBody;
+
+  /// No description provided for @profileDeleteAccountConfirm.
+  ///
+  /// In he, this message translates to:
+  /// **'מחק'**
+  String get profileDeleteAccountConfirm;
+
+  /// No description provided for @profileDeleteAccountLoading.
+  ///
+  /// In he, this message translates to:
+  /// **'מוחק חשבון…'**
+  String get profileDeleteAccountLoading;
+
+  /// No description provided for @profileAccountDeletedSnack.
+  ///
+  /// In he, this message translates to:
+  /// **'החשבון נמחק. נותקת מהמערכת.'**
+  String get profileAccountDeletedSnack;
+
+  /// No description provided for @errorUnableToDeleteAccount.
+  ///
+  /// In he, this message translates to:
+  /// **'לא ניתן למחוק את החשבון.'**
+  String get errorUnableToDeleteAccount;
+
   /// No description provided for @bookingSelectPatientTitle.
   ///
   /// In he, this message translates to:

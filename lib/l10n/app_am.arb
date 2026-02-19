@@ -374,6 +374,16 @@
   "profileHeight": "ቁመት",
   "profileWeight": "ክብደት",
 
+  "profileDangerZoneTitle": "አደገኛ ክፍል",
+  "profileDeleteAccountHint": "መለያዎን እና ሁሉንም ውሂብዎን ለዘላለም ይሰርዙ።",
+  "profileDeleteAccountButton": "መለያ ሰርዝ",
+  "profileDeleteAccountDialogTitle": "መለያውን ሰርዝ?",
+  "profileDeleteAccountDialogBody": "መለያዎ እና ተያያዥ ውሂቦች ሁሉ ለዘላለም ይሰረዛሉ። ይህን እርምጃ መመለስ አይቻልም።",
+  "profileDeleteAccountConfirm": "ሰርዝ",
+  "profileDeleteAccountLoading": "መለያ በመሰረዝ ላይ…",
+  "profileAccountDeletedSnack": "መለያው ተሰርዟል። ወጥተዋል።",
+  "errorUnableToDeleteAccount": "መለያውን ማሰረዝ አልተቻለም።",
+
   "bookingSelectPatientTitle": "ይህ ቀጠሮ ለማን ነው?",
   "bookingPatientsUnavailableTitle": "ታካሚዎች አይገኙም",
   "bookingAddRelative": "ዘመድ ጨምር",

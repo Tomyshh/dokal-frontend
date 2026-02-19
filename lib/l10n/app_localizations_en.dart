@@ -962,6 +962,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileWeight => 'Weight';
 
   @override
+  String get profileDangerZoneTitle => 'Danger zone';
+
+  @override
+  String get profileDeleteAccountHint =>
+      'Permanently delete your account and all your data.';
+
+  @override
+  String get profileDeleteAccountButton => 'Delete account';
+
+  @override
+  String get profileDeleteAccountDialogTitle => 'Delete account?';
+
+  @override
+  String get profileDeleteAccountDialogBody =>
+      'Your account and all associated data will be permanently deleted. This action cannot be undone.';
+
+  @override
+  String get profileDeleteAccountConfirm => 'Delete';
+
+  @override
+  String get profileDeleteAccountLoading => 'Deleting account…';
+
+  @override
+  String get profileAccountDeletedSnack =>
+      'Account deleted. You have been logged out.';
+
+  @override
+  String get errorUnableToDeleteAccount => 'Unable to delete the account.';
+
+  @override
   String get bookingSelectPatientTitle => 'Who is this appointment for?';
 
   @override
