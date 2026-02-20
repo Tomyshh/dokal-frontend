@@ -461,10 +461,49 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchSortRating => 'Рейтингу';
 
   @override
+  String get searchSortPrice => 'Цене';
+
+  @override
+  String get searchSortPriceSubtitle => 'От дорогих к дешёвым';
+
+  @override
+  String get searchFilterPrice => 'Диапазон цен';
+
+  @override
+  String get searchFilterPriceAll => 'Все цены';
+
+  @override
+  String get searchFilterPriceUnder200 => 'До 200₪';
+
+  @override
+  String get searchFilterPrice200_300 => '200-300₪';
+
+  @override
+  String get searchFilterPrice300_500 => '300-500₪';
+
+  @override
+  String get searchFilterPriceOver500 => 'Более 500₪';
+
+  @override
   String get searchFeesLabel => 'Стоимость';
 
   @override
   String get searchBookNow => 'Записаться';
+
+  @override
+  String searchNextToday(String time) {
+    return 'Ближайший: сегодня в $time';
+  }
+
+  @override
+  String searchNextTomorrow(String time) {
+    return 'Ближайший: завтра в $time';
+  }
+
+  @override
+  String searchNextInDays(int count) {
+    return 'Ближайший: через $count дн.';
+  }
 
   @override
   String get onboardingStep1Title =>

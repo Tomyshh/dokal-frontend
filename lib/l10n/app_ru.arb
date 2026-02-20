@@ -202,8 +202,34 @@
   "searchSortDistance": "Расстоянию",
   "searchSortName": "Имени",
   "searchSortRating": "Рейтингу",
+  "searchSortPrice": "Цене",
+  "searchSortPriceSubtitle": "От дорогих к дешёвым",
+  "searchFilterPrice": "Диапазон цен",
+  "searchFilterPriceAll": "Все цены",
+  "searchFilterPriceUnder200": "До 200₪",
+  "searchFilterPrice200_300": "200-300₪",
+  "searchFilterPrice300_500": "300-500₪",
+  "searchFilterPriceOver500": "Более 500₪",
   "searchFeesLabel": "Стоимость",
   "searchBookNow": "Записаться",
+  "searchNextToday": "Ближайший: сегодня в {time}",
+  "@searchNextToday": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextTomorrow": "Ближайший: завтра в {time}",
+  "@searchNextTomorrow": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextInDays": "Ближайший: через {count} дн.",
+  "@searchNextInDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
 
   "onboardingStep1Title": "Легко находите и записывайтесь на приём к врачу",
   "onboardingStep2Title": "Легко общайтесь с вашими специалистами",

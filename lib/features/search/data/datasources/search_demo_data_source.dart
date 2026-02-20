@@ -162,6 +162,8 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
         availabilityOrder: p.availabilityOrder,
         rating: 4.0 + (i % 5) * 0.1,
         reviewCount: 100 + i * 300,
+        priceMinAgorot: 25000 + (i % 3) * 5000,
+        priceMaxAgorot: 30000 + (i % 3) * 5000,
       );
     }).toList();
   }

@@ -17,7 +17,16 @@ import '../../domain/entities/practitioner_search_result.dart';
 import '../bloc/search_cubit.dart';
 
 /// Options de tri disponibles
-enum SortOption { availability, distance, name, rating }
+enum SortOption { availability, distance, name, rating, price }
+
+/// Plage de prix pour le filtre (agorot = ILS × 100)
+enum PriceRangeFilter {
+  all,
+  under200,
+  range200_300,
+  range300_500,
+  over500,
+}
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -28,6 +37,31 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   SortOption _currentSort = SortOption.availability;
+  PriceRangeFilter _priceFilter = PriceRangeFilter.all;
+
+  List<PractitionerSearchResult> _applyFilters(
+    List<PractitionerSearchResult> results,
+  ) {
+    if (_priceFilter == PriceRangeFilter.all) return results;
+    return results.where((p) {
+      final min = p.priceMinAgorot;
+      final max = p.priceMaxAgorot ?? min;
+      final effectiveMax = max ?? min ?? 0;
+      final effectiveMin = min ?? max ?? 0;
+      switch (_priceFilter) {
+        case PriceRangeFilter.under200:
+          return effectiveMax <= 20000;
+        case PriceRangeFilter.range200_300:
+          return effectiveMin <= 30000 && effectiveMax >= 20000;
+        case PriceRangeFilter.range300_500:
+          return effectiveMin <= 50000 && effectiveMax >= 30000;
+        case PriceRangeFilter.over500:
+          return effectiveMin >= 50000;
+        default:
+          return true;
+      }
+    }).toList();
+  }
 
   List<PractitionerSearchResult> _sortResults(
     List<PractitionerSearchResult> results,
@@ -49,11 +83,16 @@ class _SearchPageState extends State<SearchPage> {
       case SortOption.name:
         sorted.sort((a, b) => a.name.compareTo(b.name));
       case SortOption.rating:
-        // Pour le moment, tri par disponibilité comme fallback
         sorted.sort((a, b) {
-          final aOrder = a.availabilityOrder ?? 999;
-          final bOrder = b.availabilityOrder ?? 999;
-          return aOrder.compareTo(bOrder);
+          final aRating = a.rating ?? 0.0;
+          final bRating = b.rating ?? 0.0;
+          return bRating.compareTo(aRating);
+        });
+      case SortOption.price:
+        sorted.sort((a, b) {
+          final aPrice = a.priceMaxAgorot ?? a.priceMinAgorot ?? 0;
+          final bPrice = b.priceMaxAgorot ?? b.priceMinAgorot ?? 0;
+          return bPrice.compareTo(aPrice);
         });
     }
     return sorted;
@@ -75,6 +114,9 @@ class _SearchPageState extends State<SearchPage> {
                 _SearchBar(
                   currentSort: _currentSort,
                   onSortChanged: (sort) => setState(() => _currentSort = sort),
+                  priceFilter: _priceFilter,
+                  onPriceFilterChanged: (f) =>
+                      setState(() => _priceFilter = f),
                 ),
                 SizedBox(height: AppSpacing.md.h),
                 Expanded(
@@ -93,8 +135,10 @@ class _SearchPageState extends State<SearchPage> {
                           icon: Icons.search_off_rounded,
                         );
                       }
+                      final filtered =
+                          _applyFilters(state.results);
                       final List<PractitionerSearchResult> results =
-                          _sortResults(state.results);
+                          _sortResults(filtered);
                       if (results.isEmpty) {
                         return DokalEmptyState(
                           title: l10n.searchNoResultsTitle,
@@ -139,10 +183,17 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({required this.currentSort, required this.onSortChanged});
+  const _SearchBar({
+    required this.currentSort,
+    required this.onSortChanged,
+    required this.priceFilter,
+    required this.onPriceFilterChanged,
+  });
 
   final SortOption currentSort;
   final ValueChanged<SortOption> onSortChanged;
+  final PriceRangeFilter priceFilter;
+  final ValueChanged<PriceRangeFilter> onPriceFilterChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -209,11 +260,13 @@ class _SearchBar extends StatelessWidget {
                   width: 36.r,
                   height: 36.r,
                   decoration: BoxDecoration(
-                    color: currentSort != SortOption.availability
+                    color: currentSort != SortOption.availability ||
+                            priceFilter != PriceRangeFilter.all
                         ? AppColors.accent.withValues(alpha: 0.1)
                         : AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(10.r),
-                    border: currentSort != SortOption.availability
+                    border: currentSort != SortOption.availability ||
+                            priceFilter != PriceRangeFilter.all
                         ? Border.all(
                             color: AppColors.accent.withValues(alpha: 0.3),
                             width: 1.r,
@@ -237,8 +290,16 @@ class _SearchBar extends StatelessWidget {
                   width: 36.r,
                   height: 36.r,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryLightBackground,
+                    color: priceFilter != PriceRangeFilter.all
+                        ? AppColors.primary.withValues(alpha: 0.1)
+                        : AppColors.primaryLightBackground,
                     borderRadius: BorderRadius.circular(10.r),
+                    border: priceFilter != PriceRangeFilter.all
+                        ? Border.all(
+                            color: AppColors.primary.withValues(alpha: 0.3),
+                            width: 1.r,
+                          )
+                        : null,
                   ),
                   child: Icon(
                     Icons.tune_rounded,
@@ -357,6 +418,18 @@ class _SearchBar extends StatelessWidget {
                             Navigator.of(ctx).pop();
                           },
                         ),
+                        SizedBox(height: 8.h),
+                        _SortOptionTile(
+                          icon: Icons.payments_rounded,
+                          label: l10n.searchSortPrice,
+                          subtitle: l10n.searchSortPriceSubtitle,
+                          isSelected: currentSort == SortOption.price,
+                          color: AppColors.accent,
+                          onTap: () {
+                            onSortChanged(SortOption.price);
+                            Navigator.of(ctx).pop();
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -374,7 +447,13 @@ class _SearchBar extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => const _FilterBottomSheet(),
+      builder: (ctx) => _FilterBottomSheet(
+        initialPriceFilter: priceFilter,
+        onApply: (priceFilter) {
+          onPriceFilterChanged(priceFilter);
+          Navigator.of(ctx).pop();
+        },
+      ),
     );
   }
 }
@@ -465,7 +544,13 @@ class _SortOptionTile extends StatelessWidget {
 }
 
 class _FilterBottomSheet extends StatefulWidget {
-  const _FilterBottomSheet();
+  const _FilterBottomSheet({
+    required this.initialPriceFilter,
+    required this.onApply,
+  });
+
+  final PriceRangeFilter initialPriceFilter;
+  final void Function(PriceRangeFilter priceFilter) onApply;
 
   @override
   State<_FilterBottomSheet> createState() => _FilterBottomSheetState();
@@ -476,6 +561,13 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
   String? _selectedSpecialty;
   String? _selectedKupat;
   double _maxDistance = 50;
+  late PriceRangeFilter _priceFilter;
+
+  @override
+  void initState() {
+    super.initState();
+    _priceFilter = widget.initialPriceFilter;
+  }
 
   static const List<String> _specialties = [
     'רופא משפחה',
@@ -498,6 +590,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
     if (_selectedSpecialty != null) count++;
     if (_selectedKupat != null) count++;
     if (_maxDistance < 50) count++;
+    if (_priceFilter != PriceRangeFilter.all) count++;
     return count;
   }
 
@@ -660,6 +753,59 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                     ),
                   ),
                   SizedBox(height: AppSpacing.lg.h),
+                  // Price filter
+                  _FilterSection(
+                    title: l10n.searchFilterPrice,
+                    icon: Icons.payments_rounded,
+                    iconColor: AppColors.accent,
+                    child: Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: [
+                        _FilterChip(
+                          label: l10n.searchFilterPriceAll,
+                          isSelected: _priceFilter == PriceRangeFilter.all,
+                          onTap: () =>
+                              setState(() => _priceFilter = PriceRangeFilter.all),
+                        ),
+                        _FilterChip(
+                          label: l10n.searchFilterPriceUnder200,
+                          isSelected:
+                              _priceFilter == PriceRangeFilter.under200,
+                          onTap: () => setState(
+                              () => _priceFilter = PriceRangeFilter.under200),
+                          accentColor: AppColors.accent,
+                        ),
+                        _FilterChip(
+                          label: l10n.searchFilterPrice200_300,
+                          isSelected:
+                              _priceFilter == PriceRangeFilter.range200_300,
+                          onTap: () => setState(
+                              () => _priceFilter =
+                                  PriceRangeFilter.range200_300),
+                          accentColor: AppColors.accent,
+                        ),
+                        _FilterChip(
+                          label: l10n.searchFilterPrice300_500,
+                          isSelected:
+                              _priceFilter == PriceRangeFilter.range300_500,
+                          onTap: () => setState(
+                              () => _priceFilter =
+                                  PriceRangeFilter.range300_500),
+                          accentColor: AppColors.accent,
+                        ),
+                        _FilterChip(
+                          label: l10n.searchFilterPriceOver500,
+                          isSelected:
+                              _priceFilter == PriceRangeFilter.over500,
+                          onTap: () => setState(
+                              () => _priceFilter = PriceRangeFilter.over500),
+                          accentColor: AppColors.accent,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: AppSpacing.lg.h),
                   // Distance filter
                   _FilterSection(
                     title: l10n.searchFilterDistance,
@@ -748,18 +894,19 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
             ),
             child: SafeArea(
               top: false,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        setState(() {
-                          _selectedDate = null;
-                          _selectedSpecialty = null;
-                          _selectedKupat = null;
-                          _maxDistance = 50;
-                        });
-                      },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                _selectedDate = null;
+                                _selectedSpecialty = null;
+                                _selectedKupat = null;
+                                _maxDistance = 50;
+                                _priceFilter = PriceRangeFilter.all;
+                              });
+                            },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textSecondary,
                         side: const BorderSide(color: AppColors.outline),
@@ -778,7 +925,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Expanded(
                     flex: 2,
                     child: DokalButton.primary(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => widget.onApply(_priceFilter),
                       child: Text(l10n.searchFilterApply),
                     ),
                   ),

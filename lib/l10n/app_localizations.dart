@@ -952,6 +952,54 @@ abstract class AppLocalizations {
   /// **'דירוג'**
   String get searchSortRating;
 
+  /// No description provided for @searchSortPrice.
+  ///
+  /// In he, this message translates to:
+  /// **'מחיר'**
+  String get searchSortPrice;
+
+  /// No description provided for @searchSortPriceSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מהיקר ביותר לפחות יקר'**
+  String get searchSortPriceSubtitle;
+
+  /// No description provided for @searchFilterPrice.
+  ///
+  /// In he, this message translates to:
+  /// **'טווח מחירים'**
+  String get searchFilterPrice;
+
+  /// No description provided for @searchFilterPriceAll.
+  ///
+  /// In he, this message translates to:
+  /// **'כל המחירים'**
+  String get searchFilterPriceAll;
+
+  /// No description provided for @searchFilterPriceUnder200.
+  ///
+  /// In he, this message translates to:
+  /// **'עד 200₪'**
+  String get searchFilterPriceUnder200;
+
+  /// No description provided for @searchFilterPrice200_300.
+  ///
+  /// In he, this message translates to:
+  /// **'200-300₪'**
+  String get searchFilterPrice200_300;
+
+  /// No description provided for @searchFilterPrice300_500.
+  ///
+  /// In he, this message translates to:
+  /// **'300-500₪'**
+  String get searchFilterPrice300_500;
+
+  /// No description provided for @searchFilterPriceOver500.
+  ///
+  /// In he, this message translates to:
+  /// **'מעל 500₪'**
+  String get searchFilterPriceOver500;
+
   /// No description provided for @searchFeesLabel.
   ///
   /// In he, this message translates to:
@@ -963,6 +1011,24 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'קבע תור'**
   String get searchBookNow;
+
+  /// No description provided for @searchNextToday.
+  ///
+  /// In he, this message translates to:
+  /// **'הבא: היום ב־{time}'**
+  String searchNextToday(String time);
+
+  /// No description provided for @searchNextTomorrow.
+  ///
+  /// In he, this message translates to:
+  /// **'הבא: מחר ב־{time}'**
+  String searchNextTomorrow(String time);
+
+  /// No description provided for @searchNextInDays.
+  ///
+  /// In he, this message translates to:
+  /// **'הבא: בעוד {count} ימים'**
+  String searchNextInDays(int count);
 
   /// No description provided for @onboardingStep1Title.
   ///

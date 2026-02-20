@@ -202,8 +202,34 @@
   "searchSortDistance": "Distancia",
   "searchSortName": "Nombre",
   "searchSortRating": "Valoración",
+  "searchSortPrice": "Precio",
+  "searchSortPriceSubtitle": "Del más caro al más barato",
+  "searchFilterPrice": "Rango de precios",
+  "searchFilterPriceAll": "Todos los precios",
+  "searchFilterPriceUnder200": "Menos de 200₪",
+  "searchFilterPrice200_300": "200-300₪",
+  "searchFilterPrice300_500": "300-500₪",
+  "searchFilterPriceOver500": "Más de 500₪",
   "searchFeesLabel": "Honorarios",
   "searchBookNow": "Reservar",
+  "searchNextToday": "Próximo: hoy a las {time}",
+  "@searchNextToday": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextTomorrow": "Próximo: mañana a las {time}",
+  "@searchNextTomorrow": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextInDays": "Próximo: en {count} días",
+  "@searchNextInDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
 
   "onboardingStep1Title": "Encuentra y reserva citas médicas fácilmente",
   "onboardingStep2Title": "Chatea fácilmente con tus profesionales",

@@ -202,8 +202,34 @@
   "searchSortDistance": "ርቀት",
   "searchSortName": "ስም",
   "searchSortRating": "ደረጃ",
+  "searchSortPrice": "ዋጋ",
+  "searchSortPriceSubtitle": "ከውድ ወደ ርካሽ",
+  "searchFilterPrice": "የዋጋ ክልል",
+  "searchFilterPriceAll": "ሁሉም ዋጋዎች",
+  "searchFilterPriceUnder200": "ከ200₪ በታች",
+  "searchFilterPrice200_300": "200-300₪",
+  "searchFilterPrice300_500": "300-500₪",
+  "searchFilterPriceOver500": "ከ500₪ በላይ",
   "searchFeesLabel": "ዋጋ",
   "searchBookNow": "ቀጠሮ ያስያዙ",
+  "searchNextToday": "ቀጣይ: ዛሬ በ{time}",
+  "@searchNextToday": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextTomorrow": "ቀጣይ: ነገ በ{time}",
+  "@searchNextTomorrow": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextInDays": "ቀጣይ: በ{count} ቀናት",
+  "@searchNextInDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
 
   "onboardingStep1Title": "የሕክምና ቀጠሮ ያግኙ እና በቀላሉ ያስያዙ",
   "onboardingStep2Title": "ከሐኪሞችዎ ጋር በቀላሉ ይወያዩ",

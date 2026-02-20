@@ -454,10 +454,49 @@ class AppLocalizationsHe extends AppLocalizations {
   String get searchSortRating => 'דירוג';
 
   @override
+  String get searchSortPrice => 'מחיר';
+
+  @override
+  String get searchSortPriceSubtitle => 'מהיקר ביותר לפחות יקר';
+
+  @override
+  String get searchFilterPrice => 'טווח מחירים';
+
+  @override
+  String get searchFilterPriceAll => 'כל המחירים';
+
+  @override
+  String get searchFilterPriceUnder200 => 'עד 200₪';
+
+  @override
+  String get searchFilterPrice200_300 => '200-300₪';
+
+  @override
+  String get searchFilterPrice300_500 => '300-500₪';
+
+  @override
+  String get searchFilterPriceOver500 => 'מעל 500₪';
+
+  @override
   String get searchFeesLabel => 'עלות';
 
   @override
   String get searchBookNow => 'קבע תור';
+
+  @override
+  String searchNextToday(String time) {
+    return 'הבא: היום ב־$time';
+  }
+
+  @override
+  String searchNextTomorrow(String time) {
+    return 'הבא: מחר ב־$time';
+  }
+
+  @override
+  String searchNextInDays(int count) {
+    return 'הבא: בעוד $count ימים';
+  }
 
   @override
   String get onboardingStep1Title => 'מצאו וקבעו תורים רפואיים בקלות';

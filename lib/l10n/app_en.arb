@@ -202,8 +202,34 @@
   "searchSortDistance": "Distance",
   "searchSortName": "Name",
   "searchSortRating": "Rating",
+  "searchSortPrice": "Price",
+  "searchSortPriceSubtitle": "Most expensive first",
+  "searchFilterPrice": "Price range",
+  "searchFilterPriceAll": "All prices",
+  "searchFilterPriceUnder200": "Under 200₪",
+  "searchFilterPrice200_300": "200-300₪",
+  "searchFilterPrice300_500": "300-500₪",
+  "searchFilterPriceOver500": "Over 500₪",
   "searchFeesLabel": "Fees",
   "searchBookNow": "Book Now",
+  "searchNextToday": "Next: today at {time}",
+  "@searchNextToday": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextTomorrow": "Next: tomorrow at {time}",
+  "@searchNextTomorrow": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextInDays": "Next: in {count} days",
+  "@searchNextInDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
 
   "onboardingStep1Title": "Find and book medical appointments easily",
   "onboardingStep2Title": "Chat easily with your practitioners",

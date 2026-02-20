@@ -202,8 +202,34 @@
   "searchSortDistance": "מרחק",
   "searchSortName": "שם",
   "searchSortRating": "דירוג",
+  "searchSortPrice": "מחיר",
+  "searchSortPriceSubtitle": "מהיקר ביותר לפחות יקר",
+  "searchFilterPrice": "טווח מחירים",
+  "searchFilterPriceAll": "כל המחירים",
+  "searchFilterPriceUnder200": "עד 200₪",
+  "searchFilterPrice200_300": "200-300₪",
+  "searchFilterPrice300_500": "300-500₪",
+  "searchFilterPriceOver500": "מעל 500₪",
   "searchFeesLabel": "עלות",
   "searchBookNow": "קבע תור",
+  "searchNextToday": "הבא: היום ב־{time}",
+  "@searchNextToday": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextTomorrow": "הבא: מחר ב־{time}",
+  "@searchNextTomorrow": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "searchNextInDays": "הבא: בעוד {count} ימים",
+  "@searchNextInDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
 
   "onboardingStep1Title": "מצאו וקבעו תורים רפואיים בקלות",
   "onboardingStep2Title": "התכתבו בקלות עם הרופאים שלכם",

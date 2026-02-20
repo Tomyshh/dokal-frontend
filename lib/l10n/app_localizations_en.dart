@@ -462,10 +462,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchSortRating => 'Rating';
 
   @override
+  String get searchSortPrice => 'Price';
+
+  @override
+  String get searchSortPriceSubtitle => 'Most expensive first';
+
+  @override
+  String get searchFilterPrice => 'Price range';
+
+  @override
+  String get searchFilterPriceAll => 'All prices';
+
+  @override
+  String get searchFilterPriceUnder200 => 'Under 200₪';
+
+  @override
+  String get searchFilterPrice200_300 => '200-300₪';
+
+  @override
+  String get searchFilterPrice300_500 => '300-500₪';
+
+  @override
+  String get searchFilterPriceOver500 => 'Over 500₪';
+
+  @override
   String get searchFeesLabel => 'Fees';
 
   @override
   String get searchBookNow => 'Book Now';
+
+  @override
+  String searchNextToday(String time) {
+    return 'Next: today at $time';
+  }
+
+  @override
+  String searchNextTomorrow(String time) {
+    return 'Next: tomorrow at $time';
+  }
+
+  @override
+  String searchNextInDays(int count) {
+    return 'Next: in $count days';
+  }
 
   @override
   String get onboardingStep1Title =>

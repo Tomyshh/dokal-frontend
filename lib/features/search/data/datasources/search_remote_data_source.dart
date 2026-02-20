@@ -37,16 +37,24 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
       final firstName = profiles?['first_name'] as String? ?? '';
       final lastName = profiles?['last_name'] as String? ?? '';
 
-      // Parse rating from embedded reviews if available
-      final rawReviews = json['reviews'] as List<dynamic>? ?? [];
-      double? rating;
-      if (rawReviews.isNotEmpty) {
-        final total = rawReviews.fold<double>(0, (sum, r) {
-          final rev = r as Map<String, dynamic>;
-          return sum + (rev['rating'] as num? ?? 0).toDouble();
-        });
-        rating = total / rawReviews.length;
+      // Note moyenne : préférer average_rating de l'API, sinon calculer depuis reviews
+      double? rating = (json['average_rating'] as num?)?.toDouble();
+      int? reviewCount = json['review_count'] as int? ?? json['count'] as int?;
+      if (rating == null) {
+        final rawReviews = json['reviews'] as List<dynamic>? ?? [];
+        if (rawReviews.isNotEmpty) {
+          final total = rawReviews.fold<double>(0, (sum, r) {
+            final rev = r as Map<String, dynamic>;
+            return sum + (rev['rating'] as num? ?? 0).toDouble();
+          });
+          rating = total / rawReviews.length;
+          reviewCount ??= rawReviews.length;
+        }
       }
+
+      // Fourchette de prix (agorot = ILS × 100)
+      final priceMin = json['price_min_agorot'] as int?;
+      final priceMax = json['price_max_agorot'] as int?;
 
       // Parse first slot for next availability
       final rawSlots = json['slots'] as List<dynamic>? ?? [];
@@ -72,8 +80,10 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
         avatarUrl: profiles?['avatar_url'] as String?,
         distanceKm: null,
         availabilityOrder: null,
-        rating: rating ?? 4.5,
-        reviewCount: rawReviews.isNotEmpty ? rawReviews.length : null,
+        rating: rating,
+        reviewCount: reviewCount,
+        priceMinAgorot: priceMin,
+        priceMaxAgorot: priceMax,
       );
     }).toList();
   }

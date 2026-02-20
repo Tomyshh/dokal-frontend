@@ -453,10 +453,49 @@ class AppLocalizationsAm extends AppLocalizations {
   String get searchSortRating => 'ደረጃ';
 
   @override
+  String get searchSortPrice => 'ዋጋ';
+
+  @override
+  String get searchSortPriceSubtitle => 'ከውድ ወደ ርካሽ';
+
+  @override
+  String get searchFilterPrice => 'የዋጋ ክልል';
+
+  @override
+  String get searchFilterPriceAll => 'ሁሉም ዋጋዎች';
+
+  @override
+  String get searchFilterPriceUnder200 => 'ከ200₪ በታች';
+
+  @override
+  String get searchFilterPrice200_300 => '200-300₪';
+
+  @override
+  String get searchFilterPrice300_500 => '300-500₪';
+
+  @override
+  String get searchFilterPriceOver500 => 'ከ500₪ በላይ';
+
+  @override
   String get searchFeesLabel => 'ዋጋ';
 
   @override
   String get searchBookNow => 'ቀጠሮ ያስያዙ';
+
+  @override
+  String searchNextToday(String time) {
+    return 'ቀጣይ: ዛሬ በ$time';
+  }
+
+  @override
+  String searchNextTomorrow(String time) {
+    return 'ቀጣይ: ነገ በ$time';
+  }
+
+  @override
+  String searchNextInDays(int count) {
+    return 'ቀጣይ: በ$count ቀናት';
+  }
 
   @override
   String get onboardingStep1Title => 'የሕክምና ቀጠሮ ያግኙ እና በቀላሉ ያስያዙ';

@@ -14,6 +14,8 @@ class PractitionerSearchResult extends Equatable {
     this.availabilityOrder,
     this.rating,
     this.reviewCount,
+    this.priceMinAgorot,
+    this.priceMaxAgorot,
   });
 
   final String id;
@@ -37,6 +39,12 @@ class PractitionerSearchResult extends Equatable {
   /// Nombre d'avis
   final int? reviewCount;
 
+  /// Prix min consultation en agorot (ILS × 100)
+  final int? priceMinAgorot;
+
+  /// Prix max consultation en agorot (ILS × 100)
+  final int? priceMaxAgorot;
+
   @override
   List<Object?> get props => [
     id,
@@ -51,5 +59,7 @@ class PractitionerSearchResult extends Equatable {
     availabilityOrder,
     rating,
     reviewCount,
+    priceMinAgorot,
+    priceMaxAgorot,
   ];
 }

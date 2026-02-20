@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/format_next_availability.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
@@ -23,8 +24,6 @@ class SearchPractitionerCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onBookTap;
 
-  static const String _fixedPrice = '280₪';
-
   String _getInitials() {
     final parts = practitioner.name
         .replaceAll('ד"ר ', '')
@@ -36,6 +35,24 @@ class SearchPractitionerCard extends StatelessWidget {
       return parts[0][0];
     }
     return '?';
+  }
+
+  String _formatPriceLabel() {
+    final min = practitioner.priceMinAgorot;
+    final max = practitioner.priceMaxAgorot;
+    if (min != null && max != null) {
+      if (min == max) {
+        return '${(min / 100).round()}₪';
+      }
+      return '${(min / 100).round()}-${(max / 100).round()}₪';
+    }
+    if (min != null) {
+      return '${(min / 100).round()}₪';
+    }
+    if (max != null) {
+      return '${(max / 100).round()}₪';
+    }
+    return '—';
   }
 
   @override
@@ -95,8 +112,6 @@ class SearchPractitionerCard extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
                         ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 2.h),
                   Text(
@@ -104,8 +119,6 @@ class SearchPractitionerCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 6.h),
                   // Rating
@@ -140,7 +153,9 @@ class SearchPractitionerCard extends StatelessWidget {
                   ],
                   // Prochain créneau
                   if (practitioner.nextAvailabilityLabel.isNotEmpty)
-                    _StaticSlotLabel(label: practitioner.nextAvailabilityLabel)
+                    _StaticSlotLabel(
+                      rawLabel: practitioner.nextAvailabilityLabel,
+                    )
                   else
                     _NextSlotLabel(practitionerId: practitioner.id),
                 ],
@@ -159,7 +174,7 @@ class SearchPractitionerCard extends StatelessWidget {
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  _fixedPrice,
+                  _formatPriceLabel(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -218,12 +233,14 @@ class _AvatarPlaceholder extends StatelessWidget {
 
 /// Affiche un créneau déjà connu (depuis la recherche).
 class _StaticSlotLabel extends StatelessWidget {
-  const _StaticSlotLabel({required this.label});
+  const _StaticSlotLabel({required this.rawLabel});
 
-  final String label;
+  final String rawLabel;
 
   @override
   Widget build(BuildContext context) {
+    final label =
+        formatNextAvailabilityLabel(rawLabel, context.l10n);
     return Row(
       children: [
         Icon(
@@ -239,8 +256,6 @@ class _StaticSlotLabel extends StatelessWidget {
                   color: AppColors.accent,
                   fontWeight: FontWeight.w500,
                 ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
@@ -259,10 +274,12 @@ class _NextSlotLabel extends StatelessWidget {
     return FutureBuilder<String>(
       future: _fetchNextSlot(),
       builder: (context, snapshot) {
-        final label = snapshot.data;
-        if (label == null || label.isEmpty) {
+        final rawLabel = snapshot.data;
+        if (rawLabel == null || rawLabel.isEmpty) {
           return const SizedBox.shrink();
         }
+        final label =
+            formatNextAvailabilityLabel(rawLabel, context.l10n);
         return Row(
           children: [
             Icon(
@@ -278,8 +295,6 @@ class _NextSlotLabel extends StatelessWidget {
                       color: AppColors.accent,
                       fontWeight: FontWeight.w500,
                     ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

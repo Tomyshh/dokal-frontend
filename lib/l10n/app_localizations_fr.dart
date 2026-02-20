@@ -466,10 +466,49 @@ class AppLocalizationsFr extends AppLocalizations {
   String get searchSortRating => 'דירוג';
 
   @override
+  String get searchSortPrice => 'Prix';
+
+  @override
+  String get searchSortPriceSubtitle => 'Du plus cher au moins cher';
+
+  @override
+  String get searchFilterPrice => 'Fourchette de prix';
+
+  @override
+  String get searchFilterPriceAll => 'Tous les prix';
+
+  @override
+  String get searchFilterPriceUnder200 => 'Moins de 200₪';
+
+  @override
+  String get searchFilterPrice200_300 => '200-300₪';
+
+  @override
+  String get searchFilterPrice300_500 => '300-500₪';
+
+  @override
+  String get searchFilterPriceOver500 => 'Plus de 500₪';
+
+  @override
   String get searchFeesLabel => 'Honoraires';
 
   @override
   String get searchBookNow => 'Réserver';
+
+  @override
+  String searchNextToday(String time) {
+    return 'Prochain: aujourd\'hui à $time';
+  }
+
+  @override
+  String searchNextTomorrow(String time) {
+    return 'Prochain: demain à $time';
+  }
+
+  @override
+  String searchNextInDays(int count) {
+    return 'Prochain: dans $count jours';
+  }
 
   @override
   String get onboardingStep1Title =>
