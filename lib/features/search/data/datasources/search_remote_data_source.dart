@@ -69,6 +69,18 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
         }
       }
 
+      // Langues parlées (profiles.languages ou root)
+      List<String>? languages;
+      final rawLangs = profiles?['languages'] ?? json['languages'];
+      if (rawLangs is List) {
+        languages = rawLangs
+            .whereType<String>()
+            .map((s) => s.trim())
+            .where((s) => s.isNotEmpty)
+            .toList();
+        if (languages.isEmpty) languages = null;
+      }
+
       return PractitionerSearchResult(
         id: json['id'] as String,
         name: '$firstName $lastName'.trim(),
@@ -78,6 +90,7 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
         sector: json['sector'] as String? ?? '',
         nextAvailabilityLabel: nextAvailabilityLabel,
         avatarUrl: profiles?['avatar_url'] as String?,
+        languages: languages,
         distanceKm: null,
         availabilityOrder: null,
         rating: rating,

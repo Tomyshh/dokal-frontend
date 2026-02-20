@@ -32,6 +32,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '0.8 ק"מ',
       distanceKm: 0.8,
       availabilityOrder: 0,
+      languages: ['he', 'en'],
     ),
     _MockPractitioner(
       name: 'ד"ר שרה לוי',
@@ -42,6 +43,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '1.2 ק"מ',
       distanceKm: 1.2,
       availabilityOrder: 1,
+      languages: ['he', 'fr'],
     ),
     _MockPractitioner(
       name: 'ד"ר אברהם גולדשטיין',
@@ -52,6 +54,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '2.5 ק"מ',
       distanceKm: 2.5,
       availabilityOrder: 2,
+      languages: ['he', 'en', 'ru'],
     ),
     _MockPractitioner(
       name: 'ד"ר מיכל ברק',
@@ -62,6 +65,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '1.5 ק"מ',
       distanceKm: 1.5,
       availabilityOrder: 0,
+      languages: ['he'],
     ),
     _MockPractitioner(
       name: 'ד"ר דוד פרידמן',
@@ -72,6 +76,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '45 ק"מ',
       distanceKm: 45.0,
       availabilityOrder: 1,
+      languages: ['he', 'en', 'fr'],
     ),
     _MockPractitioner(
       name: 'ד"ר רחל אזולאי',
@@ -82,6 +87,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '3.0 ק"מ',
       distanceKm: 3.0,
       availabilityOrder: 2,
+      languages: ['he', 'ar'],
     ),
     _MockPractitioner(
       name: 'ד"ר משה שפירא',
@@ -92,6 +98,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '85 ק"מ',
       distanceKm: 85.0,
       availabilityOrder: 0,
+      languages: ['he', 'en'],
     ),
     _MockPractitioner(
       name: 'ד"ר נעמי רוזנברג',
@@ -102,6 +109,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '4.2 ק"מ',
       distanceKm: 4.2,
       availabilityOrder: 3,
+      languages: ['he', 'ru'],
     ),
     _MockPractitioner(
       name: 'ד"ר יעקב אלון',
@@ -112,6 +120,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '0.5 ק"מ',
       distanceKm: 0.5,
       availabilityOrder: 2,
+      languages: ['he', 'en', 'es'],
     ),
     _MockPractitioner(
       name: 'ד"ר טלי מזרחי',
@@ -122,6 +131,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '5.0 ק"מ',
       distanceKm: 5.0,
       availabilityOrder: 0,
+      languages: ['he', 'fr'],
     ),
     _MockPractitioner(
       name: 'ד"ר אהרון ביטון',
@@ -132,6 +142,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '25 ק"מ',
       distanceKm: 25.0,
       availabilityOrder: 1,
+      languages: ['he', 'am'],
     ),
     _MockPractitioner(
       name: 'ד"ר הילה דהן',
@@ -142,6 +153,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
       distanceLabel: '1.8 ק"מ',
       distanceKm: 1.8,
       availabilityOrder: 3,
+      languages: ['he', 'en'],
     ),
   ];
 
@@ -164,6 +176,7 @@ class SearchDemoDataSourceImpl implements SearchDemoDataSource {
         reviewCount: 100 + i * 300,
         priceMinAgorot: 25000 + (i % 3) * 5000,
         priceMaxAgorot: 30000 + (i % 3) * 5000,
+        languages: p.languages,
       );
     }).toList();
   }
@@ -194,6 +207,7 @@ class _MockPractitioner {
     required this.distanceLabel,
     required this.distanceKm,
     required this.availabilityOrder,
+    this.languages,
   });
 
   final String name;
@@ -204,4 +218,5 @@ class _MockPractitioner {
   final String distanceLabel;
   final double distanceKm;
   final int availabilityOrder;
+  final List<String>? languages;
 }

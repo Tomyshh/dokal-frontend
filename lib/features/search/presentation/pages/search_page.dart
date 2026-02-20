@@ -38,12 +38,14 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   SortOption _currentSort = SortOption.availability;
   PriceRangeFilter _priceFilter = PriceRangeFilter.all;
+  String? _languageFilter;
 
   List<PractitionerSearchResult> _applyFilters(
     List<PractitionerSearchResult> results,
   ) {
-    if (_priceFilter == PriceRangeFilter.all) return results;
-    return results.where((p) {
+    var filtered = results;
+    if (_priceFilter != PriceRangeFilter.all) {
+      filtered = filtered.where((p) {
       final min = p.priceMinAgorot;
       final max = p.priceMaxAgorot ?? min;
       final effectiveMax = max ?? min ?? 0;
@@ -61,6 +63,16 @@ class _SearchPageState extends State<SearchPage> {
           return true;
       }
     }).toList();
+    }
+    if (_languageFilter != null && _languageFilter!.isNotEmpty) {
+      final lang = _languageFilter!.trim().toLowerCase();
+      filtered = filtered.where((p) {
+        final langs = p.languages;
+        if (langs == null || langs.isEmpty) return false;
+        return langs.any((l) => l.trim().toLowerCase() == lang);
+      }).toList();
+    }
+    return filtered;
   }
 
   List<PractitionerSearchResult> _sortResults(
@@ -117,6 +129,9 @@ class _SearchPageState extends State<SearchPage> {
                   priceFilter: _priceFilter,
                   onPriceFilterChanged: (f) =>
                       setState(() => _priceFilter = f),
+                  languageFilter: _languageFilter,
+                  onLanguageFilterChanged: (l) =>
+                      setState(() => _languageFilter = l),
                 ),
                 SizedBox(height: AppSpacing.md.h),
                 Expanded(
@@ -188,12 +203,16 @@ class _SearchBar extends StatelessWidget {
     required this.onSortChanged,
     required this.priceFilter,
     required this.onPriceFilterChanged,
+    required this.languageFilter,
+    required this.onLanguageFilterChanged,
   });
 
   final SortOption currentSort;
   final ValueChanged<SortOption> onSortChanged;
   final PriceRangeFilter priceFilter;
   final ValueChanged<PriceRangeFilter> onPriceFilterChanged;
+  final String? languageFilter;
+  final ValueChanged<String?> onLanguageFilterChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -261,12 +280,14 @@ class _SearchBar extends StatelessWidget {
                   height: 36.r,
                   decoration: BoxDecoration(
                     color: currentSort != SortOption.availability ||
-                            priceFilter != PriceRangeFilter.all
+                            priceFilter != PriceRangeFilter.all ||
+                            languageFilter != null
                         ? AppColors.accent.withValues(alpha: 0.1)
                         : AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(10.r),
                     border: currentSort != SortOption.availability ||
-                            priceFilter != PriceRangeFilter.all
+                            priceFilter != PriceRangeFilter.all ||
+                            languageFilter != null
                         ? Border.all(
                             color: AppColors.accent.withValues(alpha: 0.3),
                             width: 1.r,
@@ -290,11 +311,13 @@ class _SearchBar extends StatelessWidget {
                   width: 36.r,
                   height: 36.r,
                   decoration: BoxDecoration(
-                    color: priceFilter != PriceRangeFilter.all
+                    color: priceFilter != PriceRangeFilter.all ||
+                            languageFilter != null
                         ? AppColors.primary.withValues(alpha: 0.1)
                         : AppColors.primaryLightBackground,
                     borderRadius: BorderRadius.circular(10.r),
-                    border: priceFilter != PriceRangeFilter.all
+                    border: priceFilter != PriceRangeFilter.all ||
+                            languageFilter != null
                         ? Border.all(
                             color: AppColors.primary.withValues(alpha: 0.3),
                             width: 1.r,
@@ -449,8 +472,10 @@ class _SearchBar extends StatelessWidget {
       backgroundColor: Colors.transparent,
       builder: (ctx) => _FilterBottomSheet(
         initialPriceFilter: priceFilter,
-        onApply: (priceFilter) {
+        initialLanguageFilter: languageFilter,
+        onApply: (priceFilter, languageFilter) {
           onPriceFilterChanged(priceFilter);
+          onLanguageFilterChanged(languageFilter);
           Navigator.of(ctx).pop();
         },
       ),
@@ -546,11 +571,14 @@ class _SortOptionTile extends StatelessWidget {
 class _FilterBottomSheet extends StatefulWidget {
   const _FilterBottomSheet({
     required this.initialPriceFilter,
+    required this.initialLanguageFilter,
     required this.onApply,
   });
 
   final PriceRangeFilter initialPriceFilter;
-  final void Function(PriceRangeFilter priceFilter) onApply;
+  final String? initialLanguageFilter;
+  final void Function(PriceRangeFilter priceFilter, String? languageFilter)
+      onApply;
 
   @override
   State<_FilterBottomSheet> createState() => _FilterBottomSheetState();
@@ -560,13 +588,46 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
   String? _selectedDate;
   String? _selectedSpecialty;
   String? _selectedKupat;
+  String? _selectedLanguage;
   double _maxDistance = 50;
   late PriceRangeFilter _priceFilter;
+
+  String _getLanguageLabel(dynamic l10n, String key) {
+    switch (key) {
+      case 'practitionerLanguageHebrew':
+        return l10n.practitionerLanguageHebrew;
+      case 'practitionerLanguageFrench':
+        return l10n.practitionerLanguageFrench;
+      case 'practitionerLanguageEnglish':
+        return l10n.practitionerLanguageEnglish;
+      case 'practitionerLanguageRussian':
+        return l10n.practitionerLanguageRussian;
+      case 'practitionerLanguageSpanish':
+        return l10n.practitionerLanguageSpanish;
+      case 'practitionerLanguageAmharic':
+        return l10n.practitionerLanguageAmharic;
+      case 'practitionerLanguageArabic':
+        return l10n.practitionerLanguageArabic;
+      default:
+        return key;
+    }
+  }
+
+  static const List<({String code, String l10nKey})> _languageOptions = [
+    (code: 'he', l10nKey: 'practitionerLanguageHebrew'),
+    (code: 'fr', l10nKey: 'practitionerLanguageFrench'),
+    (code: 'en', l10nKey: 'practitionerLanguageEnglish'),
+    (code: 'ru', l10nKey: 'practitionerLanguageRussian'),
+    (code: 'es', l10nKey: 'practitionerLanguageSpanish'),
+    (code: 'am', l10nKey: 'practitionerLanguageAmharic'),
+    (code: 'ar', l10nKey: 'practitionerLanguageArabic'),
+  ];
 
   @override
   void initState() {
     super.initState();
     _priceFilter = widget.initialPriceFilter;
+    _selectedLanguage = widget.initialLanguageFilter;
   }
 
   static const List<String> _specialties = [
@@ -589,6 +650,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
     if (_selectedDate != null) count++;
     if (_selectedSpecialty != null) count++;
     if (_selectedKupat != null) count++;
+    if (_selectedLanguage != null) count++;
     if (_maxDistance < 50) count++;
     if (_priceFilter != PriceRangeFilter.all) count++;
     return count;
@@ -722,6 +784,33 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                             label: s,
                             isSelected: _selectedSpecialty == s,
                             onTap: () => setState(() => _selectedSpecialty = s),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: AppSpacing.lg.h),
+                  // Language filter
+                  _FilterSection(
+                    title: l10n.searchFilterLanguage,
+                    icon: Icons.translate_rounded,
+                    iconColor: AppColors.primary,
+                    child: Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: [
+                        _FilterChip(
+                          label: l10n.searchFilterLanguageAll,
+                          isSelected: _selectedLanguage == null,
+                          onTap: () =>
+                              setState(() => _selectedLanguage = null),
+                        ),
+                        ..._languageOptions.map(
+                          (opt) => _FilterChip(
+                            label: _getLanguageLabel(l10n, opt.l10nKey),
+                            isSelected: _selectedLanguage == opt.code,
+                            onTap: () => setState(
+                                () => _selectedLanguage = opt.code),
                           ),
                         ),
                       ],
@@ -903,6 +992,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                                 _selectedDate = null;
                                 _selectedSpecialty = null;
                                 _selectedKupat = null;
+                                _selectedLanguage = null;
                                 _maxDistance = 50;
                                 _priceFilter = PriceRangeFilter.all;
                               });
@@ -925,7 +1015,8 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Expanded(
                     flex: 2,
                     child: DokalButton.primary(
-                      onPressed: () => widget.onApply(_priceFilter),
+                      onPressed: () =>
+                          widget.onApply(_priceFilter, _selectedLanguage),
                       child: Text(l10n.searchFilterApply),
                     ),
                   ),

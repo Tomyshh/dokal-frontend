@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -68,39 +69,71 @@ class SearchPractitionerCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: AppColors.outline, width: 1.r),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Avatar
-            Container(
-              width: 56.r,
-              height: 56.r,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.12),
-                    blurRadius: 8.r,
-                    offset: Offset(0, 2.h),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Avatar + drapeaux langues (wrap aligné en bas)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 56.r,
+                        height: 56.r,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withValues(alpha: 0.12),
+                              blurRadius: 8.r,
+                              offset: Offset(0, 2.h),
+                            ),
+                          ],
+                        ),
+                        child: ClipOval(
+                          child: (practitioner.avatarUrl?.trim().isNotEmpty ??
+                                  false)
+                              ? CachedNetworkImage(
+                                  imageUrl: practitioner.avatarUrl!.trim(),
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) =>
+                                      _AvatarPlaceholder(
+                                    initials: _getInitials(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      _AvatarPlaceholder(
+                                    initials: _getInitials(),
+                                  ),
+                                )
+                              : _AvatarPlaceholder(initials: _getInitials()),
+                        ),
+                      ),
+                      if (practitioner.languages != null &&
+                          practitioner.languages!.isNotEmpty)
+                        SizedBox(height: 6.h),
+                    ],
                   ),
+                  if (practitioner.languages != null &&
+                      practitioner.languages!.isNotEmpty)
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      spacing: 4.w,
+                      runSpacing: 4.h,
+                      children: practitioner.languages!
+                          .map((lang) => _LanguageFlag(languageRaw: lang))
+                          .toList(),
+                    )
+                  else
+                    const SizedBox.shrink(),
                 ],
               ),
-              child: ClipOval(
-                child: (practitioner.avatarUrl?.trim().isNotEmpty ?? false)
-                    ? CachedNetworkImage(
-                        imageUrl: practitioner.avatarUrl!.trim(),
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => _AvatarPlaceholder(
-                          initials: _getInitials(),
-                        ),
-                        errorWidget: (context, url, error) => _AvatarPlaceholder(
-                          initials: _getInitials(),
-                        ),
-                      )
-                    : _AvatarPlaceholder(initials: _getInitials()),
-              ),
-            ),
-            SizedBox(width: AppSpacing.md.w),
+              SizedBox(width: AppSpacing.md.w),
             // Infos centrales
             Expanded(
               child: Column(
@@ -195,6 +228,41 @@ class SearchPractitionerCard extends StatelessWidget {
               ],
             ),
           ],
+        ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Drapeau uniquement pour une langue (sous l'avatar).
+class _LanguageFlag extends StatelessWidget {
+  const _LanguageFlag({required this.languageRaw});
+
+  final String languageRaw;
+
+  static const Map<String, String> _countryCodeMap = {
+    'he': 'IL', 'iw': 'IL', 'heb': 'IL', 'hebrew': 'IL', 'עברית': 'IL',
+    'fr': 'FR', 'fra': 'FR', 'french': 'FR', 'français': 'FR',
+    'en': 'US', 'eng': 'US', 'english': 'US',
+    'ru': 'RU', 'rus': 'RU', 'russian': 'RU',
+    'es': 'ES', 'spa': 'ES', 'spanish': 'ES',
+    'am': 'ET', 'amh': 'ET', 'amharic': 'ET',
+    'ar': 'SA', 'ara': 'SA', 'arabic': 'SA',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final normalized = languageRaw.trim().toLowerCase();
+    final countryCode = _countryCodeMap[normalized] ?? 'UN';
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(3.r),
+      child: CountryFlag.fromCountryCode(
+        countryCode,
+        theme: ImageTheme(
+          width: 18.w,
+          height: 12.h,
+          shape: RoundedRectangle(3.r),
         ),
       ),
     );

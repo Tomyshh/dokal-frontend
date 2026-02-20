@@ -1000,6 +1000,18 @@ abstract class AppLocalizations {
   /// **'מעל 500₪'**
   String get searchFilterPriceOver500;
 
+  /// No description provided for @searchFilterLanguage.
+  ///
+  /// In he, this message translates to:
+  /// **'שפה מדוברת'**
+  String get searchFilterLanguage;
+
+  /// No description provided for @searchFilterLanguageAll.
+  ///
+  /// In he, this message translates to:
+  /// **'כל השפות'**
+  String get searchFilterLanguageAll;
+
   /// No description provided for @searchFeesLabel.
   ///
   /// In he, this message translates to:
@@ -1749,6 +1761,108 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'אין ביקורות עדיין'**
   String get practitionerNoReviews;
+
+  /// No description provided for @practitionerCalendarLegendAvailable.
+  ///
+  /// In he, this message translates to:
+  /// **'זמין'**
+  String get practitionerCalendarLegendAvailable;
+
+  /// No description provided for @practitionerCalendarLegendSelected.
+  ///
+  /// In he, this message translates to:
+  /// **'נבחר'**
+  String get practitionerCalendarLegendSelected;
+
+  /// No description provided for @practitionerYourAppointment.
+  ///
+  /// In he, this message translates to:
+  /// **'התור שלך'**
+  String get practitionerYourAppointment;
+
+  /// No description provided for @practitionerAddressAndContact.
+  ///
+  /// In he, this message translates to:
+  /// **'כתובת ויצירת קשר'**
+  String get practitionerAddressAndContact;
+
+  /// No description provided for @practitionerAppointmentStatusCompleted.
+  ///
+  /// In he, this message translates to:
+  /// **'הושלם'**
+  String get practitionerAppointmentStatusCompleted;
+
+  /// No description provided for @practitionerAppointmentStatusConfirmed.
+  ///
+  /// In he, this message translates to:
+  /// **'אושר'**
+  String get practitionerAppointmentStatusConfirmed;
+
+  /// No description provided for @practitionerAppointmentStatusPending.
+  ///
+  /// In he, this message translates to:
+  /// **'ממתין'**
+  String get practitionerAppointmentStatusPending;
+
+  /// No description provided for @practitionerAppointmentStatusCancelled.
+  ///
+  /// In he, this message translates to:
+  /// **'בוטל'**
+  String get practitionerAppointmentStatusCancelled;
+
+  /// No description provided for @practitionerAppointmentStatusNoShow.
+  ///
+  /// In he, this message translates to:
+  /// **'לא הופיע'**
+  String get practitionerAppointmentStatusNoShow;
+
+  /// No description provided for @practitionerReviewAnonymous.
+  ///
+  /// In he, this message translates to:
+  /// **'אנונימי'**
+  String get practitionerReviewAnonymous;
+
+  /// No description provided for @practitionerLanguageHebrew.
+  ///
+  /// In he, this message translates to:
+  /// **'עברית'**
+  String get practitionerLanguageHebrew;
+
+  /// No description provided for @practitionerLanguageFrench.
+  ///
+  /// In he, this message translates to:
+  /// **'צרפתית'**
+  String get practitionerLanguageFrench;
+
+  /// No description provided for @practitionerLanguageEnglish.
+  ///
+  /// In he, this message translates to:
+  /// **'אנגלית'**
+  String get practitionerLanguageEnglish;
+
+  /// No description provided for @practitionerLanguageRussian.
+  ///
+  /// In he, this message translates to:
+  /// **'רוסית'**
+  String get practitionerLanguageRussian;
+
+  /// No description provided for @practitionerLanguageSpanish.
+  ///
+  /// In he, this message translates to:
+  /// **'ספרדית'**
+  String get practitionerLanguageSpanish;
+
+  /// No description provided for @practitionerLanguageAmharic.
+  ///
+  /// In he, this message translates to:
+  /// **'אמהרית'**
+  String get practitionerLanguageAmharic;
+
+  /// No description provided for @practitionerLanguageArabic.
+  ///
+  /// In he, this message translates to:
+  /// **'ערבית'**
+  String get practitionerLanguageArabic;
 
   /// No description provided for @documentsTitle.
   ///

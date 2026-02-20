@@ -10,6 +10,7 @@ class PractitionerSearchResult extends Equatable {
     required this.nextAvailabilityLabel,
     this.distanceLabel,
     this.avatarUrl,
+    this.languages,
     this.distanceKm,
     this.availabilityOrder,
     this.rating,
@@ -26,6 +27,9 @@ class PractitionerSearchResult extends Equatable {
   final String nextAvailabilityLabel;
   final String? distanceLabel;
   final String? avatarUrl;
+
+  /// Langues parlées (codes ISO: he, en, fr, etc.)
+  final List<String>? languages;
 
   /// Distance en km pour le tri (null = non disponible)
   final double? distanceKm;
@@ -55,6 +59,7 @@ class PractitionerSearchResult extends Equatable {
     nextAvailabilityLabel,
     distanceLabel,
     avatarUrl,
+    languages,
     distanceKm,
     availabilityOrder,
     rating,

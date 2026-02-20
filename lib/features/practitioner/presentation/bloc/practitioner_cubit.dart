@@ -16,8 +16,10 @@ class PractitionerCubit extends Cubit<PractitionerState> {
   final GetPractitionerProfile _getPractitionerProfile;
 
   Future<void> load() async {
+    if (isClosed) return;
     emit(state.copyWith(status: PractitionerStatus.loading));
     final res = await _getPractitionerProfile(state.practitionerId);
+    if (isClosed) return;
     res.fold(
       (f) => emit(
         state.copyWith(status: PractitionerStatus.failure, error: f.message),

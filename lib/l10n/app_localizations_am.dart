@@ -477,6 +477,12 @@ class AppLocalizationsAm extends AppLocalizations {
   String get searchFilterPriceOver500 => 'ከ500₪ በላይ';
 
   @override
+  String get searchFilterLanguage => 'የተነጋገሩት ቋንቋ';
+
+  @override
+  String get searchFilterLanguageAll => 'ሁሉም ቋንቋዎች';
+
+  @override
   String get searchFeesLabel => 'ዋጋ';
 
   @override
@@ -863,6 +869,57 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get practitionerNoReviews => 'ግምገማ የለም';
+
+  @override
+  String get practitionerCalendarLegendAvailable => 'ይገኛል';
+
+  @override
+  String get practitionerCalendarLegendSelected => 'ተመርጧል';
+
+  @override
+  String get practitionerYourAppointment => 'ቀጠሮዎ';
+
+  @override
+  String get practitionerAddressAndContact => 'አድራሻ እና መገናኛ';
+
+  @override
+  String get practitionerAppointmentStatusCompleted => 'ተጠናቋል';
+
+  @override
+  String get practitionerAppointmentStatusConfirmed => 'ያረጋገጠ';
+
+  @override
+  String get practitionerAppointmentStatusPending => 'በመጠባበቅ ላይ';
+
+  @override
+  String get practitionerAppointmentStatusCancelled => 'ተሰርዟል';
+
+  @override
+  String get practitionerAppointmentStatusNoShow => 'አልተገኘም';
+
+  @override
+  String get practitionerReviewAnonymous => 'ስም የሌለው';
+
+  @override
+  String get practitionerLanguageHebrew => 'ዕብራይስጥ';
+
+  @override
+  String get practitionerLanguageFrench => 'ፈረንሳይኛ';
+
+  @override
+  String get practitionerLanguageEnglish => 'እንግሊዝኛ';
+
+  @override
+  String get practitionerLanguageRussian => 'ራሽያኛ';
+
+  @override
+  String get practitionerLanguageSpanish => 'ስፓኒሽ';
+
+  @override
+  String get practitionerLanguageAmharic => 'አማርኛ';
+
+  @override
+  String get practitionerLanguageArabic => 'ዓረብኛ';
 
   @override
   String get documentsTitle => 'ሰነዶች';

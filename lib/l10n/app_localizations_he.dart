@@ -478,6 +478,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get searchFilterPriceOver500 => 'מעל 500₪';
 
   @override
+  String get searchFilterLanguage => 'שפה מדוברת';
+
+  @override
+  String get searchFilterLanguageAll => 'כל השפות';
+
+  @override
   String get searchFeesLabel => 'עלות';
 
   @override
@@ -871,6 +877,57 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get practitionerNoReviews => 'אין ביקורות עדיין';
+
+  @override
+  String get practitionerCalendarLegendAvailable => 'זמין';
+
+  @override
+  String get practitionerCalendarLegendSelected => 'נבחר';
+
+  @override
+  String get practitionerYourAppointment => 'התור שלך';
+
+  @override
+  String get practitionerAddressAndContact => 'כתובת ויצירת קשר';
+
+  @override
+  String get practitionerAppointmentStatusCompleted => 'הושלם';
+
+  @override
+  String get practitionerAppointmentStatusConfirmed => 'אושר';
+
+  @override
+  String get practitionerAppointmentStatusPending => 'ממתין';
+
+  @override
+  String get practitionerAppointmentStatusCancelled => 'בוטל';
+
+  @override
+  String get practitionerAppointmentStatusNoShow => 'לא הופיע';
+
+  @override
+  String get practitionerReviewAnonymous => 'אנונימי';
+
+  @override
+  String get practitionerLanguageHebrew => 'עברית';
+
+  @override
+  String get practitionerLanguageFrench => 'צרפתית';
+
+  @override
+  String get practitionerLanguageEnglish => 'אנגלית';
+
+  @override
+  String get practitionerLanguageRussian => 'רוסית';
+
+  @override
+  String get practitionerLanguageSpanish => 'ספרדית';
+
+  @override
+  String get practitionerLanguageAmharic => 'אמהרית';
+
+  @override
+  String get practitionerLanguageArabic => 'ערבית';
 
   @override
   String get documentsTitle => 'מסמכים';

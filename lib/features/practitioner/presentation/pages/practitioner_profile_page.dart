@@ -1,8 +1,12 @@
+import 'dart:ui' as ui;
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
@@ -101,6 +105,7 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
   bool _showTitleInAppBar = false;
   DateTime? _selectedDate;
   String? _selectedTime;
+  int _selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -185,7 +190,7 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Directionality(
-                      textDirection: TextDirection.ltr,
+                      textDirection: ui.TextDirection.ltr,
                       child: Icon(
                         Icons.arrow_forward_ios_rounded,
                         size: 16.sp,
@@ -265,86 +270,94 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                   _HeaderSection(profile: profile, initials: _getInitials()),
                   SizedBox(height: AppSpacing.lg.h),
 
-                  // TabBar (Disponibilité | Reviews)
-                  DefaultTabController(
-                    length: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TabBar(
-                          labelColor: AppColors.primary,
-                          unselectedLabelColor: AppColors.textSecondary,
-                          indicatorColor: AppColors.primary,
-                          dividerColor: Colors.transparent,
-                          tabs: [
-                            Tab(text: context.l10n.practitionerTabAvailability),
-                            Tab(text: context.l10n.practitionerTabReviews),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 500.h,
-                          child: TabBarView(
-                            children: [
-                              // Tab 0: Disponibilité
-                              SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: AppSpacing.sm.h),
-                                    _AvailabilityCalendar(
-                                      onDateSelected: _onDateSelected,
-                                      selectedDate: _selectedDate,
-                                    ),
-                                    AnimatedSize(
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                      child: _selectedDate != null
-                                          ? Column(
-                                              children: [
-                                                SizedBox(height: AppSpacing.sm.h),
-                                                _TimeSlotSection(
-                                                  selectedDate: _selectedDate!,
-                                                  selectedTime: _selectedTime,
-                                                  onTimeSelected: _onTimeSelected,
-                                                ),
-                                              ],
-                                            )
-                                          : const SizedBox.shrink(),
-                                    ),
-                                    AnimatedSize(
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                      child: canBook
-                                          ? Column(
-                                              children: [
-                                                SizedBox(height: AppSpacing.md.h),
-                                                _BookingConfirmation(
-                                                  selectedDate: _selectedDate!,
-                                                  selectedTime: _selectedTime!,
-                                                  practitionerId: widget.practitionerId,
-                                                  practitionerName: profile.name,
-                                                ),
-                                              ],
-                                            )
-                                          : const SizedBox.shrink(),
-                                    ),
-                                    SizedBox(height: AppSpacing.md.h),
-                                    _AppointmentHistorySection(
-                                      practitionerId: widget.practitionerId,
-                                    ),
-                                    SizedBox(height: AppSpacing.md.h),
-                                  ],
-                                ),
-                              ),
-                              // Tab 1: Reviews
-                              _ReviewsTabSection(
-                                practitionerId: widget.practitionerId,
-                              ),
-                            ],
+                  // TabBar (Disponibilité | Avis) - contenu intégré au scroll unique
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(4.r),
+                        decoration: BoxDecoration(
+                          color: AppColors.surfaceVariant.withValues(alpha: 0.4),
+                          borderRadius: BorderRadius.circular(14.r),
+                          border: Border.all(
+                            color: AppColors.outline.withValues(alpha: 0.12),
+                            width: 1,
                           ),
                         ),
-                      ],
-                    ),
+                        child: Row(
+                          children: [
+                            _TabButton(
+                              label: context.l10n.practitionerTabAvailability,
+                              isSelected: _selectedTabIndex == 0,
+                              onTap: () => setState(() => _selectedTabIndex = 0),
+                            ),
+                            _TabButton(
+                              label: context.l10n.practitionerTabReviews,
+                              isSelected: _selectedTabIndex == 1,
+                              onTap: () => setState(() => _selectedTabIndex = 1),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.md.h),
+                      // Contenu selon l'onglet - tout dans le même scroll
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: _selectedTabIndex == 0
+                            ? Column(
+                                key: const ValueKey('availability'),
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _AvailabilityCalendar(
+                                    onDateSelected: _onDateSelected,
+                                    selectedDate: _selectedDate,
+                                    compact: true,
+                                  ),
+                                  AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                    child: _selectedDate != null
+                                        ? Column(
+                                            children: [
+                                              SizedBox(height: AppSpacing.sm.h),
+                                              _TimeSlotSection(
+                                                selectedDate: _selectedDate!,
+                                                selectedTime: _selectedTime,
+                                                onTimeSelected: _onTimeSelected,
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ),
+                                  AnimatedSize(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                    child: canBook
+                                        ? Column(
+                                            children: [
+                                              SizedBox(height: AppSpacing.md.h),
+                                              _BookingConfirmation(
+                                                selectedDate: _selectedDate!,
+                                                selectedTime: _selectedTime!,
+                                                practitionerId: widget.practitionerId,
+                                                practitionerName: profile.name,
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ),
+                                  SizedBox(height: AppSpacing.md.h),
+                                  _AppointmentHistorySection(
+                                    practitionerId: widget.practitionerId,
+                                  ),
+                                ],
+                              )
+                            : _ReviewsTabSection(
+                                key: const ValueKey('reviews'),
+                                practitionerId: widget.practitionerId,
+                              ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: AppSpacing.md.h),
 
@@ -358,13 +371,9 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                   SizedBox(height: AppSpacing.sm.h),
 
                   // Section Profil (masquée si vide)
-                  if (profile.about.isNotEmpty ||
-                      profile.education != null ||
-                      (profile.languages != null &&
-                          profile.languages!.isNotEmpty))
+                  if (profile.about.isNotEmpty || profile.education != null)
                     _AboutSection(
                       about: profile.about,
-                      languages: profile.languages,
                       education: profile.education,
                       yearsOfExperience: profile.yearsOfExperience,
                     ),
@@ -374,6 +383,60 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _TabButton extends StatelessWidget {
+  const _TabButton({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+          padding: EdgeInsets.symmetric(vertical: 14.h),
+          margin: EdgeInsets.all(2.r),
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.white : Colors.transparent,
+            borderRadius: BorderRadius.circular(12.r),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.08),
+                      blurRadius: 12.r,
+                      offset: Offset(0, 2.h),
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 6.r,
+                      offset: Offset(0, 1.h),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -452,46 +515,23 @@ class _HeaderSection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: AppSpacing.md.h),
-
-        // Stats row
-        if (profile.yearsOfExperience != null || profile.languages != null)
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 12.r,
-                  offset: Offset(0, 4.h),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                if (profile.yearsOfExperience != null)
-                  _StatItem(
-                    icon: Icons.workspace_premium_rounded,
-                    value: '${profile.yearsOfExperience}',
-                    label: 'שנות ניסיון',
-                    color: AppColors.accent,
+        // Langues (drapeau + nom) sous la spécialité
+        if (profile.languages != null && profile.languages!.isNotEmpty) ...[
+          SizedBox(height: AppSpacing.md.h),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 10.w,
+            runSpacing: 10.h,
+            children: profile.languages!
+                .map(
+                  (lang) => _LanguageChip(
+                    languageRaw: lang,
+                    l10n: context.l10n,
                   ),
-                if (profile.yearsOfExperience != null &&
-                    profile.languages != null)
-                  Container(width: 1.w, height: 36.h, color: AppColors.outline),
-                if (profile.languages != null)
-                  _StatItem(
-                    icon: Icons.translate_rounded,
-                    value: '${profile.languages!.length}',
-                    label: 'שפות',
-                    color: AppColors.primary,
-                  ),
-              ],
-            ),
+                )
+                .toList(),
           ),
+        ],
       ],
     );
   }
@@ -552,49 +592,6 @@ class _RatingStars extends StatelessWidget {
   }
 }
 
-class _StatItem extends StatelessWidget {
-  const _StatItem({
-    required this.icon,
-    required this.value,
-    required this.label,
-    required this.color,
-  });
-
-  final IconData icon;
-  final String value;
-  final String label;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 18.sp, color: color),
-            SizedBox(width: 6.w),
-            Text(
-              value,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 2.h),
-        Text(
-          label,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
-        ),
-      ],
-    );
-  }
-}
-
 class _AppointmentHistorySection extends StatelessWidget {
   const _AppointmentHistorySection({required this.practitionerId});
 
@@ -645,18 +642,31 @@ class _AppointmentHistorySection extends StatelessWidget {
   }
 }
 
-class _AppointmentHistoryContent extends StatelessWidget {
+class _AppointmentHistoryContent extends StatefulWidget {
   const _AppointmentHistoryContent({required this.practitionerId});
 
   final String practitionerId;
 
   @override
-  Widget build(BuildContext context) {
+  State<_AppointmentHistoryContent> createState() =>
+      _AppointmentHistoryContentState();
+}
+
+class _AppointmentHistoryContentState extends State<_AppointmentHistoryContent> {
+  late final Future<List<dynamic>> _appointmentsFuture;
+
+  @override
+  void initState() {
+    super.initState();
     final getPast = sl<GetPastAppointments>();
     final getUpcoming = sl<GetUpcomingAppointments>();
+    _appointmentsFuture = Future.wait([getPast(), getUpcoming()]);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait([getPast(), getUpcoming()]),
+      future: _appointmentsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return DokalCard(
@@ -675,7 +685,7 @@ class _AppointmentHistoryContent extends StatelessWidget {
         pastResult.fold((_) => null, (list) => appointments.addAll(list));
         upcomingResult.fold((_) => null, (list) => appointments.addAll(list));
         appointments = appointments
-            .where((a) => a.practitionerId == practitionerId)
+            .where((a) => a.practitionerId == widget.practitionerId)
             .toList()
           ..sort((a, b) {
             final da = '${a.dateLabel} ${a.timeLabel}';
@@ -746,7 +756,7 @@ class _AppointmentHistoryContent extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: AppSpacing.sm.h),
                   child: _AppointmentHistoryItem(appointment: a),
                 ),
-              ),
+              )
             ],
           ),
         );
@@ -802,7 +812,7 @@ class _AppointmentHistoryItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Text(
-                  _statusLabel(appointment.status),
+                  _statusLabel(context, appointment.status),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: _statusColor(appointment.status),
                     fontWeight: FontWeight.w600,
@@ -858,19 +868,25 @@ class _AppointmentHistoryItem extends StatelessWidget {
     return AppColors.textPrimary;
   }
 
-  String _statusLabel(String status) {
-    if (status == 'completed') return 'הושלם';
-    if (status == 'confirmed') return 'אושר';
-    if (status == 'pending') return 'ממתין';
-    if (status == 'cancelled_by_patient') return 'בוטל';
-    if (status == 'cancelled_by_practitioner') return 'בוטל';
-    if (status == 'no_show') return 'לא הופיע';
+  String _statusLabel(BuildContext context, String status) {
+    final l10n = context.l10n;
+    if (status == 'completed') return l10n.practitionerAppointmentStatusCompleted;
+    if (status == 'confirmed') return l10n.practitionerAppointmentStatusConfirmed;
+    if (status == 'pending') return l10n.practitionerAppointmentStatusPending;
+    if (status == 'cancelled_by_patient' ||
+        status == 'cancelled_by_practitioner') {
+      return l10n.practitionerAppointmentStatusCancelled;
+    }
+    if (status == 'no_show') return l10n.practitionerAppointmentStatusNoShow;
     return status;
   }
 }
 
 class _ReviewsTabSection extends StatelessWidget {
-  const _ReviewsTabSection({required this.practitionerId});
+  const _ReviewsTabSection({
+    super.key,
+    required this.practitionerId,
+  });
 
   final String practitionerId;
 
@@ -916,12 +932,15 @@ class _ReviewsTabSection extends StatelessWidget {
               );
             }
             return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(top: AppSpacing.sm.h),
               itemCount: reviews.length,
               itemBuilder: (context, index) {
                 final r = reviews[index];
                 return _ReviewCard(
-                  patientName: r['patient_name'] as String? ?? '—',
+                  patientName: r['patient_name'] as String? ??
+                      context.l10n.practitionerReviewAnonymous,
                   rating: r['rating'] as int? ?? 0,
                   comment: r['comment'] as String?,
                   practitionerReply: r['practitioner_reply'] as String?,
@@ -953,11 +972,16 @@ class _ReviewCard extends StatelessWidget {
 
   static const Color _starColor = Color(0xFFFFB800);
 
-  String _formatDate(String iso) {
+  String _formatDate(BuildContext context, String iso) {
     if (iso.isEmpty) return '';
     try {
       final dt = DateTime.parse(iso);
-      return '${dt.day}/${dt.month}/${dt.year}';
+      final locale = Localizations.localeOf(context);
+      final localeStr =
+          locale.countryCode != null && locale.countryCode!.isNotEmpty
+              ? '${locale.languageCode}_${locale.countryCode}'
+              : locale.languageCode;
+      return DateFormat('d/M/y', localeStr).format(dt);
     } catch (_) {
       return iso;
     }
@@ -1016,7 +1040,7 @@ class _ReviewCard extends StatelessWidget {
                 ),
               ),
               Text(
-                _formatDate(createdAt),
+                _formatDate(context, createdAt),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -1068,10 +1092,12 @@ class _AvailabilityCalendar extends StatefulWidget {
   const _AvailabilityCalendar({
     required this.onDateSelected,
     this.selectedDate,
+    this.compact = false,
   });
 
   final ValueChanged<DateTime> onDateSelected;
   final DateTime? selectedDate;
+  final bool compact;
 
   @override
   State<_AvailabilityCalendar> createState() => _AvailabilityCalendarState();
@@ -1140,22 +1166,27 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
     }
   }
 
-  String _getHebrewMonth(int month) {
-    const months = [
-      'ינואר',
-      'פברואר',
-      'מרץ',
-      'אפריל',
-      'מאי',
-      'יוני',
-      'יולי',
-      'אוגוסט',
-      'ספטמבר',
-      'אוקטובר',
-      'נובמבר',
-      'דצמבר',
-    ];
-    return months[month - 1];
+  String _getMonthName(BuildContext context, int month, int year) {
+    final locale = Localizations.localeOf(context);
+    final localeStr =
+        locale.countryCode != null && locale.countryCode!.isNotEmpty
+            ? '${locale.languageCode}_${locale.countryCode}'
+            : locale.languageCode;
+    return DateFormat('MMMM yyyy', localeStr)
+        .format(DateTime(year, month));
+  }
+
+  List<String> _getWeekdayAbbreviations(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    final localeStr =
+        locale.countryCode != null && locale.countryCode!.isNotEmpty
+            ? '${locale.languageCode}_${locale.countryCode}'
+            : locale.languageCode;
+    final format = DateFormat('E', localeStr);
+    return List.generate(7, (i) {
+      final date = DateTime.utc(2024, 1, 7 + i);
+      return format.format(date);
+    });
   }
 
   @override
@@ -1185,35 +1216,38 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
       padding: EdgeInsets.all(AppSpacing.md.r),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Header
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: AppColors.accent.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Icon(
-                  Icons.calendar_month_rounded,
-                  size: 18.sp,
-                  color: AppColors.accent,
-                ),
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Text(
-                  l10n.practitionerAvailabilities,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+          // Header (masqué en mode compact - onglet déjà explicite)
+          if (!widget.compact) ...[
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                    color: AppColors.accent.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Icon(
+                    Icons.calendar_month_rounded,
+                    size: 18.sp,
+                    color: AppColors.accent,
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: AppSpacing.md.h),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Text(
+                    l10n.practitionerAvailabilities,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: AppSpacing.md.h),
+          ],
 
           // Month navigation (RTL - Hebrew reads right to left)
           // Left side = future (next month), Right side = past (previous month)
@@ -1241,7 +1275,11 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                 ),
               ),
               Text(
-                '${_getHebrewMonth(_currentMonth.month)} ${_currentMonth.year}',
+                _getMonthName(
+                  context,
+                  _currentMonth.month,
+                  _currentMonth.year,
+                ),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
@@ -1271,10 +1309,10 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
           ),
           SizedBox(height: AppSpacing.md.h),
 
-          // Day headers (RTL order)
+          // Day headers (locale-aware)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+            children: _getWeekdayAbbreviations(context)
                 .map(
                   (day) => SizedBox(
                     width: 36.r,
@@ -1375,21 +1413,24 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
               );
             },
           ),
-          SizedBox(height: AppSpacing.md.h),
-
-          // Legend
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _LegendItem(color: AppColors.accent, label: 'זמין'),
-              SizedBox(width: 20.w),
-              _LegendItem(
-                color: AppColors.primary,
-                label: 'נבחר',
-                isFilled: true,
-              ),
-            ],
-          ),
+          if (!widget.compact) ...[
+            SizedBox(height: AppSpacing.md.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _LegendItem(
+                  color: AppColors.accent,
+                  label: context.l10n.practitionerCalendarLegendAvailable,
+                ),
+                SizedBox(width: 20.w),
+                _LegendItem(
+                  color: AppColors.primary,
+                  label: context.l10n.practitionerCalendarLegendSelected,
+                  isFilled: true,
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -1420,16 +1461,9 @@ class _TimeSlotSection extends StatelessWidget {
     }
   }
 
-  String _getHebrewDayName(int weekday) {
-    const days = ['ב\'', 'ג\'', 'ד\'', 'ה\'', 'ו\'', 'ש\'', 'א\''];
-    return days[weekday - 1];
-  }
-
-  String _formatDate() {
-    final day = selectedDate.day;
-    final month = selectedDate.month;
-    final dayName = _getHebrewDayName(selectedDate.weekday);
-    return 'יום $dayName, $day/$month';
+  String _formatDate(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    return DateFormat('EEEE, d/M', locale.toLanguageTag()).format(selectedDate);
   }
 
   @override
@@ -1443,37 +1477,17 @@ class _TimeSlotSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3B82F6).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Icon(
-                  Icons.access_time_rounded,
-                  size: 18.sp,
-                  color: const Color(0xFF3B82F6),
-                ),
+              Icon(
+                Icons.access_time_rounded,
+                size: 20.sp,
+                color: AppColors.primary,
               ),
               SizedBox(width: 10.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'בחר שעה',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    Text(
-                      _formatDate(),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
+              Text(
+                _formatDate(context),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
                 ),
               ),
             ],
@@ -1497,18 +1511,18 @@ class _TimeSlotSection extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isSelected
                         ? AppColors.primary
-                        : const Color(0xFF3B82F6).withValues(alpha: 0.08),
+                        : AppColors.primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12.r),
                     border: Border.all(
                       color: isSelected
                           ? AppColors.primary
-                          : const Color(0xFF3B82F6).withValues(alpha: 0.2),
+                          : AppColors.primary.withValues(alpha: 0.2),
                       width: isSelected ? 2.r : 1.r,
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.3),
+                              color: AppColors.primary.withValues(alpha: 0.25),
                               blurRadius: 8.r,
                               offset: Offset(0, 4.h),
                             ),
@@ -1520,7 +1534,7 @@ class _TimeSlotSection extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: isSelected
                           ? Colors.white
-                          : const Color(0xFF3B82F6),
+                          : AppColors.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -1547,33 +1561,13 @@ class _BookingConfirmation extends StatelessWidget {
   final String practitionerId;
   final String practitionerName;
 
-  String _formatFullDate() {
-    const days = [
-      'יום שני',
-      'יום שלישי',
-      'יום רביעי',
-      'יום חמישי',
-      'יום שישי',
-      'יום שבת',
-      'יום ראשון',
-    ];
-    const months = [
-      'בינואר',
-      'בפברואר',
-      'במרץ',
-      'באפריל',
-      'במאי',
-      'ביוני',
-      'ביולי',
-      'באוגוסט',
-      'בספטמבר',
-      'באוקטובר',
-      'בנובמבר',
-      'בדצמבר',
-    ];
-    final dayName = days[selectedDate.weekday - 1];
-    final month = months[selectedDate.month - 1];
-    return '$dayName, ${selectedDate.day} $month';
+  String _formatFullDate(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    final localeStr =
+        locale.countryCode != null && locale.countryCode!.isNotEmpty
+            ? '${locale.languageCode}_${locale.countryCode}'
+            : locale.languageCode;
+    return DateFormat('EEEE, d MMMM', localeStr).format(selectedDate);
   }
 
   @override
@@ -1628,7 +1622,7 @@ class _BookingConfirmation extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      '$selectedTime • ${_formatFullDate()}',
+                      '$selectedTime • ${_formatFullDate(context)}',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -1753,18 +1747,18 @@ class _ContactSection extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEF4444).withValues(alpha: 0.1),
+                  color: AppColors.accent.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Icon(
                   Icons.location_on_rounded,
                   size: 18.sp,
-                  color: const Color(0xFFEF4444),
+                  color: AppColors.accent,
                 ),
               ),
               SizedBox(width: 10.w),
               Text(
-                'כתובת ויצירת קשר',
+                context.l10n.practitionerAddressAndContact,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
@@ -1777,7 +1771,7 @@ class _ContactSection extends StatelessWidget {
           // Address
           _ContactItem(
             icon: Icons.place_rounded,
-            iconColor: const Color(0xFFEF4444),
+            iconColor: AppColors.accent,
             text: address,
           ),
 
@@ -1806,7 +1800,7 @@ class _ContactSection extends StatelessWidget {
             SizedBox(height: 10.h),
             _ContactItem(
               icon: Icons.email_rounded,
-              iconColor: const Color(0xFF3B82F6),
+              iconColor: AppColors.primary,
               text: email!,
             ),
           ],
@@ -1849,18 +1843,17 @@ class _ContactItem extends StatelessWidget {
 class _AboutSection extends StatelessWidget {
   const _AboutSection({
     required this.about,
-    this.languages,
     this.education,
     this.yearsOfExperience,
   });
 
   final String about;
-  final List<String>? languages;
   final String? education;
   final int? yearsOfExperience;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return DokalCard(
       padding: EdgeInsets.all(AppSpacing.md.r),
       child: Column(
@@ -1882,7 +1875,7 @@ class _AboutSection extends StatelessWidget {
               ),
               SizedBox(width: 10.w),
               Text(
-                'פרופיל',
+                l10n.practitionerProfileSection,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
@@ -1910,24 +1903,93 @@ class _AboutSection extends StatelessWidget {
               color: const Color(0xFF8B5CF6),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
 
-          // Languages
-          if (languages != null && languages!.isNotEmpty) ...[
-            SizedBox(height: AppSpacing.sm.h),
-            Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
-              children: languages!
-                  .map(
-                    (lang) => _InfoChip(
-                      icon: Icons.translate_rounded,
-                      label: lang,
-                      color: AppColors.primary,
-                    ),
-                  )
-                  .toList(),
+/// Affiche une langue avec drapeau et nom localisé.
+class _LanguageChip extends StatelessWidget {
+  const _LanguageChip({
+    required this.languageRaw,
+    required this.l10n,
+  });
+
+  final String languageRaw;
+  final dynamic l10n;
+
+  static const Map<String, String> _countryCodeMap = {
+    'he': 'IL', 'iw': 'IL', 'heb': 'IL', 'hebrew': 'IL', 'עברית': 'IL',
+    'fr': 'FR', 'fra': 'FR', 'french': 'FR', 'français': 'FR',
+    'en': 'US', 'eng': 'US', 'english': 'US',
+    'ru': 'RU', 'rus': 'RU', 'russian': 'RU',
+    'es': 'ES', 'spa': 'ES', 'spanish': 'ES',
+    'am': 'ET', 'amh': 'ET', 'amharic': 'ET',
+    'ar': 'SA', 'ara': 'SA', 'arabic': 'SA',
+  };
+
+  String _getDisplayName(String normalized) {
+    switch (normalized) {
+      case 'he': case 'iw': case 'heb': case 'hebrew': case 'עברית':
+        return l10n.practitionerLanguageHebrew;
+      case 'fr': case 'fra': case 'french': case 'français':
+        return l10n.practitionerLanguageFrench;
+      case 'en': case 'eng': case 'english':
+        return l10n.practitionerLanguageEnglish;
+      case 'ru': case 'rus': case 'russian':
+        return l10n.practitionerLanguageRussian;
+      case 'es': case 'spa': case 'spanish':
+        return l10n.practitionerLanguageSpanish;
+      case 'am': case 'amh': case 'amharic':
+        return l10n.practitionerLanguageAmharic;
+      case 'ar': case 'ara': case 'arabic':
+        return l10n.practitionerLanguageArabic;
+      default:
+        return languageRaw;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final normalized = languageRaw.trim().toLowerCase();
+    final countryCode = _countryCodeMap[normalized] ?? 'UN';
+    final displayName = _countryCodeMap.containsKey(normalized)
+        ? _getDisplayName(normalized)
+        : languageRaw;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(
+          color: AppColors.primary.withValues(alpha: 0.15),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4.r),
+            child: CountryFlag.fromCountryCode(
+              countryCode,
+              theme: ImageTheme(
+                width: 20.w,
+                height: 14.h,
+                shape: RoundedRectangle(4.r),
+              ),
             ),
-          ],
+          ),
+          SizedBox(width: 8.w),
+          Text(
+            displayName,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );

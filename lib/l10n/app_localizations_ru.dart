@@ -485,6 +485,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchFilterPriceOver500 => 'Более 500₪';
 
   @override
+  String get searchFilterLanguage => 'Язык общения';
+
+  @override
+  String get searchFilterLanguageAll => 'Все языки';
+
+  @override
   String get searchFeesLabel => 'Стоимость';
 
   @override
@@ -890,6 +896,57 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get practitionerNoReviews => 'Пока нет отзывов';
+
+  @override
+  String get practitionerCalendarLegendAvailable => 'Доступно';
+
+  @override
+  String get practitionerCalendarLegendSelected => 'Выбрано';
+
+  @override
+  String get practitionerYourAppointment => 'Ваша запись';
+
+  @override
+  String get practitionerAddressAndContact => 'Адрес и контакты';
+
+  @override
+  String get practitionerAppointmentStatusCompleted => 'Завершено';
+
+  @override
+  String get practitionerAppointmentStatusConfirmed => 'Подтверждено';
+
+  @override
+  String get practitionerAppointmentStatusPending => 'Ожидание';
+
+  @override
+  String get practitionerAppointmentStatusCancelled => 'Отменено';
+
+  @override
+  String get practitionerAppointmentStatusNoShow => 'Не явился';
+
+  @override
+  String get practitionerReviewAnonymous => 'Анонимно';
+
+  @override
+  String get practitionerLanguageHebrew => 'Иврит';
+
+  @override
+  String get practitionerLanguageFrench => 'Французский';
+
+  @override
+  String get practitionerLanguageEnglish => 'Английский';
+
+  @override
+  String get practitionerLanguageRussian => 'Русский';
+
+  @override
+  String get practitionerLanguageSpanish => 'Испанский';
+
+  @override
+  String get practitionerLanguageAmharic => 'Амхарский';
+
+  @override
+  String get practitionerLanguageArabic => 'Арабский';
 
   @override
   String get documentsTitle => 'Документы';
