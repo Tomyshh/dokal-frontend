@@ -41,14 +41,16 @@ class MessagesRemoteDataSourceImpl implements MessagesDemoDataSource {
 
       final firstName = practProfiles?['first_name'] as String? ?? '';
       final lastName = practProfiles?['last_name'] as String? ?? '';
+      final avatarUrl = practProfiles?['avatar_url'] as String?;
 
       // Appointment linked to conversation
       ConversationAppointmentPreview? appointment;
       final aptJson = json['appointments'];
       if (aptJson is Map<String, dynamic> && aptJson['id'] != null) {
         appointment = ConversationAppointmentPreview(
-          title: aptJson['status'] as String? ?? '',
+          status: aptJson['status'] as String? ?? '',
           date: aptJson['appointment_date'] as String? ?? '',
+          title: aptJson['reason'] as String?,
           isPast: false,
         );
       }
@@ -62,6 +64,7 @@ class MessagesRemoteDataSourceImpl implements MessagesDemoDataSource {
         isOnline: false, // will be updated via socket/presence
         avatarColorValue:
             '$firstName$lastName'.hashCode & 0x00FFFFFF | 0xFF000000,
+        avatarUrl: avatarUrl,
         appointment: appointment,
       );
     }).toList();

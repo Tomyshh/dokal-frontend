@@ -29,18 +29,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _obscure = true;
   bool _confirmObscure = true;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      final cubit = context.read<ChangePasswordCubit>();
-      if (cubit.state.step == ChangePasswordStep.sendOtp &&
-          cubit.state.status == ChangePasswordStatus.initial) {
-        cubit.sendOtp();
-      }
-    });
-  }
 
   @override
   void dispose() {
@@ -68,7 +56,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SnackBar(content: Text(l10n.securityChangePasswordSuccess)),
             );
             if (context.canPop()) context.pop();
-            context.go('/login');
           }
           if (state.status == ChangePasswordStatus.initial &&
               state.step == ChangePasswordStep.enterOtp) {
@@ -78,6 +65,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           }
         },
         builder: (context, state) {
+          if (state.step == ChangePasswordStep.sendOtp &&
+              state.status == ChangePasswordStatus.initial) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (context.mounted) {
+                context.read<ChangePasswordCubit>().sendOtp();
+              }
+            });
+          }
           final isLoading = state.status == ChangePasswordStatus.loading;
           return Scaffold(
             appBar: AppBar(title: Text(l10n.securityChangePassword)),

@@ -9,6 +9,7 @@ class ConversationPreview extends Equatable {
     required this.unreadCount,
     required this.isOnline,
     required this.avatarColorValue,
+    this.avatarUrl,
     this.appointment,
   });
 
@@ -19,6 +20,7 @@ class ConversationPreview extends Equatable {
   final int unreadCount;
   final bool isOnline;
   final int avatarColorValue;
+  final String? avatarUrl;
   final ConversationAppointmentPreview? appointment;
 
   @override
@@ -30,21 +32,27 @@ class ConversationPreview extends Equatable {
     unreadCount,
     isOnline,
     avatarColorValue,
+    avatarUrl,
     appointment,
   ];
 }
 
 class ConversationAppointmentPreview extends Equatable {
   const ConversationAppointmentPreview({
-    required this.title,
+    required this.status,
     required this.date,
+    this.title,
     this.isPast = false,
   });
 
-  final String title;
+  /// Statut brut de l'API (pending, confirmed, etc.).
+  final String status;
+  /// Date brute (YYYY-MM-DD).
   final String date;
+  /// Titre optionnel (ex. raison du RDV).
+  final String? title;
   final bool isPast;
 
   @override
-  List<Object?> get props => [title, date, isPast];
+  List<Object?> get props => [status, date, title, isPast];
 }

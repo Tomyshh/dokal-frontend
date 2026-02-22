@@ -75,12 +75,6 @@ class AccountPage extends StatelessWidget {
                   ),
                   SizedBox(height: AppSpacing.xs.h),
                   _MenuTile(
-                    icon: Icons.payments_rounded,
-                    title: l10n.paymentTitle,
-                    onTap: () => context.push('/account/payment'),
-                  ),
-                  SizedBox(height: AppSpacing.xs.h),
-                  _MenuTile(
                     icon: Icons.tune_rounded,
                     title: l10n.commonSettings,
                     onTap: () => context.push('/account/settings'),

@@ -154,6 +154,25 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
 
   /api/v1/relatives/{id}:
+    patch:
+      tags: [Relatives]
+      summary: Update a relative
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AddRelativeRequest" }
+      responses:
+        "200":
+          description: Updated relative
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Relative" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
     delete:
       tags: [Relatives]
       summary: Delete a relative
@@ -161,6 +180,37 @@ paths:
         - $ref: "#/components/parameters/IdParam"
       responses:
         "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/relatives/{id}/avatar:
+    post:
+      tags: [Relatives]
+      summary: Upload avatar for a relative
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+              required: [avatar]
+      responses:
+        "200":
+          description: Avatar uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatar_url: { type: string, format: uri }
+                required: [avatar_url]
+        "400": { $ref: "#/components/responses/BadRequest" }
         "401": { $ref: "#/components/responses/Unauthorized" }
         "404": { $ref: "#/components/responses/NotFound" }
 
@@ -2147,6 +2197,11 @@ components:
       type: string
       enum: [child, parent, spouse, sibling, other]
 
+    KupatHolimType:
+      type: string
+      enum: [clalit, maccabi, meuhedet, leumit, other]
+      description: Caisse maladie israélienne (optionnel)
+
     AppointmentStatus:
       type: string
       enum:
@@ -2206,6 +2261,10 @@ components:
         last_name: { type: string }
         relation: { $ref: "#/components/schemas/RelationType" }
         date_of_birth: { type: string, format: date, nullable: true }
+        teudat_zehut: { type: string, nullable: true }
+        kupat_holim: { type: string, nullable: true }
+        insurance_provider: { type: string, nullable: true }
+        avatar_url: { type: string, format: uri, nullable: true }
       required: [id, first_name, last_name, relation]
 
     AddRelativeRequest:
@@ -2213,9 +2272,13 @@ components:
       properties:
         first_name: { type: string, minLength: 1 }
         last_name: { type: string, minLength: 1 }
+        teudat_zehut: { type: string, minLength: 9, maxLength: 9 }
         relation: { $ref: "#/components/schemas/RelationType" }
-        date_of_birth: { type: string, nullable: true }
-      required: [first_name, last_name, relation]
+        date_of_birth: { type: string, format: date, nullable: true }
+        kupat_holim: { $ref: "#/components/schemas/KupatHolimType", nullable: true }
+        insurance_provider: { type: string, nullable: true }
+        avatar_url: { type: string, format: uri, nullable: true }
+      required: [first_name, last_name, teudat_zehut, date_of_birth, relation]
 
     Slot:
       type: object

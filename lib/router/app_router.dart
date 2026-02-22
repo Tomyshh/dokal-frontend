@@ -40,7 +40,11 @@ import '../features/health/presentation/pages/medical_conditions_page.dart';
 import '../features/health/presentation/pages/medications_page.dart';
 import '../features/health/presentation/pages/vaccinations_page.dart';
 import '../features/account/presentation/pages/profile_page.dart';
+import '../features/account/presentation/pages/add_relative_page.dart';
+import '../features/account/presentation/pages/edit_profile_page.dart';
+import '../features/account/presentation/pages/edit_relative_page.dart';
 import '../features/account/presentation/pages/relatives_page.dart';
+import '../features/account/domain/entities/relative.dart';
 import '../features/account/presentation/pages/security_page.dart';
 import '../features/account/presentation/pages/security/change_password_page.dart';
 import '../features/account/presentation/pages/payment_page.dart';
@@ -427,8 +431,28 @@ void initAppRouter(
                     builder: (context, state) => const ProfilePage(),
                   ),
                   GoRoute(
+                    path: 'edit-profile',
+                    builder: (context, state) => const EditProfilePage(),
+                  ),
+                  GoRoute(
                     path: 'relatives',
                     builder: (context, state) => const RelativesPage(),
+                    routes: [
+                      GoRoute(
+                        path: 'add',
+                        builder: (context, state) => const AddRelativePage(),
+                      ),
+                      GoRoute(
+                        path: 'edit',
+                        builder: (context, state) {
+                          final relative = state.extra as Relative?;
+                          if (relative == null) {
+                            return const RelativesPage();
+                          }
+                          return EditRelativePage(relative: relative);
+                        },
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: 'security',

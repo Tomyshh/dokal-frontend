@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/insurance_providers.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_avatar.dart';
 import '../../../../core/profile_completion/profile_completion_notifier.dart';
@@ -991,23 +992,6 @@ class _InsuranceStep extends StatelessWidget {
   final String? selected;
   final ValueChanged<String?> onChanged;
 
-  static const _providers = <String>[
-    'AIG',
-    'איילון',
-    'ביטוח חקלאי',
-    'דקלה',
-    'הראל',
-    'הכשרה',
-    'הפניקס',
-    'כלל',
-    'מגדל',
-    'מנורה',
-    'ביטוח ישיר',
-    'שירביט',
-    'שלמה',
-    'שומרה',
-  ];
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -1029,8 +1013,11 @@ class _InsuranceStep extends StatelessWidget {
                 value: '',
                 child: Text(l10n.profileCompletionInsuranceNone),
               ),
-              ..._providers.map(
-                (p) => DropdownMenuItem<String>(value: p, child: Text(p)),
+              ...insuranceProviders.map(
+                (p) => DropdownMenuItem<String>(
+                  value: p,
+                  child: Text(p),
+                ),
               ),
             ],
             onChanged: (v) => onChanged((v ?? '').isEmpty ? null : v),

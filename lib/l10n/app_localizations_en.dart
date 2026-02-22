@@ -340,6 +340,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonCancel => 'Cancel';
 
   @override
+  String get commonConfirm => 'OK';
+
+  @override
   String get commonActionIsFinal => 'This action is final.';
 
   @override
@@ -1037,8 +1040,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get securityChangePassword => 'Change password';
 
   @override
-  String get securityChangePasswordSuccess =>
-      'Password updated. Sign in with your new password.';
+  String get securityChangePasswordSuccess => 'Password updated.';
 
   @override
   String get securityChangePasswordSendingCode => 'Sending verification code…';
@@ -1101,6 +1103,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get privacyExportSubtitle => 'Export your data at any time.';
 
   @override
+  String get termsOfServiceTitle => 'Terms of Service';
+
+  @override
+  String get privacyPolicyTitle => 'Privacy Policy';
+
+  @override
   String get paymentTitle => 'Payment';
 
   @override
@@ -1123,6 +1131,67 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get relativesEmptySubtitle =>
       'Add your relatives to book appointments on their behalf.';
+
+  @override
+  String get addRelativeTitle => 'Add a relative';
+
+  @override
+  String get addRelativeSubtitle =>
+      'Enter the information of the person you are booking for.';
+
+  @override
+  String get addRelativeFirstNameHint => 'First name';
+
+  @override
+  String get addRelativeLastNameHint => 'Last name';
+
+  @override
+  String get addRelativeTeudatHint => '9 digits';
+
+  @override
+  String get addRelativeKupatOptional => 'Optional';
+
+  @override
+  String get addRelativeInsuranceLabel => 'Insurance';
+
+  @override
+  String get addRelativeInsuranceHint => 'Supplementary insurance (optional)';
+
+  @override
+  String get addRelativeOptionalSection => 'Optional information';
+
+  @override
+  String get addRelativeSubmitButton => 'Add';
+
+  @override
+  String get addRelativeSuccess => 'Relative added successfully.';
+
+  @override
+  String get editRelativeTitle => 'Edit relative';
+
+  @override
+  String get editRelativeSaveButton => 'Save';
+
+  @override
+  String get editRelativeDeleteButton => 'Delete';
+
+  @override
+  String get editRelativeDeleteTitle => 'Delete this relative?';
+
+  @override
+  String get editRelativeDeleteMessage => 'This action cannot be undone.';
+
+  @override
+  String get editRelativeDeleteConfirm => 'Delete';
+
+  @override
+  String get editRelativeUpdateSuccess => 'Relative updated.';
+
+  @override
+  String get editRelativeDeleteSuccess => 'Relative deleted.';
+
+  @override
+  String get relativesMeCardLabel => 'Me';
 
   @override
   String get settingsUnavailableTitle => 'Settings unavailable';
@@ -1211,6 +1280,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profileAccountDeletedSnack =>
       'Account deleted. You have been logged out.';
+
+  @override
+  String get profileNameUpdatedSuccess => 'Name updated.';
 
   @override
   String get errorUnableToDeleteAccount => 'Unable to delete the account.';
@@ -1556,6 +1628,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get relativeParent => 'Parent';
+
+  @override
+  String get relativeSpouse => 'Spouse';
+
+  @override
+  String get relativeSibling => 'Sibling';
+
+  @override
+  String get relativeOther => 'Other';
 
   @override
   String relativeDemoName(int index) {

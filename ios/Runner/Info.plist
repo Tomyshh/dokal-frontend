@@ -58,5 +58,11 @@
 		<string>Nous utilisons votre localisation pour afficher votre ville et pays dans l'application.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<!-- Firebase Cloud Messaging : notifications push en arrière-plan -->
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
 	</dict>
 </plist>

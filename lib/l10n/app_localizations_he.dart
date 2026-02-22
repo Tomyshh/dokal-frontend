@@ -333,6 +333,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get commonCancel => 'ביטול';
 
   @override
+  String get commonConfirm => 'אישור';
+
+  @override
   String get commonActionIsFinal => 'פעולה זו היא סופית.';
 
   @override
@@ -1012,8 +1015,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get securityChangePassword => 'שנה סיסמה';
 
   @override
-  String get securityChangePasswordSuccess =>
-      'הסיסמה עודכנה. התחבר עם הסיסמה החדשה שלך.';
+  String get securityChangePasswordSuccess => 'הסיסמה עודכנה.';
 
   @override
   String get securityChangePasswordSendingCode => 'שולח קוד אימות…';
@@ -1075,6 +1077,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get privacyExportSubtitle => 'ייצא את הנתונים שלך בכל עת.';
 
   @override
+  String get termsOfServiceTitle => 'תנאי שימוש';
+
+  @override
+  String get privacyPolicyTitle => 'מדיניות פרטיות';
+
+  @override
   String get paymentTitle => 'תשלום';
 
   @override
@@ -1096,6 +1104,66 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get relativesEmptySubtitle => 'הוסף קרובים כדי לקבוע תור בשמם.';
+
+  @override
+  String get addRelativeTitle => 'הוסף קרוב';
+
+  @override
+  String get addRelativeSubtitle => 'הזן את פרטי האדם עבורו אתה קובע תור.';
+
+  @override
+  String get addRelativeFirstNameHint => 'שם פרטי';
+
+  @override
+  String get addRelativeLastNameHint => 'שם משפחה';
+
+  @override
+  String get addRelativeTeudatHint => '9 ספרות';
+
+  @override
+  String get addRelativeKupatOptional => 'אופציונלי';
+
+  @override
+  String get addRelativeInsuranceLabel => 'ביטוח';
+
+  @override
+  String get addRelativeInsuranceHint => 'ביטוח משלים (אופציונלי)';
+
+  @override
+  String get addRelativeOptionalSection => 'מידע אופציונלי';
+
+  @override
+  String get addRelativeSubmitButton => 'הוסף';
+
+  @override
+  String get addRelativeSuccess => 'הקרוב נוסף בהצלחה.';
+
+  @override
+  String get editRelativeTitle => 'ערוך קרוב';
+
+  @override
+  String get editRelativeSaveButton => 'שמור';
+
+  @override
+  String get editRelativeDeleteButton => 'מחק';
+
+  @override
+  String get editRelativeDeleteTitle => 'למחוק את הקרוב הזה?';
+
+  @override
+  String get editRelativeDeleteMessage => 'לא ניתן לבטל פעולה זו.';
+
+  @override
+  String get editRelativeDeleteConfirm => 'מחק';
+
+  @override
+  String get editRelativeUpdateSuccess => 'הקרוב עודכן.';
+
+  @override
+  String get editRelativeDeleteSuccess => 'הקרוב נמחק.';
+
+  @override
+  String get relativesMeCardLabel => 'אני';
 
   @override
   String get settingsUnavailableTitle => 'ההגדרות אינן זמינות';
@@ -1182,6 +1250,9 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get profileAccountDeletedSnack => 'החשבון נמחק. נותקת מהמערכת.';
+
+  @override
+  String get profileNameUpdatedSuccess => 'השם עודכן.';
 
   @override
   String get errorUnableToDeleteAccount => 'לא ניתן למחוק את החשבון.';
@@ -1510,6 +1581,15 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get relativeParent => 'הורה';
+
+  @override
+  String get relativeSpouse => 'בן/בת זוג';
+
+  @override
+  String get relativeSibling => 'אח/אחות';
+
+  @override
+  String get relativeOther => 'אחר';
 
   @override
   String relativeDemoName(int index) {

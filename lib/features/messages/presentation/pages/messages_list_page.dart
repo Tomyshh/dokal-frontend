@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,11 +7,13 @@ import 'package:shimmer/shimmer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/format_appointment_date.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/conversation_preview.dart';
 import '../bloc/messages_cubit.dart';
@@ -281,6 +284,7 @@ class _ConversationTile extends StatelessWidget {
                 children: [
                   _Avatar(
                     name: conversation.name,
+                    avatarUrl: conversation.avatarUrl,
                     color: Color(conversation.avatarColorValue),
                     isOnline: conversation.isOnline,
                   ),
@@ -338,6 +342,7 @@ class _ConversationTile extends StatelessWidget {
                         if (conversation.appointment != null) ...[
                           SizedBox(height: AppSpacing.xs.h),
                           _AppointmentChip(
+                            context: context,
                             appointment: conversation.appointment!,
                           ),
                         ],
@@ -367,38 +372,42 @@ class _Avatar extends StatelessWidget {
     required this.name,
     required this.color,
     required this.isOnline,
+    this.avatarUrl,
   });
 
   final String name;
+  final String? avatarUrl;
   final Color color;
   final bool isOnline;
 
   @override
   Widget build(BuildContext context) {
-    final initials = name.split(' ').take(2).map((e) => e[0]).join();
+    final initials = name
+        .split(' ')
+        .take(2)
+        .map((e) => e.isNotEmpty ? e[0] : '')
+        .join()
+        .toUpperCase();
+    final displayInitials = initials.isEmpty ? '?' : initials;
 
     return SizedBox(
       width: 40.r,
       height: 40.r,
       child: Stack(
         children: [
-          Container(
-            width: 40.r,
-            height: 40.r,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.15),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Text(
-                initials,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w600,
-                  color: color,
-                ),
-              ),
-            ),
+          ClipOval(
+            child: (avatarUrl?.trim().isNotEmpty ?? false)
+                ? CachedNetworkImage(
+                    imageUrl: avatarUrl!,
+                    width: 40.r,
+                    height: 40.r,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        _buildInitialsPlaceholder(displayInitials),
+                    errorWidget: (context, url, error) =>
+                        _buildInitialsPlaceholder(displayInitials),
+                  )
+                : _buildInitialsPlaceholder(displayInitials),
           ),
           if (isOnline)
             Positioned(
@@ -415,6 +424,27 @@ class _Avatar extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInitialsPlaceholder(String initials) {
+    return Container(
+      width: 40.r,
+      height: 40.r,
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: TextStyle(
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w600,
+            color: color,
+          ),
+        ),
       ),
     );
   }
@@ -451,12 +481,38 @@ class _UnreadBadge extends StatelessWidget {
 
 /// Chip d'aperçu RDV
 class _AppointmentChip extends StatelessWidget {
-  const _AppointmentChip({required this.appointment});
+  const _AppointmentChip({
+    required this.context,
+    required this.appointment,
+  });
 
+  final BuildContext context;
   final ConversationAppointmentPreview appointment;
+
+  String _statusLabel(AppLocalizations l10n) {
+    switch (appointment.status) {
+      case 'pending':
+        return l10n.practitionerAppointmentStatusPending;
+      case 'confirmed':
+        return l10n.practitionerAppointmentStatusConfirmed;
+      case 'completed':
+        return l10n.practitionerAppointmentStatusCompleted;
+      case 'cancelled_by_patient':
+      case 'cancelled_by_practitioner':
+        return l10n.practitionerAppointmentStatusCancelled;
+      case 'no_show':
+        return l10n.practitionerAppointmentStatusNoShow;
+      default:
+        return appointment.status.isNotEmpty ? appointment.status : '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final statusLabel = _statusLabel(l10n);
+    final formattedDate = formatAppointmentDateShort(context, appointment.date);
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.sm.w,
@@ -487,13 +543,13 @@ class _AppointmentChip extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                appointment.title,
+                statusLabel,
                 style: Theme.of(
                   context,
                 ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
               ),
               Text(
-                appointment.date,
+                formattedDate,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.primary,
                   fontSize: 9.sp,

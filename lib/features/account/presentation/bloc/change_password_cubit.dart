@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../l10n/l10n_static.dart';
 import '../../../auth/domain/usecases/get_session.dart';
 import '../../../auth/domain/usecases/request_password_reset.dart';
-import '../../../auth/domain/usecases/sign_out.dart';
 import '../../../auth/domain/usecases/update_password.dart';
 import '../../../auth/domain/usecases/verify_password_reset_otp.dart';
 
@@ -16,19 +15,16 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     required RequestPasswordReset requestPasswordReset,
     required VerifyPasswordResetOtp verifyPasswordResetOtp,
     required UpdatePassword updatePassword,
-    required SignOut signOut,
   })  : _getSession = getSession,
         _requestPasswordReset = requestPasswordReset,
         _verifyPasswordResetOtp = verifyPasswordResetOtp,
         _updatePassword = updatePassword,
-        _signOut = signOut,
         super(const ChangePasswordState.initial());
 
   final GetSession _getSession;
   final RequestPasswordReset _requestPasswordReset;
   final VerifyPasswordResetOtp _verifyPasswordResetOtp;
   final UpdatePassword _updatePassword;
-  final SignOut _signOut;
 
   /// Envoie le code OTP à 6 chiffres par email via Supabase.
   Future<void> sendOtp() async {
@@ -97,9 +93,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
         state.copyWith(status: ChangePasswordStatus.failure, error: f.message),
       ),
       (_) async {
-        try {
-          await _signOut();
-        } catch (_) {}
         emit(state.copyWith(status: ChangePasswordStatus.success, error: null));
       },
     );

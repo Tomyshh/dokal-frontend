@@ -39,6 +39,94 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
+  Future<Either<Failure, Relative>> addRelative({
+    required String firstName,
+    required String lastName,
+    required String teudatZehut,
+    String? dateOfBirth,
+    required String relation,
+    String? kupatHolim,
+    String? insuranceProvider,
+    String? avatarUrl,
+  }) async {
+    try {
+      final relative = await remote.addRelativeAsync(
+        firstName: firstName,
+        lastName: lastName,
+        teudatZehut: teudatZehut,
+        dateOfBirth: dateOfBirth,
+        relation: relation,
+        kupatHolim: kupatHolim,
+        insuranceProvider: insuranceProvider,
+        avatarUrl: avatarUrl,
+      );
+      return Right(relative);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    } catch (_) {
+      return Left(Failure(l10nStatic.errorUnableToAddRelative));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> updateRelative({
+    required String id,
+    required String firstName,
+    required String lastName,
+    required String teudatZehut,
+    String? dateOfBirth,
+    required String relation,
+    String? kupatHolim,
+    String? insuranceProvider,
+    String? avatarUrl,
+  }) async {
+    try {
+      await remote.updateRelativeAsync(
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        teudatZehut: teudatZehut,
+        dateOfBirth: dateOfBirth,
+        relation: relation,
+        kupatHolim: kupatHolim,
+        insuranceProvider: insuranceProvider,
+        avatarUrl: avatarUrl,
+      );
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    } catch (_) {
+      return Left(Failure(l10nStatic.errorUnableToAddRelative));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String?>> uploadRelativeAvatar(
+      String relativeId, String filePath) async {
+    try {
+      final avatarUrl =
+          await remote.uploadRelativeAvatarAsync(relativeId, filePath);
+      return Right(avatarUrl);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    } catch (_) {
+      return Left(Failure(l10nStatic.errorUnableToLoadProfile));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteRelative(String id) async {
+    try {
+      await remote.deleteRelative(id);
+      return const Right(unit);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    } catch (_) {
+      return Left(Failure(l10nStatic.errorUnableToAddRelative));
+    }
+  }
+
+  @override
   Future<Either<Failure, Unit>> addRelativeDemo() async {
     // In production, this is a no-op placeholder. Real relative creation
     // happens through a dedicated form that calls addRelativeAsync().
@@ -47,6 +135,7 @@ class AccountRepositoryImpl implements AccountRepository {
       await remote.addRelativeAsync(
         firstName: 'Nouveau',
         lastName: 'Proche',
+        teudatZehut: '123456789',
         relation: 'other',
       );
       return const Right(unit);

@@ -123,9 +123,12 @@ class SelectPatientPage extends StatelessWidget {
                                       fontWeight: FontWeight.w800,
                                     ),
                               ),
-                              onTap: () => context
-                                  .read<BookingPatientsCubit>()
-                                  .addRelativeDemo(),
+                              onTap: () async {
+                                await context.push('/account/relatives/add');
+                                if (context.mounted) {
+                                  context.read<BookingPatientsCubit>().load();
+                                }
+                              },
                             ),
                             if (pState.relatives.isNotEmpty) ...[
                               Divider(height: 1.h),

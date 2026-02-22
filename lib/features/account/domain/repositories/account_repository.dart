@@ -10,6 +10,33 @@ abstract class AccountRepository {
 
   Future<Either<Failure, List<Relative>>> listRelatives();
   Future<Either<Failure, Unit>> addRelativeDemo();
+  Future<Either<Failure, Relative>> addRelative({
+    required String firstName,
+    required String lastName,
+    required String teudatZehut,
+    String? dateOfBirth,
+    required String relation,
+    String? kupatHolim,
+    String? insuranceProvider,
+    String? avatarUrl,
+  });
+
+  Future<Either<Failure, Unit>> updateRelative({
+    required String id,
+    required String firstName,
+    required String lastName,
+    required String teudatZehut,
+    String? dateOfBirth,
+    required String relation,
+    String? kupatHolim,
+    String? insuranceProvider,
+    String? avatarUrl,
+  });
+
+  /// Upload l'avatar d'un proche. Retourne l'URL ou une erreur.
+  Future<Either<Failure, String?>> uploadRelativeAvatar(String relativeId, String filePath);
+
+  Future<Either<Failure, Unit>> deleteRelative(String id);
 
   Future<Either<Failure, List<PaymentMethod>>> listPaymentMethods();
   Future<Either<Failure, Unit>> addPaymentMethodDemo();

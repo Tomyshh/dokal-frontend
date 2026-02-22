@@ -2,17 +2,34 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/notifiers/messages_refresh_notifier.dart';
 import '../../domain/entities/conversation_preview.dart';
 import '../../domain/usecases/get_conversations.dart';
 
 part 'messages_state.dart';
 
 class MessagesCubit extends Cubit<MessagesState> {
-  MessagesCubit({required GetConversations getConversations})
-    : _getConversations = getConversations,
-      super(const MessagesState.initial());
+  MessagesCubit({
+    required GetConversations getConversations,
+    required MessagesRefreshNotifier messagesRefreshNotifier,
+  }) : _getConversations = getConversations,
+       _messagesRefreshNotifier = messagesRefreshNotifier,
+       super(const MessagesState.initial()) {
+    _messagesRefreshNotifier.addListener(_onMessagesChanged);
+  }
 
   final GetConversations _getConversations;
+  final MessagesRefreshNotifier _messagesRefreshNotifier;
+
+  void _onMessagesChanged() {
+    if (!isClosed) load();
+  }
+
+  @override
+  Future<void> close() {
+    _messagesRefreshNotifier.removeListener(_onMessagesChanged);
+    return super.close();
+  }
 
   Future<void> load() async {
     // Mode invité: la messagerie est liée à un compte.

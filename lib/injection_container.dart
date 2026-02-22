@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/notifiers/appointment_refresh_notifier.dart';
+import 'core/services/push_notification_service.dart';
+import 'core/notifiers/messages_refresh_notifier.dart';
 import 'core/permissions/permissions_service.dart';
 import 'core/network/api_client.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
@@ -85,7 +88,11 @@ import 'features/account/data/datasources/account_remote_data_source.dart';
 import 'features/account/data/repositories/account_repository_impl.dart';
 import 'features/account/domain/repositories/account_repository.dart';
 import 'features/account/domain/usecases/add_payment_method_demo.dart';
+import 'features/account/domain/usecases/add_relative.dart';
 import 'features/account/domain/usecases/add_relative_demo.dart';
+import 'features/account/domain/usecases/delete_relative.dart';
+import 'features/account/domain/usecases/update_relative.dart';
+import 'features/account/domain/usecases/upload_relative_avatar.dart';
 import 'features/account/domain/usecases/delete_payment_method.dart';
 import 'features/account/domain/usecases/get_payment_methods.dart';
 import 'features/account/domain/usecases/get_profile.dart';
@@ -97,6 +104,9 @@ import 'features/account/domain/usecases/upload_avatar.dart';
 import 'features/account/presentation/bloc/change_password_cubit.dart';
 import 'features/account/presentation/bloc/payment_cubit.dart';
 import 'features/account/presentation/bloc/profile_cubit.dart';
+import 'features/account/presentation/bloc/add_relative_cubit.dart';
+import 'features/account/presentation/bloc/edit_profile_cubit.dart';
+import 'features/account/presentation/bloc/edit_relative_cubit.dart';
 import 'features/account/presentation/bloc/relatives_cubit.dart';
 import 'features/home/data/datasources/home_local_data_source.dart';
 import 'features/home/data/repositories/home_repository_impl.dart';
@@ -138,6 +148,14 @@ void configureDependencies() {
 
   // Permissions
   sl.registerLazySingleton(() => PermissionsService());
+
+  // Firebase Push Notifications
+  sl.registerLazySingleton<PushNotificationService>(
+    () => PushNotificationService(
+      FirebaseMessaging.instance,
+      sl<SharedPreferences>(),
+    ),
+  );
 
   // Supabase
   const supabaseUrlDefine = String.fromEnvironment(
@@ -328,8 +346,12 @@ void configureDependencies() {
   );
   sl.registerLazySingleton(() => SendMessage(sl<MessagesRepository>()));
 
+  sl.registerLazySingleton(() => MessagesRefreshNotifier());
   sl.registerFactory(
-    () => MessagesCubit(getConversations: sl<GetConversations>()),
+    () => MessagesCubit(
+      getConversations: sl<GetConversations>(),
+      messagesRefreshNotifier: sl<MessagesRefreshNotifier>(),
+    ),
   );
   sl.registerFactoryParam<ConversationCubit, String, void>(
     (conversationId, _) => ConversationCubit(
@@ -399,6 +421,9 @@ void configureDependencies() {
       getSettings: sl<GetSettings>(),
       saveSettings: sl<SaveSettings>(),
       permissionsService: sl<PermissionsService>(),
+      pushNotificationService: sl<PushNotificationService>(),
+      registerPushToken: sl<RegisterPushToken>(),
+      removePushToken: sl<RemovePushToken>(),
     )..load(),
   );
 
@@ -497,7 +522,10 @@ void configureDependencies() {
   );
   sl.registerLazySingleton(() => GetProfile(sl<AccountRepository>()));
   sl.registerLazySingleton(() => GetRelatives(sl<AccountRepository>()));
+  sl.registerLazySingleton(() => AddRelative(sl<AccountRepository>()));
   sl.registerLazySingleton(() => AddRelativeDemo(sl<AccountRepository>()));
+  sl.registerLazySingleton(() => UpdateRelative(sl<AccountRepository>()));
+  sl.registerLazySingleton(() => DeleteRelative(sl<AccountRepository>()));
   sl.registerLazySingleton(() => GetPaymentMethods(sl<AccountRepository>()));
   sl.registerLazySingleton(() => AddPaymentMethodDemo(sl<AccountRepository>()));
   sl.registerLazySingleton(() => UpdateProfile(sl<AccountRepository>()));
@@ -512,13 +540,40 @@ void configureDependencies() {
     () => ProfileCubit(
       getProfile: sl<GetProfile>(),
       deleteAccount: sl<DeleteAccount>(),
+      updateProfile: sl<UpdateProfile>(),
     )..load(),
   );
   sl.registerFactory(
     () => RelativesCubit(
       getRelatives: sl<GetRelatives>(),
+      getProfile: sl<GetProfile>(),
       addRelativeDemo: sl<AddRelativeDemo>(),
     )..load(),
+  );
+  sl.registerFactory(
+    () => AddRelativeCubit(
+      addRelative: sl<AddRelative>(),
+      uploadRelativeAvatar: sl<UploadRelativeAvatar>(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => UploadRelativeAvatar(sl<AccountRepository>()),
+  );
+  sl.registerFactory(
+    () => EditProfileCubit(
+      getProfile: sl<GetProfile>(),
+      getHealthProfile: sl<GetHealthProfile>(),
+      updateProfile: sl<UpdateProfile>(),
+      saveHealthProfile: sl<SaveHealthProfile>(),
+      uploadAvatar: sl<UploadAvatar>(),
+    ),
+  );
+  sl.registerFactory(
+    () => EditRelativeCubit(
+      updateRelative: sl<UpdateRelative>(),
+      deleteRelative: sl<DeleteRelative>(),
+      uploadRelativeAvatar: sl<UploadRelativeAvatar>(),
+    ),
   );
   sl.registerFactory(
     () => PaymentCubit(
@@ -532,7 +587,6 @@ void configureDependencies() {
       requestPasswordReset: sl<RequestPasswordReset>(),
       verifyPasswordResetOtp: sl<VerifyPasswordResetOtp>(),
       updatePassword: sl<UpdatePassword>(),
-      signOut: sl<SignOut>(),
     ),
   );
 

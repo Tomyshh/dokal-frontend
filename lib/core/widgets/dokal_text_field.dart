@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DokalTextField extends StatelessWidget {
   const DokalTextField({
@@ -14,6 +15,7 @@ class DokalTextField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.onFieldSubmitted,
+    this.inputFormatters,
   });
 
   final TextEditingController controller;
@@ -27,6 +29,7 @@ class DokalTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
   final void Function(String)? onFieldSubmitted;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,7 @@ class DokalTextField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       textInputAction: textInputAction,
+      inputFormatters: inputFormatters,
       validator: validator,
       onFieldSubmitted: onFieldSubmitted,
       decoration: InputDecoration(

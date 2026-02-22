@@ -23,8 +23,9 @@ class MessagesDemoDataSourceImpl implements MessagesDemoDataSource {
         isOnline: true,
         avatarColorValue: 0xFF005044,
         appointment: ConversationAppointmentPreview(
+          status: 'confirmed',
+          date: '2025-02-19',
           title: l10n.demoAppointmentConsultation,
-          date: l10n.demoShortDateThu19Feb,
           isPast: false,
         ),
       ),
@@ -46,8 +47,9 @@ class MessagesDemoDataSourceImpl implements MessagesDemoDataSource {
         isOnline: true,
         avatarColorValue: 0xFFEC407A,
         appointment: ConversationAppointmentPreview(
+          status: 'completed',
+          date: '2025-02-15',
           title: l10n.demoAppointmentFollowUp,
-          date: l10n.demoShortDateMon15Feb,
           isPast: true,
         ),
       ),

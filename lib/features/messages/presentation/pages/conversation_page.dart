@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/notifiers/messages_refresh_notifier.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
@@ -41,10 +43,16 @@ class _ConversationPageState extends State<ConversationPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final conv = widget.conversation;
-    return BlocProvider(
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          sl<MessagesRefreshNotifier>().notifyMessagesChanged();
+        }
+      },
+      child: BlocProvider(
       create: (_) =>
           sl<ConversationCubit>(param1: widget.conversationId)..load(),
-      child: BlocListener<ConversationCubit, ConversationState>(
+        child: BlocListener<ConversationCubit, ConversationState>(
         listener: (context, state) {
           if (state.status == ConversationStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +60,8 @@ class _ConversationPageState extends State<ConversationPage> {
             );
           }
         },
-        child: Scaffold(
+        child: Builder(
+          builder: (context) => Scaffold(
           appBar: DokalAppBar(title: l10n.conversationTitle),
           body: SafeArea(
             child: Column(
@@ -182,7 +191,9 @@ class _ConversationPageState extends State<ConversationPage> {
             ),
           ),
         ),
+        ),
       ),
+    ),
     );
   }
 
@@ -202,28 +213,53 @@ class _ConversationAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name = conversation?.name ?? '';
+    final avatarUrl = conversation?.avatarUrl;
     final color = conversation != null
         ? Color(conversation!.avatarColorValue)
         : AppColors.primary;
+    final initials = name
+        .split(' ')
+        .take(2)
+        .map((e) => e.isNotEmpty ? e[0] : '')
+        .join()
+        .toUpperCase();
+    final displayInitials = initials.isEmpty ? '?' : initials;
 
     return SizedBox(
       width: 36.r,
       height: 36.r,
-      child: Container(
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.15),
-          shape: BoxShape.circle,
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          name.isEmpty
-              ? '?'
-              : name.split(' ').take(2).map((e) => e.isNotEmpty ? e[0] : '').join().toUpperCase(),
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
-            color: color,
-          ),
+      child: ClipOval(
+        child: (avatarUrl?.trim().isNotEmpty ?? false)
+            ? CachedNetworkImage(
+                imageUrl: avatarUrl!,
+                width: 36.r,
+                height: 36.r,
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    _buildPlaceholder(displayInitials, color),
+                errorWidget: (context, url, error) =>
+                    _buildPlaceholder(displayInitials, color),
+              )
+            : _buildPlaceholder(displayInitials, color),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder(String initials, Color color) {
+    return Container(
+      width: 36.r,
+      height: 36.r,
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        shape: BoxShape.circle,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        initials,
+        style: TextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w600,
+          color: color,
         ),
       ),
     );

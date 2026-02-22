@@ -94,6 +94,14 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
         id: j['id'] as String,
         name: '$firstName $lastName'.trim(),
         label: '$relation${year.isNotEmpty ? ' - $year' : ''}',
+        firstName: firstName.isEmpty ? null : firstName,
+        lastName: lastName.isEmpty ? null : lastName,
+        relation: relation.isEmpty ? null : relation,
+        dateOfBirth: dob,
+        teudatZehut: j['teudat_zehut'] as String?,
+        kupatHolim: j['kupat_holim'] as String?,
+        insuranceProvider: j['insurance_provider'] as String?,
+        avatarUrl: j['avatar_url'] as String?,
       );
     }).toList();
   }
@@ -105,8 +113,12 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
   Future<Relative> addRelativeAsync({
     required String firstName,
     required String lastName,
-    required String relation,
+    required String teudatZehut,
     String? dateOfBirth,
+    required String relation,
+    String? kupatHolim,
+    String? insuranceProvider,
+    String? avatarUrl,
   }) async {
     final json =
         await api.post(
@@ -114,8 +126,15 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
               data: {
                 'first_name': firstName,
                 'last_name': lastName,
-                'relation': relation,
+                'teudat_zehut': teudatZehut,
                 if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
+                'relation': relation,
+                if (kupatHolim != null && kupatHolim.isNotEmpty)
+                  'kupat_holim': kupatHolim,
+                if (insuranceProvider != null && insuranceProvider.isNotEmpty)
+                  'insurance_provider': insuranceProvider,
+                if (avatarUrl != null && avatarUrl.isNotEmpty)
+                  'avatar_url': avatarUrl,
               },
             )
             as Map<String, dynamic>;
@@ -125,11 +144,78 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
       id: json['id'] as String,
       name: '${json['first_name']} ${json['last_name']}'.trim(),
       label: '${json['relation']}${year.isNotEmpty ? ' - $year' : ''}',
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
+      relation: json['relation'] as String?,
+      dateOfBirth: dob,
+      teudatZehut: json['teudat_zehut'] as String?,
+      kupatHolim: json['kupat_holim'] as String?,
+      insuranceProvider: json['insurance_provider'] as String?,
+      avatarUrl: json['avatar_url'] as String?,
     );
   }
 
   Future<void> deleteRelative(String id) async {
     await api.delete('/api/v1/relatives/$id');
+  }
+
+  Future<String?> uploadRelativeAvatarAsync(String relativeId, String filePath) async {
+    final formData = FormData.fromMap({
+      'avatar': await MultipartFile.fromFile(filePath),
+    });
+    final json =
+        await api.post(
+              '/api/v1/relatives/$relativeId/avatar',
+              data: formData,
+            )
+            as Map<String, dynamic>;
+    return json['avatar_url'] as String?;
+  }
+
+  Future<Relative> updateRelativeAsync({
+    required String id,
+    required String firstName,
+    required String lastName,
+    required String teudatZehut,
+    String? dateOfBirth,
+    required String relation,
+    String? kupatHolim,
+    String? insuranceProvider,
+    String? avatarUrl,
+  }) async {
+    final json =
+        await api.patch(
+              '/api/v1/relatives/$id',
+              data: {
+                'first_name': firstName,
+                'last_name': lastName,
+                'teudat_zehut': teudatZehut,
+                if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
+                'relation': relation,
+                if (kupatHolim != null && kupatHolim.isNotEmpty)
+                  'kupat_holim': kupatHolim,
+                if (insuranceProvider != null && insuranceProvider.isNotEmpty)
+                  'insurance_provider': insuranceProvider,
+                if (avatarUrl != null && avatarUrl.isNotEmpty)
+                  'avatar_url': avatarUrl,
+              },
+            )
+            as Map<String, dynamic>;
+    final dob = json['date_of_birth'] as String?;
+    final year = dob != null && dob.length >= 4 ? dob.substring(0, 4) : '';
+    return Relative(
+      id: json['id'] as String,
+      name: '${json['first_name']} ${json['last_name']}'.trim(),
+      label: '${json['relation']}${year.isNotEmpty ? ' - $year' : ''}',
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
+      relation: json['relation'] as String?,
+      dateOfBirth: dob,
+      teudatZehut: json['teudat_zehut'] as String?,
+      kupatHolim: json['kupat_holim'] as String?,
+      insuranceProvider: json['insurance_provider'] as String?,
+      avatarUrl: json['avatar_url'] as String?,
+    );
   }
 
   // ---------------------------------------------------------------------------

@@ -718,6 +718,12 @@ abstract class AppLocalizations {
   /// **'ביטול'**
   String get commonCancel;
 
+  /// No description provided for @commonConfirm.
+  ///
+  /// In he, this message translates to:
+  /// **'אישור'**
+  String get commonConfirm;
+
   /// No description provided for @commonActionIsFinal.
   ///
   /// In he, this message translates to:
@@ -2023,7 +2029,7 @@ abstract class AppLocalizations {
   /// No description provided for @securityChangePasswordSuccess.
   ///
   /// In he, this message translates to:
-  /// **'הסיסמה עודכנה. התחבר עם הסיסמה החדשה שלך.'**
+  /// **'הסיסמה עודכנה.'**
   String get securityChangePasswordSuccess;
 
   /// No description provided for @securityChangePasswordSendingCode.
@@ -2140,6 +2146,18 @@ abstract class AppLocalizations {
   /// **'ייצא את הנתונים שלך בכל עת.'**
   String get privacyExportSubtitle;
 
+  /// No description provided for @termsOfServiceTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'תנאי שימוש'**
+  String get termsOfServiceTitle;
+
+  /// No description provided for @privacyPolicyTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מדיניות פרטיות'**
+  String get privacyPolicyTitle;
+
   /// No description provided for @paymentTitle.
   ///
   /// In he, this message translates to:
@@ -2181,6 +2199,126 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'הוסף קרובים כדי לקבוע תור בשמם.'**
   String get relativesEmptySubtitle;
+
+  /// No description provided for @addRelativeTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'הוסף קרוב'**
+  String get addRelativeTitle;
+
+  /// No description provided for @addRelativeSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'הזן את פרטי האדם עבורו אתה קובע תור.'**
+  String get addRelativeSubtitle;
+
+  /// No description provided for @addRelativeFirstNameHint.
+  ///
+  /// In he, this message translates to:
+  /// **'שם פרטי'**
+  String get addRelativeFirstNameHint;
+
+  /// No description provided for @addRelativeLastNameHint.
+  ///
+  /// In he, this message translates to:
+  /// **'שם משפחה'**
+  String get addRelativeLastNameHint;
+
+  /// No description provided for @addRelativeTeudatHint.
+  ///
+  /// In he, this message translates to:
+  /// **'9 ספרות'**
+  String get addRelativeTeudatHint;
+
+  /// No description provided for @addRelativeKupatOptional.
+  ///
+  /// In he, this message translates to:
+  /// **'אופציונלי'**
+  String get addRelativeKupatOptional;
+
+  /// No description provided for @addRelativeInsuranceLabel.
+  ///
+  /// In he, this message translates to:
+  /// **'ביטוח'**
+  String get addRelativeInsuranceLabel;
+
+  /// No description provided for @addRelativeInsuranceHint.
+  ///
+  /// In he, this message translates to:
+  /// **'ביטוח משלים (אופציונלי)'**
+  String get addRelativeInsuranceHint;
+
+  /// No description provided for @addRelativeOptionalSection.
+  ///
+  /// In he, this message translates to:
+  /// **'מידע אופציונלי'**
+  String get addRelativeOptionalSection;
+
+  /// No description provided for @addRelativeSubmitButton.
+  ///
+  /// In he, this message translates to:
+  /// **'הוסף'**
+  String get addRelativeSubmitButton;
+
+  /// No description provided for @addRelativeSuccess.
+  ///
+  /// In he, this message translates to:
+  /// **'הקרוב נוסף בהצלחה.'**
+  String get addRelativeSuccess;
+
+  /// No description provided for @editRelativeTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'ערוך קרוב'**
+  String get editRelativeTitle;
+
+  /// No description provided for @editRelativeSaveButton.
+  ///
+  /// In he, this message translates to:
+  /// **'שמור'**
+  String get editRelativeSaveButton;
+
+  /// No description provided for @editRelativeDeleteButton.
+  ///
+  /// In he, this message translates to:
+  /// **'מחק'**
+  String get editRelativeDeleteButton;
+
+  /// No description provided for @editRelativeDeleteTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'למחוק את הקרוב הזה?'**
+  String get editRelativeDeleteTitle;
+
+  /// No description provided for @editRelativeDeleteMessage.
+  ///
+  /// In he, this message translates to:
+  /// **'לא ניתן לבטל פעולה זו.'**
+  String get editRelativeDeleteMessage;
+
+  /// No description provided for @editRelativeDeleteConfirm.
+  ///
+  /// In he, this message translates to:
+  /// **'מחק'**
+  String get editRelativeDeleteConfirm;
+
+  /// No description provided for @editRelativeUpdateSuccess.
+  ///
+  /// In he, this message translates to:
+  /// **'הקרוב עודכן.'**
+  String get editRelativeUpdateSuccess;
+
+  /// No description provided for @editRelativeDeleteSuccess.
+  ///
+  /// In he, this message translates to:
+  /// **'הקרוב נמחק.'**
+  String get editRelativeDeleteSuccess;
+
+  /// No description provided for @relativesMeCardLabel.
+  ///
+  /// In he, this message translates to:
+  /// **'אני'**
+  String get relativesMeCardLabel;
 
   /// No description provided for @settingsUnavailableTitle.
   ///
@@ -2349,6 +2487,12 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'החשבון נמחק. נותקת מהמערכת.'**
   String get profileAccountDeletedSnack;
+
+  /// No description provided for @profileNameUpdatedSuccess.
+  ///
+  /// In he, this message translates to:
+  /// **'השם עודכן.'**
+  String get profileNameUpdatedSuccess;
 
   /// No description provided for @errorUnableToDeleteAccount.
   ///
@@ -2979,6 +3123,24 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'הורה'**
   String get relativeParent;
+
+  /// No description provided for @relativeSpouse.
+  ///
+  /// In he, this message translates to:
+  /// **'בן/בת זוג'**
+  String get relativeSpouse;
+
+  /// No description provided for @relativeSibling.
+  ///
+  /// In he, this message translates to:
+  /// **'אח/אחות'**
+  String get relativeSibling;
+
+  /// No description provided for @relativeOther.
+  ///
+  /// In he, this message translates to:
+  /// **'אחר'**
+  String get relativeOther;
 
   /// No description provided for @relativeDemoName.
   ///

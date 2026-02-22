@@ -332,6 +332,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get commonCancel => 'ይቅር';
 
   @override
+  String get commonConfirm => 'እሺ';
+
+  @override
   String get commonActionIsFinal => 'ይህ እርምጃ መመለስ አይቻልም።';
 
   @override
@@ -1004,7 +1007,7 @@ class AppLocalizationsAm extends AppLocalizations {
   String get securityChangePassword => 'የይለፍ ቃል ቀይር';
 
   @override
-  String get securityChangePasswordSuccess => 'የይለፍ ቃል ታድሷል። በአዲሱ የይለፍ ቃል ይግቡ።';
+  String get securityChangePasswordSuccess => 'የይለፍ ቃል ታድሷል።';
 
   @override
   String get securityChangePasswordSendingCode => 'የማረጋገጫ ኮድ በመላክ ላይ…';
@@ -1065,6 +1068,12 @@ class AppLocalizationsAm extends AppLocalizations {
   String get privacyExportSubtitle => 'ውሂብዎን በማንኛውም ጊዜ ወደ ውጭ ላክ።';
 
   @override
+  String get termsOfServiceTitle => 'የአጠቃቀም ውሂብ';
+
+  @override
+  String get privacyPolicyTitle => 'የግላዊነት ፖሊሲ';
+
+  @override
   String get paymentTitle => 'ክፍያ';
 
   @override
@@ -1086,6 +1095,66 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get relativesEmptySubtitle => 'በስማቸው ቀጠሮ ለማስያዝ ዘመዶችን ያክሉ።';
+
+  @override
+  String get addRelativeTitle => 'ዘመድ ጨምር';
+
+  @override
+  String get addRelativeSubtitle => 'ለማን ቀጠሮ እንደሚያስይዙ የሰው መረጃ ያስገቡ።';
+
+  @override
+  String get addRelativeFirstNameHint => 'ስም';
+
+  @override
+  String get addRelativeLastNameHint => 'የአባት ስም';
+
+  @override
+  String get addRelativeTeudatHint => '9 ቁጥሮች';
+
+  @override
+  String get addRelativeKupatOptional => 'አማራጭ';
+
+  @override
+  String get addRelativeInsuranceLabel => 'ዋስትና';
+
+  @override
+  String get addRelativeInsuranceHint => 'ተጨማሪ ዋስትና (አማራጭ)';
+
+  @override
+  String get addRelativeOptionalSection => 'አማራጭ መረጃ';
+
+  @override
+  String get addRelativeSubmitButton => 'ጨምር';
+
+  @override
+  String get addRelativeSuccess => 'ዘመድ በተሳካ ሁኔታ ታክሏል።';
+
+  @override
+  String get editRelativeTitle => 'ዘመድ አርትዕ';
+
+  @override
+  String get editRelativeSaveButton => 'አስቀምጥ';
+
+  @override
+  String get editRelativeDeleteButton => 'ሰርዝ';
+
+  @override
+  String get editRelativeDeleteTitle => 'ይህን ዘመድ ይሰርዛሉ?';
+
+  @override
+  String get editRelativeDeleteMessage => 'ይህ እርምጃ መመለስ አይቻልም።';
+
+  @override
+  String get editRelativeDeleteConfirm => 'ሰርዝ';
+
+  @override
+  String get editRelativeUpdateSuccess => 'ዘመድ ታድሷል።';
+
+  @override
+  String get editRelativeDeleteSuccess => 'ዘመድ ተሰርዟል።';
+
+  @override
+  String get relativesMeCardLabel => 'እኔ';
 
   @override
   String get settingsUnavailableTitle => 'ቅንብሮች አይገኙም';
@@ -1171,6 +1240,9 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get profileAccountDeletedSnack => 'መለያው ተሰርዟል። ወጥተዋል።';
+
+  @override
+  String get profileNameUpdatedSuccess => 'ስም ታድሷል።';
 
   @override
   String get errorUnableToDeleteAccount => 'መለያውን ማሰረዝ አልተቻለም።';
@@ -1494,6 +1566,15 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get relativeParent => 'ወላጅ';
+
+  @override
+  String get relativeSpouse => 'ባል/ሚስት';
+
+  @override
+  String get relativeSibling => 'ወንድም/እህት';
+
+  @override
+  String get relativeOther => 'ሌላ';
 
   @override
   String relativeDemoName(int index) {

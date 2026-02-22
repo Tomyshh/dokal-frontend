@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "368898169734",
+    "project_id": "dokal-prod",
+    "storage_bucket": "dokal-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368898169734:android:de3725d5d4265b4db26a07",
+        "android_client_info": {
+          "package_name": "com.yapio.dokal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPeL_R2WFbljJFNiq4sEjTCPfyKOmcUyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

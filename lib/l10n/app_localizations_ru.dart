@@ -340,6 +340,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get commonCancel => 'Отмена';
 
   @override
+  String get commonConfirm => 'ОК';
+
+  @override
   String get commonActionIsFinal => 'Это действие необратимо.';
 
   @override
@@ -1034,8 +1037,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get securityChangePassword => 'Сменить пароль';
 
   @override
-  String get securityChangePasswordSuccess =>
-      'Пароль обновлён. Войдите с новым паролем.';
+  String get securityChangePasswordSuccess => 'Пароль обновлён.';
 
   @override
   String get securityChangePasswordSendingCode =>
@@ -1100,6 +1102,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get privacyExportSubtitle => 'Экспортируйте данные в любое время.';
 
   @override
+  String get termsOfServiceTitle => 'Условия использования';
+
+  @override
+  String get privacyPolicyTitle => 'Политика конфиденциальности';
+
+  @override
   String get paymentTitle => 'Оплата';
 
   @override
@@ -1122,6 +1130,68 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get relativesEmptySubtitle =>
       'Добавьте близких, чтобы записывать их на прием.';
+
+  @override
+  String get addRelativeTitle => 'Добавить близкого';
+
+  @override
+  String get addRelativeSubtitle =>
+      'Введите данные человека, для которого вы записываетесь.';
+
+  @override
+  String get addRelativeFirstNameHint => 'Имя';
+
+  @override
+  String get addRelativeLastNameHint => 'Фамилия';
+
+  @override
+  String get addRelativeTeudatHint => '9 цифр';
+
+  @override
+  String get addRelativeKupatOptional => 'Необязательно';
+
+  @override
+  String get addRelativeInsuranceLabel => 'Страховка';
+
+  @override
+  String get addRelativeInsuranceHint =>
+      'Дополнительная страховка (необязательно)';
+
+  @override
+  String get addRelativeOptionalSection => 'Необязательная информация';
+
+  @override
+  String get addRelativeSubmitButton => 'Добавить';
+
+  @override
+  String get addRelativeSuccess => 'Близкий успешно добавлен.';
+
+  @override
+  String get editRelativeTitle => 'Редактировать близкого';
+
+  @override
+  String get editRelativeSaveButton => 'Сохранить';
+
+  @override
+  String get editRelativeDeleteButton => 'Удалить';
+
+  @override
+  String get editRelativeDeleteTitle => 'Удалить этого близкого?';
+
+  @override
+  String get editRelativeDeleteMessage => 'Это действие нельзя отменить.';
+
+  @override
+  String get editRelativeDeleteConfirm => 'Удалить';
+
+  @override
+  String get editRelativeUpdateSuccess => 'Близкий обновлён.';
+
+  @override
+  String get editRelativeDeleteSuccess => 'Близкий удалён.';
+
+  @override
+  String get relativesMeCardLabel => 'Я';
 
   @override
   String get settingsUnavailableTitle => 'Настройки недоступны';
@@ -1212,6 +1282,9 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get profileAccountDeletedSnack =>
       'Аккаунт удален. Вы вышли из системы.';
+
+  @override
+  String get profileNameUpdatedSuccess => 'Имя обновлено.';
 
   @override
   String get errorUnableToDeleteAccount => 'Не удалось удалить аккаунт.';
@@ -1559,6 +1632,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get relativeParent => 'Родитель';
+
+  @override
+  String get relativeSpouse => 'Супруг(а)';
+
+  @override
+  String get relativeSibling => 'Брат / Сестра';
+
+  @override
+  String get relativeOther => 'Другое';
 
   @override
   String relativeDemoName(int index) {
