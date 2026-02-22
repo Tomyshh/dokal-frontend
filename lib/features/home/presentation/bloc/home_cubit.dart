@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../core/notifiers/appointment_refresh_notifier.dart';
 import '../../../account/domain/usecases/get_profile.dart';
 import '../../../appointments/domain/entities/appointment.dart';
 import '../../../appointments/domain/usecases/get_past_appointments.dart';
@@ -27,6 +28,7 @@ class HomeCubit extends Cubit<HomeState> {
     required GetPastAppointments getPastAppointments,
     required GetConversations getConversations,
     required GetProfile getProfile,
+    required AppointmentRefreshNotifier appointmentRefreshNotifier,
   }) : _getGreetingName = getGreetingName,
        _getHistoryEnabled = getHistoryEnabled,
        _enableHistory = enableHistory,
@@ -34,7 +36,10 @@ class HomeCubit extends Cubit<HomeState> {
        _getPastAppointments = getPastAppointments,
        _getConversations = getConversations,
        _getProfile = getProfile,
-       super(const HomeState.initial());
+       _appointmentRefreshNotifier = appointmentRefreshNotifier,
+       super(const HomeState.initial()) {
+    _appointmentRefreshNotifier.addListener(_onAppointmentsChanged);
+  }
 
   final GetHomeGreetingName _getGreetingName;
   final GetHomeHistoryEnabled _getHistoryEnabled;
@@ -43,6 +48,17 @@ class HomeCubit extends Cubit<HomeState> {
   final GetPastAppointments _getPastAppointments;
   final GetConversations _getConversations;
   final GetProfile _getProfile;
+  final AppointmentRefreshNotifier _appointmentRefreshNotifier;
+
+  void _onAppointmentsChanged() {
+    if (!isClosed) load();
+  }
+
+  @override
+  Future<void> close() {
+    _appointmentRefreshNotifier.removeListener(_onAppointmentsChanged);
+    return super.close();
+  }
 
   Future<void> load() async {
     if (isClosed) return;
@@ -96,8 +112,14 @@ class HomeCubit extends Cubit<HomeState> {
     final upcoming = upcomingRes.getOrElse(() => const <Appointment>[]);
     final past = pastRes.getOrElse(() => const <Appointment>[]);
 
-    final upcomingList = upcoming.take(3).toList(growable: false);
-    final history = past.take(3).toList(growable: false);
+    final upcomingList = upcoming
+        .where((a) => !a.isCancelled)
+        .take(3)
+        .toList(growable: false);
+    final history = past
+        .where((a) => !a.isCancelled)
+        .take(3)
+        .toList(growable: false);
 
     final conversations = convRes.getOrElse(
       () => const <ConversationPreview>[],

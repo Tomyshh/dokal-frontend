@@ -50,6 +50,32 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
     );
   }
 
+  /// Reschedule an appointment to a new date/time.
+  /// Requires backend: PATCH /api/v1/appointments/{id}/reschedule
+  Future<Appointment?> rescheduleAsync(
+    String id, {
+    required String appointmentDate,
+    required String startTime,
+    required String endTime,
+  }) async {
+    final start = _ensureTimeFormat(startTime);
+    final end = _ensureTimeFormat(endTime);
+    final json = await api.patch(
+      '/api/v1/appointments/$id/reschedule',
+      data: {
+        'appointment_date': appointmentDate,
+        'start_time': start,
+        'end_time': end,
+      },
+    ) as Map<String, dynamic>?;
+    return json != null ? _mapAppointment(json) : null;
+  }
+
+  static String _ensureTimeFormat(String time) {
+    if (time.length == 5 && time[2] == ':') return '$time:00';
+    return time;
+  }
+
   // ---- mapping helper ----
 
   static Appointment _mapAppointment(dynamic raw, {bool isPast = false}) {

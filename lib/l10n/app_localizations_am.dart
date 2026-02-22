@@ -295,6 +295,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'ቀጣይ ቀጠሮዎች';
 
   @override
+  String get homeNoUpcomingAppointments => 'በአሁኑ ጊዜ የሚመጡ ቀጠሮዎች የሉም';
+
+  @override
   String get homeFindAppointmentCta => 'ቀጠሮ ፈልግ';
 
   @override
@@ -444,13 +447,25 @@ class AppLocalizationsAm extends AppLocalizations {
   String get searchSortAvailability => 'መገኘት';
 
   @override
+  String get searchSortAvailabilitySubtitle => 'ከበጣም የሚገኝ ወደ ያነሰ የሚገኝ';
+
+  @override
   String get searchSortDistance => 'ርቀት';
+
+  @override
+  String get searchSortDistanceSubtitle => 'ከቅርብ ወደ ሩቅ';
 
   @override
   String get searchSortName => 'ስም';
 
   @override
+  String get searchSortNameSubtitle => 'በአልፋቤት ቅደም ተከተል';
+
+  @override
   String get searchSortRating => 'ደረጃ';
+
+  @override
+  String get searchSortRatingSubtitle => 'ከከፍተኛ ደረጃ ጀምሮ';
 
   @override
   String get searchSortPrice => 'ዋጋ';
@@ -659,6 +674,25 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get appointmentDetailReschedule => 'ዳግም ያቅዱ';
+
+  @override
+  String get appointmentRescheduleTitle => 'בחר תאריך חדש';
+
+  @override
+  String appointmentRescheduleSubtitle(String practitionerName) {
+    return 'בחר תור זמין עם $practitionerName.';
+  }
+
+  @override
+  String appointmentRescheduleCurrent(String date, String time) {
+    return 'כרגע: $date בשעה $time';
+  }
+
+  @override
+  String get appointmentRescheduleConfirm => 'אשר שינוי';
+
+  @override
+  String get appointmentRescheduleSuccessSnack => 'התור נקבע מחדש בהצלחה';
 
   @override
   String get appointmentDetailCancelQuestion => 'ቀጠሮውን ልሰርዝ?';
@@ -877,6 +911,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get practitionerCalendarLegendSelected => 'ተመርጧል';
 
   @override
+  String get practitionerNoSlotsForDate => 'በዚህ ቀን ምንም ጊዜ አይገኝም';
+
+  @override
   String get practitionerYourAppointment => 'ቀጠሮዎ';
 
   @override
@@ -967,7 +1004,17 @@ class AppLocalizationsAm extends AppLocalizations {
   String get securityChangePassword => 'የይለፍ ቃል ቀይር';
 
   @override
-  String get securityChangePasswordSuccess => 'ጥያቄው ተቀምጧል';
+  String get securityChangePasswordSuccess => 'የይለፍ ቃል ታድሷል። በአዲሱ የይለፍ ቃል ይግቡ።';
+
+  @override
+  String get securityChangePasswordSendingCode => 'የማረጋገጫ ኮድ በመላክ ላይ…';
+
+  @override
+  String get securityChangePasswordSendCodeHint =>
+      'የይለፍ ቃል ለመቀየር የ6 አሃዝ ኮድ ወደ ኢሜይል አድራሻዎ ይላካል።';
+
+  @override
+  String get securityChangePasswordOtpLabel => 'የ6 አሃዝ ኮድ';
 
   @override
   String get securityCurrentPassword => 'የአሁኑ የይለፍ ቃል';
@@ -1208,6 +1255,18 @@ class AppLocalizationsAm extends AppLocalizations {
   String get bookingChangeSlotButton => 'ሰዓት ቀይር';
 
   @override
+  String get bookingQuickPatientSubtitle => 'ሐኪሙን የሚገናኝ ማን እንደሆነ ይምረጡ።';
+
+  @override
+  String get bookingQuickConfirmSubtitle => 'መረጃዎችን ያረጋግጡ እና ያረጋግጡ።';
+
+  @override
+  String get bookingChangePatient => 'ታማሚ ቀይር';
+
+  @override
+  String get commonLoading => 'በመጫን ላይ…';
+
+  @override
   String get bookingSuccessTitle => 'ቀጠሮ ተረጋግጧል';
 
   @override
@@ -1289,6 +1348,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get errorUnableToLoadProfile => 'መገለጫውን መጫን አልተቻለም።';
 
   @override
+  String get errorUnableToRetrieveEmail => 'የኢሜይል አድራሻዎን ማግኘት አልተቻለም።';
+
+  @override
   String get errorUnableToReadHistoryState => 'የታሪክ ሁኔታን ማንበብ አልተቻለም።';
 
   @override
@@ -1347,6 +1409,9 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get errorUnableToCancelAppointment => 'ቀጠሮውን መሰረዝ አልተቻለም።';
+
+  @override
+  String get errorUnableToRescheduleAppointment => 'ቀጠሮውን እንደገና ማቅደም አልተቻለም።';
 
   @override
   String get errorUnableToLoadConversations => 'ውይይቶችን መጫን አልተቻለም።';

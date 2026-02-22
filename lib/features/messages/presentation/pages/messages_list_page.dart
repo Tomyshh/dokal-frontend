@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
@@ -95,7 +97,7 @@ class MessagesListPage extends StatelessWidget {
           builder: (context, state) {
             final conversations = state.conversations;
             if (state.status == MessagesStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return const _MessagesListShimmer();
             }
             if (state.status == MessagesStatus.failure) {
               return DokalEmptyState(
@@ -130,7 +132,7 @@ class MessagesListPage extends StatelessWidget {
                 final conv = conversations[index];
                 return _ConversationTile(
                   conversation: conv,
-                  onTap: () => context.push('/messages/c/${conv.id}'),
+                  onTap: () => context.push('/messages/c/${conv.id}', extra: conv),
                   showDivider: index < conversations.length - 1,
                 );
               },
@@ -145,6 +147,105 @@ class MessagesListPage extends StatelessWidget {
           backgroundColor: AppColors.primary,
           child: Icon(Icons.edit_rounded, color: Colors.white, size: 20.sp),
         ),
+      ),
+    );
+  }
+}
+
+class _MessagesListShimmer extends StatelessWidget {
+  const _MessagesListShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    final baseColor = AppColors.surfaceVariant;
+    final highlightColor = Colors.white.withValues(alpha: 0.9);
+    final block = AppColors.surfaceVariant;
+
+    return Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: ListView(
+        padding: EdgeInsets.only(top: AppSpacing.sm.h, bottom: 100.h),
+        children: [
+          for (var i = 0; i < 5; i++) ...[
+            _ShimmerTile(color: block),
+            if (i < 4)
+              Divider(
+                height: 1.h,
+                thickness: 1.r,
+                indent: 64.w,
+                color: AppColors.outline.withValues(alpha: 0.5),
+              ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ShimmerTile extends StatelessWidget {
+  const _ShimmerTile({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.sm.h,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 40.r,
+            height: 40.r,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(width: AppSpacing.md.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 14.h,
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(AppRadii.sm.r),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.sm.w),
+                    Container(
+                      height: 12.h,
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(AppRadii.pill.r),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8.h),
+                Container(
+                  height: 12.h,
+                  width: 180.w,
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(AppRadii.sm.r),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

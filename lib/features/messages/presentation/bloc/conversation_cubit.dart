@@ -48,7 +48,6 @@ class ConversationCubit extends Cubit<ConversationState> {
         state.copyWith(status: ConversationStatus.failure, error: f.message),
       ),
       (_) async {
-        // Recharger depuis la source (démo) pour rester cohérent avec le futur backend.
         await load();
       },
     );

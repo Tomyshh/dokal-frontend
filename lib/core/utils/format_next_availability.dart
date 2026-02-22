@@ -1,7 +1,8 @@
+import 'format_time_slot.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Formate une date/heure de créneau (YYYY-MM-DD HH:MM) en libellé lisible :
-/// - "Prochain: aujourd'hui à HH:MM"
+/// - "Prochain: aujourd'hui à HH:MM" (format 24h)
 /// - "Prochain: demain à HH:MM"
 /// - "Prochain: dans X jours"
 String formatNextAvailabilityLabel(String rawLabel, AppLocalizations l10n) {
@@ -9,13 +10,10 @@ String formatNextAvailabilityLabel(String rawLabel, AppLocalizations l10n) {
   if (parts.isEmpty) return rawLabel;
 
   String dateStr = parts[0];
-  String timeStr = parts.length > 1 ? parts[1] : '';
+  // Rejoindre les parties restantes pour gérer "06:00 PM" etc.
+  String timeStr = parts.length > 1 ? parts.sublist(1).join(' ') : '';
 
-  if (timeStr.length >= 5) {
-    timeStr = timeStr.substring(0, 5);
-  } else if (timeStr.isEmpty) {
-    timeStr = '--:--';
-  }
+  timeStr = timeStr.isEmpty ? '--:--' : formatTimeTo24h(timeStr);
 
   DateTime? slotDate;
   try {

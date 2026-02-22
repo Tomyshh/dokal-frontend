@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/utils/format_appointment_date.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -15,6 +16,7 @@ import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/appointment.dart';
 import '../bloc/appointment_detail_cubit.dart';
+import '../widgets/reschedule_sheet.dart';
 
 class AppointmentDetailPage extends StatelessWidget {
   const AppointmentDetailPage({super.key, required this.appointmentId});
@@ -161,7 +163,7 @@ class AppointmentDetailPage extends StatelessWidget {
                               DokalButton.primary(
                                 onPressed: () {
                                   final subject = Uri.encodeComponent(
-                                    '${a.practitionerName} • ${a.dateLabel}',
+                                    '${a.practitionerName} • ${formatAppointmentDateLabel(context, a.dateLabel)}',
                                   );
                                   final msg = Uri.encodeComponent(
                                     l10n.appointmentDetailDoctorReportTitle,
@@ -192,7 +194,12 @@ class AppointmentDetailPage extends StatelessWidget {
                                       '/appointments/${a.id}/questionnaire',
                                     ),
                                   ),
-                                  Divider(height: 1.h),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: AppSpacing.lg.w,
+                                    ),
+                                    child: Divider(height: 1.h),
+                                  ),
                                   _PrepTile(
                                     icon: Icons.info_outline_rounded,
                                     title:
@@ -213,7 +220,7 @@ class AppointmentDetailPage extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: AppSpacing.lg.w,
+                                      horizontal: AppSpacing.xl.w,
                                       vertical: AppSpacing.md.h,
                                     ),
                                     child: Row(
@@ -234,8 +241,7 @@ class AppointmentDetailPage extends StatelessWidget {
                               ),
                               SizedBox(height: AppSpacing.lg.h),
                               DokalButton.primary(
-                                onPressed: () =>
-                                    context.push('/messages/c/demo1'),
+                                onPressed: () => context.push('/messages'),
                                 leading: const Icon(Icons.mail_rounded),
                                 child: Text(
                                     l10n.appointmentDetailContactOffice),
@@ -287,7 +293,7 @@ class _AppointmentTopCard extends StatelessWidget {
                 SizedBox(width: 10.w),
                 Expanded(
                   child: Text(
-                    '${a.dateLabel} • ${a.timeLabel}',
+                    '${formatAppointmentDateLabel(context, a.dateLabel)} • ${a.timeLabel}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
@@ -305,13 +311,21 @@ class _AppointmentTopCard extends StatelessWidget {
             onTap: () =>
                 context.push('/home/practitioner/${a.practitionerId}'),
           ),
-          Divider(height: 1.h),
-          _DetailTile(
-            icon: Icons.medical_information_rounded,
-            title: a.reason,
-          ),
+          if (a.reason.isNotEmpty) ...[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
+              child: Divider(height: 1.h),
+            ),
+            _DetailTile(
+              icon: Icons.medical_information_rounded,
+              title: a.reason,
+            ),
+          ],
           if (a.address != null) ...[
-            Divider(height: 1.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
+              child: Divider(height: 1.h),
+            ),
             _DetailTile(
               icon: Icons.location_on_rounded,
               title: a.address!,
@@ -332,14 +346,14 @@ class _ActionBar extends StatelessWidget {
     final l10n = context.l10n;
     return DokalCard(
       padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm.w,
-        vertical: AppSpacing.xs.h,
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.sm.h,
       ),
       child: Row(
         children: [
           Expanded(
             child: TextButton.icon(
-              onPressed: () => context.push('/home/search'),
+              onPressed: () => RescheduleSheet.show(context, appointment: a),
               icon: Icon(Icons.sync_rounded, size: 16.sp),
               label: Text(
                 l10n.appointmentDetailReschedule,
@@ -418,15 +432,11 @@ class _DetailTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Container(
-        width: 38.r,
-        height: 38.r,
-        decoration: BoxDecoration(
-          color: AppColors.primary.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(AppRadii.md.r),
-        ),
-        child: Icon(icon, color: AppColors.primary, size: 18.sp),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.xs.h,
       ),
+      leading: Icon(icon, color: AppColors.primary, size: 24.sp),
       title: Text(
         title,
         style: Theme.of(context)
@@ -509,15 +519,11 @@ class _PrepTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ListTile(
-      leading: Container(
-        width: 38.r,
-        height: 38.r,
-        decoration: BoxDecoration(
-          color: AppColors.primary.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(AppRadii.md.r),
-        ),
-        child: Icon(icon, color: AppColors.primary, size: 18.sp),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.xs.h,
       ),
+      leading: Icon(icon, color: AppColors.primary, size: 24.sp),
       title: Text(title),
       trailing: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),

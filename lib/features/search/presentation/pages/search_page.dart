@@ -397,7 +397,7 @@ class _SearchBar extends StatelessWidget {
                         _SortOptionTile(
                           icon: Icons.schedule_rounded,
                           label: l10n.searchSortAvailability,
-                          subtitle: 'מהזמין ביותר לזמין פחות',
+                          subtitle: l10n.searchSortAvailabilitySubtitle,
                           isSelected: currentSort == SortOption.availability,
                           color: AppColors.accent,
                           onTap: () {
@@ -409,7 +409,7 @@ class _SearchBar extends StatelessWidget {
                         _SortOptionTile(
                           icon: Icons.near_me_rounded,
                           label: l10n.searchSortDistance,
-                          subtitle: 'מהקרוב ביותר לרחוק',
+                          subtitle: l10n.searchSortDistanceSubtitle,
                           isSelected: currentSort == SortOption.distance,
                           color: AppColors.warning,
                           onTap: () {
@@ -421,7 +421,7 @@ class _SearchBar extends StatelessWidget {
                         _SortOptionTile(
                           icon: Icons.sort_by_alpha_rounded,
                           label: l10n.searchSortName,
-                          subtitle: 'לפי סדר א-ב',
+                          subtitle: l10n.searchSortNameSubtitle,
                           isSelected: currentSort == SortOption.name,
                           color: AppColors.primary,
                           onTap: () {
@@ -433,7 +433,7 @@ class _SearchBar extends StatelessWidget {
                         _SortOptionTile(
                           icon: Icons.star_rounded,
                           label: l10n.searchSortRating,
-                          subtitle: 'מהמדורג ביותר',
+                          subtitle: l10n.searchSortRatingSubtitle,
                           isSelected: currentSort == SortOption.rating,
                           color: const Color(0xFFF59E0B),
                           onTap: () {

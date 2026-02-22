@@ -30,18 +30,15 @@ class AppointmentsPage extends StatelessWidget {
         initialIndex: initialIndex,
         child: Scaffold(
           backgroundColor: AppColors.background,
-          body: SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                _AppointmentsHeader(l10n: l10n),
-                Expanded(
-                  child: const TabBarView(
-                    children: [_UpcomingTab(), _PastTab()],
-                  ),
+          body: Column(
+            children: [
+              _AppointmentsHeader(l10n: l10n),
+              Expanded(
+                child: const TabBarView(
+                  children: [_UpcomingTab(), _PastTab()],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           floatingActionButton: FloatingActionButton(
             heroTag: 'fab_appointments',
@@ -81,40 +78,21 @@ class _AppointmentsHeader extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(
               AppSpacing.lg.w,
-              AppSpacing.md.h,
+              MediaQuery.paddingOf(context).top + AppSpacing.md.h,
               AppSpacing.lg.w,
               AppSpacing.sm.h,
             ),
-            child: Row(
-              children: [
-                Container(
-                  width: 42.r,
-                  height: 42.r,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [
-                        AppColors.brandGradientStart,
-                        AppColors.brandGradientEnd,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(AppRadii.lg.r),
-                  ),
-                  child: Icon(
-                    Icons.calendar_today_rounded,
-                    color: Colors.white,
-                    size: 20.sp,
-                  ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                l10n.appointmentsTitle,
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textPrimary,
+                  letterSpacing: -0.5,
                 ),
-                SizedBox(width: AppSpacing.md.w),
-                Text(
-                  l10n.appointmentsTitle,
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
           Container(

@@ -302,6 +302,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Ближайшие приемы';
 
   @override
+  String get homeNoUpcomingAppointments =>
+      'Нет ближайших приёмов на данный момент';
+
+  @override
   String get homeFindAppointmentCta => 'Найти прием';
 
   @override
@@ -452,13 +456,26 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchSortAvailability => 'Доступности';
 
   @override
+  String get searchSortAvailabilitySubtitle =>
+      'От наиболее доступных к менее доступным';
+
+  @override
   String get searchSortDistance => 'Расстоянию';
+
+  @override
+  String get searchSortDistanceSubtitle => 'От ближайших к дальним';
 
   @override
   String get searchSortName => 'Имени';
 
   @override
+  String get searchSortNameSubtitle => 'По алфавиту';
+
+  @override
   String get searchSortRating => 'Рейтингу';
+
+  @override
+  String get searchSortRatingSubtitle => 'От наивысшего рейтинга';
 
   @override
   String get searchSortPrice => 'Цене';
@@ -673,6 +690,25 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get appointmentDetailReschedule => 'Перенести';
+
+  @override
+  String get appointmentRescheduleTitle => 'בחר תאריך חדש';
+
+  @override
+  String appointmentRescheduleSubtitle(String practitionerName) {
+    return 'בחר תור זמין עם $practitionerName.';
+  }
+
+  @override
+  String appointmentRescheduleCurrent(String date, String time) {
+    return 'כרגע: $date בשעה $time';
+  }
+
+  @override
+  String get appointmentRescheduleConfirm => 'אשר שינוי';
+
+  @override
+  String get appointmentRescheduleSuccessSnack => 'התור נקבע מחדש בהצלחה';
 
   @override
   String get appointmentDetailCancelQuestion => 'Отменить прием?';
@@ -904,6 +940,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get practitionerCalendarLegendSelected => 'Выбрано';
 
   @override
+  String get practitionerNoSlotsForDate => 'Нет доступных слотов на эту дату';
+
+  @override
   String get practitionerYourAppointment => 'Ваша запись';
 
   @override
@@ -995,7 +1034,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get securityChangePassword => 'Сменить пароль';
 
   @override
-  String get securityChangePasswordSuccess => 'Запрос сохранен';
+  String get securityChangePasswordSuccess =>
+      'Пароль обновлён. Войдите с новым паролем.';
+
+  @override
+  String get securityChangePasswordSendingCode =>
+      'Отправка кода подтверждения…';
+
+  @override
+  String get securityChangePasswordSendCodeHint =>
+      'На вашу почту будет отправлен 6-значный код для смены пароля.';
+
+  @override
+  String get securityChangePasswordOtpLabel => '6-значный код';
 
   @override
   String get securityCurrentPassword => 'Текущий пароль';
@@ -1250,6 +1301,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get bookingChangeSlotButton => 'Изменить время';
 
   @override
+  String get bookingQuickPatientSubtitle => 'Выберите, кто пойдет на прием.';
+
+  @override
+  String get bookingQuickConfirmSubtitle => 'Проверьте данные и подтвердите.';
+
+  @override
+  String get bookingChangePatient => 'Изменить пациента';
+
+  @override
+  String get commonLoading => 'Загрузка…';
+
+  @override
   String get bookingSuccessTitle => 'Прием подтвержден';
 
   @override
@@ -1337,6 +1400,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get errorUnableToLoadProfile => 'Не удалось загрузить профиль.';
 
   @override
+  String get errorUnableToRetrieveEmail =>
+      'Не удалось получить адрес электронной почты.';
+
+  @override
   String get errorUnableToReadHistoryState =>
       'Не удалось прочитать состояние истории.';
 
@@ -1403,6 +1470,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get errorUnableToCancelAppointment => 'Не удалось отменить прием.';
+
+  @override
+  String get errorUnableToRescheduleAppointment =>
+      'Не удалось перенести прием.';
 
   @override
   String get errorUnableToLoadConversations => 'Не удалось загрузить диалоги.';

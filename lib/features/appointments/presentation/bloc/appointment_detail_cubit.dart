@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/notifiers/appointment_refresh_notifier.dart';
 import '../../domain/entities/appointment.dart';
 import '../../domain/usecases/cancel_appointment.dart';
 import '../../domain/usecases/get_appointment_detail.dart';
@@ -11,13 +12,16 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailState> {
   AppointmentDetailCubit({
     required GetAppointmentDetail getAppointmentDetail,
     required CancelAppointment cancelAppointment,
+    required AppointmentRefreshNotifier appointmentRefreshNotifier,
     required String appointmentId,
   }) : _getAppointmentDetail = getAppointmentDetail,
        _cancelAppointment = cancelAppointment,
+       _appointmentRefreshNotifier = appointmentRefreshNotifier,
        super(AppointmentDetailState.initial(appointmentId: appointmentId));
 
   final GetAppointmentDetail _getAppointmentDetail;
   final CancelAppointment _cancelAppointment;
+  final AppointmentRefreshNotifier _appointmentRefreshNotifier;
 
   Future<void> load() async {
     emit(state.copyWith(status: AppointmentDetailStatus.loading));
@@ -49,13 +53,16 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailState> {
           error: f.message,
         ),
       ),
-      (_) => emit(
-        state.copyWith(
-          status: AppointmentDetailStatus.success,
-          appointment: null,
-          error: null,
-        ),
-      ),
+      (_) {
+        _appointmentRefreshNotifier.notifyAppointmentChanged();
+        emit(
+          state.copyWith(
+            status: AppointmentDetailStatus.success,
+            appointment: null,
+            error: null,
+          ),
+        );
+      },
     );
   }
 }

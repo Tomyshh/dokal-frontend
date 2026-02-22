@@ -132,6 +132,7 @@
   },
   "homeNewMessageNoAppointment": "No related appointment",
   "homeUpcomingAppointmentsTitle": "Upcoming appointments",
+  "homeNoUpcomingAppointments": "No upcoming appointments at the moment",
   "homeFindAppointmentCta": "Find an appointment",
   "homeNoAppointmentsEmptyDescription": "You don’t have any appointments yet. Search for a practitioner and book your first slot.",
   "homeLast3AppointmentsTitle": "Last 3 appointments",
@@ -199,9 +200,13 @@
 
   "searchSortTitle": "Sort by",
   "searchSortAvailability": "Availability",
+  "searchSortAvailabilitySubtitle": "Most available first",
   "searchSortDistance": "Distance",
+  "searchSortDistanceSubtitle": "Nearest first",
   "searchSortName": "Name",
+  "searchSortNameSubtitle": "Alphabetical order",
   "searchSortRating": "Rating",
+  "searchSortRatingSubtitle": "Highest rated first",
   "searchSortPrice": "Price",
   "searchSortPriceSubtitle": "Most expensive first",
   "searchFilterPrice": "Price range",
@@ -360,6 +365,7 @@
   "practitionerNoReviews": "No reviews yet",
   "practitionerCalendarLegendAvailable": "Available",
   "practitionerCalendarLegendSelected": "Selected",
+  "practitionerNoSlotsForDate": "No slots available for this date",
   "practitionerYourAppointment": "Your appointment",
   "practitionerAddressAndContact": "Address & contact",
   "practitionerAppointmentStatusCompleted": "Completed",
@@ -393,7 +399,10 @@
   "securitySecureAccountTitle": "Secure your account",
   "securitySecureAccountSubtitle": "Update your information",
   "securityChangePassword": "Change password",
-  "securityChangePasswordSuccess": "Request saved",
+  "securityChangePasswordSuccess": "Password updated. Sign in with your new password.",
+  "securityChangePasswordSendingCode": "Sending verification code…",
+  "securityChangePasswordSendCodeHint": "A 6-digit code will be sent to your email address to secure the password change.",
+  "securityChangePasswordOtpLabel": "6-digit code",
   "securityCurrentPassword": "Current password",
   "securityNewPassword": "New password",
 
@@ -488,6 +497,10 @@
   "commonNo": "No",
   "bookingConfirmButton": "Confirm appointment",
   "bookingChangeSlotButton": "Change slot",
+  "bookingQuickPatientSubtitle": "Choose who will see the practitioner.",
+  "bookingQuickConfirmSubtitle": "Verify the details and confirm.",
+  "bookingChangePatient": "Change patient",
+  "commonLoading": "Loading…",
 
   "bookingSuccessTitle": "Appointment confirmed",
   "bookingSuccessSubtitle": "We sent a confirmation to your email.",
@@ -520,6 +533,7 @@
 
   "errorUnableToConfirmAppointment": "Unable to confirm the appointment.",
   "errorUnableToLoadProfile": "Unable to load the profile.",
+  "errorUnableToRetrieveEmail": "Unable to retrieve your email address.",
   "errorUnableToReadHistoryState": "Unable to read history state.",
   "errorUnableToEnableHistory": "Unable to enable history.",
   "errorUnableToLoadRelatives": "Unable to load relatives.",
@@ -540,6 +554,29 @@
   "errorUnableToLoadHistory": "Unable to load history.",
   "errorUnableToLoadAppointment": "Unable to load the appointment.",
   "errorUnableToCancelAppointment": "Unable to cancel the appointment.",
+  "errorUnableToRescheduleAppointment": "Unable to reschedule the appointment.",
+  "appointmentRescheduleTitle": "Choose a new date",
+  "appointmentRescheduleSubtitle": "Select an available slot for your appointment with {practitionerName}.",
+  "@appointmentRescheduleSubtitle": {
+    "placeholders": {
+      "practitionerName": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleCurrent": "Currently: {date} at {time}",
+  "@appointmentRescheduleCurrent": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleConfirm": "Confirm change",
+  "appointmentRescheduleSuccessSnack": "Appointment rescheduled successfully",
   "errorUnableToLoadConversations": "Unable to load conversations.",
   "errorUnableToLoadConversation": "Unable to load the conversation.",
   "errorUnableToSendMessage": "Unable to send the message.",

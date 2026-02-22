@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/utils/format_time_slot.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../l10n/l10n.dart';
 import '../bloc/booking_bloc.dart';
@@ -192,7 +193,7 @@ class _TimeBox extends StatelessWidget {
           border: Border.all(color: border, width: 1.2.w),
         ),
         child: Text(
-          label,
+          formatTimeTo24h(label),
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: fg,
             fontWeight: FontWeight.w800,

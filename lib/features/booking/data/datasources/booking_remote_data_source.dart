@@ -28,6 +28,7 @@ class BookingRemoteDataSourceImpl implements BookingDemoDataSource {
   }
 
   /// Production booking call with structured slot data.
+  /// Address fields can be empty; API accepts nullable values.
   Future<String> confirmStructured({
     required String practitionerId,
     String? relativeId,
@@ -35,10 +36,10 @@ class BookingRemoteDataSourceImpl implements BookingDemoDataSource {
     required String appointmentDate,
     required String startTime,
     required String endTime,
-    required String addressLine,
-    required String zipCode,
-    required String city,
-    required bool visitedBefore,
+    String? addressLine,
+    String? zipCode,
+    String? city,
+    bool visitedBefore = false,
   }) async {
     final json =
         await api.post(
@@ -47,16 +48,26 @@ class BookingRemoteDataSourceImpl implements BookingDemoDataSource {
                 'practitioner_id': practitionerId,
                 'relative_id': relativeId,
                 'reason_id': reasonId,
-                'appointment_date': appointmentDate,
-                'start_time': startTime,
-                'end_time': endTime,
-                'patient_address_line': addressLine,
-                'patient_zip_code': zipCode,
-                'patient_city': city,
-                'visited_before': visitedBefore,
+        'appointment_date': appointmentDate,
+        'start_time': _ensureTimeFormat(startTime),
+        'end_time': _ensureTimeFormat(endTime),
+        if (addressLine != null && addressLine.isNotEmpty)
+          'patient_address_line': addressLine,
+        if (zipCode != null && zipCode.isNotEmpty)
+          'patient_zip_code': zipCode,
+        if (city != null && city.isNotEmpty) 'patient_city': city,
+        'visited_before': visitedBefore,
               },
             )
             as Map<String, dynamic>;
     return json['id'] as String;
+  }
+
+  /// Ensures time is in HH:mm:ss format for API compatibility.
+  static String _ensureTimeFormat(String time) {
+    if (time.length == 5 && time[2] == ':') {
+      return '$time:00';
+    }
+    return time;
   }
 }

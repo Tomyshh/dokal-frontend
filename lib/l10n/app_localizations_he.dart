@@ -296,6 +296,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'תורים קרובים';
 
   @override
+  String get homeNoUpcomingAppointments => 'אין תורים קרובים כרגע';
+
+  @override
   String get homeFindAppointmentCta => 'מצאו תור';
 
   @override
@@ -445,13 +448,25 @@ class AppLocalizationsHe extends AppLocalizations {
   String get searchSortAvailability => 'זמינות';
 
   @override
+  String get searchSortAvailabilitySubtitle => 'מהזמין ביותר לזמין פחות';
+
+  @override
   String get searchSortDistance => 'מרחק';
+
+  @override
+  String get searchSortDistanceSubtitle => 'מהקרוב ביותר לרחוק';
 
   @override
   String get searchSortName => 'שם';
 
   @override
+  String get searchSortNameSubtitle => 'לפי סדר א-ב';
+
+  @override
   String get searchSortRating => 'דירוג';
+
+  @override
+  String get searchSortRatingSubtitle => 'מהמדורג ביותר';
 
   @override
   String get searchSortPrice => 'מחיר';
@@ -663,6 +678,25 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get appointmentDetailReschedule => 'לקבוע מחדש';
+
+  @override
+  String get appointmentRescheduleTitle => 'בחר תאריך חדש';
+
+  @override
+  String appointmentRescheduleSubtitle(String practitionerName) {
+    return 'בחר תור זמין עם $practitionerName.';
+  }
+
+  @override
+  String appointmentRescheduleCurrent(String date, String time) {
+    return 'כרגע: $date בשעה $time';
+  }
+
+  @override
+  String get appointmentRescheduleConfirm => 'אשר שינוי';
+
+  @override
+  String get appointmentRescheduleSuccessSnack => 'התור נקבע מחדש בהצלחה';
 
   @override
   String get appointmentDetailCancelQuestion => 'לבטל את התור?';
@@ -885,6 +919,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get practitionerCalendarLegendSelected => 'נבחר';
 
   @override
+  String get practitionerNoSlotsForDate => 'אין זמנים זמינים ביום זה';
+
+  @override
   String get practitionerYourAppointment => 'התור שלך';
 
   @override
@@ -975,7 +1012,18 @@ class AppLocalizationsHe extends AppLocalizations {
   String get securityChangePassword => 'שנה סיסמה';
 
   @override
-  String get securityChangePasswordSuccess => 'הבקשה נשמרה';
+  String get securityChangePasswordSuccess =>
+      'הסיסמה עודכנה. התחבר עם הסיסמה החדשה שלך.';
+
+  @override
+  String get securityChangePasswordSendingCode => 'שולח קוד אימות…';
+
+  @override
+  String get securityChangePasswordSendCodeHint =>
+      'קוד בן 6 ספרות יישלח לכתובת הדוא״ל שלך לאבטחת שינוי הסיסמה.';
+
+  @override
+  String get securityChangePasswordOtpLabel => 'קוד בן 6 ספרות';
 
   @override
   String get securityCurrentPassword => 'סיסמה נוכחית';
@@ -1220,6 +1268,18 @@ class AppLocalizationsHe extends AppLocalizations {
   String get bookingChangeSlotButton => 'שנה את המועד';
 
   @override
+  String get bookingQuickPatientSubtitle => 'בחר מי ייפגש עם הרופא.';
+
+  @override
+  String get bookingQuickConfirmSubtitle => 'בדוק את הפרטים ואשר.';
+
+  @override
+  String get bookingChangePatient => 'שנה מטופל';
+
+  @override
+  String get commonLoading => 'טוען…';
+
+  @override
   String get bookingSuccessTitle => 'התור אושר';
 
   @override
@@ -1301,6 +1361,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get errorUnableToLoadProfile => 'לא ניתן לטעון את הפרופיל.';
 
   @override
+  String get errorUnableToRetrieveEmail => 'לא ניתן לאחזר את כתובת הדוא״ל שלך.';
+
+  @override
   String get errorUnableToReadHistoryState => 'לא ניתן לקרוא את מצב ההיסטוריה.';
 
   @override
@@ -1362,6 +1425,10 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get errorUnableToCancelAppointment => 'לא ניתן לבטל את התור.';
+
+  @override
+  String get errorUnableToRescheduleAppointment =>
+      'לא ניתן לקבוע מחדש את התור.';
 
   @override
   String get errorUnableToLoadConversations => 'לא ניתן לטעון שיחות.';

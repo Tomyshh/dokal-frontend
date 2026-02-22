@@ -302,6 +302,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Upcoming appointments';
 
   @override
+  String get homeNoUpcomingAppointments =>
+      'No upcoming appointments at the moment';
+
+  @override
   String get homeFindAppointmentCta => 'Find an appointment';
 
   @override
@@ -453,13 +457,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchSortAvailability => 'Availability';
 
   @override
+  String get searchSortAvailabilitySubtitle => 'Most available first';
+
+  @override
   String get searchSortDistance => 'Distance';
+
+  @override
+  String get searchSortDistanceSubtitle => 'Nearest first';
 
   @override
   String get searchSortName => 'Name';
 
   @override
+  String get searchSortNameSubtitle => 'Alphabetical order';
+
+  @override
   String get searchSortRating => 'Rating';
+
+  @override
+  String get searchSortRatingSubtitle => 'Highest rated first';
 
   @override
   String get searchSortPrice => 'Price';
@@ -674,6 +690,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appointmentDetailReschedule => 'Reschedule';
+
+  @override
+  String get appointmentRescheduleTitle => 'Choose a new date';
+
+  @override
+  String appointmentRescheduleSubtitle(String practitionerName) {
+    return 'Select an available slot for your appointment with $practitionerName.';
+  }
+
+  @override
+  String appointmentRescheduleCurrent(String date, String time) {
+    return 'Currently: $date at $time';
+  }
+
+  @override
+  String get appointmentRescheduleConfirm => 'Confirm change';
+
+  @override
+  String get appointmentRescheduleSuccessSnack =>
+      'Appointment rescheduled successfully';
 
   @override
   String get appointmentDetailCancelQuestion => 'Cancel the appointment?';
@@ -907,6 +943,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get practitionerCalendarLegendSelected => 'Selected';
 
   @override
+  String get practitionerNoSlotsForDate => 'No slots available for this date';
+
+  @override
   String get practitionerYourAppointment => 'Your appointment';
 
   @override
@@ -998,7 +1037,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get securityChangePassword => 'Change password';
 
   @override
-  String get securityChangePasswordSuccess => 'Request saved';
+  String get securityChangePasswordSuccess =>
+      'Password updated. Sign in with your new password.';
+
+  @override
+  String get securityChangePasswordSendingCode => 'Sending verification code…';
+
+  @override
+  String get securityChangePasswordSendCodeHint =>
+      'A 6-digit code will be sent to your email address to secure the password change.';
+
+  @override
+  String get securityChangePasswordOtpLabel => '6-digit code';
 
   @override
   String get securityCurrentPassword => 'Current password';
@@ -1251,6 +1301,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingChangeSlotButton => 'Change slot';
 
   @override
+  String get bookingQuickPatientSubtitle =>
+      'Choose who will see the practitioner.';
+
+  @override
+  String get bookingQuickConfirmSubtitle => 'Verify the details and confirm.';
+
+  @override
+  String get bookingChangePatient => 'Change patient';
+
+  @override
+  String get commonLoading => 'Loading…';
+
+  @override
   String get bookingSuccessTitle => 'Appointment confirmed';
 
   @override
@@ -1337,6 +1400,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorUnableToLoadProfile => 'Unable to load the profile.';
 
   @override
+  String get errorUnableToRetrieveEmail =>
+      'Unable to retrieve your email address.';
+
+  @override
   String get errorUnableToReadHistoryState => 'Unable to read history state.';
 
   @override
@@ -1400,6 +1467,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorUnableToCancelAppointment =>
       'Unable to cancel the appointment.';
+
+  @override
+  String get errorUnableToRescheduleAppointment =>
+      'Unable to reschedule the appointment.';
 
   @override
   String get errorUnableToLoadConversations => 'Unable to load conversations.';

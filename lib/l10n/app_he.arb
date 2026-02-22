@@ -132,6 +132,7 @@
   },
   "homeNewMessageNoAppointment": "ללא תור משויך",
   "homeUpcomingAppointmentsTitle": "תורים קרובים",
+  "homeNoUpcomingAppointments": "אין תורים קרובים כרגע",
   "homeFindAppointmentCta": "מצאו תור",
   "homeNoAppointmentsEmptyDescription": "כרגע אין לך תורים. חפשו רופא וקבעו את התור הראשון שלכם.",
   "homeLast3AppointmentsTitle": "3 התורים האחרונים",
@@ -199,9 +200,13 @@
 
   "searchSortTitle": "מיין לפי",
   "searchSortAvailability": "זמינות",
+  "searchSortAvailabilitySubtitle": "מהזמין ביותר לזמין פחות",
   "searchSortDistance": "מרחק",
+  "searchSortDistanceSubtitle": "מהקרוב ביותר לרחוק",
   "searchSortName": "שם",
+  "searchSortNameSubtitle": "לפי סדר א-ב",
   "searchSortRating": "דירוג",
+  "searchSortRatingSubtitle": "מהמדורג ביותר",
   "searchSortPrice": "מחיר",
   "searchSortPriceSubtitle": "מהיקר ביותר לפחות יקר",
   "searchFilterPrice": "טווח מחירים",
@@ -287,6 +292,28 @@
   "appointmentDetailNotFoundTitle": "התור לא נמצא",
   "appointmentDetailNotFoundSubtitle": "התור אינו זמין או בוטל.",
   "appointmentDetailReschedule": "לקבוע מחדש",
+  "appointmentRescheduleTitle": "בחר תאריך חדש",
+  "appointmentRescheduleSubtitle": "בחר תור זמין עם {practitionerName}.",
+  "@appointmentRescheduleSubtitle": {
+    "placeholders": {
+      "practitionerName": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleCurrent": "כרגע: {date} בשעה {time}",
+  "@appointmentRescheduleCurrent": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleConfirm": "אשר שינוי",
+  "appointmentRescheduleSuccessSnack": "התור נקבע מחדש בהצלחה",
   "appointmentDetailCancelQuestion": "לבטל את התור?",
   "appointmentDetailPreparationTitle": "נדרשת הכנה",
   "appointmentDetailPreparationSubtitle": "הכן את הביקור מראש.",
@@ -360,6 +387,7 @@
   "practitionerNoReviews": "אין ביקורות עדיין",
   "practitionerCalendarLegendAvailable": "זמין",
   "practitionerCalendarLegendSelected": "נבחר",
+  "practitionerNoSlotsForDate": "אין זמנים זמינים ביום זה",
   "practitionerYourAppointment": "התור שלך",
   "practitionerAddressAndContact": "כתובת ויצירת קשר",
   "practitionerAppointmentStatusCompleted": "הושלם",
@@ -393,7 +421,10 @@
   "securitySecureAccountTitle": "אבטח את החשבון שלך",
   "securitySecureAccountSubtitle": "עדכן את הפרטים שלך",
   "securityChangePassword": "שנה סיסמה",
-  "securityChangePasswordSuccess": "הבקשה נשמרה",
+  "securityChangePasswordSuccess": "הסיסמה עודכנה. התחבר עם הסיסמה החדשה שלך.",
+  "securityChangePasswordSendingCode": "שולח קוד אימות…",
+  "securityChangePasswordSendCodeHint": "קוד בן 6 ספרות יישלח לכתובת הדוא״ל שלך לאבטחת שינוי הסיסמה.",
+  "securityChangePasswordOtpLabel": "קוד בן 6 ספרות",
   "securityCurrentPassword": "סיסמה נוכחית",
   "securityNewPassword": "סיסמה חדשה",
 
@@ -488,6 +519,10 @@
   "commonNo": "לא",
   "bookingConfirmButton": "אשר את התור",
   "bookingChangeSlotButton": "שנה את המועד",
+  "bookingQuickPatientSubtitle": "בחר מי ייפגש עם הרופא.",
+  "bookingQuickConfirmSubtitle": "בדוק את הפרטים ואשר.",
+  "bookingChangePatient": "שנה מטופל",
+  "commonLoading": "טוען…",
 
   "bookingSuccessTitle": "התור אושר",
   "bookingSuccessSubtitle": "שלחנו אישור לאימייל שלך.",
@@ -520,6 +555,7 @@
 
   "errorUnableToConfirmAppointment": "לא ניתן לאשר את התור.",
   "errorUnableToLoadProfile": "לא ניתן לטעון את הפרופיל.",
+  "errorUnableToRetrieveEmail": "לא ניתן לאחזר את כתובת הדוא״ל שלך.",
   "errorUnableToReadHistoryState": "לא ניתן לקרוא את מצב ההיסטוריה.",
   "errorUnableToEnableHistory": "לא ניתן להפעיל את ההיסטוריה.",
   "errorUnableToLoadRelatives": "לא ניתן לטעון את הקרובים.",
@@ -540,6 +576,7 @@
   "errorUnableToLoadHistory": "לא ניתן לטעון היסטוריה.",
   "errorUnableToLoadAppointment": "לא ניתן לטעון את התור.",
   "errorUnableToCancelAppointment": "לא ניתן לבטל את התור.",
+  "errorUnableToRescheduleAppointment": "לא ניתן לקבוע מחדש את התור.",
   "errorUnableToLoadConversations": "לא ניתן לטעון שיחות.",
   "errorUnableToLoadConversation": "לא ניתן לטעון את השיחה.",
   "errorUnableToSendMessage": "לא ניתן לשלוח את ההודעה.",

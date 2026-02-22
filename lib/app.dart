@@ -35,7 +35,7 @@ class DokalApp extends StatelessWidget {
                 builder: (context, child) {
                   return MediaQuery(
                     data: MediaQuery.of(context).copyWith(
-                      textScaler: TextScaler.linear(1.14),
+                      textScaler: TextScaler.linear(1.00),
                     ),
                     child: child ?? const SizedBox.shrink(),
                   );

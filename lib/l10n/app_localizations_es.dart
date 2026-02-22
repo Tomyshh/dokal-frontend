@@ -305,6 +305,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Próximas citas';
 
   @override
+  String get homeNoUpcomingAppointments =>
+      'Ninguna cita próxima por el momento';
+
+  @override
   String get homeFindAppointmentCta => 'Buscar una cita';
 
   @override
@@ -456,13 +460,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get searchSortAvailability => 'Disponibilidad';
 
   @override
+  String get searchSortAvailabilitySubtitle =>
+      'Del más disponible al menos disponible';
+
+  @override
   String get searchSortDistance => 'Distancia';
+
+  @override
+  String get searchSortDistanceSubtitle => 'Del más cercano al más lejano';
 
   @override
   String get searchSortName => 'Nombre';
 
   @override
+  String get searchSortNameSubtitle => 'Por orden alfabético';
+
+  @override
   String get searchSortRating => 'Valoración';
+
+  @override
+  String get searchSortRatingSubtitle => 'Del mejor valorado al menos valorado';
 
   @override
   String get searchSortPrice => 'Precio';
@@ -678,6 +695,25 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get appointmentDetailReschedule => 'Reprogramar';
+
+  @override
+  String get appointmentRescheduleTitle => 'בחר תאריך חדש';
+
+  @override
+  String appointmentRescheduleSubtitle(String practitionerName) {
+    return 'בחר תור זמין עם $practitionerName.';
+  }
+
+  @override
+  String appointmentRescheduleCurrent(String date, String time) {
+    return 'כרגע: $date בשעה $time';
+  }
+
+  @override
+  String get appointmentRescheduleConfirm => 'אשר שינוי';
+
+  @override
+  String get appointmentRescheduleSuccessSnack => 'התור נקבע מחדש בהצלחה';
 
   @override
   String get appointmentDetailCancelQuestion => '¿Cancelar la cita?';
@@ -912,6 +948,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get practitionerCalendarLegendSelected => 'Seleccionado';
 
   @override
+  String get practitionerNoSlotsForDate =>
+      'No hay citas disponibles para esta fecha';
+
+  @override
   String get practitionerYourAppointment => 'Tu cita';
 
   @override
@@ -1004,7 +1044,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get securityChangePassword => 'Cambiar contraseña';
 
   @override
-  String get securityChangePasswordSuccess => 'Solicitud guardada';
+  String get securityChangePasswordSuccess =>
+      'Contraseña actualizada. Inicia sesión con tu nueva contraseña.';
+
+  @override
+  String get securityChangePasswordSendingCode =>
+      'Enviando código de verificación…';
+
+  @override
+  String get securityChangePasswordSendCodeHint =>
+      'Se enviará un código de 6 dígitos a tu correo para asegurar el cambio de contraseña.';
+
+  @override
+  String get securityChangePasswordOtpLabel => 'Código de 6 dígitos';
 
   @override
   String get securityCurrentPassword => 'Contraseña actual';
@@ -1261,6 +1313,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bookingChangeSlotButton => 'Cambiar horario';
 
   @override
+  String get bookingQuickPatientSubtitle => 'Elige quién verá al profesional.';
+
+  @override
+  String get bookingQuickConfirmSubtitle => 'Verifica los datos y confirma.';
+
+  @override
+  String get bookingChangePatient => 'Cambiar paciente';
+
+  @override
+  String get commonLoading => 'Cargando…';
+
+  @override
   String get bookingSuccessTitle => 'Cita confirmada';
 
   @override
@@ -1349,6 +1413,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorUnableToLoadProfile => 'No se pudo cargar el perfil.';
 
   @override
+  String get errorUnableToRetrieveEmail =>
+      'No se pudo recuperar tu dirección de correo.';
+
+  @override
   String get errorUnableToReadHistoryState =>
       'No se pudo leer el estado del historial.';
 
@@ -1416,6 +1484,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorUnableToCancelAppointment => 'No se pudo cancelar la cita.';
+
+  @override
+  String get errorUnableToRescheduleAppointment =>
+      'No se pudo reprogramar la cita.';
 
   @override
   String get errorUnableToLoadConversations =>

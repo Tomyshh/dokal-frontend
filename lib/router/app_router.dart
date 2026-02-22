@@ -33,6 +33,7 @@ import '../features/appointments/presentation/pages/appointment_detail_page.dart
 import '../features/appointments/presentation/pages/appointment_instructions_page.dart';
 import '../features/appointments/presentation/pages/appointment_questionnaire_page.dart';
 import '../features/messages/presentation/pages/new_message_page.dart';
+import '../features/messages/domain/entities/conversation_preview.dart';
 import '../features/messages/presentation/pages/conversation_page.dart';
 import '../features/health/presentation/pages/allergies_page.dart';
 import '../features/health/presentation/pages/medical_conditions_page.dart';
@@ -386,6 +387,7 @@ void initAppRouter(
                     path: 'c/:id',
                     builder: (context, state) => ConversationPage(
                       conversationId: state.pathParameters['id']!,
+                      conversation: state.extra as ConversationPreview?,
                     ),
                   ),
                 ],

@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/format_appointment_date.dart';
+import '../../../../core/utils/format_time_slot.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -22,7 +22,20 @@ import '../../../appointments/domain/usecases/get_upcoming_appointments.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../domain/entities/practitioner_profile.dart';
 import '../../domain/usecases/get_practitioner_reviews.dart';
+import '../../domain/usecases/get_practitioner_slots.dart';
+import '../../../booking/presentation/widgets/quick_booking_sheet.dart';
 import '../bloc/practitioner_cubit.dart';
+
+String _addMinutesToTime(String time, int minutes) {
+  final parts = time.split(':');
+  if (parts.length < 2) return time;
+  var h = int.tryParse(parts[0]) ?? 0;
+  var m = int.tryParse(parts[1]) ?? 0;
+  m += minutes;
+  h += m ~/ 60;
+  m = m % 60;
+  return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}';
+}
 
 class PractitionerProfilePage extends StatelessWidget {
   const PractitionerProfilePage({super.key, required this.practitionerId});
@@ -102,9 +115,11 @@ class _ProfileScaffold extends StatefulWidget {
 
 class _ProfileScaffoldState extends State<_ProfileScaffold> {
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _timeSlotSectionKey = GlobalKey();
   bool _showTitleInAppBar = false;
   DateTime? _selectedDate;
   String? _selectedTime;
+  String? _selectedEndTime;
   int _selectedTabIndex = 0;
 
   @override
@@ -143,13 +158,30 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
   void _onDateSelected(DateTime date) {
     setState(() {
       _selectedDate = date;
-      _selectedTime = null; // Reset time when date changes
+      _selectedTime = null;
+      _selectedEndTime = null;
+    });
+    // Scroll automatique vers le choix de l'heure après l'animation
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 350), () {
+        if (!mounted) return;
+        final ctx = _timeSlotSectionKey.currentContext;
+        if (ctx != null && ctx.mounted) {
+          Scrollable.ensureVisible(
+            ctx,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            alignment: 0.1,
+          );
+        }
+      });
     });
   }
 
-  void _onTimeSelected(String time) {
+  void _onSlotSelected(({String start, String end}) slot) {
     setState(() {
-      _selectedTime = time;
+      _selectedTime = slot.start;
+      _selectedEndTime = slot.end;
     });
   }
 
@@ -170,33 +202,35 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
             pinned: true,
             expandedHeight: 0,
             leading: Padding(
-              padding: EdgeInsets.only(left: 8.w),
+              padding: EdgeInsetsDirectional.only(start: 8.w),
               child: Center(
                 child: GestureDetector(
                   onTap: () {
                     if (context.canPop()) {
                       context.pop();
                     } else {
-                      // Si on arrive ici via un redirect / remplacement de stack,
-                      // il n'y a parfois rien à "pop". On renvoie vers la recherche.
                       context.go('/home/search');
                     }
                   },
-                  child: Container(
-                    width: 36.r,
-                    height: 36.r,
-                    decoration: BoxDecoration(
-                      color: AppColors.textPrimary.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Directionality(
-                      textDirection: ui.TextDirection.ltr,
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 16.sp,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
+                  child: Builder(
+                    builder: (context) {
+                      final isRtl = Localizations.localeOf(context).languageCode == 'he';
+                      return Container(
+                        width: 36.r,
+                        height: 36.r,
+                        decoration: BoxDecoration(
+                          color: AppColors.textPrimary.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Icon(
+                          isRtl
+                              ? Icons.arrow_forward_ios_rounded
+                              : Icons.arrow_back_ios_new_rounded,
+                          size: 16.sp,
+                          color: AppColors.textPrimary,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -309,6 +343,8 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _AvailabilityCalendar(
+                                    practitionerId: widget.practitionerId,
+                                    getSlots: sl<GetPractitionerSlots>(),
                                     onDateSelected: _onDateSelected,
                                     selectedDate: _selectedDate,
                                     compact: true,
@@ -318,12 +354,15 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                                     curve: Curves.easeInOut,
                                     child: _selectedDate != null
                                         ? Column(
+                                            key: _timeSlotSectionKey,
                                             children: [
                                               SizedBox(height: AppSpacing.sm.h),
                                               _TimeSlotSection(
+                                                practitionerId: widget.practitionerId,
+                                                getSlots: sl<GetPractitionerSlots>(),
                                                 selectedDate: _selectedDate!,
                                                 selectedTime: _selectedTime,
-                                                onTimeSelected: _onTimeSelected,
+                                                onSlotSelected: _onSlotSelected,
                                               ),
                                             ],
                                           )
@@ -339,8 +378,10 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                                               _BookingConfirmation(
                                                 selectedDate: _selectedDate!,
                                                 selectedTime: _selectedTime!,
+                                                selectedEndTime: _selectedEndTime ?? _addMinutesToTime(_selectedTime!, 30),
                                                 practitionerId: widget.practitionerId,
                                                 practitionerName: profile.name,
+                                                profile: profile,
                                               ),
                                             ],
                                           )
@@ -782,8 +823,11 @@ class _AppointmentHistoryItem extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        
         children: [
-          Row(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
                 Icons.calendar_today_rounded,
@@ -792,30 +836,34 @@ class _AppointmentHistoryItem extends StatelessWidget {
                     ? AppColors.textSecondary
                     : AppColors.accent,
               ),
-              SizedBox(width: 6.w),
-              Text(
-                '${appointment.dateLabel} • ${appointment.timeLabel}',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+             
+              Expanded(
+                child: Text(
+                  '${formatAppointmentDateLabel(context, appointment.dateLabel)} • ${appointment.timeLabel}',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
-                  vertical: 2.h,
-                ),
-                decoration: BoxDecoration(
-                  color: _statusColor(appointment.status)
-                      .withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                child: Text(
-                  _statusLabel(context, appointment.status),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: _statusColor(appointment.status),
-                    fontWeight: FontWeight.w600,
+              SizedBox(width: 8.w),
+              Flexible(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.w,
+                    vertical: 4.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _statusColor(appointment.status)
+                        .withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: Text(
+                    _statusLabel(context, appointment.status),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: _statusColor(appointment.status),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -1090,11 +1138,15 @@ class _ReviewCard extends StatelessWidget {
 
 class _AvailabilityCalendar extends StatefulWidget {
   const _AvailabilityCalendar({
+    required this.practitionerId,
+    required this.getSlots,
     required this.onDateSelected,
     this.selectedDate,
     this.compact = false,
   });
 
+  final String practitionerId;
+  final GetPractitionerSlots getSlots;
   final ValueChanged<DateTime> onDateSelected;
   final DateTime? selectedDate;
   final bool compact;
@@ -1107,29 +1159,62 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
   late DateTime _currentMonth;
   final DateTime _today = DateTime.now();
 
-  // Simulated available dates (in real app, this would come from backend)
-  late Set<DateTime> _availableDates;
+  Set<DateTime> _availableDates = {};
+  bool _isLoadingSlots = true;
+  String? _slotsError;
 
   @override
   void initState() {
     super.initState();
     _currentMonth = DateTime(_today.year, _today.month);
-    _generateAvailableDates();
+    _loadSlotsForMonth();
   }
 
-  void _generateAvailableDates() {
-    // Generate some mock available dates for the next 3 months
-    _availableDates = {};
-    final random = [2, 3, 5, 7, 9, 11, 14, 16, 18, 21, 23, 25, 28, 29, 30];
-    for (int m = 0; m < 3; m++) {
-      final month = DateTime(_today.year, _today.month + m);
-      for (final day in random) {
-        final date = DateTime(month.year, month.month, day);
-        if (date.isAfter(_today.subtract(const Duration(days: 1)))) {
-          _availableDates.add(DateTime(date.year, date.month, date.day));
+  Future<void> _loadSlotsForMonth() async {
+    if (!mounted) return;
+    setState(() {
+      _isLoadingSlots = true;
+      _slotsError = null;
+    });
+
+    final from = DateTime(_currentMonth.year, _currentMonth.month, 1);
+    final lastDay = DateTime(_currentMonth.year, _currentMonth.month + 1, 0);
+    final to = DateTime(lastDay.year, lastDay.month, lastDay.day);
+
+    final fromStr = DateFormat('yyyy-MM-dd').format(from);
+    final toStr = DateFormat('yyyy-MM-dd').format(to);
+
+    final result = await widget.getSlots(
+      widget.practitionerId,
+      from: fromStr,
+      to: toStr,
+    );
+
+    if (!mounted) return;
+    result.fold(
+      (failure) => setState(() {
+        _availableDates = {};
+        _isLoadingSlots = false;
+        _slotsError = failure.message;
+      }),
+      (slots) {
+        final dates = <DateTime>{};
+        for (final slot in slots) {
+          final dateStr = slot['slot_date'];
+          if (dateStr != null && dateStr.isNotEmpty) {
+            final parsed = DateTime.tryParse(dateStr);
+            if (parsed != null) {
+              dates.add(DateTime(parsed.year, parsed.month, parsed.day));
+            }
+          }
         }
-      }
-    }
+        setState(() {
+          _availableDates = dates;
+          _isLoadingSlots = false;
+          _slotsError = null;
+        });
+      },
+    );
   }
 
   bool _isAvailable(DateTime date) {
@@ -1154,6 +1239,7 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
       setState(() {
         _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
       });
+      _loadSlotsForMonth();
     }
   }
 
@@ -1163,6 +1249,7 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
       setState(() {
         _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
       });
+      _loadSlotsForMonth();
     }
   }
 
@@ -1249,44 +1336,11 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
             SizedBox(height: AppSpacing.md.h),
           ],
 
-          // Month navigation (RTL - Hebrew reads right to left)
-          // Left side = future (next month), Right side = past (previous month)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Left button: goes to NEXT month (future) - shows < arrow
-              GestureDetector(
-                onTap: canGoNext ? _nextMonth : null,
-                child: Container(
-                  padding: EdgeInsets.all(8.r),
-                  decoration: BoxDecoration(
-                    color: canGoNext
-                        ? AppColors.surfaceVariant
-                        : AppColors.surfaceVariant.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.chevron_left_rounded,
-                    size: 20.sp,
-                    color: canGoNext
-                        ? AppColors.textPrimary
-                        : AppColors.textSecondary.withValues(alpha: 0.5),
-                  ),
-                ),
-              ),
-              Text(
-                _getMonthName(
-                  context,
-                  _currentMonth.month,
-                  _currentMonth.year,
-                ),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              // Right button: goes to PREVIOUS month (past) - shows > arrow
-              GestureDetector(
+          // Month navigation: LTR = left=previous, right=next | RTL (Hebrew) = left=next, right=previous
+          Builder(
+            builder: (context) {
+              final isRtl = Localizations.localeOf(context).languageCode == 'he';
+              final prevBtn = GestureDetector(
                 onTap: canGoBack ? _previousMonth : null,
                 child: Container(
                   padding: EdgeInsets.all(8.r),
@@ -1297,15 +1351,51 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
-                    Icons.chevron_right_rounded,
+                    Icons.chevron_left_rounded,
                     size: 20.sp,
                     color: canGoBack
                         ? AppColors.textPrimary
                         : AppColors.textSecondary.withValues(alpha: 0.5),
                   ),
                 ),
-              ),
-            ],
+              );
+              final nextBtn = GestureDetector(
+                onTap: canGoNext ? _nextMonth : null,
+                child: Container(
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                    color: canGoNext
+                        ? AppColors.surfaceVariant
+                        : AppColors.surfaceVariant.withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    size: 20.sp,
+                    color: canGoNext
+                        ? AppColors.textPrimary
+                        : AppColors.textSecondary.withValues(alpha: 0.5),
+                  ),
+                ),
+              );
+              final monthText = Text(
+                _getMonthName(
+                  context,
+                  _currentMonth.month,
+                  _currentMonth.year,
+                ),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              );
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: isRtl
+                    ? [nextBtn, monthText, prevBtn]
+                    : [prevBtn, monthText, nextBtn],
+              );
+            },
           ),
           SizedBox(height: AppSpacing.md.h),
 
@@ -1330,6 +1420,31 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
           ),
           SizedBox(height: 8.h),
 
+          if (_isLoadingSlots)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+              child: Center(
+                child: SizedBox(
+                  width: 24.r,
+                  height: 24.r,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.r,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            )
+          else if (_slotsError != null)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.h),
+              child: Text(
+                _slotsError!,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            )
+          else ...[
           // Calendar grid
           GridView.builder(
             shrinkWrap: true,
@@ -1431,44 +1546,107 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
               ],
             ),
           ],
+          ],
         ],
       ),
     );
   }
 }
 
-class _TimeSlotSection extends StatelessWidget {
+class _TimeSlotSection extends StatefulWidget {
   const _TimeSlotSection({
+    required this.practitionerId,
+    required this.getSlots,
     required this.selectedDate,
     required this.selectedTime,
-    required this.onTimeSelected,
+    required this.onSlotSelected,
   });
 
+  final String practitionerId;
+  final GetPractitionerSlots getSlots;
   final DateTime selectedDate;
   final String? selectedTime;
-  final ValueChanged<String> onTimeSelected;
+  final ValueChanged<({String start, String end})> onSlotSelected;
 
-  // Generate mock time slots based on date
-  List<String> _getAvailableTimeSlots() {
-    // Different times for different days to simulate real data
-    final day = selectedDate.day;
-    if (day % 3 == 0) {
-      return ['09:00', '10:30', '14:00', '15:30', '17:00'];
-    } else if (day % 2 == 0) {
-      return ['08:30', '11:00', '13:30', '16:00'];
-    } else {
-      return ['09:30', '11:30', '14:30', '16:30', '18:00'];
+  @override
+  State<_TimeSlotSection> createState() => _TimeSlotSectionState();
+}
+
+class _TimeSlotSectionState extends State<_TimeSlotSection> {
+  List<({String start, String end})> _slots = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSlotsForDate();
+  }
+
+  @override
+  void didUpdateWidget(covariant _TimeSlotSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _loadSlotsForDate();
     }
+  }
+
+  Future<void> _loadSlotsForDate() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    final dateStr = DateFormat('yyyy-MM-dd').format(widget.selectedDate);
+    final result = await widget.getSlots(
+      widget.practitionerId,
+      from: dateStr,
+      to: dateStr,
+    );
+
+    if (!mounted) return;
+    result.fold(
+      (failure) => setState(() {
+        _slots = [];
+        _isLoading = false;
+        _error = failure.message;
+      }),
+      (slots) {
+        final list = <({String start, String end})>[];
+        for (final slot in slots) {
+          final start = slot['slot_start'];
+          final end = slot['slot_end'];
+          if (start != null && start.isNotEmpty) {
+            final startDisplay = formatTimeTo24h(start);
+            final endDisplay =
+                end != null && end.isNotEmpty
+                    ? formatTimeTo24h(end)
+                    : _addMinutesToTime(formatTimeTo24h(start), 30);
+            list.add((
+              start: startDisplay,
+              end: endDisplay,
+            ));
+          }
+        }
+        list.sort((a, b) => a.start.compareTo(b.start));
+        setState(() {
+          _slots = list;
+          _isLoading = false;
+          _error = null;
+        });
+      },
+    );
   }
 
   String _formatDate(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    return DateFormat('EEEE, d/M', locale.toLanguageTag()).format(selectedDate);
+    return DateFormat('EEEE, d/M', locale.toLanguageTag())
+        .format(widget.selectedDate);
   }
 
   @override
   Widget build(BuildContext context) {
-    final timeSlots = _getAvailableTimeSlots();
+    final l10n = context.l10n;
 
     return DokalCard(
       padding: EdgeInsets.all(AppSpacing.md.r),
@@ -1494,15 +1672,44 @@ class _TimeSlotSection extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md.h),
 
-          // Time slots grid
-          Wrap(
-            spacing: 10.w,
-            runSpacing: 10.h,
-            children: timeSlots.map((time) {
-              final isSelected = selectedTime == time;
-              return GestureDetector(
-                onTap: () => onTimeSelected(time),
-                child: AnimatedContainer(
+          if (_isLoading)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 24.h),
+              child: Center(
+                child: SizedBox(
+                  width: 24.r,
+                  height: 24.r,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.r,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            )
+          else if (_error != null)
+            Text(
+              _error!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            )
+          else if (_slots.isEmpty)
+            Text(
+              l10n.practitionerNoSlotsForDate,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            )
+          else
+            // Time slots grid
+            Wrap(
+              spacing: 10.w,
+              runSpacing: 10.h,
+              children: _slots.map((slot) {
+                final isSelected = widget.selectedTime == slot.start;
+                return GestureDetector(
+                  onTap: () => widget.onSlotSelected((start: slot.start, end: slot.end)),
+                  child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: EdgeInsets.symmetric(
                     horizontal: 20.w,
@@ -1530,7 +1737,7 @@ class _TimeSlotSection extends StatelessWidget {
                         : null,
                   ),
                   child: Text(
-                    time,
+                    slot.start,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: isSelected
                           ? Colors.white
@@ -1552,14 +1759,18 @@ class _BookingConfirmation extends StatelessWidget {
   const _BookingConfirmation({
     required this.selectedDate,
     required this.selectedTime,
+    required this.selectedEndTime,
     required this.practitionerId,
     required this.practitionerName,
+    required this.profile,
   });
 
   final DateTime selectedDate;
   final String selectedTime;
+  final String selectedEndTime;
   final String practitionerId;
   final String practitionerName;
+  final PractitionerProfile profile;
 
   String _formatFullDate(BuildContext context) {
     final locale = Localizations.localeOf(context);
@@ -1622,7 +1833,7 @@ class _BookingConfirmation extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      '$selectedTime • ${_formatFullDate(context)}',
+                      '${formatTimeTo24h(selectedTime)} • ${_formatFullDate(context)}',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -1635,13 +1846,19 @@ class _BookingConfirmation extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md.h),
 
-          // Book button
+          // Book button - ouvre le flux de réservation rapide
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              // `push` garde un historique correct quand on revient en arrière
-              // (ex: login gate sur les routes protégées).
-              onPressed: () => context.push('/booking/$practitionerId'),
+              onPressed: () => QuickBookingSheet.show(
+                context,
+                practitionerId: practitionerId,
+                practitionerName: practitionerName,
+                profile: profile,
+                appointmentDate: selectedDate,
+                startTime: selectedTime,
+                endTime: selectedEndTime,
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: AppColors.primary,

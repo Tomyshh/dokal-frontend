@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/notifiers/appointment_refresh_notifier.dart';
 import 'core/permissions/permissions_service.dart';
 import 'core/network/api_client.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
@@ -45,6 +46,7 @@ import 'features/appointments/data/repositories/appointments_repository_impl.dar
 import 'features/appointments/domain/repositories/appointments_repository.dart';
 import 'features/appointments/domain/usecases/cancel_appointment.dart';
 import 'features/appointments/domain/usecases/get_appointment_detail.dart';
+import 'features/appointments/domain/usecases/reschedule_appointment.dart';
 import 'features/appointments/domain/usecases/get_past_appointments.dart';
 import 'features/appointments/domain/usecases/get_upcoming_appointments.dart';
 import 'features/appointments/presentation/bloc/appointment_detail_cubit.dart';
@@ -88,7 +90,6 @@ import 'features/account/domain/usecases/delete_payment_method.dart';
 import 'features/account/domain/usecases/get_payment_methods.dart';
 import 'features/account/domain/usecases/get_profile.dart';
 import 'features/account/domain/usecases/get_relatives.dart';
-import 'features/account/domain/usecases/request_password_change_demo.dart';
 import 'features/account/domain/usecases/set_default_payment_method.dart';
 import 'features/account/domain/usecases/delete_account.dart';
 import 'features/account/domain/usecases/update_profile.dart';
@@ -361,17 +362,23 @@ void configureDependencies() {
   sl.registerLazySingleton(
     () => CancelAppointment(sl<AppointmentsRepository>()),
   );
+  sl.registerLazySingleton(
+    () => RescheduleAppointment(sl<AppointmentsRepository>()),
+  );
+  sl.registerLazySingleton(() => AppointmentRefreshNotifier());
 
   sl.registerFactory(
     () => AppointmentsCubit(
       getUpcoming: sl<GetUpcomingAppointments>(),
       getPast: sl<GetPastAppointments>(),
+      appointmentRefreshNotifier: sl<AppointmentRefreshNotifier>(),
     ),
   );
   sl.registerFactoryParam<AppointmentDetailCubit, String, void>(
     (appointmentId, _) => AppointmentDetailCubit(
       getAppointmentDetail: sl<GetAppointmentDetail>(),
       cancelAppointment: sl<CancelAppointment>(),
+      appointmentRefreshNotifier: sl<AppointmentRefreshNotifier>(),
       appointmentId: appointmentId,
     ),
   );
@@ -493,9 +500,6 @@ void configureDependencies() {
   sl.registerLazySingleton(() => AddRelativeDemo(sl<AccountRepository>()));
   sl.registerLazySingleton(() => GetPaymentMethods(sl<AccountRepository>()));
   sl.registerLazySingleton(() => AddPaymentMethodDemo(sl<AccountRepository>()));
-  sl.registerLazySingleton(
-    () => RequestPasswordChangeDemo(sl<AccountRepository>()),
-  );
   sl.registerLazySingleton(() => UpdateProfile(sl<AccountRepository>()));
   sl.registerLazySingleton(() => UploadAvatar(sl<AccountRepository>()));
   sl.registerLazySingleton(() => DeletePaymentMethod(sl<AccountRepository>()));
@@ -524,7 +528,11 @@ void configureDependencies() {
   );
   sl.registerFactory(
     () => ChangePasswordCubit(
-      requestPasswordChangeDemo: sl<RequestPasswordChangeDemo>(),
+      getSession: sl<GetSession>(),
+      requestPasswordReset: sl<RequestPasswordReset>(),
+      verifyPasswordResetOtp: sl<VerifyPasswordResetOtp>(),
+      updatePassword: sl<UpdatePassword>(),
+      signOut: sl<SignOut>(),
     ),
   );
 
@@ -552,6 +560,7 @@ void configureDependencies() {
       getPastAppointments: sl<GetPastAppointments>(),
       getConversations: sl<GetConversations>(),
       getProfile: sl<GetProfile>(),
+      appointmentRefreshNotifier: sl<AppointmentRefreshNotifier>(),
     )..load(),
   );
 

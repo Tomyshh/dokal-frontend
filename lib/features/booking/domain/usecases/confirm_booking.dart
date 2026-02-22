@@ -17,6 +17,7 @@ class ConfirmBooking {
     required String zipCode,
     required String city,
     required bool visitedBefore,
+    String? relativeId,
   }) => repo.confirm(
     practitionerId: practitionerId,
     reason: reason,
@@ -26,5 +27,6 @@ class ConfirmBooking {
     zipCode: zipCode,
     city: city,
     visitedBefore: visitedBefore,
+    relativeId: relativeId,
   );
 }

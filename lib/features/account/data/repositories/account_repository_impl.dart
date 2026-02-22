@@ -87,12 +87,6 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> requestPasswordChangeDemo() async {
-    // Password change is handled by Supabase Auth directly.
-    return const Right(unit);
-  }
-
-  @override
   Future<Either<Failure, Unit>> updateProfile({
     String? firstName,
     String? lastName,

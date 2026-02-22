@@ -59,4 +59,29 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
       return Left(Failure(l10nStatic.errorUnableToCancelAppointment));
     }
   }
+
+  @override
+  Future<Either<Failure, Appointment>> reschedule(
+    String id, {
+    required String appointmentDate,
+    required String startTime,
+    required String endTime,
+  }) async {
+    try {
+      final appointment = await remote.rescheduleAsync(
+        id,
+        appointmentDate: appointmentDate,
+        startTime: startTime,
+        endTime: endTime,
+      );
+      if (appointment == null) {
+        return Left(Failure(l10nStatic.errorUnableToRescheduleAppointment));
+      }
+      return Right(appointment);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    } catch (_) {
+      return Left(Failure(l10nStatic.errorUnableToRescheduleAppointment));
+    }
+  }
 }

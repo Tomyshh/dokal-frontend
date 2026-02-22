@@ -307,6 +307,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeUpcomingAppointmentsTitle => 'Rendez-vous à venir';
 
   @override
+  String get homeNoUpcomingAppointments =>
+      'Aucun rendez-vous à venir pour le moment';
+
+  @override
   String get homeFindAppointmentCta => 'Trouvez un rendez-vous';
 
   @override
@@ -401,69 +405,82 @@ class AppLocalizationsFr extends AppLocalizations {
   String get searchNoResultsSubtitle => 'Essayez avec un autre terme.';
 
   @override
-  String get searchFilterTitle => 'סינון תוצאות';
+  String get searchFilterTitle => 'Filtrer les résultats';
 
   @override
-  String get searchFilterDate => 'תאריך זמינות';
+  String get searchFilterDate => 'Date de disponibilité';
 
   @override
-  String get searchFilterDateToday => 'היום';
+  String get searchFilterDateToday => 'Aujourd\'hui';
 
   @override
-  String get searchFilterDateTomorrow => 'מחר';
+  String get searchFilterDateTomorrow => 'Demain';
 
   @override
-  String get searchFilterDateThisWeek => 'השבוע';
+  String get searchFilterDateThisWeek => 'Cette semaine';
 
   @override
-  String get searchFilterDateNextWeek => 'שבוע הבא';
+  String get searchFilterDateNextWeek => 'Semaine prochaine';
 
   @override
-  String get searchFilterDateAny => 'כל תאריך';
+  String get searchFilterDateAny => 'Toute date';
 
   @override
-  String get searchFilterSpecialty => 'התמחות';
+  String get searchFilterSpecialty => 'Spécialité';
 
   @override
-  String get searchFilterSpecialtyAll => 'כל ההתמחויות';
+  String get searchFilterSpecialtyAll => 'Toutes les spécialités';
 
   @override
-  String get searchFilterKupatHolim => 'קופת חולים';
+  String get searchFilterKupatHolim => 'Caisse d\'assurance';
 
   @override
-  String get searchFilterKupatHolimAll => 'כל הקופות';
+  String get searchFilterKupatHolimAll => 'Toutes les caisses';
 
   @override
-  String get searchFilterDistance => 'מרחק מקסימלי';
+  String get searchFilterDistance => 'Distance maximale';
 
   @override
-  String get searchFilterDistanceAny => 'ללא הגבלה';
+  String get searchFilterDistanceAny => 'Sans limite';
 
   @override
-  String get searchFilterApply => 'החל סינון';
+  String get searchFilterApply => 'Appliquer les filtres';
 
   @override
-  String get searchFilterReset => 'נקה הכל';
+  String get searchFilterReset => 'Tout effacer';
 
   @override
   String searchFilterActiveCount(int count) {
-    return '$count סינונים פעילים';
+    return '$count filtre(s) actif(s)';
   }
 
   @override
-  String get searchSortTitle => 'מיין לפי';
+  String get searchSortTitle => 'Trier par';
 
   @override
-  String get searchSortAvailability => 'זמינות';
+  String get searchSortAvailability => 'Disponibilité';
 
   @override
-  String get searchSortDistance => 'מרחק';
+  String get searchSortAvailabilitySubtitle =>
+      'Du plus disponible au moins disponible';
 
   @override
-  String get searchSortName => 'שם';
+  String get searchSortDistance => 'Distance';
 
   @override
-  String get searchSortRating => 'דירוג';
+  String get searchSortDistanceSubtitle => 'Du plus proche au plus éloigné';
+
+  @override
+  String get searchSortName => 'Nom';
+
+  @override
+  String get searchSortNameSubtitle => 'Par ordre alphabétique';
+
+  @override
+  String get searchSortRating => 'Évaluation';
+
+  @override
+  String get searchSortRatingSubtitle => 'Du mieux noté au moins bien noté';
 
   @override
   String get searchSortPrice => 'Prix';
@@ -680,6 +697,26 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get appointmentDetailReschedule => 'Replanifier';
+
+  @override
+  String get appointmentRescheduleTitle => 'Choisir une nouvelle date';
+
+  @override
+  String appointmentRescheduleSubtitle(String practitionerName) {
+    return 'Sélectionnez un créneau disponible pour votre rendez-vous avec $practitionerName.';
+  }
+
+  @override
+  String appointmentRescheduleCurrent(String date, String time) {
+    return 'Actuellement : $date à $time';
+  }
+
+  @override
+  String get appointmentRescheduleConfirm => 'Confirmer le changement';
+
+  @override
+  String get appointmentRescheduleSuccessSnack =>
+      'Rendez-vous replanifié avec succès';
 
   @override
   String get appointmentDetailCancelQuestion => 'Annuler le rendez-vous ?';
@@ -916,6 +953,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get practitionerCalendarLegendSelected => 'Sélectionné';
 
   @override
+  String get practitionerNoSlotsForDate =>
+      'Aucun créneau disponible ce jour-là';
+
+  @override
   String get practitionerYourAppointment => 'Votre rendez-vous';
 
   @override
@@ -1008,7 +1049,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get securityChangePassword => 'Changer le mot de passe';
 
   @override
-  String get securityChangePasswordSuccess => 'Demande enregistrée';
+  String get securityChangePasswordSuccess =>
+      'Mot de passe mis à jour. Connectez-vous avec votre nouveau mot de passe.';
+
+  @override
+  String get securityChangePasswordSendingCode =>
+      'Envoi du code de vérification…';
+
+  @override
+  String get securityChangePasswordSendCodeHint =>
+      'Un code à 6 chiffres sera envoyé à votre adresse email pour sécuriser le changement de mot de passe.';
+
+  @override
+  String get securityChangePasswordOtpLabel => 'Code à 6 chiffres';
 
   @override
   String get securityCurrentPassword => 'Mot de passe actuel';
@@ -1266,6 +1319,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bookingChangeSlotButton => 'Modifier le créneau';
 
   @override
+  String get bookingQuickPatientSubtitle =>
+      'Choisissez qui consultera le praticien.';
+
+  @override
+  String get bookingQuickConfirmSubtitle =>
+      'Vérifiez les informations et confirmez.';
+
+  @override
+  String get bookingChangePatient => 'Changer de patient';
+
+  @override
+  String get commonLoading => 'Chargement…';
+
+  @override
   String get bookingSuccessTitle => 'Rendez-vous confirmé';
 
   @override
@@ -1352,6 +1419,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get errorUnableToLoadProfile => 'Impossible de charger le profil.';
 
   @override
+  String get errorUnableToRetrieveEmail =>
+      'Impossible de récupérer votre adresse email.';
+
+  @override
   String get errorUnableToReadHistoryState =>
       'Impossible de lire l\'état de l\'historique.';
 
@@ -1423,6 +1494,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorUnableToCancelAppointment =>
       'Impossible d\'annuler le rendez-vous.';
+
+  @override
+  String get errorUnableToRescheduleAppointment =>
+      'Impossible de replanifier le rendez-vous.';
 
   @override
   String get errorUnableToLoadConversations =>
@@ -1625,7 +1700,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get navHome => 'Accueil';
 
   @override
-  String get navAppointments => 'RDV';
+  String get navAppointments => 'Rendez-vous';
 
   @override
   String get navHealth => 'Santé';

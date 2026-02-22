@@ -105,7 +105,12 @@ class _NewMessagePageState extends State<NewMessagePage> {
                             if (!(_formKey.currentState?.validate() ?? false)) {
                               return;
                             }
-                            context.go('/messages/c/demo1');
+                            context.go('/messages');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(l10n.commonAvailableSoon),
+                              ),
+                            );
                           },
                           leading: const Icon(Icons.send_rounded),
                           child: Text(l10n.messagesSendButton),

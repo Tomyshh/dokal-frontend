@@ -646,6 +646,12 @@ abstract class AppLocalizations {
   /// **'תורים קרובים'**
   String get homeUpcomingAppointmentsTitle;
 
+  /// No description provided for @homeNoUpcomingAppointments.
+  ///
+  /// In he, this message translates to:
+  /// **'אין תורים קרובים כרגע'**
+  String get homeNoUpcomingAppointments;
+
   /// No description provided for @homeFindAppointmentCta.
   ///
   /// In he, this message translates to:
@@ -934,11 +940,23 @@ abstract class AppLocalizations {
   /// **'זמינות'**
   String get searchSortAvailability;
 
+  /// No description provided for @searchSortAvailabilitySubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מהזמין ביותר לזמין פחות'**
+  String get searchSortAvailabilitySubtitle;
+
   /// No description provided for @searchSortDistance.
   ///
   /// In he, this message translates to:
   /// **'מרחק'**
   String get searchSortDistance;
+
+  /// No description provided for @searchSortDistanceSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מהקרוב ביותר לרחוק'**
+  String get searchSortDistanceSubtitle;
 
   /// No description provided for @searchSortName.
   ///
@@ -946,11 +964,23 @@ abstract class AppLocalizations {
   /// **'שם'**
   String get searchSortName;
 
+  /// No description provided for @searchSortNameSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'לפי סדר א-ב'**
+  String get searchSortNameSubtitle;
+
   /// No description provided for @searchSortRating.
   ///
   /// In he, this message translates to:
   /// **'דירוג'**
   String get searchSortRating;
+
+  /// No description provided for @searchSortRatingSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מהמדורג ביותר'**
+  String get searchSortRatingSubtitle;
 
   /// No description provided for @searchSortPrice.
   ///
@@ -1353,6 +1383,36 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'לקבוע מחדש'**
   String get appointmentDetailReschedule;
+
+  /// No description provided for @appointmentRescheduleTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בחר תאריך חדש'**
+  String get appointmentRescheduleTitle;
+
+  /// No description provided for @appointmentRescheduleSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בחר תור זמין עם {practitionerName}.'**
+  String appointmentRescheduleSubtitle(String practitionerName);
+
+  /// No description provided for @appointmentRescheduleCurrent.
+  ///
+  /// In he, this message translates to:
+  /// **'כרגע: {date} בשעה {time}'**
+  String appointmentRescheduleCurrent(String date, String time);
+
+  /// No description provided for @appointmentRescheduleConfirm.
+  ///
+  /// In he, this message translates to:
+  /// **'אשר שינוי'**
+  String get appointmentRescheduleConfirm;
+
+  /// No description provided for @appointmentRescheduleSuccessSnack.
+  ///
+  /// In he, this message translates to:
+  /// **'התור נקבע מחדש בהצלחה'**
+  String get appointmentRescheduleSuccessSnack;
 
   /// No description provided for @appointmentDetailCancelQuestion.
   ///
@@ -1774,6 +1834,12 @@ abstract class AppLocalizations {
   /// **'נבחר'**
   String get practitionerCalendarLegendSelected;
 
+  /// No description provided for @practitionerNoSlotsForDate.
+  ///
+  /// In he, this message translates to:
+  /// **'אין זמנים זמינים ביום זה'**
+  String get practitionerNoSlotsForDate;
+
   /// No description provided for @practitionerYourAppointment.
   ///
   /// In he, this message translates to:
@@ -1957,8 +2023,26 @@ abstract class AppLocalizations {
   /// No description provided for @securityChangePasswordSuccess.
   ///
   /// In he, this message translates to:
-  /// **'הבקשה נשמרה'**
+  /// **'הסיסמה עודכנה. התחבר עם הסיסמה החדשה שלך.'**
   String get securityChangePasswordSuccess;
+
+  /// No description provided for @securityChangePasswordSendingCode.
+  ///
+  /// In he, this message translates to:
+  /// **'שולח קוד אימות…'**
+  String get securityChangePasswordSendingCode;
+
+  /// No description provided for @securityChangePasswordSendCodeHint.
+  ///
+  /// In he, this message translates to:
+  /// **'קוד בן 6 ספרות יישלח לכתובת הדוא״ל שלך לאבטחת שינוי הסיסמה.'**
+  String get securityChangePasswordSendCodeHint;
+
+  /// No description provided for @securityChangePasswordOtpLabel.
+  ///
+  /// In he, this message translates to:
+  /// **'קוד בן 6 ספרות'**
+  String get securityChangePasswordOtpLabel;
 
   /// No description provided for @securityCurrentPassword.
   ///
@@ -2428,6 +2512,30 @@ abstract class AppLocalizations {
   /// **'שנה את המועד'**
   String get bookingChangeSlotButton;
 
+  /// No description provided for @bookingQuickPatientSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בחר מי ייפגש עם הרופא.'**
+  String get bookingQuickPatientSubtitle;
+
+  /// No description provided for @bookingQuickConfirmSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בדוק את הפרטים ואשר.'**
+  String get bookingQuickConfirmSubtitle;
+
+  /// No description provided for @bookingChangePatient.
+  ///
+  /// In he, this message translates to:
+  /// **'שנה מטופל'**
+  String get bookingChangePatient;
+
+  /// No description provided for @commonLoading.
+  ///
+  /// In he, this message translates to:
+  /// **'טוען…'**
+  String get commonLoading;
+
   /// No description provided for @bookingSuccessTitle.
   ///
   /// In he, this message translates to:
@@ -2590,6 +2698,12 @@ abstract class AppLocalizations {
   /// **'לא ניתן לטעון את הפרופיל.'**
   String get errorUnableToLoadProfile;
 
+  /// No description provided for @errorUnableToRetrieveEmail.
+  ///
+  /// In he, this message translates to:
+  /// **'לא ניתן לאחזר את כתובת הדוא״ל שלך.'**
+  String get errorUnableToRetrieveEmail;
+
   /// No description provided for @errorUnableToReadHistoryState.
   ///
   /// In he, this message translates to:
@@ -2709,6 +2823,12 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'לא ניתן לבטל את התור.'**
   String get errorUnableToCancelAppointment;
+
+  /// No description provided for @errorUnableToRescheduleAppointment.
+  ///
+  /// In he, this message translates to:
+  /// **'לא ניתן לקבוע מחדש את התור.'**
+  String get errorUnableToRescheduleAppointment;
 
   /// No description provided for @errorUnableToLoadConversations.
   ///

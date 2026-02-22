@@ -21,6 +21,7 @@ class BookingRepositoryImpl implements BookingRepository {
     required String zipCode,
     required String city,
     required bool visitedBefore,
+    String? relativeId,
   }) async {
     try {
       // Parse the slotLabel to extract date & times.
@@ -44,13 +45,14 @@ class BookingRepositoryImpl implements BookingRepository {
 
       final id = await remote.confirmStructured(
         practitionerId: practitionerId,
+        relativeId: relativeId,
         reasonId: reason.isNotEmpty ? reason : null,
         appointmentDate: appointmentDate,
         startTime: startTime,
         endTime: endTime,
-        addressLine: addressLine,
-        zipCode: zipCode,
-        city: city,
+        addressLine: addressLine.trim().isEmpty ? null : addressLine.trim(),
+        zipCode: zipCode.trim().isEmpty ? null : zipCode.trim(),
+        city: city.trim().isEmpty ? null : city.trim(),
         visitedBefore: visitedBefore,
       );
       return Right(id);

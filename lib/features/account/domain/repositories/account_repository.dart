@@ -14,8 +14,6 @@ abstract class AccountRepository {
   Future<Either<Failure, List<PaymentMethod>>> listPaymentMethods();
   Future<Either<Failure, Unit>> addPaymentMethodDemo();
 
-  Future<Either<Failure, Unit>> requestPasswordChangeDemo();
-
   Future<Either<Failure, Unit>> updateProfile({
     String? firstName,
     String? lastName,

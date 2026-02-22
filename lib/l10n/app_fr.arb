@@ -132,6 +132,7 @@
   },
   "homeNewMessageNoAppointment": "Aucun rendez-vous associé",
   "homeUpcomingAppointmentsTitle": "Rendez-vous à venir",
+  "homeNoUpcomingAppointments": "Aucun rendez-vous à venir pour le moment",
   "homeFindAppointmentCta": "Trouvez un rendez-vous",
   "homeNoAppointmentsEmptyDescription": "Pour le moment, vous n’avez pas de rendez-vous. Cherchez un praticien et réservez votre premier créneau.",
   "homeLast3AppointmentsTitle": "3 derniers rendez-vous",
@@ -172,10 +173,43 @@
   "searchUnavailableTitle": "Recherche indisponible",
   "searchNoResultsTitle": "Aucun résultat",
   "searchNoResultsSubtitle": "Essayez avec un autre terme.",
-  "searchFeesLabel": "Honoraires",
-  "searchBookNow": "Réserver",
+
+  "searchFilterTitle": "Filtrer les résultats",
+  "searchFilterDate": "Date de disponibilité",
+  "searchFilterDateToday": "Aujourd'hui",
+  "searchFilterDateTomorrow": "Demain",
+  "searchFilterDateThisWeek": "Cette semaine",
+  "searchFilterDateNextWeek": "Semaine prochaine",
+  "searchFilterDateAny": "Toute date",
+  "searchFilterSpecialty": "Spécialité",
+  "searchFilterSpecialtyAll": "Toutes les spécialités",
+  "searchFilterKupatHolim": "Caisse d'assurance",
+  "searchFilterKupatHolimAll": "Toutes les caisses",
+  "searchFilterDistance": "Distance maximale",
+  "searchFilterDistanceAny": "Sans limite",
+  "searchFilterApply": "Appliquer les filtres",
+  "searchFilterReset": "Tout effacer",
+  "searchFilterActiveCount": "{count} filtre(s) actif(s)",
+  "@searchFilterActiveCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "searchSortTitle": "Trier par",
+  "searchSortAvailability": "Disponibilité",
+  "searchSortAvailabilitySubtitle": "Du plus disponible au moins disponible",
+  "searchSortDistance": "Distance",
+  "searchSortDistanceSubtitle": "Du plus proche au plus éloigné",
+  "searchSortName": "Nom",
+  "searchSortNameSubtitle": "Par ordre alphabétique",
+  "searchSortRating": "Évaluation",
+  "searchSortRatingSubtitle": "Du mieux noté au moins bien noté",
   "searchSortPrice": "Prix",
   "searchSortPriceSubtitle": "Du plus cher au moins cher",
+
+  "searchFeesLabel": "Honoraires",
+  "searchBookNow": "Réserver",
   "searchFilterPrice": "Fourchette de prix",
   "searchFilterPriceAll": "Tous les prix",
   "searchFilterPriceUnder200": "Moins de 200₪",
@@ -257,6 +291,28 @@
   "appointmentDetailNotFoundTitle": "Rendez-vous introuvable",
   "appointmentDetailNotFoundSubtitle": "Ce RDV est indisponible ou annulé.",
   "appointmentDetailReschedule": "Replanifier",
+  "appointmentRescheduleTitle": "Choisir une nouvelle date",
+  "appointmentRescheduleSubtitle": "Sélectionnez un créneau disponible pour votre rendez-vous avec {practitionerName}.",
+  "@appointmentRescheduleSubtitle": {
+    "placeholders": {
+      "practitionerName": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleCurrent": "Actuellement : {date} à {time}",
+  "@appointmentRescheduleCurrent": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleConfirm": "Confirmer le changement",
+  "appointmentRescheduleSuccessSnack": "Rendez-vous replanifié avec succès",
   "appointmentDetailCancelQuestion": "Annuler le rendez-vous ?",
   "appointmentDetailPreparationTitle": "Préparation requise",
   "appointmentDetailPreparationSubtitle": "Préparez votre consultation en avance.",
@@ -330,6 +386,7 @@
   "practitionerNoReviews": "Aucun avis pour le moment",
   "practitionerCalendarLegendAvailable": "Disponible",
   "practitionerCalendarLegendSelected": "Sélectionné",
+  "practitionerNoSlotsForDate": "Aucun créneau disponible ce jour-là",
   "practitionerYourAppointment": "Votre rendez-vous",
   "practitionerAddressAndContact": "Adresse et contact",
   "practitionerAppointmentStatusCompleted": "Terminé",
@@ -363,7 +420,10 @@
   "securitySecureAccountTitle": "Sécurisez votre compte",
   "securitySecureAccountSubtitle": "Mettez à jour vos informations",
   "securityChangePassword": "Changer le mot de passe",
-  "securityChangePasswordSuccess": "Demande enregistrée",
+  "securityChangePasswordSuccess": "Mot de passe mis à jour. Connectez-vous avec votre nouveau mot de passe.",
+  "securityChangePasswordSendingCode": "Envoi du code de vérification…",
+  "securityChangePasswordSendCodeHint": "Un code à 6 chiffres sera envoyé à votre adresse email pour sécuriser le changement de mot de passe.",
+  "securityChangePasswordOtpLabel": "Code à 6 chiffres",
   "securityCurrentPassword": "Mot de passe actuel",
   "securityNewPassword": "Nouveau mot de passe",
 
@@ -458,6 +518,10 @@
   "commonNo": "Non",
   "bookingConfirmButton": "Confirmer le rendez-vous",
   "bookingChangeSlotButton": "Modifier le créneau",
+  "bookingQuickPatientSubtitle": "Choisissez qui consultera le praticien.",
+  "bookingQuickConfirmSubtitle": "Vérifiez les informations et confirmez.",
+  "bookingChangePatient": "Changer de patient",
+  "commonLoading": "Chargement…",
 
   "bookingSuccessTitle": "Rendez-vous confirmé",
   "bookingSuccessSubtitle": "Nous avons envoyé une confirmation à votre email.",
@@ -490,6 +554,7 @@
 
   "errorUnableToConfirmAppointment": "Impossible de confirmer le rendez-vous.",
   "errorUnableToLoadProfile": "Impossible de charger le profil.",
+  "errorUnableToRetrieveEmail": "Impossible de récupérer votre adresse email.",
   "errorUnableToReadHistoryState": "Impossible de lire l'état de l'historique.",
   "errorUnableToEnableHistory": "Impossible d'activer l'historique.",
   "errorUnableToLoadRelatives": "Impossible de charger les proches.",
@@ -510,6 +575,7 @@
   "errorUnableToLoadHistory": "Impossible de charger l'historique.",
   "errorUnableToLoadAppointment": "Impossible de charger le rendez-vous.",
   "errorUnableToCancelAppointment": "Impossible d'annuler le rendez-vous.",
+  "errorUnableToRescheduleAppointment": "Impossible de replanifier le rendez-vous.",
   "errorUnableToLoadConversations": "Impossible de charger les conversations.",
   "errorUnableToLoadConversation": "Impossible de charger la conversation.",
   "errorUnableToSendMessage": "Impossible d'envoyer le message.",
@@ -642,7 +708,7 @@
   "commonInitialsFallback": "MO",
 
   "navHome": "Accueil",
-  "navAppointments": "RDV",
+  "navAppointments": "Rendez-vous",
   "navHealth": "Santé",
   "navMessages": "Messages",
   "navAccount": "Compte"

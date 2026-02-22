@@ -193,13 +193,6 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
   }
 
   // ---------------------------------------------------------------------------
-  // Password – demo stubs
-  // ---------------------------------------------------------------------------
-
-  void requestPasswordChangeDemo() =>
-      throw UnimplementedError('Use Supabase Auth directly');
-
-  // ---------------------------------------------------------------------------
   // Account deletion
   // ---------------------------------------------------------------------------
 

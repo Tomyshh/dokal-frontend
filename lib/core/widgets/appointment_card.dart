@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
-import '../constants/app_radii.dart';
+import '../utils/format_appointment_date.dart';
 import '../constants/app_spacing.dart';
-import 'dokal_card.dart';
 
-/// Carte de rendez-vous compacte et moderne.
+/// Carte de rendez-vous moderne et épurée.
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     super.key,
@@ -47,175 +46,237 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DokalCard(
-      padding: EdgeInsets.all(AppSpacing.md.r),
-      onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Date/Time row avec couleur
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.sm.w,
-                    vertical: AppSpacing.xs.h,
-                  ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16.r),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(16.r),
+            border: Border.all(
+              color: isPast
+                  ? AppColors.outline.withValues(alpha: 0.3)
+                  : AppColors.primary.withValues(alpha: 0.08),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow.withValues(alpha: 0.04),
+                blurRadius: 16.r,
+                offset: Offset(0, 4.h),
+              ),
+              BoxShadow(
+                color: isPast
+                    ? Colors.transparent
+                    : AppColors.primary.withValues(alpha: 0.04),
+                blurRadius: 20.r,
+                offset: Offset(0, 2.h),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.r),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Bande d'accent verticale
+                Container(
+                  width: 4.w,
                   decoration: BoxDecoration(
+                    gradient: isPast
+                        ? null
+                        : const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              AppColors.brandGradientStart,
+                              AppColors.brandGradientEnd,
+                            ],
+                          ),
                     color: isPast
-                        ? AppColors.textSecondary.withValues(alpha: 0.08)
-                        : AppColors.accent.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(AppRadii.sm.r),
+                        ? AppColors.textSecondary.withValues(alpha: 0.2)
+                        : null,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.calendar_today_rounded,
-                        size: 14.sp,
-                        color: isPast
-                            ? AppColors.textSecondary
-                            : AppColors.accent,
-                      ),
-                      SizedBox(width: 6.w),
-                      Flexible(
-                        child: Text(
-                          dateLabel,
-                          style: Theme.of(context).textTheme.labelMedium
-                              ?.copyWith(
-                                color: isPast
-                                    ? AppColors.textSecondary
-                                    : AppColors.textPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Icon(
-                        Icons.schedule_rounded,
-                        size: 14.sp,
-                        color: isPast
-                            ? AppColors.textSecondary
-                            : AppColors.primary,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        timeLabel,
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(AppSpacing.md.r),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Ligne date + heure + trailing
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.calendar_today_rounded,
+                              size: 14.sp,
                               color: isPast
                                   ? AppColors.textSecondary
                                   : AppColors.primary,
-                              fontWeight: FontWeight.w700,
                             ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (trailing != null) ...[
-                SizedBox(width: AppSpacing.sm.w),
-                trailing!,
-              ],
-            ],
-          ),
-          SizedBox(height: AppSpacing.md.h),
-          // Practitioner row avec avatar
-          Row(
-            children: [
-              // Avatar
-              Container(
-                width: 40.r,
-                height: 40.r,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.15),
-                      blurRadius: 8.r,
-                      offset: Offset(0, 2.h),
-                    ),
-                  ],
-                ),
-                child: ClipOval(
-                  child: (avatarUrl?.trim().isNotEmpty ?? false)
-                      ? CachedNetworkImage(
-                          imageUrl: avatarUrl!.trim(),
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              _AvatarPlaceholder(initials: _getInitials()),
-                          errorWidget: (context, url, error) =>
-                              _AvatarPlaceholder(initials: _getInitials()),
-                        )
-                      : _AvatarPlaceholder(initials: _getInitials()),
-                ),
-              ),
-              SizedBox(width: AppSpacing.md.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      practitionerName,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    SizedBox(height: 3.h),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.w,
-                        vertical: 2.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: Text(
-                        specialty,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w500,
+                            SizedBox(width: 6.w),
+                            Expanded(
+                              child: Text(
+                                formatAppointmentDateLabel(context, dateLabel),
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: isPast
+                                      ? AppColors.textSecondary
+                                      : AppColors.textPrimary,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 4.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isPast
+                                    ? AppColors.textSecondary.withValues(alpha: 0.08)
+                                    : AppColors.accent.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Text(
+                                timeLabel,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: isPast
+                                      ? AppColors.textSecondary
+                                      : AppColors.primary,
+                                ),
+                              ),
+                            ),
+                            if (trailing != null) ...[
+                              SizedBox(width: 8.w),
+                              trailing!,
+                            ],
+                          ],
                         ),
-                      ),
+                        SizedBox(height: AppSpacing.md.h),
+                        // Praticien
+                        Row(
+                          children: [
+                            Container(
+                              width: 44.r,
+                              height: 44.r,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.primary.withValues(alpha: 0.15),
+                                  width: 1.5.r,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withValues(alpha: 0.08),
+                                    blurRadius: 8.r,
+                                    offset: Offset(0, 2.h),
+                                  ),
+                                ],
+                              ),
+                              child: ClipOval(
+                                child: (avatarUrl?.trim().isNotEmpty ?? false)
+                                    ? CachedNetworkImage(
+                                        imageUrl: avatarUrl!.trim(),
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            _AvatarPlaceholder(initials: _getInitials()),
+                                        errorWidget: (context, url, error) =>
+                                            _AvatarPlaceholder(initials: _getInitials()),
+                                      )
+                                    : _AvatarPlaceholder(initials: _getInitials()),
+                              ),
+                            ),
+                            SizedBox(width: AppSpacing.md.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    practitionerName,
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                      letterSpacing: -0.2,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8.w,
+                                      vertical: 3.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary.withValues(alpha: 0.08),
+                                      borderRadius: BorderRadius.circular(6.r),
+                                    ),
+                                    child: Text(
+                                      specialty,
+                                      style: TextStyle(
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.primary,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              size: 20.sp,
+                              color: AppColors.textSecondary.withValues(alpha: 0.6),
+                            ),
+                          ],
+                        ),
+                        if (reason.isNotEmpty) ...[
+                          SizedBox(height: AppSpacing.sm.h),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.medical_information_outlined,
+                                size: 14.sp,
+                                color: AppColors.accent.withValues(alpha: 0.8),
+                              ),
+                              SizedBox(width: 6.w),
+                              Expanded(
+                                child: Text(
+                                  reason,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.textSecondary,
+                                    height: 1.35,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Directionality(
-                textDirection: TextDirection.ltr,
-                child: Icon(
-                  Icons.chevron_left_rounded,
-                  size: 20.sp,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: AppSpacing.sm.h),
-          // Reason row
-          Row(
-            children: [
-              Icon(
-                Icons.medical_services_rounded,
-                size: 14.sp,
-                color: AppColors.accent,
-              ),
-              SizedBox(width: 6.w),
-              Expanded(
-                child: Text(
-                  reason,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -233,7 +294,10 @@ class _AvatarPlaceholder extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryLight],
+          colors: [
+            AppColors.brandGradientStart,
+            AppColors.brandGradientEnd,
+          ],
         ),
         shape: BoxShape.circle,
       ),
@@ -242,7 +306,7 @@ class _AvatarPlaceholder extends StatelessWidget {
           initials,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 14.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
         ),

@@ -8,4 +8,10 @@ abstract class AppointmentsRepository {
   Future<Either<Failure, List<Appointment>>> listPast();
   Future<Either<Failure, Appointment?>> getById(String id);
   Future<Either<Failure, Unit>> cancel(String id);
+  Future<Either<Failure, Appointment>> reschedule(
+    String id, {
+    required String appointmentDate,
+    required String startTime,
+    required String endTime,
+  });
 }

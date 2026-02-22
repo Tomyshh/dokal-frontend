@@ -32,12 +32,12 @@ class HomePage extends StatelessWidget {
             child: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(child: _HomeHeader()),
-                SliverToBoxAdapter(child: SizedBox(height: AppSpacing.sm.h)),
+                SliverToBoxAdapter(child: SizedBox(height: AppSpacing.xs.h)),
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
-                      SizedBox(height: AppSpacing.lg.h),
+                      SizedBox(height: AppSpacing.sm.h),
                       _AppointmentsSections(),
                       SizedBox(height: 100.h),
                     ]),
@@ -62,7 +62,7 @@ class _HomeHeader extends StatelessWidget {
         AppSpacing.lg.w,
         AppSpacing.md.h,
         AppSpacing.lg.w,
-        AppSpacing.sm.h,
+        AppSpacing.xs.h,
       ),
       child: Column(
         children: [
@@ -174,7 +174,7 @@ class _HomeHeader extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: AppSpacing.lg.h),
+          SizedBox(height: AppSpacing.md.h),
           GestureDetector(
             onTap: () => context.push('/home/search'),
             child: Container(
@@ -356,7 +356,7 @@ class _AppointmentsSections extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (hasUpcoming || isLoading) ...[
+            if (hasUpcoming || isLoading || hasPast) ...[
               _SectionTitle(title: l10n.homeUpcomingAppointmentsTitle),
               SizedBox(height: AppSpacing.sm.h),
               _UpcomingAppointmentsSection(),
@@ -462,7 +462,30 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
             items.isEmpty) {
           return const _UpcomingAppointmentsShimmer();
         }
-        if (items.isEmpty) return const SizedBox.shrink();
+        if (items.isEmpty) {
+          return DokalCard(
+            padding: EdgeInsets.all(AppSpacing.md.r),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.event_available_rounded,
+                  color: AppColors.textSecondary,
+                  size: 22.sp,
+                ),
+                SizedBox(width: AppSpacing.md.w),
+                Expanded(
+                  child: Text(
+                    context.l10n.homeNoUpcomingAppointments,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
 
         return Column(
           children: [
@@ -656,7 +679,7 @@ class _NewMessageSection extends StatelessWidget {
             SizedBox(height: AppSpacing.sm.h),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () => context.push('/messages/c/${conv.id}'),
+              onTap: () => context.push('/messages/c/${conv.id}', extra: conv),
               child: DokalCard(
                 padding: EdgeInsets.all(AppSpacing.md.r),
                 child: Row(

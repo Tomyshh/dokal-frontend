@@ -12,5 +12,6 @@ abstract class BookingRepository {
     required String zipCode,
     required String city,
     required bool visitedBefore,
+    String? relativeId,
   });
 }

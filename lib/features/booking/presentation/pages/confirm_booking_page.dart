@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../core/widgets/dokal_button.dart';
@@ -30,6 +31,12 @@ class ConfirmBookingPage extends StatelessWidget {
             );
           }
           if (state.status == BookingConfirmStatus.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.bookingSuccessTitle),
+                backgroundColor: AppColors.accent,
+              ),
+            );
             context.go('/booking/$practitionerId/success');
           }
         },
