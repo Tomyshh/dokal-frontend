@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -148,6 +150,12 @@ void configureDependencies() {
 
   // Permissions
   sl.registerLazySingleton(() => PermissionsService());
+
+  // Firebase Analytics & Crashlytics
+  sl.registerLazySingleton<FirebaseAnalytics>(() => FirebaseAnalytics.instance);
+  sl.registerLazySingleton<FirebaseCrashlytics>(
+    () => FirebaseCrashlytics.instance,
+  );
 
   // Firebase Push Notifications
   sl.registerLazySingleton<PushNotificationService>(

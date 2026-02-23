@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -51,6 +53,7 @@ import '../features/account/presentation/pages/payment_page.dart';
 import '../features/account/presentation/pages/settings_page.dart';
 import '../features/account/presentation/pages/privacy_page.dart';
 import '../features/account/presentation/pages/complete_patient_profile_wizard_page.dart';
+import '../injection_container.dart';
 
 late final GoRouter appRouter;
 late final AuthBloc _authBloc;
@@ -124,16 +127,26 @@ void initAppRouter(
   _authBloc.stream.listen((state) {
     if (state.isAuthenticated) {
       _profileCompletion.refresh();
+      // Analytics & Crashlytics : identifier l'utilisateur pour le suivi
+      final userId = state.session?.userId;
+      if (userId != null) {
+        sl<FirebaseAnalytics>().setUserId(id: userId);
+        sl<FirebaseCrashlytics>().setUserIdentifier(userId);
+      }
     } else {
       _profileCompletion.reset();
+      sl<FirebaseAnalytics>().setUserId(id: null);
+      sl<FirebaseCrashlytics>().setUserIdentifier('');
     }
   });
 
   appRouter = GoRouter(
     navigatorKey: _rootNavKey,
-    // On démarre sur un splash qui décide (auth + onboarding).
     initialLocation: '/splash',
     debugLogDiagnostics: true,
+    observers: [
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+    ],
     refreshListenable: Listenable.merge([
       GoRouterRefreshStream(authBloc.stream),
       _profileCompletion,
