@@ -696,6 +696,7 @@ class _StepCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       padding: EdgeInsets.all(AppSpacing.lg.r),
       children: [
         Text(

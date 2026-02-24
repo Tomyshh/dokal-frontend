@@ -33,28 +33,51 @@ class AddressAutocompleteField extends StatefulWidget {
 class _AddressAutocompleteFieldState extends State<AddressAutocompleteField> {
   final _layerLink = LayerLink();
   final _debounce = 400;
+  final _focusNode = FocusNode();
   Timer? _debounceTimer;
   List<PlacePrediction> _predictions = [];
   bool _isLoading = false;
   OverlayEntry? _overlayEntry;
   String? _lastErrorShown;
   DateTime? _lastErrorAt;
+  bool _suppressNextTextChange = false;
+  String? _selectedDescription;
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_onTextChanged);
+    _focusNode.addListener(_onFocusChanged);
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_onTextChanged);
+    _focusNode.removeListener(_onFocusChanged);
+    _focusNode.dispose();
     _debounceTimer?.cancel();
     _removeOverlay();
     super.dispose();
   }
 
+  void _onFocusChanged() {
+    if (!_focusNode.hasFocus) {
+      _hideOverlay();
+    }
+  }
+
   void _onTextChanged() {
+    if (_suppressNextTextChange) {
+      _suppressNextTextChange = false;
+      return;
+    }
+    final current = widget.controller.text.trim();
+    if (_selectedDescription != null && current != _selectedDescription) {
+      _selectedDescription = null;
+    }
+    if (_selectedDescription != null && current == _selectedDescription) {
+      return;
+    }
     _debounceTimer?.cancel();
     _debounceTimer = Timer(Duration(milliseconds: _debounce), () {
       _fetchPredictions(widget.controller.text);
@@ -117,10 +140,15 @@ class _AddressAutocompleteFieldState extends State<AddressAutocompleteField> {
 
   Future<void> _onSelectPrediction(PlacePrediction p) async {
     _hideOverlay();
+    _suppressNextTextChange = true;
+    _selectedDescription = p.description.trim();
     widget.controller.text = p.description;
     widget.controller.selection = TextSelection.fromPosition(
       TextPosition(offset: p.description.length),
     );
+    if (mounted) {
+      setState(() => _predictions = []);
+    }
 
     try {
       final details = await widget.placesService.getPlaceDetails(p.placeId);
@@ -155,6 +183,7 @@ class _AddressAutocompleteFieldState extends State<AddressAutocompleteField> {
     return CompositedTransformTarget(
       link: _layerLink,
       child: TextFormField(
+        focusNode: _focusNode,
         controller: widget.controller,
         decoration: InputDecoration(
           labelText: widget.label,
@@ -199,52 +228,47 @@ class _PredictionsOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        GestureDetector(
-          onTap: onDismiss,
-          behavior: HitTestBehavior.opaque,
-          child: Container(color: Colors.transparent),
-        ),
-        CompositedTransformFollower(
-          link: layerLink,
-          showWhenUnlinked: false,
-          offset: Offset(0, 48.h),
-          child: Material(
-            elevation: 8,
-            borderRadius: BorderRadius.circular(12.r),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 240.h),
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemCount: predictions.length,
-                itemBuilder: (context, i) {
-                  final p = predictions[i];
-                  return ListTile(
-                    leading: Icon(Icons.place_rounded, size: 20.r, color: AppColors.textSecondary),
-                    title: Text(
-                      p.mainText,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    subtitle: p.description != p.mainText
-                        ? Text(
-                            p.description,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        : null,
-                    onTap: () => onSelect(p),
-                  );
-                },
-              ),
-            ),
+    return CompositedTransformFollower(
+      link: layerLink,
+      showWhenUnlinked: false,
+      offset: Offset(0, 48.h),
+      child: Material(
+        elevation: 8,
+        borderRadius: BorderRadius.circular(12.r),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 280.h),
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            itemCount: predictions.length,
+            itemBuilder: (context, i) {
+              final p = predictions[i];
+              return ListTile(
+                leading: Icon(
+                  Icons.place_rounded,
+                  size: 20.r,
+                  color: AppColors.textSecondary,
+                ),
+                title: Text(
+                  p.mainText,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                subtitle: p.description != p.mainText
+                    ? Text(
+                        p.description,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    : null,
+                onTap: () => onSelect(p),
+              );
+            },
           ),
         ),
-      ],
+      ),
     );
   }
 }
