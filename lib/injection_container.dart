@@ -439,7 +439,10 @@ void configureDependencies() {
     () => SearchRemoteDataSourceImpl(api: sl<ApiClient>()),
   );
   sl.registerLazySingleton<SearchRepository>(
-    () => SearchRepositoryImpl(remote: sl<SearchRemoteDataSourceImpl>()),
+    () => SearchRepositoryImpl(
+      remote: sl<SearchRemoteDataSourceImpl>(),
+      getPractitionerSlots: sl<GetPractitionerSlots>(),
+    ),
   );
   sl.registerLazySingleton(() => SearchPractitioners(sl<SearchRepository>()));
   sl.registerFactory(

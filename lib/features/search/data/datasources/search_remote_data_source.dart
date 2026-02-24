@@ -60,15 +60,25 @@ class SearchRemoteDataSourceImpl {
       final priceMax = json['price_max_agorot'] as int?;
 
       // Parse first slot for next availability
-      final rawSlots = json['slots'] as List<dynamic>? ?? [];
       String nextAvailabilityLabel = '';
+      var rawSlots = json['slots'] as List<dynamic>? ?? [];
+      if (rawSlots.isEmpty && json['first_slot'] != null) {
+        rawSlots = [json['first_slot']];
+      }
       if (rawSlots.isNotEmpty) {
-        final slot = rawSlots.first as Map<String, dynamic>;
-        final date = slot['slot_date'] as String? ?? '';
-        final start = slot['slot_start'] as String? ?? '';
-        if (date.isNotEmpty && start.isNotEmpty) {
-          final time = start.length >= 5 ? start.substring(0, 5) : start;
-          nextAvailabilityLabel = '$date $time';
+        final slot = rawSlots.first;
+        final slotMap = slot is Map<String, dynamic> ? slot : null;
+        if (slotMap != null) {
+          final date = slotMap['slot_date'] as String? ??
+              slotMap['date'] as String? ??
+              '';
+          final start = slotMap['slot_start'] as String? ??
+              slotMap['start'] as String? ??
+              '';
+          if (date.isNotEmpty && start.isNotEmpty) {
+            final time = start.length >= 5 ? start.substring(0, 5) : start;
+            nextAvailabilityLabel = '$date $time';
+          }
         }
       }
 

@@ -65,13 +65,10 @@ class SearchPractitionerCard extends StatelessWidget {
     final l10n = context.l10n;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
-      child: Container(
-        padding: EdgeInsets.all(AppSpacing.md.r),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: AppColors.outline, width: 1.r),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.md.w,
+          vertical: AppSpacing.md.h,
         ),
         child: IntrinsicHeight(
           child: Row(

@@ -43,10 +43,12 @@ bool kupatMatchesFilter(String? filterKupat, String? practitionerSector) {
 /// correspond au filtre de date.
 bool dateMatchesFilter(String? filterDate, String? nextAvailabilityLabel) {
   if (filterDate == null || filterDate.isEmpty) return true;
-  if (nextAvailabilityLabel == null || nextAvailabilityLabel.isEmpty) return false;
+  if (nextAvailabilityLabel == null || nextAvailabilityLabel.isEmpty) {
+    return false;
+  }
 
   DateTime? slotDate;
-  final parts = nextAvailabilityLabel.trim().split(' ');
+  final parts = nextAvailabilityLabel.trim().split(RegExp(r'\s+'));
   final datePart = parts.isNotEmpty ? parts.first : null;
   if (datePart != null && datePart.length >= 10) {
     slotDate = DateTime.tryParse(datePart);
@@ -64,8 +66,7 @@ bool dateMatchesFilter(String? filterDate, String? nextAvailabilityLabel) {
     case 'tomorrow':
       return slotDay == today.add(const Duration(days: 1));
     case 'this_week':
-      // Du jour même à la fin de la semaine (dimanche)
-      final daysUntilSunday = 8 - today.weekday;
+      final daysUntilSunday = 7 - today.weekday;
       final weekEnd = today.add(Duration(days: daysUntilSunday));
       return !slotDay.isBefore(today) && !slotDay.isAfter(weekEnd);
     case 'next_week':

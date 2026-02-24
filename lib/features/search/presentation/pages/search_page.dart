@@ -281,8 +281,13 @@ class _SearchPageState extends State<SearchPage> {
                             child: ListView.separated(
                         padding: EdgeInsets.only(bottom: AppSpacing.lg.h),
                         itemCount: results.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: AppSpacing.sm.h),
+                        separatorBuilder: (context, index) => Divider(
+                          height: 1,
+                          thickness: 0.5,
+                          color: AppColors.outline,
+                          indent: 72.w,
+                          endIndent: 16.w,
+                        ),
                         itemBuilder: (context, index) {
                           final p = results[index];
                           return SearchPractitionerCard(
