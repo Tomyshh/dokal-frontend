@@ -94,6 +94,12 @@ class AppLocalizationsAm extends AppLocalizations {
   String get profileCompletionCity => 'ከተማ (አማራጭ)';
 
   @override
+  String get profileCompletionAddress => 'አድራሻ (እስራኤል)';
+
+  @override
+  String get profileCompletionAddressHint => 'አድራሻዎን ይፈልጉ...';
+
+  @override
   String get profileCompletionSex => 'ጾታ (አማራጭ)';
 
   @override
@@ -585,6 +591,31 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get onboardingStartButton => 'ጀምር';
+
+  @override
+  String get permissionsGateTitle => 'ፍቃዶችን አርቀድ';
+
+  @override
+  String get permissionsGateSubtitle => 'በተሻለ ልምድ ለማግኘት፣ ማሳወቂያዎችን እና ቦታን ይፍቀዱ።';
+
+  @override
+  String get permissionsGateNotificationsTitle => 'ማሳወቂያዎች';
+
+  @override
+  String get permissionsGateNotificationsSubtitle =>
+      'የቀጠሮ ማስታወሻዎች እና ከሐኪሞችዎ መልዕክቶች';
+
+  @override
+  String get permissionsGateLocationTitle => 'ቦታ';
+
+  @override
+  String get permissionsGateLocationSubtitle => 'በእርስዎ አካባቢ ሐኪሞችን ያግኙ';
+
+  @override
+  String get permissionsGateValidateButton => 'አረጋግጥ እና ቀጥል';
+
+  @override
+  String get permissionsGateLocationDenied => 'የቦታ ፍቃድ ተቀባይነት አላገኘም.';
 
   @override
   String get healthTitle => 'ጤናዬ';
@@ -1742,4 +1773,89 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get navAccount => 'መለያ';
+
+  @override
+  String get bookingFlowTitle => 'ቀጠሮ ለመያዝ';
+
+  @override
+  String get bookingStepReason => 'ምክንያት';
+
+  @override
+  String get bookingStepPatient => 'ታካሚ';
+
+  @override
+  String get bookingStepInstructions => 'መመሪያዎች';
+
+  @override
+  String get bookingStepInstructionsOk => 'መመሪያዎች OK';
+
+  @override
+  String get bookingStepSlot => 'ጊዜ';
+
+  @override
+  String get bookingStepConfirmation => 'ማረጋገጫ';
+
+  @override
+  String get bookingSelectReasonTitle => 'ምክንያት ይምረጡ';
+
+  @override
+  String get bookingSelectReasonSubtitle =>
+      'የቀጠሮውን ምክንያት ይምረጡ የሚገኙ ጊዜዎችን እና መመሪያዎችን ለማበጀት።';
+
+  @override
+  String get bookingReasonNewPatient => 'ምክክር (አዲስ ታካሚ)';
+
+  @override
+  String get bookingReasonFollowUp => 'ተከታታይ ቅጽበታዊ ምርመራ';
+
+  @override
+  String get bookingReasonUrgency => 'አስቸኳይ (ህመም፣ አስቸጋሪነት)';
+
+  @override
+  String get bookingReasonPrescription => 'የመድኃኒት ማደስ';
+
+  @override
+  String get bookingReasonResults => 'ውጤቶች / ሪፖርት';
+
+  @override
+  String get commonFallbackDash => '—';
+
+  @override
+  String get commonUnknown => 'ያልታወቀ';
+
+  @override
+  String get commonDateHintDdMmYyyy => 'DD/MM/YYYY';
+
+  @override
+  String get commonDateHintYyyyMmDd => 'YYYY-MM-DD';
+
+  @override
+  String get healthBloodTypeAPos => 'A+';
+
+  @override
+  String get healthBloodTypeANeg => 'A-';
+
+  @override
+  String get healthBloodTypeBPos => 'B+';
+
+  @override
+  String get healthBloodTypeBNeg => 'B-';
+
+  @override
+  String get healthBloodTypeABPos => 'AB+';
+
+  @override
+  String get healthBloodTypeABNeg => 'AB-';
+
+  @override
+  String get healthBloodTypeOPos => 'O+';
+
+  @override
+  String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get errorNotificationPermissionDenied => 'የማሳወቂያ ፍቃድ ተቀባይነት አላገኘም.';
+
+  @override
+  String get practitionerYourAppointmentLabel => 'ቀጠሮዎ';
 }

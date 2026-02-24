@@ -9,6 +9,7 @@ import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../account/utils/relative_label_utils.dart';
 import '../bloc/booking_patients_cubit.dart';
 import '../bloc/booking_bloc.dart';
 
@@ -152,7 +153,7 @@ class SelectPatientPage extends StatelessWidget {
                                     ),
                                   ),
                                   title: Text(r.name),
-                                  subtitle: Text(r.label),
+                                  subtitle: Text(relativeDisplayLabel(l10n, r)),
                                   trailing: bookingState.patientLabel == r.name
                                       ? Icon(
                                           Icons.check_circle_rounded,

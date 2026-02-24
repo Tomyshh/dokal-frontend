@@ -61,7 +61,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         emit(
           state.copyWith(
             status: SettingsStatus.failure,
-            error: 'Permission notifications refusée.',
+            error: 'errorNotificationPermissionDenied',
           ),
         );
         final reverted = state.settings!.copyWith(notificationsEnabled: false);
@@ -81,7 +81,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         emit(
           state.copyWith(
             status: SettingsStatus.failure,
-            error: 'Permission notifications refusée.',
+            error: 'errorNotificationPermissionDenied',
           ),
         );
         final reverted = state.settings!.copyWith(notificationsEnabled: false);

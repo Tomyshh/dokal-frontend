@@ -5,11 +5,15 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/services/google_places_service.dart'
+    show GooglePlacesService, PlaceDetails;
+import '../../../../core/widgets/address_autocomplete_field.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../practitioner/presentation/bloc/practitioner_cubit.dart';
 import '../bloc/booking_bloc.dart';
 import '../bloc/booking_confirm_cubit.dart';
 
@@ -68,25 +72,27 @@ class ConfirmBookingPage extends StatelessWidget {
                             _Row(
                               icon: Icons.medical_information_rounded,
                               title: l10n.bookingReasonLabel,
-                              value: state.reason ?? '—',
+                              value: state.reason ?? l10n.commonFallbackDash,
                             ),
                             SizedBox(height: 12.h),
                             _Row(
                               icon: Icons.person_rounded,
                               title: l10n.bookingPatientLabel,
-                              value: state.patientLabel ?? '—',
+                              value: state.patientLabel ?? l10n.commonFallbackDash,
                             ),
                             SizedBox(height: 12.h),
                             _Row(
                               icon: Icons.schedule_rounded,
                               title: l10n.bookingSlotLabel,
-                              value: state.slotLabel ?? '—',
+                              value: state.slotLabel ?? l10n.commonFallbackDash,
                             ),
                             SizedBox(height: 12.h),
-                            _Row(
-                              icon: Icons.location_on_rounded,
-                              title: l10n.commonAddress,
-                              value: '83 Boulevard de la Villette, 75010 Paris',
+                            BlocBuilder<PractitionerCubit, PractitionerState>(
+                              builder: (context, pState) => _Row(
+                                icon: Icons.location_on_rounded,
+                                title: l10n.commonAddress,
+                                value: pState.profile?.address ?? l10n.commonFallbackDash,
+                              ),
                             ),
                           ],
                         ),
@@ -101,12 +107,19 @@ class ConfirmBookingPage extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             SizedBox(height: AppSpacing.md.h),
-                            _InlineField(
-                              label: l10n.commonAddress,
-                              value: state.addressLine ?? '',
-                              onChanged: (v) => context.read<BookingBloc>().add(
-                                BookingAddressChanged(v),
-                              ),
+                            _BookingAddressField(
+                              addressLine: state.addressLine ?? '',
+                              onPlaceSelected: (details) {
+                                context.read<BookingBloc>().add(
+                                  BookingAddressChanged(details.addressLine),
+                                );
+                                context.read<BookingBloc>().add(
+                                  BookingZipCodeChanged(details.zipCode),
+                                );
+                                context.read<BookingBloc>().add(
+                                  BookingCityChanged(details.city),
+                                );
+                              },
                             ),
                             SizedBox(height: AppSpacing.md.h),
                             _InlineField(
@@ -207,6 +220,56 @@ class ConfirmBookingPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _BookingAddressField extends StatefulWidget {
+  const _BookingAddressField({
+    required this.addressLine,
+    required this.onPlaceSelected,
+  });
+
+  final String addressLine;
+  final void Function(PlaceDetails details) onPlaceSelected;
+
+  @override
+  State<_BookingAddressField> createState() => _BookingAddressFieldState();
+}
+
+class _BookingAddressFieldState extends State<_BookingAddressField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.addressLine);
+  }
+
+  @override
+  void didUpdateWidget(covariant _BookingAddressField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.addressLine != widget.addressLine &&
+        _controller.text != widget.addressLine) {
+      _controller.text = widget.addressLine;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return AddressAutocompleteField(
+      controller: _controller,
+      placesService: sl<GooglePlacesService>(),
+      label: l10n.commonAddress,
+      hint: l10n.profileCompletionAddressHint,
+      onPlaceSelected: widget.onPlaceSelected,
     );
   }
 }

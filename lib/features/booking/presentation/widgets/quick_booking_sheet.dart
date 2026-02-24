@@ -5,12 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/utils/format_time_slot.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../account/utils/relative_label_utils.dart';
 import '../../domain/usecases/confirm_booking.dart';
 import '../../../practitioner/domain/entities/practitioner_profile.dart';
 import '../bloc/booking_patients_cubit.dart';
@@ -271,7 +273,7 @@ class _PatientStep extends StatelessWidget {
                                 padding: EdgeInsets.only(top: AppSpacing.sm.h),
                                 child: _PatientTile(
                                   name: r.name,
-                                  label: r.label,
+                                  label: relativeDisplayLabel(l10n, r),
                                   isSelected: state.patientLabel == r.name,
                                   onTap: () => onPatientSelected(r.id, r.name),
                                 ),
@@ -443,13 +445,13 @@ class _ConfirmStep extends StatelessWidget {
                 _SummaryRow(
                   icon: Icons.person_rounded,
                   title: l10n.bookingPatientLabel,
-                  value: state.patientLabel ?? '—',
+                  value: state.patientLabel ?? l10n.commonFallbackDash,
                 ),
                 SizedBox(height: 12.h),
                 _SummaryRow(
                   icon: Icons.medical_services_rounded,
                   title: l10n.practitionerTitle,
-                  value: '$practitionerName • ${profile.specialty}',
+                  value: '$practitionerName • ${specialtyToDisplayLabel(profile.specialty, l10n)}',
                 ),
               ],
             ),

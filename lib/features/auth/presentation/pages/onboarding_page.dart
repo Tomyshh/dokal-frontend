@@ -72,7 +72,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             );
           }
           if (state.status == OnboardingStatus.success && state.completed) {
-            context.go('/home');
+            context.go('/permissions-gate');
           }
         },
         child: Scaffold(

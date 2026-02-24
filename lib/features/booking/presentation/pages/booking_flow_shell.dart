@@ -3,11 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../practitioner/presentation/bloc/practitioner_cubit.dart';
 import '../bloc/booking_bloc.dart';
 
@@ -21,12 +25,12 @@ class BookingFlowShell extends StatelessWidget {
   final String practitionerId;
   final Widget child;
 
-  static const _steps = <_Step>[
-    _Step('Motif', '/booking/:id/reason'),
-    _Step('Patient', '/booking/:id/patient'),
-    _Step('Instructions', '/booking/:id/instructions'),
-    _Step('Créneau', '/booking/:id/slot'),
-    _Step('Confirmation', '/booking/:id/confirm'),
+  static const _stepPaths = [
+    '/booking/:id/reason',
+    '/booking/:id/patient',
+    '/booking/:id/instructions',
+    '/booking/:id/slot',
+    '/booking/:id/confirm',
   ];
 
   int _stepIndexFromLocation(String matchedLocation) {
@@ -46,7 +50,15 @@ class BookingFlowShell extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => BookingBloc(practitionerId: practitionerId),
+          create: (_) {
+            final prefs = sl<SharedPreferences>();
+            return BookingBloc(
+              practitionerId: practitionerId,
+              initialAddressLine: prefs.getString('patient_address_line'),
+              initialZipCode: prefs.getString('patient_zip_code'),
+              initialCity: prefs.getString('patient_city'),
+            );
+          },
         ),
         BlocProvider(
           create: (_) => sl<PractitionerCubit>(param1: practitionerId),
@@ -57,6 +69,7 @@ class BookingFlowShell extends StatelessWidget {
           final location = GoRouterState.of(context).matchedLocation;
           final idx = _stepIndexFromLocation(location);
 
+          final l10n = context.l10n;
           return Scaffold(
             backgroundColor: AppColors.background,
             appBar: AppBar(
@@ -67,12 +80,12 @@ class BookingFlowShell extends StatelessWidget {
               elevation: 0,
               title: BlocBuilder<PractitionerCubit, PractitionerState>(
                 builder: (context, pState) {
-                  final name = pState.profile?.name ?? '—';
+                  final name = pState.profile?.name ?? l10n.commonFallbackDash;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Prendre rendez-vous',
+                        l10n.bookingFlowTitle,
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w500,
@@ -119,7 +132,7 @@ class BookingFlowShell extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        _StepIndicator(current: idx, total: _steps.length),
+                        _StepIndicator(current: idx, total: _stepPaths.length),
                         SizedBox(height: AppSpacing.md.h),
                         BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
@@ -161,7 +174,7 @@ class BookingFlowShell extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  p?.name ?? '—',
+                                                  p?.name ?? l10n.commonFallbackDash,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleSmall
@@ -172,7 +185,7 @@ class BookingFlowShell extends StatelessWidget {
                                                 ),
                                                 SizedBox(height: 2.h),
                                                 Text(
-                                                  '${p?.specialty ?? '—'} • ${p?.address ?? '—'}',
+                                                  '${specialtyToDisplayLabel(p?.specialty, l10n)} • ${p?.address ?? l10n.commonFallbackDash}',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodySmall,
@@ -192,28 +205,28 @@ class BookingFlowShell extends StatelessWidget {
                                       _SummaryPill(
                                         icon:
                                             Icons.medical_information_rounded,
-                                        label: state.reason ?? 'Motif',
+                                        label: state.reason ?? l10n.bookingStepReason,
                                         isActive: state.reason != null,
                                       ),
                                       _SummaryPill(
                                         icon: Icons.person_rounded,
                                         label:
-                                            state.patientLabel ?? 'Patient',
+                                            state.patientLabel ?? l10n.bookingStepPatient,
                                         isActive:
                                             state.patientLabel != null,
                                       ),
                                       _SummaryPill(
                                         icon: Icons.info_rounded,
                                         label: state.instructionsAccepted
-                                            ? 'Instructions OK'
-                                            : 'Instructions',
+                                            ? l10n.bookingStepInstructionsOk
+                                            : l10n.bookingStepInstructions,
                                         isActive:
                                             state.instructionsAccepted,
                                       ),
                                       _SummaryPill(
                                         icon: Icons.schedule_rounded,
                                         label:
-                                            state.slotLabel ?? 'Créneau',
+                                            state.slotLabel ?? l10n.bookingStepSlot,
                                         isActive: state.slotLabel != null,
                                       ),
                                     ],
@@ -321,8 +334,3 @@ class _SummaryPill extends StatelessWidget {
   }
 }
 
-class _Step {
-  const _Step(this.label, this.pathTemplate);
-  final String label;
-  final String pathTemplate;
-}

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/format_next_availability.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
@@ -42,7 +43,7 @@ class SearchPractitionerCard extends StatelessWidget {
       (practitioner.city?.trim().isNotEmpty ?? false) ||
       (practitioner.distanceLabel?.trim().isNotEmpty ?? false);
 
-  String _formatPriceLabel() {
+  String _formatPriceLabel(dynamic l10n) {
     final min = practitioner.priceMinAgorot;
     final max = practitioner.priceMaxAgorot;
     if (min != null && max != null) {
@@ -57,7 +58,7 @@ class SearchPractitionerCard extends StatelessWidget {
     if (max != null) {
       return '${(max / 100).round()}₪';
     }
-    return '—';
+    return l10n.commonFallbackDash;
   }
 
   @override
@@ -149,7 +150,7 @@ class SearchPractitionerCard extends StatelessWidget {
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    practitioner.specialty,
+                    specialtyToDisplayLabel(practitioner.specialty, l10n),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -215,7 +216,7 @@ class SearchPractitionerCard extends StatelessWidget {
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  _formatPriceLabel(),
+                  _formatPriceLabel(l10n),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,

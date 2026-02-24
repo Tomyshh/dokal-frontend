@@ -268,6 +268,18 @@ abstract class AppLocalizations {
   /// **'עיר (אופציונלי)'**
   String get profileCompletionCity;
 
+  /// No description provided for @profileCompletionAddress.
+  ///
+  /// In he, this message translates to:
+  /// **'כתובת (ישראל)'**
+  String get profileCompletionAddress;
+
+  /// No description provided for @profileCompletionAddressHint.
+  ///
+  /// In he, this message translates to:
+  /// **'חפש את הכתובת שלך...'**
+  String get profileCompletionAddressHint;
+
   /// No description provided for @profileCompletionSex.
   ///
   /// In he, this message translates to:
@@ -1203,6 +1215,54 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'התחל'**
   String get onboardingStartButton;
+
+  /// No description provided for @permissionsGateTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'הפעל הרשאות'**
+  String get permissionsGateTitle;
+
+  /// No description provided for @permissionsGateSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'לחוויית שימוש טובה יותר, אפשר התראות ומיקום.'**
+  String get permissionsGateSubtitle;
+
+  /// No description provided for @permissionsGateNotificationsTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'התראות'**
+  String get permissionsGateNotificationsTitle;
+
+  /// No description provided for @permissionsGateNotificationsSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'תזכורות תורים והודעות מהרופאים שלך'**
+  String get permissionsGateNotificationsSubtitle;
+
+  /// No description provided for @permissionsGateLocationTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מיקום'**
+  String get permissionsGateLocationTitle;
+
+  /// No description provided for @permissionsGateLocationSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'מצא רופאים לידך'**
+  String get permissionsGateLocationSubtitle;
+
+  /// No description provided for @permissionsGateValidateButton.
+  ///
+  /// In he, this message translates to:
+  /// **'אישור והמשך'**
+  String get permissionsGateValidateButton;
+
+  /// No description provided for @permissionsGateLocationDenied.
+  ///
+  /// In he, this message translates to:
+  /// **'הרשאת מיקום נדחתה.'**
+  String get permissionsGateLocationDenied;
 
   /// No description provided for @healthTitle.
   ///
@@ -3441,6 +3501,174 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'חשבון'**
   String get navAccount;
+
+  /// No description provided for @bookingFlowTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'לקביעת תור'**
+  String get bookingFlowTitle;
+
+  /// No description provided for @bookingStepReason.
+  ///
+  /// In he, this message translates to:
+  /// **'סיבה'**
+  String get bookingStepReason;
+
+  /// No description provided for @bookingStepPatient.
+  ///
+  /// In he, this message translates to:
+  /// **'מטופל'**
+  String get bookingStepPatient;
+
+  /// No description provided for @bookingStepInstructions.
+  ///
+  /// In he, this message translates to:
+  /// **'הוראות'**
+  String get bookingStepInstructions;
+
+  /// No description provided for @bookingStepInstructionsOk.
+  ///
+  /// In he, this message translates to:
+  /// **'הוראות OK'**
+  String get bookingStepInstructionsOk;
+
+  /// No description provided for @bookingStepSlot.
+  ///
+  /// In he, this message translates to:
+  /// **'משבצת'**
+  String get bookingStepSlot;
+
+  /// No description provided for @bookingStepConfirmation.
+  ///
+  /// In he, this message translates to:
+  /// **'אישור'**
+  String get bookingStepConfirmation;
+
+  /// No description provided for @bookingSelectReasonTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בחר סיבה'**
+  String get bookingSelectReasonTitle;
+
+  /// No description provided for @bookingSelectReasonSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'בחר את סיבת התור להתאמת המשבצות וההוראות.'**
+  String get bookingSelectReasonSubtitle;
+
+  /// No description provided for @bookingReasonNewPatient.
+  ///
+  /// In he, this message translates to:
+  /// **'ייעוץ (מטופל חדש)'**
+  String get bookingReasonNewPatient;
+
+  /// No description provided for @bookingReasonFollowUp.
+  ///
+  /// In he, this message translates to:
+  /// **'מעקב / בדיקה'**
+  String get bookingReasonFollowUp;
+
+  /// No description provided for @bookingReasonUrgency.
+  ///
+  /// In he, this message translates to:
+  /// **'דחוף (כאב, אי נוחות)'**
+  String get bookingReasonUrgency;
+
+  /// No description provided for @bookingReasonPrescription.
+  ///
+  /// In he, this message translates to:
+  /// **'חידוש מרשם'**
+  String get bookingReasonPrescription;
+
+  /// No description provided for @bookingReasonResults.
+  ///
+  /// In he, this message translates to:
+  /// **'תוצאות / דוח'**
+  String get bookingReasonResults;
+
+  /// No description provided for @commonFallbackDash.
+  ///
+  /// In he, this message translates to:
+  /// **'—'**
+  String get commonFallbackDash;
+
+  /// No description provided for @commonUnknown.
+  ///
+  /// In he, this message translates to:
+  /// **'לא ידוע'**
+  String get commonUnknown;
+
+  /// No description provided for @commonDateHintDdMmYyyy.
+  ///
+  /// In he, this message translates to:
+  /// **'DD/MM/YYYY'**
+  String get commonDateHintDdMmYyyy;
+
+  /// No description provided for @commonDateHintYyyyMmDd.
+  ///
+  /// In he, this message translates to:
+  /// **'YYYY-MM-DD'**
+  String get commonDateHintYyyyMmDd;
+
+  /// No description provided for @healthBloodTypeAPos.
+  ///
+  /// In he, this message translates to:
+  /// **'A+'**
+  String get healthBloodTypeAPos;
+
+  /// No description provided for @healthBloodTypeANeg.
+  ///
+  /// In he, this message translates to:
+  /// **'A-'**
+  String get healthBloodTypeANeg;
+
+  /// No description provided for @healthBloodTypeBPos.
+  ///
+  /// In he, this message translates to:
+  /// **'B+'**
+  String get healthBloodTypeBPos;
+
+  /// No description provided for @healthBloodTypeBNeg.
+  ///
+  /// In he, this message translates to:
+  /// **'B-'**
+  String get healthBloodTypeBNeg;
+
+  /// No description provided for @healthBloodTypeABPos.
+  ///
+  /// In he, this message translates to:
+  /// **'AB+'**
+  String get healthBloodTypeABPos;
+
+  /// No description provided for @healthBloodTypeABNeg.
+  ///
+  /// In he, this message translates to:
+  /// **'AB-'**
+  String get healthBloodTypeABNeg;
+
+  /// No description provided for @healthBloodTypeOPos.
+  ///
+  /// In he, this message translates to:
+  /// **'O+'**
+  String get healthBloodTypeOPos;
+
+  /// No description provided for @healthBloodTypeONeg.
+  ///
+  /// In he, this message translates to:
+  /// **'O-'**
+  String get healthBloodTypeONeg;
+
+  /// No description provided for @errorNotificationPermissionDenied.
+  ///
+  /// In he, this message translates to:
+  /// **'הרשאת התראות נדחתה.'**
+  String get errorNotificationPermissionDenied;
+
+  /// No description provided for @practitionerYourAppointmentLabel.
+  ///
+  /// In he, this message translates to:
+  /// **'התור שלך'**
+  String get practitionerYourAppointmentLabel;
 }
 
 class _AppLocalizationsDelegate

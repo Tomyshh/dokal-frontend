@@ -5,35 +5,36 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_chip.dart';
+import '../../../../l10n/l10n.dart';
 import '../bloc/booking_bloc.dart';
 
 class SelectReasonPage extends StatelessWidget {
   const SelectReasonPage({super.key});
 
-  static const _reasons = <String>[
-    'Consultation (nouveau patient)',
-    'Suivi / contrôle',
-    'Urgence (douleur, gêne)',
-    'Renouvellement ordonnance',
-    'Résultats / compte-rendu',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final practitionerId = context.read<BookingBloc>().state.practitionerId;
+    final reasons = [
+      l10n.bookingReasonNewPatient,
+      l10n.bookingReasonFollowUp,
+      l10n.bookingReasonUrgency,
+      l10n.bookingReasonPrescription,
+      l10n.bookingReasonResults,
+    ];
 
     return ListView(
       padding: EdgeInsets.all(AppSpacing.xl.r),
       children: [
         Text(
-          'Choisir un motif',
+          l10n.bookingSelectReasonTitle,
           style: Theme.of(
             context,
           ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
         ),
         SizedBox(height: AppSpacing.sm.h),
         Text(
-          'Sélectionnez le motif du rendez-vous pour personnaliser les créneaux et les instructions.',
+          l10n.bookingSelectReasonSubtitle,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         SizedBox(height: AppSpacing.xl.h),
@@ -43,7 +44,7 @@ class SelectReasonPage extends StatelessWidget {
               spacing: 10.w,
               runSpacing: 10.h,
               children: [
-                for (final r in _reasons)
+                for (final r in reasons)
                   DokalChip(
                     label: r,
                     icon: Icons.medical_information_rounded,

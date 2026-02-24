@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -86,6 +88,16 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  void _expandToRegister() {
+    if (_expanded && _view == _AuthSheetView.register) return;
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _expanded = true;
+      _view = _AuthSheetView.register;
+      _slideDir = 1;
+    });
+  }
+
   void _collapse() {
     if (!_expanded) return;
     FocusScope.of(context).unfocus();
@@ -119,22 +131,92 @@ class _LoginPageState extends State<LoginPage> {
     return BlocProvider(
       create: (_) => sl<LoginBloc>(),
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: Colors.black,
         body: LayoutBuilder(
           builder: (context, constraints) {
             final base = Theme.of(context);
             final viewInsets = MediaQuery.viewInsetsOf(context);
+            final viewPadding = MediaQuery.viewPaddingOf(context);
+            final safeBottom = viewPadding.bottom;
             const white = Colors.white;
 
-            final heroHeight = (constraints.maxHeight * 0.46)
-                .clamp(300.0.h, 460.0.h)
+            final heroHeight = (_expanded
+                    ? constraints.maxHeight * 0.26
+                    : constraints.maxHeight * 0.40)
+                .clamp(_expanded ? 180.0.h : 280.0.h, _expanded ? 260.0.h : 420.0.h)
                 .toDouble();
-            final collapsedSheetHeight = 300.h;
-            final expandedSheetHeight = (constraints.maxHeight - heroHeight * 0.25)
-                .clamp(420.0.h, constraints.maxHeight)
-                .toDouble();
+            final collapsedSheetHeight = MediaQuery.of(context).size.height/2.8.h;
+            final expandedTargetHeight =
+                _view == _AuthSheetView.login ? 560.0.h : 630.0.h;
+            final expandedSheetHeight =
+                expandedTargetHeight.clamp(500.0.h, constraints.maxHeight - 36.h).toDouble();
             final sheetHeight =
                 _expanded ? expandedSheetHeight : collapsedSheetHeight;
+
+            final maxSheetWidth = 520.0;
+            final sheetWidth = constraints.maxWidth > maxSheetWidth
+                ? maxSheetWidth
+                : constraints.maxWidth;
+
+            final primaryButtonStyle = FilledButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: white,
+              disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.55),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              minimumSize: Size(double.infinity, 48.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.r),
+              ),
+              elevation: 0,
+            );
+
+            final googleButtonStyle = OutlinedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: AppColors.textPrimary,
+              side: BorderSide(color: AppColors.outline.withValues(alpha: 0.8)),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              minimumSize: Size(double.infinity, 48.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.r),
+              ),
+            );
+
+            final accentOutlinedButtonStyle = OutlinedButton.styleFrom(
+              foregroundColor: AppColors.primary,
+              backgroundColor: AppColors.primary.withValues(alpha: 0.08),
+              side: BorderSide(color: AppColors.primary.withValues(alpha: 0.75)),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              minimumSize: Size(double.infinity, 48.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.r),
+              ),
+            );
+
+            Widget brandRow({required Color color, double? iconSize}) {
+              return Directionality(
+                textDirection: TextDirection.ltr,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/branding/icononly_transparent_nobuffer.png',
+                      height: (iconSize ?? 44).h,
+                      color: color,
+                      fit: BoxFit.contain,
+                    ),
+                    Text(
+                      'okal',
+                      style: base.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -0.4,
+                        fontSize: 40.sp,
+                        color: color,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
 
             final header = SizedBox(
               height: heroHeight,
@@ -144,33 +226,58 @@ class _LoginPageState extends State<LoginPage> {
                   vertical: AppSpacing.lg.h,
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Image.asset(
-                      'assets/branding/icononly_transparent_nobuffer.png',
-                      height: 56.h,
-                      color: const Color(0xFFD4AF37),
-                      fit: BoxFit.contain,
-                    ),
-                    SizedBox(height: AppSpacing.md.h),
-                    Text(
-                      l10n.authLoginTitle,
-                      style: base.textTheme.headlineMedium?.copyWith(
-                        color: white,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: -0.3,
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: brandRow(
+                        color: const Color(0xFFF1D58A),
+                        iconSize: _expanded ? 46 : 52,
                       ),
                     ),
-                    SizedBox(height: AppSpacing.xs.h),
-                    Text(
-                      l10n.authLoginSubtitle,
-                      style: base.textTheme.bodyLarge?.copyWith(
-                        color: white.withValues(alpha: 0.90),
-                        height: 1.35,
+                    if (!_expanded) ...[
+                      SizedBox(height: AppSpacing.sm.h),
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          l10n.authLoginTitle,
+                          textAlign: TextAlign.start,
+                          style: base.textTheme.headlineMedium?.copyWith(
+                            color: white,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: -0.3,
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(height: AppSpacing.xs.h),
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          l10n.authLoginSubtitle,
+                          textAlign: TextAlign.start,
+                          style: base.textTheme.bodyLarge?.copyWith(
+                            color: white.withValues(alpha: 0.90),
+                            height: 1.35,
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
+                ),
+              ),
+            );
+
+            final sheetHandle = Padding(
+              padding: EdgeInsets.only(top: 10.h, bottom: 6.h),
+              child: Center(
+                child: Container(
+                  width: 44.w,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    color: AppColors.outline.withValues(alpha: 0.8),
+                    borderRadius: BorderRadius.circular(999.r),
+                  ),
                 ),
               ),
             );
@@ -180,200 +287,208 @@ class _LoginPageState extends State<LoginPage> {
                 return GestureDetector(
                   onTap: _expand,
                   behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppSpacing.xl.w,
-                      AppSpacing.lg.h,
-                      AppSpacing.xl.w,
-                      AppSpacing.lg.h,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                       
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              'assets/branding/icononly_transparent_nobuffer.png',
-                              height: 36.h,
-                              color: AppColors.primary,
-                              fit: BoxFit.contain,
+                  child: Center(
+                    child: SizedBox(
+                      width: sheetWidth,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          AppSpacing.xl.w,
+                          AppSpacing.lg.h,
+                          AppSpacing.xl.w,
+                          AppSpacing.lg.h + safeBottom,
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.fromLTRB(
+                            AppSpacing.md.w,
+                            AppSpacing.md.h,
+                            AppSpacing.md.w,
+                            AppSpacing.md.h,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                AppColors.primary.withValues(alpha: 0.04),
+                                AppColors.primary.withValues(alpha: 0.09),
+                              ],
                             ),
-                            SizedBox(width: AppSpacing.sm.w),
-                            Text(
-                              'Dokal',
-                              style: base.textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: -0.2,
-                                color: AppColors.primary,
+                            border: Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.18),
+                            ),
+                            borderRadius: BorderRadius.circular(18.r),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                l10n.authLoginSubtitle,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: base.textTheme.bodySmall?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  height: 1.3,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.lg.h),
-                        Text(
-                          l10n.authLoginTitle,
-                          textAlign: TextAlign.center,
-                          style: base.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.2,
-                            color: AppColors.textPrimary,
+                              SizedBox(height: AppSpacing.md.h),
+                              FilledButton(
+                                onPressed: _expand,
+                                style: primaryButtonStyle,
+                                child: Text(
+                                  l10n.onboardingStartButton,
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: AppSpacing.sm.h),
+                              OutlinedButton(
+                                onPressed: _expandToRegister,
+                                style: accentOutlinedButtonStyle,
+                                child: Text(
+                                  l10n.authCreateAccountCta,
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: AppSpacing.xs.h),
-                        Text(
-                          l10n.authLoginSubtitle,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: base.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.3,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.lg.h),
-                        FilledButton(
-                          onPressed: _expand,
-                          style: FilledButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: white,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 12.h,
-                            ),
-                            minimumSize: Size(double.infinity, 46.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            elevation: 0,
-                          ),
-                          child: Text(
-                            l10n.onboardingStartButton,
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 );
               }
 
               Widget loginView() {
-                return SingleChildScrollView(
-                  key: const ValueKey('loginView'),
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  padding: EdgeInsets.fromLTRB(
-                    AppSpacing.xl.w,
-                    AppSpacing.xxs.h,
-                    AppSpacing.xl.w,
-                    AppSpacing.lg.h + viewInsets.bottom,
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
+                return Center(
+                  child: SizedBox(
+                    width: sheetWidth,
+                    child: SingleChildScrollView(
+                      key: const ValueKey('loginView'),
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      padding: EdgeInsets.fromLTRB(
+                        AppSpacing.xl.w,
+                        AppSpacing.xxs.h,
+                        AppSpacing.xl.w,
+                        AppSpacing.lg.h + viewInsets.bottom + safeBottom,
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n.authLoginTitle,
-                                    style: base.textTheme.titleLarge?.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      letterSpacing: -0.2,
-                                      color: AppColors.textPrimary,
-                                    ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        l10n.authLoginTitle,
+                                        style: base.textTheme.titleLarge
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: -0.3,
+                                          color: AppColors.textPrimary,
+                                        ),
+                                      ),
+                                      SizedBox(height: AppSpacing.xs.h),
+                                      Text(
+                                        l10n.authLoginSubtitle,
+                                        style: base.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          color: AppColors.textSecondary,
+                                          height: 1.35,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: AppSpacing.xs.h),
-                                  Text(
-                                    l10n.authLoginSubtitle,
-                                    style: base.textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.textSecondary,
-                                      height: 1.35,
-                                    ),
+                                ),
+                                IconButton(
+                                  onPressed: _collapse,
+                                  icon: const Icon(Icons.close_rounded),
+                                  color: AppColors.textSecondary,
+                                  tooltip: MaterialLocalizations.of(context)
+                                      .closeButtonTooltip,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: AppSpacing.lg.h),
+                            DokalTextField(
+                              controller: _email,
+                              focusNode: _emailFocus,
+                              label: l10n.commonEmail,
+                              hint: l10n.commonEmailHint,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              prefixIcon: Icons.mail_rounded,
+                              validator: (v) {
+                                final value = (v ?? '').trim();
+                                if (value.isEmpty) {
+                                  return l10n.commonEmailRequired;
+                                }
+                                if (!value.contains('@')) {
+                                  return l10n.commonEmailInvalid;
+                                }
+                                return null;
+                              },
+                              onFieldSubmitted: (_) => FocusScope.of(context)
+                                  .requestFocus(_passwordFocus),
+                            ),
+                            SizedBox(height: AppSpacing.md.h),
+                            DokalTextField(
+                              controller: _password,
+                              focusNode: _passwordFocus,
+                              label: l10n.commonPassword,
+                              hint: l10n.commonPasswordHint,
+                              obscureText: _obscure,
+                              textInputAction: TextInputAction.done,
+                              prefixIcon: Icons.lock_rounded,
+                              suffixIcon: IconButton(
+                                onPressed: () =>
+                                    setState(() => _obscure = !_obscure),
+                                icon: Icon(
+                                  _obscure
+                                      ? Icons.visibility_rounded
+                                      : Icons.visibility_off_rounded,
+                                ),
+                              ),
+                              validator: (v) {
+                                final value = (v ?? '');
+                                if (value.isEmpty) {
+                                  return l10n.commonPasswordRequired;
+                                }
+                                if (value.length < 6) {
+                                  return l10n.commonPasswordMinChars(6);
+                                }
+                                return null;
+                              },
+                              onFieldSubmitted: (_) => _submit(context),
+                            ),
+                            SizedBox(height: AppSpacing.sm.h),
+                            Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: TextButton(
+                                onPressed: () =>
+                                    context.go('/forgot-password'),
+                                child: Text(
+                                  l10n.authForgotPasswordCta,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                            IconButton(
-                              onPressed: _collapse,
-                              icon: const Icon(Icons.close_rounded),
-                              color: AppColors.textSecondary,
-                              tooltip: MaterialLocalizations.of(context)
-                                  .closeButtonTooltip,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.lg.h),
-                        DokalTextField(
-                          controller: _email,
-                          focusNode: _emailFocus,
-                          label: l10n.commonEmail,
-                          hint: l10n.commonEmailHint,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          prefixIcon: Icons.mail_rounded,
-                          validator: (v) {
-                            final value = (v ?? '').trim();
-                            if (value.isEmpty) return l10n.commonEmailRequired;
-                            if (!value.contains('@')) {
-                              return l10n.commonEmailInvalid;
-                            }
-                            return null;
-                          },
-                          onFieldSubmitted: (_) => FocusScope.of(context)
-                              .requestFocus(_passwordFocus),
-                        ),
-                        SizedBox(height: AppSpacing.md.h),
-                        DokalTextField(
-                          controller: _password,
-                          focusNode: _passwordFocus,
-                          label: l10n.commonPassword,
-                          hint: l10n.commonPasswordHint,
-                          obscureText: _obscure,
-                          textInputAction: TextInputAction.done,
-                          prefixIcon: Icons.lock_rounded,
-                          suffixIcon: IconButton(
-                            onPressed: () =>
-                                setState(() => _obscure = !_obscure),
-                            icon: Icon(
-                              _obscure
-                                  ? Icons.visibility_rounded
-                                  : Icons.visibility_off_rounded,
-                            ),
-                          ),
-                          validator: (v) {
-                            final value = (v ?? '');
-                            if (value.isEmpty) {
-                              return l10n.commonPasswordRequired;
-                            }
-                            if (value.length < 6) {
-                              return l10n.commonPasswordMinChars(6);
-                            }
-                            return null;
-                          },
-                          onFieldSubmitted: (_) => _submit(context),
-                        ),
-                        SizedBox(height: AppSpacing.sm.h),
-                        Align(
-                          alignment: AlignmentDirectional.centerEnd,
-                          child: TextButton(
-                            onPressed: () => context.go('/forgot-password'),
-                            child: Text(l10n.authForgotPasswordCta),
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.sm.h),
-                          BlocConsumer<LoginBloc, LoginState>(
+                            SizedBox(height: AppSpacing.sm.h),
+                            BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
                             if (state.status == LoginStatus.success) {
                               final authBloc = context.read<AuthBloc>();
@@ -384,14 +499,14 @@ class _LoginPageState extends State<LoginPage> {
                               } else {
                                 authBloc.add(const AuthRefreshRequested());
                               }
-                              // Toujours rediriger vers l'onglet Home après connexion.
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(context.l10n.authLoginSuccess),
                                 ),
                               );
                               WidgetsBinding.instance.addPostFrameCallback((_) {
-                                appRouter.go('/home');
+                                final target = _safeRedirectTo ?? '/home';
+                                appRouter.go(target);
                               });
                             }
                             if (state.status == LoginStatus.needsEmailVerification &&
@@ -423,21 +538,7 @@ class _LoginPageState extends State<LoginPage> {
                             return FilledButton(
                               onPressed:
                                   isLoading ? null : () => _submit(context),
-                              style: FilledButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                foregroundColor: white,
-                                disabledBackgroundColor:
-                                    AppColors.primary.withValues(alpha: 0.55),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                  vertical: 12.h,
-                                ),
-                                minimumSize: Size(double.infinity, 46.h),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                elevation: 0,
-                              ),
+                              style: primaryButtonStyle,
                               child: isLoading
                                   ? SizedBox(
                                       height: 20.h,
@@ -473,18 +574,7 @@ class _LoginPageState extends State<LoginPage> {
                                   : () => context
                                       .read<LoginBloc>()
                                       .add(const LoginWithGoogleRequested()),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.textPrimary,
-                                side: const BorderSide(color: AppColors.outline),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                  vertical: 12.h,
-                                ),
-                                minimumSize: Size(double.infinity, 46.h),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                              ),
+                              style: googleButtonStyle,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -509,20 +599,7 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: AppSpacing.sm.h),
                         OutlinedButton(
                           onPressed: _goToRegister,
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.primary,
-                            side: BorderSide(
-                              color: AppColors.primary.withValues(alpha: 0.35),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 12.h,
-                            ),
-                            minimumSize: Size(double.infinity, 46.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                          ),
+                          style: accentOutlinedButtonStyle,
                           child: Text(
                             l10n.authCreateAccountCta,
                             style: TextStyle(
@@ -554,7 +631,9 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () => context.go('/home'),
                             child: Text(l10n.authContinueWithoutAccount),
                           ),
-                      ],
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -563,139 +642,153 @@ class _LoginPageState extends State<LoginPage> {
               Widget registerView() {
                 return BlocProvider(
                   create: (_) => sl<RegisterBloc>(),
-                  child: SingleChildScrollView(
-                    key: const ValueKey('registerView'),
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    padding: EdgeInsets.fromLTRB(
-                      AppSpacing.xl.w,
-                      AppSpacing.xxs.h,
-                      AppSpacing.xl.w,
-                      AppSpacing.lg.h + viewInsets.bottom,
-                    ),
-                    child: Form(
-                      key: _registerFormKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
+                  child: Center(
+                    child: SizedBox(
+                      width: sheetWidth,
+                      child: SingleChildScrollView(
+                        key: const ValueKey('registerView'),
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        padding: EdgeInsets.fromLTRB(
+                          AppSpacing.xl.w,
+                          AppSpacing.xxs.h,
+                          AppSpacing.xl.w,
+                          AppSpacing.lg.h + viewInsets.bottom + safeBottom,
+                        ),
+                        child: Form(
+                          key: _registerFormKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              IconButton(
-                                onPressed: _goToLogin,
-                                icon: const Icon(Icons.arrow_back_rounded),
-                                color: AppColors.textSecondary,
-                                tooltip: MaterialLocalizations.of(context)
-                                    .backButtonTooltip,
-                              ),
-                              SizedBox(width: 6.w),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      l10n.authRegisterTitle,
-                                      style: base.textTheme.titleLarge?.copyWith(
-                                        fontWeight: FontWeight.w800,
-                                        letterSpacing: -0.2,
-                                        color: AppColors.textPrimary,
-                                      ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: _goToLogin,
+                                    icon:
+                                        const Icon(Icons.arrow_back_rounded),
+                                    color: AppColors.textSecondary,
+                                    tooltip:
+                                        MaterialLocalizations.of(context)
+                                            .backButtonTooltip,
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          l10n.authRegisterTitle,
+                                          style: base.textTheme.titleLarge
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.w900,
+                                            letterSpacing: -0.3,
+                                            color: AppColors.textPrimary,
+                                          ),
+                                        ),
+                                        SizedBox(height: AppSpacing.xs.h),
+                                        Text(
+                                          l10n.authRegisterSubtitle,
+                                          style: base.textTheme.bodyMedium
+                                              ?.copyWith(
+                                            color: AppColors.textSecondary,
+                                            height: 1.35,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(height: AppSpacing.xs.h),
-                                    Text(
-                                      l10n.authRegisterSubtitle,
-                                      style:
-                                          base.textTheme.bodyMedium?.copyWith(
-                                        color: AppColors.textSecondary,
-                                        height: 1.35,
-                                      ),
+                                  ),
+                                  IconButton(
+                                    onPressed: _collapse,
+                                    icon: const Icon(Icons.close_rounded),
+                                    color: AppColors.textSecondary,
+                                    tooltip:
+                                        MaterialLocalizations.of(context)
+                                            .closeButtonTooltip,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: AppSpacing.lg.h),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: DokalTextField(
+                                      controller: _firstName,
+                                      label: l10n.authFirstName,
+                                      prefixIcon: Icons.person_rounded,
+                                      textInputAction: TextInputAction.next,
+                                      validator: (v) =>
+                                          (v ?? '').trim().isEmpty
+                                              ? l10n.commonRequired
+                                              : null,
                                     ),
-                                  ],
+                                  ),
+                                  SizedBox(width: AppSpacing.md.w),
+                                  Expanded(
+                                    child: DokalTextField(
+                                      controller: _lastName,
+                                      label: l10n.authLastName,
+                                      textInputAction: TextInputAction.next,
+                                      validator: (v) =>
+                                          (v ?? '').trim().isEmpty
+                                              ? l10n.commonRequired
+                                              : null,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: AppSpacing.md.h),
+                              DokalTextField(
+                                controller: _registerEmail,
+                                label: l10n.commonEmail,
+                                hint: l10n.commonEmailHint,
+                                keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
+                                prefixIcon: Icons.mail_rounded,
+                                validator: (v) {
+                                  final value = (v ?? '').trim();
+                                  if (value.isEmpty) {
+                                    return l10n.commonEmailRequired;
+                                  }
+                                  if (!value.contains('@')) {
+                                    return l10n.commonEmailInvalid;
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: AppSpacing.md.h),
+                              DokalTextField(
+                                controller: _registerPassword,
+                                label: l10n.commonPassword,
+                                hint: l10n.commonPasswordHint,
+                                obscureText: _registerObscure,
+                                textInputAction: TextInputAction.done,
+                                prefixIcon: Icons.lock_rounded,
+                                suffixIcon: IconButton(
+                                  onPressed: () => setState(() =>
+                                      _registerObscure = !_registerObscure),
+                                  icon: Icon(
+                                    _registerObscure
+                                        ? Icons.visibility_rounded
+                                        : Icons.visibility_off_rounded,
+                                  ),
                                 ),
+                                validator: (v) {
+                                  final value = (v ?? '');
+                                  if (value.isEmpty) {
+                                    return l10n.commonPasswordRequired;
+                                  }
+                                  if (value.length < 6) {
+                                    return l10n.commonPasswordMinChars(6);
+                                  }
+                                  return null;
+                                },
+                                onFieldSubmitted: (_) =>
+                                    _submitRegister(context),
                               ),
-                              IconButton(
-                                onPressed: _collapse,
-                                icon: const Icon(Icons.close_rounded),
-                                color: AppColors.textSecondary,
-                                tooltip: MaterialLocalizations.of(context)
-                                    .closeButtonTooltip,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: AppSpacing.lg.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DokalTextField(
-                                  controller: _firstName,
-                                  label: l10n.authFirstName,
-                                  prefixIcon: Icons.person_rounded,
-                                  textInputAction: TextInputAction.next,
-                                  validator: (v) => (v ?? '').trim().isEmpty
-                                      ? l10n.commonRequired
-                                      : null,
-                                ),
-                              ),
-                              SizedBox(width: AppSpacing.md.w),
-                              Expanded(
-                                child: DokalTextField(
-                                  controller: _lastName,
-                                  label: l10n.authLastName,
-                                  textInputAction: TextInputAction.next,
-                                  validator: (v) => (v ?? '').trim().isEmpty
-                                      ? l10n.commonRequired
-                                      : null,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: AppSpacing.md.h),
-                          DokalTextField(
-                            controller: _registerEmail,
-                            label: l10n.commonEmail,
-                            hint: l10n.commonEmailHint,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.next,
-                            prefixIcon: Icons.mail_rounded,
-                            validator: (v) {
-                              final value = (v ?? '').trim();
-                              if (value.isEmpty) return l10n.commonEmailRequired;
-                              if (!value.contains('@')) {
-                                return l10n.commonEmailInvalid;
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: AppSpacing.md.h),
-                          DokalTextField(
-                            controller: _registerPassword,
-                            label: l10n.commonPassword,
-                            hint: l10n.commonPasswordHint,
-                            obscureText: _registerObscure,
-                            textInputAction: TextInputAction.done,
-                            prefixIcon: Icons.lock_rounded,
-                            suffixIcon: IconButton(
-                              onPressed: () => setState(() =>
-                                  _registerObscure = !_registerObscure),
-                              icon: Icon(
-                                _registerObscure
-                                    ? Icons.visibility_rounded
-                                    : Icons.visibility_off_rounded,
-                              ),
-                            ),
-                            validator: (v) {
-                              final value = (v ?? '');
-                              if (value.isEmpty) {
-                                return l10n.commonPasswordRequired;
-                              }
-                              if (value.length < 6) {
-                                return l10n.commonPasswordMinChars(6);
-                              }
-                              return null;
-                            },
-                            onFieldSubmitted: (_) => _submitRegister(context),
-                          ),
-                          SizedBox(height: AppSpacing.sm.h),
-                          BlocConsumer<RegisterBloc, RegisterState>(
+                              SizedBox(height: AppSpacing.sm.h),
+                              BlocConsumer<RegisterBloc, RegisterState>(
                             listener: (context, state) {
                               if (state.status == RegisterStatus.success) {
                                 context.go(
@@ -720,21 +813,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: isLoading
                                     ? null
                                     : () => _submitRegister(context),
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: AppColors.primary,
-                                  foregroundColor: white,
-                                  disabledBackgroundColor: AppColors.primary
-                                      .withValues(alpha: 0.55),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                    vertical: 12.h,
-                                  ),
-                                  minimumSize: Size(double.infinity, 46.h),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                  ),
-                                  elevation: 0,
-                                ),
+                                style: primaryButtonStyle,
                                 child: isLoading
                                     ? SizedBox(
                                         height: 20.h,
@@ -758,21 +837,7 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: AppSpacing.sm.h),
                           OutlinedButton(
                             onPressed: _goToLogin,
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.primary,
-                              side: BorderSide(
-                                color:
-                                    AppColors.primary.withValues(alpha: 0.35),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 12.h,
-                              ),
-                              minimumSize: Size(double.infinity, 46.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                            ),
+                            style: accentOutlinedButtonStyle,
                             child: Text(
                               l10n.authAlreadyHaveAccount,
                               style: TextStyle(
@@ -804,7 +869,9 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () => context.go('/home'),
                               child: Text(l10n.authContinueWithoutAccount),
                             ),
-                        ],
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -845,31 +912,46 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
 
-            final sheet = AnimatedContainer(
-              duration: const Duration(milliseconds: 280),
-              curve: Curves.easeOutCubic,
-              height: sheetHeight,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(28.r),
-                  topRight: Radius.circular(28.r),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.12),
-                    blurRadius: 24.r,
-                    offset: Offset(0, -8.h),
+            final sheetRadius = BorderRadius.only(
+              topLeft: Radius.circular(28.r),
+              topRight: Radius.circular(28.r),
+            );
+
+            final sheet = ClipRRect(
+              borderRadius: sheetRadius,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 280),
+                  curve: Curves.easeOutCubic,
+                  height: sheetHeight,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        white,
+                        white
+                      ],
+                    ),
+                    borderRadius: sheetRadius,
+                    
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.14),
+                        blurRadius: 28.r,
+                        offset: Offset(0, -8.h),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(28.r),
-                  topRight: Radius.circular(28.r),
+                  child: Column(
+                    children: [
+                      sheetHandle,
+                      Expanded(child: sheetBody()),
+                    ],
+                  ),
                 ),
-                child: sheetBody(),
               ),
             );
 
@@ -881,15 +963,30 @@ class _LoginPageState extends State<LoginPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                
-                SafeArea(
-                  child: Stack(
-                    children: [
-                      Positioned.fill(child: header),
-                      Align(alignment: Alignment.bottomCenter, child: sheet),
-                    ],
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.10),
+                          AppColors.primary.withValues(alpha: 0.65),
+                          Colors.black.withValues(alpha: 0.9),
+                        ],
+                        stops: const [0.0, 0.5, 1.0],
+                      ),
+                    ),
                   ),
                 ),
+                SafeArea(
+                  bottom: false,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: header,
+                  ),
+                ),
+                Align(alignment: Alignment.bottomCenter, child: sheet),
               ],
             );
           },

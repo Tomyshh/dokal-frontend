@@ -12,6 +12,7 @@ import '../features/appointments/presentation/pages/appointments_page.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/auth/presentation/pages/onboarding_page.dart';
+import '../features/auth/presentation/pages/permissions_gate_page.dart';
 import '../features/auth/presentation/pages/register_page.dart';
 import '../features/auth/presentation/pages/forgot_password_page.dart';
 import '../features/auth/presentation/pages/reset_password_page.dart';
@@ -58,6 +59,7 @@ import '../injection_container.dart';
 late final GoRouter appRouter;
 late final AuthBloc _authBloc;
 late final bool Function() _isOnboardingCompleted;
+late final bool Function() _isPermissionsCompleted;
 late final ProfileCompletionNotifier _profileCompletion;
 
 final _rootNavKey = GlobalKey<NavigatorState>();
@@ -101,6 +103,7 @@ String? _safeRedirectTarget(GoRouterState state) {
   // Refuser de reboucler sur des routes d'auth.
   const authPaths = {
     '/onboarding',
+    '/permissions-gate',
     '/login',
     '/register',
     '/forgot-password',
@@ -117,10 +120,12 @@ String? _safeRedirectTarget(GoRouterState state) {
 void initAppRouter(
   AuthBloc authBloc, {
   required bool Function() isOnboardingCompleted,
+  required bool Function() isPermissionsCompleted,
   required ProfileCompletionNotifier profileCompletion,
 }) {
   _authBloc = authBloc;
   _isOnboardingCompleted = isOnboardingCompleted;
+  _isPermissionsCompleted = isPermissionsCompleted;
   _profileCompletion = profileCompletion;
 
   // Keep profile completion state in sync with auth.
@@ -167,6 +172,15 @@ void initAppRouter(
 
       final isAuthed = authBloc.state.isAuthenticated;
       final onboardingCompleted = _isOnboardingCompleted();
+      final permissionsCompleted = _isPermissionsCompleted();
+      const permissionsPath = '/permissions-gate';
+
+      // Barrière obligatoire : après onboarding, permissions (notifications + localisation) requises.
+      if (onboardingCompleted && !permissionsCompleted && path != permissionsPath) {
+        return permissionsPath;
+      }
+      // Si déjà sur permissions-gate et permissions complétées, aller au home.
+      if (path == permissionsPath && permissionsCompleted) return '/home';
 
       // Enforce required patient info completion once authenticated.
       const completionPath = '/complete-profile';
@@ -194,12 +208,15 @@ void initAppRouter(
       // Si quelqu'un arrive sur /splash, on le sort immédiatement.
       if (path == '/splash') {
         if (isAuthed) return '/home';
-        if (onboardingCompleted) return '/home';
+        if (onboardingCompleted && permissionsCompleted) return '/home';
+        if (onboardingCompleted) return permissionsPath;
         return '/onboarding';
       }
 
-      // Si onboarding déjà terminé, ne pas y revenir.
-      if (path == '/onboarding' && onboardingCompleted) return '/home';
+      // Si onboarding déjà terminé, rediriger vers permissions-gate (ou home si permissions faites).
+      if (path == '/onboarding' && onboardingCompleted) {
+        return permissionsCompleted ? '/home' : permissionsPath;
+      }
 
       // Si authentifié et sur une route d'auth (login, register, etc.), aller au home
       if (isAuthed && isAuthRoute) {
@@ -223,8 +240,10 @@ void initAppRouter(
           // Évite une chaîne `/` -> `/splash` -> ...
           final isAuthed = _authBloc.state.isAuthenticated;
           final onboardingCompleted = _isOnboardingCompleted();
+          final permissionsCompleted = _isPermissionsCompleted();
           if (isAuthed) return '/home';
-          if (onboardingCompleted) return '/home';
+          if (onboardingCompleted && permissionsCompleted) return '/home';
+          if (onboardingCompleted) return '/permissions-gate';
           return '/onboarding';
         },
       ),
@@ -236,6 +255,10 @@ void initAppRouter(
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingPage(),
+      ),
+      GoRoute(
+        path: '/permissions-gate',
+        builder: (context, state) => const PermissionsGatePage(),
       ),
       GoRoute(
         path: '/login',

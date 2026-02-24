@@ -13,6 +13,7 @@ import '../../../../core/widgets/dokal_card.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../injection_container.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/appointment.dart';
 import '../bloc/appointment_detail_cubit.dart';
@@ -306,7 +307,7 @@ class _AppointmentTopCard extends StatelessWidget {
           _DetailTile(
             icon: Icons.person_rounded,
             title: a.practitionerName,
-            subtitle: a.specialty,
+            subtitle: specialtyToDisplayLabel(a.specialty, context.l10n),
             trailing: Icons.chevron_right_rounded,
             onTap: () =>
                 context.push('/home/practitioner/${a.practitionerId}'),

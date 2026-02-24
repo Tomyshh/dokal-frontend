@@ -144,6 +144,29 @@ class OneSignalService {
     return 'unknown';
   }
 
+  /// Configure le handler de clic sur les notifications push (deep links).
+  /// À appeler après l'initialisation du router.
+  /// Utilise additionalData (type, conversation_id, appointment_id) pour la navigation.
+  static void setupNotificationClickHandler(
+    void Function(Map<String, dynamic>? data) onNotificationClicked,
+  ) {
+    if (kIsWeb) return;
+    try {
+      OneSignal.Notifications.addClickListener((event) {
+        final additionalData = event.notification.additionalData;
+        if (additionalData != null && additionalData.isNotEmpty) {
+          onNotificationClicked(additionalData);
+        } else {
+          onNotificationClicked(null);
+        }
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[OneSignalService] setupNotificationClickHandler error: $e');
+      }
+    }
+  }
+
   /// Enregistre un callback appelé quand le token (subscription ID) change.
   /// Utile pour re-enregistrer le token auprès du backend.
   static void addTokenChangeObserver(void Function() onTokenChanged) {

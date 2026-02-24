@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
@@ -43,6 +43,37 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         );
   }
 
+  Widget _buildPinput(BuildContext context) {
+    final defaultPinTheme = PinTheme(
+      width: 44.w,
+      height: 52.h,
+      textStyle: Theme.of(context).textTheme.headlineSmall!.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.primary,
+          ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppRadii.md.r),
+        border: Border.all(color: AppColors.outline),
+      ),
+    );
+    final focusedPinTheme = defaultPinTheme.copyWith(
+      decoration: defaultPinTheme.decoration!.copyWith(
+        border: Border.all(color: AppColors.primary, width: 2),
+      ),
+    );
+    return Pinput(
+      controller: _otpController,
+      focusNode: _otpFocusNode,
+      length: 6,
+      defaultPinTheme: defaultPinTheme,
+      focusedPinTheme: focusedPinTheme,
+      submittedPinTheme: defaultPinTheme,
+      keyboardType: TextInputType.number,
+      onChanged: (_) => setState(() {}),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -65,80 +96,40 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             foregroundColor: Colors.white,
           ),
           body: SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: EdgeInsets.all(AppSpacing.xl.r),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: _DokalLogoGold(),
-                  ),
-                  SizedBox(height: AppSpacing.xxl.h),
-                  Text(
-                    l10n.authVerifyEmailTitle,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  SizedBox(height: AppSpacing.sm.h),
-                  Text(
-                    l10n.authVerifyEmailDescription(widget.email),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                  SizedBox(height: AppSpacing.xl.h),
-                  DokalCard(
-                    color: Colors.transparent,
-                    borderColor: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TextField(
-                          controller: _otpController,
-                          focusNode: _otpFocusNode,
-                          keyboardType: TextInputType.number,
-                          maxLength: 6,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                letterSpacing: 8,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          decoration: InputDecoration(
-                            hintText: l10n.authVerifyEmailOtpHint,
-                            hintStyle: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.6),
+                      Center(
+                        child: _DokalLogoGold(),
+                      ),
+                      SizedBox(height: AppSpacing.xxl.h),
+                      Text(
+                        l10n.authVerifyEmailTitle,
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                            counterText: '',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(AppRadii.md.r),
-                              borderSide: const BorderSide(color: Colors.white),
+                      ),
+                      SizedBox(height: AppSpacing.sm.h),
+                      Text(
+                        l10n.authVerifyEmailDescription(widget.email),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.white,
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(AppRadii.md.r),
-                              borderSide: BorderSide(
-                                color: Colors.white.withValues(alpha: 0.8),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(AppRadii.md.r),
-                              borderSide: const BorderSide(
-                                color: Colors.white,
-                                width: 2,
-                              ),
-                            ),
-                          ),
-                          cursorColor: Colors.white,
-                          onChanged: (_) => setState(() {}),
-                        ),
-                        SizedBox(height: AppSpacing.md.h),
-                        BlocConsumer<VerifyEmailCubit, VerifyEmailState>(
-                          listener: (context, state) {
+                      ),
+                      SizedBox(height: AppSpacing.xl.h),
+                      DokalCard(
+                        color: Colors.transparent,
+                        borderColor: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _buildPinput(context),
+                            SizedBox(height: AppSpacing.md.h),
+                            BlocConsumer<VerifyEmailCubit, VerifyEmailState>(
+                              listener: (context, state) {
                             if (state.status == VerifyEmailStatus.success) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -230,18 +221,18 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                               ],
                             );
                           },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () => context.go('/login'),
-                    child: Text(
-                      l10n.commonBack,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
+                      ),
+                      SizedBox(height: AppSpacing.xxl.h),
+                      TextButton(
+                        onPressed: () => context.go('/login'),
+                        child: Text(
+                          l10n.commonBack,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
                 ],
               ),
             ),

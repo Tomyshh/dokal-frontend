@@ -95,6 +95,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get profileCompletionCity => 'עיר (אופציונלי)';
 
   @override
+  String get profileCompletionAddress => 'כתובת (ישראל)';
+
+  @override
+  String get profileCompletionAddressHint => 'חפש את הכתובת שלך...';
+
+  @override
   String get profileCompletionSex => 'מין (אופציונלי)';
 
   @override
@@ -589,6 +595,32 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get onboardingStartButton => 'התחל';
+
+  @override
+  String get permissionsGateTitle => 'הפעל הרשאות';
+
+  @override
+  String get permissionsGateSubtitle =>
+      'לחוויית שימוש טובה יותר, אפשר התראות ומיקום.';
+
+  @override
+  String get permissionsGateNotificationsTitle => 'התראות';
+
+  @override
+  String get permissionsGateNotificationsSubtitle =>
+      'תזכורות תורים והודעות מהרופאים שלך';
+
+  @override
+  String get permissionsGateLocationTitle => 'מיקום';
+
+  @override
+  String get permissionsGateLocationSubtitle => 'מצא רופאים לידך';
+
+  @override
+  String get permissionsGateValidateButton => 'אישור והמשך';
+
+  @override
+  String get permissionsGateLocationDenied => 'הרשאת מיקום נדחתה.';
 
   @override
   String get healthTitle => 'הבריאות שלי';
@@ -1758,4 +1790,89 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get navAccount => 'חשבון';
+
+  @override
+  String get bookingFlowTitle => 'לקביעת תור';
+
+  @override
+  String get bookingStepReason => 'סיבה';
+
+  @override
+  String get bookingStepPatient => 'מטופל';
+
+  @override
+  String get bookingStepInstructions => 'הוראות';
+
+  @override
+  String get bookingStepInstructionsOk => 'הוראות OK';
+
+  @override
+  String get bookingStepSlot => 'משבצת';
+
+  @override
+  String get bookingStepConfirmation => 'אישור';
+
+  @override
+  String get bookingSelectReasonTitle => 'בחר סיבה';
+
+  @override
+  String get bookingSelectReasonSubtitle =>
+      'בחר את סיבת התור להתאמת המשבצות וההוראות.';
+
+  @override
+  String get bookingReasonNewPatient => 'ייעוץ (מטופל חדש)';
+
+  @override
+  String get bookingReasonFollowUp => 'מעקב / בדיקה';
+
+  @override
+  String get bookingReasonUrgency => 'דחוף (כאב, אי נוחות)';
+
+  @override
+  String get bookingReasonPrescription => 'חידוש מרשם';
+
+  @override
+  String get bookingReasonResults => 'תוצאות / דוח';
+
+  @override
+  String get commonFallbackDash => '—';
+
+  @override
+  String get commonUnknown => 'לא ידוע';
+
+  @override
+  String get commonDateHintDdMmYyyy => 'DD/MM/YYYY';
+
+  @override
+  String get commonDateHintYyyyMmDd => 'YYYY-MM-DD';
+
+  @override
+  String get healthBloodTypeAPos => 'A+';
+
+  @override
+  String get healthBloodTypeANeg => 'A-';
+
+  @override
+  String get healthBloodTypeBPos => 'B+';
+
+  @override
+  String get healthBloodTypeBNeg => 'B-';
+
+  @override
+  String get healthBloodTypeABPos => 'AB+';
+
+  @override
+  String get healthBloodTypeABNeg => 'AB-';
+
+  @override
+  String get healthBloodTypeOPos => 'O+';
+
+  @override
+  String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get errorNotificationPermissionDenied => 'הרשאת התראות נדחתה.';
+
+  @override
+  String get practitionerYourAppointmentLabel => 'התור שלך';
 }

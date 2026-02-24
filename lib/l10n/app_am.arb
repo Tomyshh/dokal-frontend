@@ -45,6 +45,8 @@
   "profileCompletionStepIdentitySubtitle": "እርስዎን እንወቅ።",
   "profileCompletionDateOfBirth": "የትውልድ ቀን",
   "profileCompletionCity": "ከተማ (አማራጭ)",
+  "profileCompletionAddress": "አድራሻ (እስራኤል)",
+  "profileCompletionAddressHint": "አድራሻዎን ይፈልጉ...",
   "profileCompletionSex": "ጾታ (አማራጭ)",
   "profileCompletionSexMale": "ወንድ",
   "profileCompletionSexFemale": "ሴት",
@@ -265,6 +267,15 @@
   "onboardingStep3Subtitle": "ቀጠሮ እንዳትረሱ፦ ማስታወሻ እና አጭር ማጠቃለያዎች።",
   "onboardingContinueButton": "ቀጥል",
   "onboardingStartButton": "ጀምር",
+
+  "permissionsGateTitle": "ፍቃዶችን አርቀድ",
+  "permissionsGateSubtitle": "በተሻለ ልምድ ለማግኘት፣ ማሳወቂያዎችን እና ቦታን ይፍቀዱ።",
+  "permissionsGateNotificationsTitle": "ማሳወቂያዎች",
+  "permissionsGateNotificationsSubtitle": "የቀጠሮ ማስታወሻዎች እና ከሐኪሞችዎ መልዕክቶች",
+  "permissionsGateLocationTitle": "ቦታ",
+  "permissionsGateLocationSubtitle": "በእርስዎ አካባቢ ሐኪሞችን ያግኙ",
+  "permissionsGateValidateButton": "አረጋግጥ እና ቀጥል",
+  "permissionsGateLocationDenied": "የቦታ ፍቃድ ተቀባይነት አላገኘም.",
 
   "healthTitle": "ጤናዬ",
   "healthSubtitle": "የጤና መገለጫዎን ያስተዳድሩ",
@@ -736,5 +747,38 @@
   "navAppointments": "ቀጠሮዎች",
   "navHealth": "ጤና",
   "navMessages": "መልዕክቶች",
-  "navAccount": "መለያ"
+  "navAccount": "መለያ",
+
+  "bookingFlowTitle": "ቀጠሮ ለመያዝ",
+  "bookingStepReason": "ምክንያት",
+  "bookingStepPatient": "ታካሚ",
+  "bookingStepInstructions": "መመሪያዎች",
+  "bookingStepInstructionsOk": "መመሪያዎች OK",
+  "bookingStepSlot": "ጊዜ",
+  "bookingStepConfirmation": "ማረጋገጫ",
+  "bookingSelectReasonTitle": "ምክንያት ይምረጡ",
+  "bookingSelectReasonSubtitle": "የቀጠሮውን ምክንያት ይምረጡ የሚገኙ ጊዜዎችን እና መመሪያዎችን ለማበጀት።",
+  "bookingReasonNewPatient": "ምክክር (አዲስ ታካሚ)",
+  "bookingReasonFollowUp": "ተከታታይ ቅጽበታዊ ምርመራ",
+  "bookingReasonUrgency": "አስቸኳይ (ህመም፣ አስቸጋሪነት)",
+  "bookingReasonPrescription": "የመድኃኒት ማደስ",
+  "bookingReasonResults": "ውጤቶች / ሪፖርት",
+
+  "commonFallbackDash": "—",
+  "commonUnknown": "ያልታወቀ",
+  "commonDateHintDdMmYyyy": "DD/MM/YYYY",
+  "commonDateHintYyyyMmDd": "YYYY-MM-DD",
+
+  "healthBloodTypeAPos": "A+",
+  "healthBloodTypeANeg": "A-",
+  "healthBloodTypeBPos": "B+",
+  "healthBloodTypeBNeg": "B-",
+  "healthBloodTypeABPos": "AB+",
+  "healthBloodTypeABNeg": "AB-",
+  "healthBloodTypeOPos": "O+",
+  "healthBloodTypeONeg": "O-",
+
+  "errorNotificationPermissionDenied": "የማሳወቂያ ፍቃድ ተቀባይነት አላገኘም.",
+
+  "practitionerYourAppointmentLabel": "ቀጠሮዎ"
 }

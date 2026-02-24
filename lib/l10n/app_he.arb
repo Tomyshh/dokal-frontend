@@ -45,6 +45,8 @@
   "profileCompletionStepIdentitySubtitle": "בוא/י נתחיל בפרטים האישיים.",
   "profileCompletionDateOfBirth": "תאריך לידה",
   "profileCompletionCity": "עיר (אופציונלי)",
+  "profileCompletionAddress": "כתובת (ישראל)",
+  "profileCompletionAddressHint": "חפש את הכתובת שלך...",
   "profileCompletionSex": "מין (אופציונלי)",
   "profileCompletionSexMale": "זכר",
   "profileCompletionSexFemale": "נקבה",
@@ -265,6 +267,15 @@
   "onboardingStep3Subtitle": "אל תפספסו: תזכורות וסיכומים קצרים של הביקורים האחרונים.",
   "onboardingContinueButton": "המשך",
   "onboardingStartButton": "התחל",
+
+  "permissionsGateTitle": "הפעל הרשאות",
+  "permissionsGateSubtitle": "לחוויית שימוש טובה יותר, אפשר התראות ומיקום.",
+  "permissionsGateNotificationsTitle": "התראות",
+  "permissionsGateNotificationsSubtitle": "תזכורות תורים והודעות מהרופאים שלך",
+  "permissionsGateLocationTitle": "מיקום",
+  "permissionsGateLocationSubtitle": "מצא רופאים לידך",
+  "permissionsGateValidateButton": "אישור והמשך",
+  "permissionsGateLocationDenied": "הרשאת מיקום נדחתה.",
 
   "healthTitle": "הבריאות שלי",
   "healthSubtitle": "נהל את פרופיל הבריאות שלך",
@@ -758,5 +769,38 @@
   "navAppointments": "תורים",
   "navHealth": "בריאות",
   "navMessages": "הודעות",
-  "navAccount": "חשבון"
+  "navAccount": "חשבון",
+
+  "bookingFlowTitle": "לקביעת תור",
+  "bookingStepReason": "סיבה",
+  "bookingStepPatient": "מטופל",
+  "bookingStepInstructions": "הוראות",
+  "bookingStepInstructionsOk": "הוראות OK",
+  "bookingStepSlot": "משבצת",
+  "bookingStepConfirmation": "אישור",
+  "bookingSelectReasonTitle": "בחר סיבה",
+  "bookingSelectReasonSubtitle": "בחר את סיבת התור להתאמת המשבצות וההוראות.",
+  "bookingReasonNewPatient": "ייעוץ (מטופל חדש)",
+  "bookingReasonFollowUp": "מעקב / בדיקה",
+  "bookingReasonUrgency": "דחוף (כאב, אי נוחות)",
+  "bookingReasonPrescription": "חידוש מרשם",
+  "bookingReasonResults": "תוצאות / דוח",
+
+  "commonFallbackDash": "—",
+  "commonUnknown": "לא ידוע",
+  "commonDateHintDdMmYyyy": "DD/MM/YYYY",
+  "commonDateHintYyyyMmDd": "YYYY-MM-DD",
+
+  "healthBloodTypeAPos": "A+",
+  "healthBloodTypeANeg": "A-",
+  "healthBloodTypeBPos": "B+",
+  "healthBloodTypeBNeg": "B-",
+  "healthBloodTypeABPos": "AB+",
+  "healthBloodTypeABNeg": "AB-",
+  "healthBloodTypeOPos": "O+",
+  "healthBloodTypeONeg": "O-",
+
+  "errorNotificationPermissionDenied": "הרשאת התראות נדחתה.",
+
+  "practitionerYourAppointmentLabel": "התור שלך"
 }

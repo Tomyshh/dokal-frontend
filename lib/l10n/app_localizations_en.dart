@@ -96,6 +96,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileCompletionCity => 'City (optional)';
 
   @override
+  String get profileCompletionAddress => 'Address (Israel)';
+
+  @override
+  String get profileCompletionAddressHint => 'Search for your address...';
+
+  @override
   String get profileCompletionSex => 'Sex (optional)';
 
   @override
@@ -600,6 +606,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingStartButton => 'Get started';
+
+  @override
+  String get permissionsGateTitle => 'Enable permissions';
+
+  @override
+  String get permissionsGateSubtitle =>
+      'For a better experience, allow notifications and location.';
+
+  @override
+  String get permissionsGateNotificationsTitle => 'Notifications';
+
+  @override
+  String get permissionsGateNotificationsSubtitle =>
+      'Appointment reminders and messages from your practitioners';
+
+  @override
+  String get permissionsGateLocationTitle => 'Location';
+
+  @override
+  String get permissionsGateLocationSubtitle => 'Find practitioners near you';
+
+  @override
+  String get permissionsGateValidateButton => 'Validate and continue';
+
+  @override
+  String get permissionsGateLocationDenied => 'Location permission denied.';
 
   @override
   String get healthTitle => 'My health';
@@ -1806,4 +1838,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navAccount => 'Account';
+
+  @override
+  String get bookingFlowTitle => 'Book an appointment';
+
+  @override
+  String get bookingStepReason => 'Reason';
+
+  @override
+  String get bookingStepPatient => 'Patient';
+
+  @override
+  String get bookingStepInstructions => 'Instructions';
+
+  @override
+  String get bookingStepInstructionsOk => 'Instructions OK';
+
+  @override
+  String get bookingStepSlot => 'Time slot';
+
+  @override
+  String get bookingStepConfirmation => 'Confirmation';
+
+  @override
+  String get bookingSelectReasonTitle => 'Choose a reason';
+
+  @override
+  String get bookingSelectReasonSubtitle =>
+      'Select the reason for the appointment to personalise available slots and instructions.';
+
+  @override
+  String get bookingReasonNewPatient => 'Consultation (new patient)';
+
+  @override
+  String get bookingReasonFollowUp => 'Follow-up / check-up';
+
+  @override
+  String get bookingReasonUrgency => 'Urgency (pain, discomfort)';
+
+  @override
+  String get bookingReasonPrescription => 'Prescription renewal';
+
+  @override
+  String get bookingReasonResults => 'Results / report';
+
+  @override
+  String get commonFallbackDash => '—';
+
+  @override
+  String get commonUnknown => 'Unknown';
+
+  @override
+  String get commonDateHintDdMmYyyy => 'DD/MM/YYYY';
+
+  @override
+  String get commonDateHintYyyyMmDd => 'YYYY-MM-DD';
+
+  @override
+  String get healthBloodTypeAPos => 'A+';
+
+  @override
+  String get healthBloodTypeANeg => 'A-';
+
+  @override
+  String get healthBloodTypeBPos => 'B+';
+
+  @override
+  String get healthBloodTypeBNeg => 'B-';
+
+  @override
+  String get healthBloodTypeABPos => 'AB+';
+
+  @override
+  String get healthBloodTypeABNeg => 'AB-';
+
+  @override
+  String get healthBloodTypeOPos => 'O+';
+
+  @override
+  String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get errorNotificationPermissionDenied =>
+      'Notification permission denied.';
+
+  @override
+  String get practitionerYourAppointmentLabel => 'Your appointment';
 }

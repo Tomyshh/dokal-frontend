@@ -45,6 +45,8 @@
   "profileCompletionStepIdentitySubtitle": "Cuéntanos quién eres.",
   "profileCompletionDateOfBirth": "Fecha de nacimiento",
   "profileCompletionCity": "Ciudad (opcional)",
+  "profileCompletionAddress": "Dirección (Israel)",
+  "profileCompletionAddressHint": "Busca tu dirección...",
   "profileCompletionSex": "Sexo (opcional)",
   "profileCompletionSexMale": "Hombre",
   "profileCompletionSexFemale": "Mujer",
@@ -265,6 +267,15 @@
   "onboardingStep3Subtitle": "No te pierdas nada: recordatorios y resúmenes en un vistazo.",
   "onboardingContinueButton": "Continuar",
   "onboardingStartButton": "Empezar",
+
+  "permissionsGateTitle": "Activar permisos",
+  "permissionsGateSubtitle": "Para una mejor experiencia, permite notificaciones y ubicación.",
+  "permissionsGateNotificationsTitle": "Notificaciones",
+  "permissionsGateNotificationsSubtitle": "Recordatorios de citas y mensajes de tus profesionales",
+  "permissionsGateLocationTitle": "Ubicación",
+  "permissionsGateLocationSubtitle": "Encuentra profesionales cerca de ti",
+  "permissionsGateValidateButton": "Validar y continuar",
+  "permissionsGateLocationDenied": "Permiso de ubicación denegado.",
 
   "healthTitle": "Mi salud",
   "healthSubtitle": "Gestiona tu perfil de salud",
@@ -736,5 +747,38 @@
   "navAppointments": "Citas",
   "navHealth": "Salud",
   "navMessages": "Mensajes",
-  "navAccount": "Cuenta"
+  "navAccount": "Cuenta",
+
+  "bookingFlowTitle": "Reservar cita",
+  "bookingStepReason": "Motivo",
+  "bookingStepPatient": "Paciente",
+  "bookingStepInstructions": "Instrucciones",
+  "bookingStepInstructionsOk": "Instrucciones OK",
+  "bookingStepSlot": "Franja horaria",
+  "bookingStepConfirmation": "Confirmación",
+  "bookingSelectReasonTitle": "Elegir un motivo",
+  "bookingSelectReasonSubtitle": "Seleccione el motivo de la cita para personalizar las franjas disponibles y las instrucciones.",
+  "bookingReasonNewPatient": "Consulta (paciente nuevo)",
+  "bookingReasonFollowUp": "Seguimiento / control",
+  "bookingReasonUrgency": "Urgencia (dolor, molestia)",
+  "bookingReasonPrescription": "Renovación de receta",
+  "bookingReasonResults": "Resultados / informe",
+
+  "commonFallbackDash": "—",
+  "commonUnknown": "Desconocido",
+  "commonDateHintDdMmYyyy": "DD/MM/AAAA",
+  "commonDateHintYyyyMmDd": "AAAA-MM-DD",
+
+  "healthBloodTypeAPos": "A+",
+  "healthBloodTypeANeg": "A-",
+  "healthBloodTypeBPos": "B+",
+  "healthBloodTypeBNeg": "B-",
+  "healthBloodTypeABPos": "AB+",
+  "healthBloodTypeABNeg": "AB-",
+  "healthBloodTypeOPos": "O+",
+  "healthBloodTypeONeg": "O-",
+
+  "errorNotificationPermissionDenied": "Permiso de notificaciones denegado.",
+
+  "practitionerYourAppointmentLabel": "Su cita"
 }

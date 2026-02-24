@@ -52,9 +52,35 @@ Future<void> main() async {
   initAppRouter(
     authBloc,
     isOnboardingCompleted: () => prefs.getBool('onboarding_completed') ?? false,
+    isPermissionsCompleted: () => prefs.getBool('permissions_completed') ?? false,
     profileCompletion: profileCompletion,
   );
+
+  // Deep links : clic sur notification push (CRM → app mobile)
+  OneSignalService.setupNotificationClickHandler(_handleNotificationClick);
+
   // Déclenche le check session dès le démarrage.
   authBloc.add(const AuthStarted());
   runApp(const DokalApp());
+}
+
+void _handleNotificationClick(Map<String, dynamic>? data) {
+  if (data == null || data.isEmpty) return;
+  final type = data['type'] as String?;
+  final conversationId = data['conversation_id'] as String?;
+  final appointmentId = data['appointment_id'] as String?;
+
+  if (type == 'new_message' && conversationId != null) {
+    appRouter.go('/messages/c/$conversationId');
+  } else if (appointmentId != null &&
+      (type == 'appointment_cancelled' ||
+          type == 'appointment_confirmed' ||
+          type == 'appointment_request' ||
+          type == 'appointment_reminder')) {
+    appRouter.go('/appointments/$appointmentId');
+  } else if (type == 'review_received') {
+    appRouter.go('/account');
+  } else {
+    appRouter.go('/home');
+  }
 }

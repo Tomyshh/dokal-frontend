@@ -111,8 +111,11 @@ class SettingsPage extends StatelessWidget {
       child: BlocConsumer<SettingsCubit, SettingsState>(
         listener: (context, state) {
           if (state.status == SettingsStatus.failure) {
+            final message = state.error == 'errorNotificationPermissionDenied'
+                ? l10n.errorNotificationPermissionDenied
+                : (state.error ?? l10n.commonError);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error ?? l10n.commonError)),
+              SnackBar(content: Text(message)),
             );
           }
         },

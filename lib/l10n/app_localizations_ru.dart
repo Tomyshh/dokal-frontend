@@ -96,6 +96,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get profileCompletionCity => 'Город (необязательно)';
 
   @override
+  String get profileCompletionAddress => 'Адрес (Израиль)';
+
+  @override
+  String get profileCompletionAddressHint => 'Поиск адреса...';
+
+  @override
   String get profileCompletionSex => 'Пол (необязательно)';
 
   @override
@@ -600,6 +606,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get onboardingStartButton => 'Начать';
+
+  @override
+  String get permissionsGateTitle => 'Включить разрешения';
+
+  @override
+  String get permissionsGateSubtitle =>
+      'Для лучшего опыта разрешите уведомления и геолокацию.';
+
+  @override
+  String get permissionsGateNotificationsTitle => 'Уведомления';
+
+  @override
+  String get permissionsGateNotificationsSubtitle =>
+      'Напоминания о приёмах и сообщения от врачей';
+
+  @override
+  String get permissionsGateLocationTitle => 'Геолокация';
+
+  @override
+  String get permissionsGateLocationSubtitle => 'Найдите врачей рядом с вами';
+
+  @override
+  String get permissionsGateValidateButton => 'Подтвердить и продолжить';
+
+  @override
+  String get permissionsGateLocationDenied =>
+      'Разрешение на геолокацию отклонено.';
 
   @override
   String get healthTitle => 'Мое здоровье';
@@ -1810,4 +1843,90 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get navAccount => 'Аккаунт';
+
+  @override
+  String get bookingFlowTitle => 'Записаться на приём';
+
+  @override
+  String get bookingStepReason => 'Причина';
+
+  @override
+  String get bookingStepPatient => 'Пациент';
+
+  @override
+  String get bookingStepInstructions => 'Инструкции';
+
+  @override
+  String get bookingStepInstructionsOk => 'Инструкции OK';
+
+  @override
+  String get bookingStepSlot => 'Время';
+
+  @override
+  String get bookingStepConfirmation => 'Подтверждение';
+
+  @override
+  String get bookingSelectReasonTitle => 'Выберите причину';
+
+  @override
+  String get bookingSelectReasonSubtitle =>
+      'Выберите причину визита для персонализации доступных слотов и инструкций.';
+
+  @override
+  String get bookingReasonNewPatient => 'Консультация (новый пациент)';
+
+  @override
+  String get bookingReasonFollowUp => 'Повторный приём / контроль';
+
+  @override
+  String get bookingReasonUrgency => 'Срочно (боль, дискомфорт)';
+
+  @override
+  String get bookingReasonPrescription => 'Продление рецепта';
+
+  @override
+  String get bookingReasonResults => 'Результаты / отчёт';
+
+  @override
+  String get commonFallbackDash => '—';
+
+  @override
+  String get commonUnknown => 'Неизвестно';
+
+  @override
+  String get commonDateHintDdMmYyyy => 'ДД/ММ/ГГГГ';
+
+  @override
+  String get commonDateHintYyyyMmDd => 'ГГГГ-ММ-ДД';
+
+  @override
+  String get healthBloodTypeAPos => 'A+';
+
+  @override
+  String get healthBloodTypeANeg => 'A-';
+
+  @override
+  String get healthBloodTypeBPos => 'B+';
+
+  @override
+  String get healthBloodTypeBNeg => 'B-';
+
+  @override
+  String get healthBloodTypeABPos => 'AB+';
+
+  @override
+  String get healthBloodTypeABNeg => 'AB-';
+
+  @override
+  String get healthBloodTypeOPos => 'O+';
+
+  @override
+  String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get errorNotificationPermissionDenied =>
+      'Разрешение на уведомления отклонено.';
+
+  @override
+  String get practitionerYourAppointmentLabel => 'Ваш приём';
 }

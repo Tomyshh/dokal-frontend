@@ -307,7 +307,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 onTap: _selectDateOfBirth,
                                 decoration: InputDecoration(
                                   labelText: l10n.healthProfileDateOfBirth,
-                                  hintText: 'DD/MM/YYYY',
+                                  hintText: context.l10n.commonDateHintDdMmYyyy,
                                   prefixIcon: const Icon(
                                     Icons.calendar_today_outlined,
                                   ),

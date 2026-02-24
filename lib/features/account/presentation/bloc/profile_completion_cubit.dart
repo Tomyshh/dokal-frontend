@@ -36,6 +36,9 @@ class ProfileCompletionCubit extends Cubit<ProfileCompletionState> {
   final SharedPreferences _prefs;
 
   static const _kInsuranceProvider = 'patient_insurance_provider';
+  static const _kAddressLine = 'patient_address_line';
+  static const _kZipCode = 'patient_zip_code';
+  static const _kCity = 'patient_city';
 
   Future<void> load() async {
     emit(state.copyWith(status: ProfileCompletionStatus.loading, error: null));
@@ -73,6 +76,8 @@ class ProfileCompletionCubit extends Cubit<ProfileCompletionState> {
     required String kupatHolim,
     String? insuranceProvider,
     String? city,
+    String? addressLine,
+    String? zipCode,
     String? sex,
     String? avatarFilePath,
   }) async {
@@ -170,6 +175,23 @@ class ProfileCompletionCubit extends Cubit<ProfileCompletionState> {
       await _prefs.remove(_kInsuranceProvider);
     } else {
       await _prefs.setString(_kInsuranceProvider, insuranceProvider.trim());
+    }
+
+    if (addressLine == null || addressLine.trim().isEmpty) {
+      await _prefs.remove(_kAddressLine);
+    } else {
+      await _prefs.setString(_kAddressLine, addressLine.trim());
+    }
+    if (zipCode == null || zipCode.trim().isEmpty) {
+      await _prefs.remove(_kZipCode);
+    } else {
+      await _prefs.setString(_kZipCode, zipCode.trim());
+    }
+
+    if (city == null || city.trim().isEmpty) {
+      await _prefs.remove(_kCity);
+    } else {
+      await _prefs.setString(_kCity, city.trim());
     }
 
     emit(state.copyWith(status: ProfileCompletionStatus.success, error: null));

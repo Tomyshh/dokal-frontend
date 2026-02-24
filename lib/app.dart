@@ -56,6 +56,8 @@ class _DokalAppState extends State<DokalApp> {
         child: ValueListenableBuilder<Locale>(
         valueListenable: AppLocaleController.locale,
         builder: (context, locale, _) {
+          final isRtl = locale.languageCode == 'he' || locale.languageCode == 'ar';
+          final textDirection = isRtl ? TextDirection.rtl : TextDirection.ltr;
           return ScreenUtilInit(
             // Base de design standard (iPhone X) — ajustable si vous avez un
             // design Figma différent.
@@ -63,33 +65,37 @@ class _DokalAppState extends State<DokalApp> {
             minTextAdapt: true,
             splitScreenMode: true,
             builder: (context, child) {
-              return MaterialApp.router(
-                debugShowCheckedModeBanner: false,
-                theme: AppTheme.light(),
-                builder: (context, child) {
-                  return MediaQuery(
-                    data: MediaQuery.of(context).copyWith(
-                      textScaler: TextScaler.linear(1.00),
-                    ),
-                    child: child ?? const SizedBox.shrink(),
-                  );
-                },
-                locale: locale,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                localeResolutionCallback: (deviceLocale, supportedLocales) {
-                  // Si une locale est fournie via `locale:`, Flutter l’utilise
-                  // directement. Ce callback sert de fallback au cas où.
-                  final l = deviceLocale;
-                  if (l == null) return const Locale('he');
-                  for (final supported in supportedLocales) {
-                    if (supported.languageCode == l.languageCode) {
-                      return supported;
+              return Directionality(
+                textDirection: textDirection,
+                child: MaterialApp.router(
+                  debugShowCheckedModeBanner: false,
+                  theme: AppTheme.light(),
+                  builder: (context, child) {
+                    return Directionality(
+                      textDirection: textDirection,
+                      child: MediaQuery(
+                        data: MediaQuery.of(context).copyWith(
+                          textScaler: TextScaler.linear(1.00),
+                        ),
+                        child: child ?? const SizedBox.shrink(),
+                      ),
+                    );
+                  },
+                  locale: locale,
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  localeResolutionCallback: (deviceLocale, supportedLocales) {
+                    final l = deviceLocale;
+                    if (l == null) return const Locale('he');
+                    for (final supported in supportedLocales) {
+                      if (supported.languageCode == l.languageCode) {
+                        return supported;
+                      }
                     }
-                  }
-                  return const Locale('he');
-                },
-                routerConfig: appRouter,
+                    return const Locale('he');
+                  },
+                  routerConfig: appRouter,
+                ),
               );
             },
           );

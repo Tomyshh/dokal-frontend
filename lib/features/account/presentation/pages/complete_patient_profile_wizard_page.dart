@@ -16,6 +16,8 @@ import '../../../../core/profile_completion/profile_completion_notifier.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../core/widgets/dokal_text_field.dart';
+import '../../../../core/widgets/address_autocomplete_field.dart';
+import '../../../../core/services/google_places_service.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
 import '../bloc/profile_completion_cubit.dart';
@@ -58,7 +60,7 @@ class _WizardViewState extends State<_WizardView> {
   final _firstName = TextEditingController();
   final _lastName = TextEditingController();
   final _dateOfBirth = TextEditingController();
-  final _city = TextEditingController();
+  final _address = TextEditingController();
   final _email = TextEditingController();
   final _phone = TextEditingController();
   final _teudatZehut = TextEditingController();
@@ -68,6 +70,9 @@ class _WizardViewState extends State<_WizardView> {
   String _sex = 'other';
   String? _avatarFilePath;
   String? _avatarUrlFromProfile;
+  String _addressLine = '';
+  String _zipCode = '';
+  String _city = '';
 
   @override
   void dispose() {
@@ -75,7 +80,7 @@ class _WizardViewState extends State<_WizardView> {
     _firstName.dispose();
     _lastName.dispose();
     _dateOfBirth.dispose();
-    _city.dispose();
+    _address.dispose();
     _email.dispose();
     _phone.dispose();
     _teudatZehut.dispose();
@@ -90,7 +95,9 @@ class _WizardViewState extends State<_WizardView> {
 
     _firstName.text = (p.firstName ?? '').trim();
     _lastName.text = (p.lastName ?? '').trim();
-    _city.text = p.city.trim();
+    final cityVal = p.city.trim();
+    _city = cityVal;
+    _address.text = cityVal;
     _sex = _normalizeSex(p.sex);
     _avatarUrlFromProfile = p.avatarUrl;
     _phone.text = (p.phone ?? '').trim();
@@ -209,14 +216,24 @@ class _WizardViewState extends State<_WizardView> {
                           firstName: _firstName,
                           lastName: _lastName,
                           dateOfBirth: _dateOfBirth,
+                          address: _address,
+                          addressLine: _addressLine,
+                          zipCode: _zipCode,
                           city: _city,
+                          onAddressSelected: (details) {
+                            setState(() {
+                              _addressLine = details.addressLine;
+                              _zipCode = details.zipCode;
+                              _city = details.city;
+                            });
+                          },
                           sex: _sex,
                           onSexChanged: (v) => setState(() => _sex = v),
                           avatarUrl: _avatarFilePath != null
                               ? null
                               : _avatarUrlFromProfile,
                           avatarFilePath: _avatarFilePath,
-                          onPickAvatar: _pickAvatar,
+                          onPickAvatar: _onPickAvatarPressed,
                           onPickDob: _pickDob,
                         ),
                         _ContactStep(
@@ -288,7 +305,7 @@ class _WizardViewState extends State<_WizardView> {
     }
 
     final dobIso = _normalizeIsoDate(_dateOfBirth.text.trim());
-    final cityTrim = _city.text.trim();
+    final cityVal = _city.trim().isNotEmpty ? _city.trim() : _address.text.trim();
     context.read<ProfileCompletionCubit>().saveRequiredInfo(
       firstName: _firstName.text.trim(),
       lastName: _lastName.text.trim(),
@@ -297,16 +314,55 @@ class _WizardViewState extends State<_WizardView> {
       teudatZehut: _digitsOnly(_teudatZehut.text),
       kupatHolim: _kupatHolim.trim(),
       insuranceProvider: _insuranceProvider,
-      city: cityTrim.isEmpty ? null : cityTrim,
+      city: cityVal.isEmpty ? null : cityVal,
+      addressLine: _addressLine.trim().isEmpty ? null : _addressLine.trim(),
+      zipCode: _zipCode.trim().isEmpty ? null : _zipCode.trim(),
       sex: _sex,
       avatarFilePath: _avatarFilePath,
     );
   }
 
-  Future<void> _pickAvatar() async {
+  Future<void> _onPickAvatarPressed() async {
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        final locale = Localizations.localeOf(sheetContext).languageCode;
+        final cameraLabel = locale == 'fr' ? 'Prendre une photo' : 'Take photo';
+        final galleryLabel =
+            locale == 'fr' ? 'Choisir depuis la galerie' : 'Choose from gallery';
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_camera_rounded),
+                title: Text(cameraLabel),
+                onTap: () => Navigator.of(sheetContext).pop(ImageSource.camera),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_rounded),
+                title: Text(galleryLabel),
+                onTap: () => Navigator.of(sheetContext).pop(ImageSource.gallery),
+              ),
+              ListTile(
+                leading: const Icon(Icons.close_rounded),
+                title: Text(context.l10n.commonCancel),
+                onTap: () => Navigator.of(sheetContext).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    if (source == null) return;
+    await _pickAvatar(source);
+  }
+
+  Future<void> _pickAvatar(ImageSource source) async {
     final picker = ImagePicker();
     final xFile = await picker.pickImage(
-      source: ImageSource.gallery,
+      source: source,
       maxWidth: 800,
       imageQuality: 85,
     );
@@ -670,7 +726,11 @@ class _IdentityStep extends StatelessWidget {
     required this.firstName,
     required this.lastName,
     required this.dateOfBirth,
+    required this.address,
+    required this.addressLine,
+    required this.zipCode,
     required this.city,
+    required this.onAddressSelected,
     required this.sex,
     required this.onSexChanged,
     required this.avatarUrl,
@@ -683,7 +743,11 @@ class _IdentityStep extends StatelessWidget {
   final TextEditingController firstName;
   final TextEditingController lastName;
   final TextEditingController dateOfBirth;
-  final TextEditingController city;
+  final TextEditingController address;
+  final String addressLine;
+  final String zipCode;
+  final String city;
+  final void Function(PlaceDetails details) onAddressSelected;
   final String sex;
   final ValueChanged<String> onSexChanged;
   final String? avatarUrl;
@@ -773,17 +837,18 @@ class _IdentityStep extends StatelessWidget {
                   (v ?? '').trim().isEmpty ? l10n.commonRequired : null,
               decoration: InputDecoration(
                 labelText: l10n.profileCompletionDateOfBirth,
-                hintText: 'YYYY-MM-DD',
+                hintText: context.l10n.commonDateHintYyyyMmDd,
                 prefixIcon: const Icon(Icons.cake_rounded),
                 suffixIcon: const Icon(Icons.calendar_today_rounded),
               ),
             ),
             SizedBox(height: AppSpacing.md.h),
-            DokalTextField(
-              controller: city,
-              label: l10n.profileCompletionCity,
-              prefixIcon: Icons.location_city_rounded,
-              textInputAction: TextInputAction.next,
+            AddressAutocompleteField(
+              controller: address,
+              placesService: sl<GooglePlacesService>(),
+              label: l10n.profileCompletionAddress,
+              hint: l10n.profileCompletionAddressHint,
+              onPlaceSelected: onAddressSelected,
             ),
             SizedBox(height: AppSpacing.md.h),
             DropdownButtonFormField<String>(

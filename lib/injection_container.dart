@@ -12,6 +12,7 @@ import 'core/services/push_notification_service.dart';
 import 'core/notifiers/messages_refresh_notifier.dart';
 import 'core/permissions/permissions_service.dart';
 import 'core/network/api_client.dart';
+import 'core/services/google_places_service.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/datasources/onboarding_local_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
@@ -161,6 +162,11 @@ void configureDependencies() {
   );
   sl.registerLazySingleton<PushNotificationService>(
     () => PushNotificationService(sl<OneSignalService>()),
+  );
+
+  // Google Places via backend proxy
+  sl.registerLazySingleton<GooglePlacesService>(
+    () => GooglePlacesService(api: sl<ApiClient>()),
   );
 
   // Supabase

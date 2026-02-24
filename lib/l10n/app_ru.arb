@@ -45,6 +45,8 @@
   "profileCompletionStepIdentitySubtitle": "Расскажите о себе.",
   "profileCompletionDateOfBirth": "Дата рождения",
   "profileCompletionCity": "Город (необязательно)",
+  "profileCompletionAddress": "Адрес (Израиль)",
+  "profileCompletionAddressHint": "Поиск адреса...",
   "profileCompletionSex": "Пол (необязательно)",
   "profileCompletionSexMale": "Мужской",
   "profileCompletionSexFemale": "Женский",
@@ -265,6 +267,15 @@
   "onboardingStep3Subtitle": "Не пропускайте визиты: напоминания и краткие итоги приёмов.",
   "onboardingContinueButton": "Продолжить",
   "onboardingStartButton": "Начать",
+
+  "permissionsGateTitle": "Включить разрешения",
+  "permissionsGateSubtitle": "Для лучшего опыта разрешите уведомления и геолокацию.",
+  "permissionsGateNotificationsTitle": "Уведомления",
+  "permissionsGateNotificationsSubtitle": "Напоминания о приёмах и сообщения от врачей",
+  "permissionsGateLocationTitle": "Геолокация",
+  "permissionsGateLocationSubtitle": "Найдите врачей рядом с вами",
+  "permissionsGateValidateButton": "Подтвердить и продолжить",
+  "permissionsGateLocationDenied": "Разрешение на геолокацию отклонено.",
 
   "healthTitle": "Мое здоровье",
   "healthSubtitle": "Управляйте профилем здоровья",
@@ -736,5 +747,38 @@
   "navAppointments": "Приемы",
   "navHealth": "Здоровье",
   "navMessages": "Сообщения",
-  "navAccount": "Аккаунт"
+  "navAccount": "Аккаунт",
+
+  "bookingFlowTitle": "Записаться на приём",
+  "bookingStepReason": "Причина",
+  "bookingStepPatient": "Пациент",
+  "bookingStepInstructions": "Инструкции",
+  "bookingStepInstructionsOk": "Инструкции OK",
+  "bookingStepSlot": "Время",
+  "bookingStepConfirmation": "Подтверждение",
+  "bookingSelectReasonTitle": "Выберите причину",
+  "bookingSelectReasonSubtitle": "Выберите причину визита для персонализации доступных слотов и инструкций.",
+  "bookingReasonNewPatient": "Консультация (новый пациент)",
+  "bookingReasonFollowUp": "Повторный приём / контроль",
+  "bookingReasonUrgency": "Срочно (боль, дискомфорт)",
+  "bookingReasonPrescription": "Продление рецепта",
+  "bookingReasonResults": "Результаты / отчёт",
+
+  "commonFallbackDash": "—",
+  "commonUnknown": "Неизвестно",
+  "commonDateHintDdMmYyyy": "ДД/ММ/ГГГГ",
+  "commonDateHintYyyyMmDd": "ГГГГ-ММ-ДД",
+
+  "healthBloodTypeAPos": "A+",
+  "healthBloodTypeANeg": "A-",
+  "healthBloodTypeBPos": "B+",
+  "healthBloodTypeBNeg": "B-",
+  "healthBloodTypeABPos": "AB+",
+  "healthBloodTypeABNeg": "AB-",
+  "healthBloodTypeOPos": "O+",
+  "healthBloodTypeONeg": "O-",
+
+  "errorNotificationPermissionDenied": "Разрешение на уведомления отклонено.",
+
+  "practitionerYourAppointmentLabel": "Ваш приём"
 }

@@ -2,19 +2,114 @@
 // Les options du filtre sont en hébreu (UI). L'API peut retourner des valeurs
 // en français, hébreu ou anglais. Ces mappings permettent la correspondance.
 
-/// Mapping: clé du filtre spécialité (l10n) -> valeurs possibles de l'API
+/// Mapping: clé du filtre spécialité (l10n) -> valeurs possibles de l'API (toutes langues)
 const Map<String, Set<String>> _specialtyFilterKeyToApiValues = {
-  'specialty_family': {'רופא משפחה', 'רופאת משפחה', 'Médecin de famille', 'Family physician'},
-  'specialty_ophthalmologist': {'רופא עיניים', 'רופאת עיניים', 'Ophtalmologue', 'Ophthalmologist'},
-  'specialty_cardiologist': {'קרדיולוג', 'Cardiologue', 'Cardiologist'},
-  'specialty_dermatologist': {'רופא עור', 'רופאת עור', 'Dermatologue', 'Dermatologist'},
-  'specialty_pediatrician': {'רופא ילדים', 'Pédiatre', 'Pediatrician'},
-  'specialty_gynecologist': {'גינקולוגית', 'Gynécologue', 'Gynecologist'},
-  'specialty_orthopedist': {'אורטופד', 'Orthopédiste', 'Orthopedist'},
-  'specialty_neurologist': {'נוירולוג', 'Neurologue', 'Neurologist'},
-  'specialty_internal': {'רופא פנימי', 'Médecin interne', 'Internal medicine'},
-  'specialty_psychiatrist': {'פסיכיאטר', 'פסיכיאטרית', 'Psychiatre', 'Psychiatrist'},
+  'specialty_family': {
+    'רופא משפחה', 'רופאת משפחה', 'Médecin de famille', 'Family physician',
+    'Médico de familia', 'የቤተሰብ ሐኪም', 'Врач общей практики',
+  },
+  'specialty_ophthalmologist': {
+    'רופא עיניים', 'רופאת עיניים', 'Ophtalmologue', 'Ophthalmologist',
+    'Oftalmólogo', 'የዓይን ሐኪም', 'Офтальмолог',
+  },
+  'specialty_cardiologist': {
+    'קרדיולוג', 'Cardiologue', 'Cardiologist', 'Cardiólogo',
+    'የልብ ሐኪም', 'Кардиолог',
+  },
+  'specialty_dermatologist': {
+    'רופא עור', 'רופאת עור', 'Dermatologue', 'Dermatologist',
+    'Dermatólogo', 'የቆዳ ሐኪም', 'Дерматолог',
+  },
+  'specialty_pediatrician': {
+    'רופא ילדים', 'Pédiatre', 'Pediatrician', 'Pediatra',
+    'የህፃናት ሐኪም', 'Педиатр',
+  },
+  'specialty_gynecologist': {
+    'גינקולוגית', 'Gynécologue', 'Gynecologist', 'Ginecólogo',
+    'የሴቶች ጤና ሐኪም', 'Гинеколог',
+  },
+  'specialty_orthopedist': {
+    'אורטופד', 'Orthopédiste', 'Orthopedist', 'Ortopedista',
+    'የአጥንት ሐኪም', 'Ортопед',
+  },
+  'specialty_neurologist': {
+    'נוירולוג', 'Neurologue', 'Neurologist', 'Neurólogo',
+    'የነርቭ ሐኪም', 'Невролог',
+  },
+  'specialty_internal': {
+    'רופא פנימי', 'Médecin interne', 'Internal medicine', 'Medicina interna',
+    'የውስጥ ሐኪም', 'Терапевт',
+  },
+  'specialty_psychiatrist': {
+    'פסיכיאטר', 'פסיכיאטרית', 'Psychiatre', 'Psychiatrist',
+    'Psiquiatra', 'የአእምሮ ሐኪም', 'Психиатр',
+  },
 };
+
+/// Mapping: clé l10n -> getter name sur AppLocalizations
+const Map<String, String> _specialtyKeyToL10nGetter = {
+  'specialty_family': 'searchFilterSpecialtyFamily',
+  'specialty_ophthalmologist': 'searchFilterSpecialtyOphthalmologist',
+  'specialty_cardiologist': 'searchFilterSpecialtyCardiologist',
+  'specialty_dermatologist': 'searchFilterSpecialtyDermatologist',
+  'specialty_pediatrician': 'searchFilterSpecialtyPediatrician',
+  'specialty_gynecologist': 'searchFilterSpecialtyGynecologist',
+  'specialty_orthopedist': 'searchFilterSpecialtyOrthopedist',
+  'specialty_neurologist': 'searchFilterSpecialtyNeurologist',
+  'specialty_internal': 'searchFilterSpecialtyInternal',
+  'specialty_psychiatrist': 'searchFilterSpecialtyPsychiatrist',
+};
+
+/// Retourne le libellé localisé d'une spécialité API pour l'affichage.
+/// [apiSpecialty] : valeur provenant de l'API (hébreu, français, anglais, etc.)
+/// [l10n] : instance AppLocalizations (context.l10n)
+/// Si non reconnue, retourne [apiSpecialty] tel quel ou [commonUnknown] si vide.
+String specialtyToDisplayLabel(String? apiSpecialty, dynamic l10n) {
+  if (apiSpecialty == null || apiSpecialty.trim().isEmpty) {
+    return l10n.commonUnknown;
+  }
+  final specNorm = apiSpecialty.trim();
+  for (final entry in _specialtyFilterKeyToApiValues.entries) {
+    if (entry.value.contains(specNorm)) {
+      final getter = _specialtyKeyToL10nGetter[entry.key];
+      if (getter != null) {
+        switch (getter) {
+          case 'searchFilterSpecialtyFamily':
+            return l10n.searchFilterSpecialtyFamily;
+          case 'searchFilterSpecialtyOphthalmologist':
+            return l10n.searchFilterSpecialtyOphthalmologist;
+          case 'searchFilterSpecialtyCardiologist':
+            return l10n.searchFilterSpecialtyCardiologist;
+          case 'searchFilterSpecialtyDermatologist':
+            return l10n.searchFilterSpecialtyDermatologist;
+          case 'searchFilterSpecialtyPediatrician':
+            return l10n.searchFilterSpecialtyPediatrician;
+          case 'searchFilterSpecialtyGynecologist':
+            return l10n.searchFilterSpecialtyGynecologist;
+          case 'searchFilterSpecialtyOrthopedist':
+            return l10n.searchFilterSpecialtyOrthopedist;
+          case 'searchFilterSpecialtyNeurologist':
+            return l10n.searchFilterSpecialtyNeurologist;
+          case 'searchFilterSpecialtyInternal':
+            return l10n.searchFilterSpecialtyInternal;
+          case 'searchFilterSpecialtyPsychiatrist':
+            return l10n.searchFilterSpecialtyPsychiatrist;
+          default:
+            return specNorm;
+        }
+      }
+    }
+  }
+  // "לא ידוע" / "Unknown" etc. (toutes langues)
+  const unknownVariants = {
+    'לא ידוע', 'Unknown', 'Inconnu', 'Desconocido', 'ያልታወቀ', 'Неизвестно',
+    'Unknown specialty', 'Spécialité inconnue',
+  };
+  if (unknownVariants.contains(specNorm)) {
+    return l10n.commonUnknown;
+  }
+  return specNorm;
+}
 
 /// Vérifie si la spécialité du praticien correspond au filtre (clé l10n).
 bool specialtyMatchesFilter(String? filterKey, String? practitionerSpecialty) {

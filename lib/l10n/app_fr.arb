@@ -45,6 +45,8 @@
   "profileCompletionStepIdentitySubtitle": "Dites-nous qui vous êtes.",
   "profileCompletionDateOfBirth": "Date de naissance",
   "profileCompletionCity": "Ville (optionnel)",
+  "profileCompletionAddress": "Adresse (Israël)",
+  "profileCompletionAddressHint": "Recherchez votre adresse...",
   "profileCompletionSex": "Sexe (optionnel)",
   "profileCompletionSexMale": "Homme",
   "profileCompletionSexFemale": "Femme",
@@ -264,6 +266,15 @@
   "onboardingStep3Subtitle": "Recevez des rappels et retrouvez l’essentiel en un coup d’œil.",
   "onboardingContinueButton": "Continuer",
   "onboardingStartButton": "Commencer",
+
+  "permissionsGateTitle": "Activez les permissions",
+  "permissionsGateSubtitle": "Pour une meilleure expérience, autorisez les notifications et la localisation.",
+  "permissionsGateNotificationsTitle": "Notifications",
+  "permissionsGateNotificationsSubtitle": "Rappels de rendez-vous et messages de vos praticiens",
+  "permissionsGateLocationTitle": "Localisation",
+  "permissionsGateLocationSubtitle": "Trouvez des praticiens près de chez vous",
+  "permissionsGateValidateButton": "Valider et continuer",
+  "permissionsGateLocationDenied": "Permission de localisation refusée.",
 
   "healthTitle": "Ma Santé",
   "healthSubtitle": "Gérez votre profil santé",
@@ -757,5 +768,38 @@
   "navAppointments": "Rendez-vous",
   "navHealth": "Santé",
   "navMessages": "Messages",
-  "navAccount": "Compte"
+  "navAccount": "Compte",
+
+  "bookingFlowTitle": "Prendre rendez-vous",
+  "bookingStepReason": "Motif",
+  "bookingStepPatient": "Patient",
+  "bookingStepInstructions": "Instructions",
+  "bookingStepInstructionsOk": "Instructions OK",
+  "bookingStepSlot": "Créneau",
+  "bookingStepConfirmation": "Confirmation",
+  "bookingSelectReasonTitle": "Choisir un motif",
+  "bookingSelectReasonSubtitle": "Sélectionnez le motif du rendez-vous pour personnaliser les créneaux et les instructions.",
+  "bookingReasonNewPatient": "Consultation (nouveau patient)",
+  "bookingReasonFollowUp": "Suivi / contrôle",
+  "bookingReasonUrgency": "Urgence (douleur, gêne)",
+  "bookingReasonPrescription": "Renouvellement ordonnance",
+  "bookingReasonResults": "Résultats / compte-rendu",
+
+  "commonFallbackDash": "—",
+  "commonUnknown": "Inconnu",
+  "commonDateHintDdMmYyyy": "JJ/MM/AAAA",
+  "commonDateHintYyyyMmDd": "AAAA-MM-JJ",
+
+  "healthBloodTypeAPos": "A+",
+  "healthBloodTypeANeg": "A-",
+  "healthBloodTypeBPos": "B+",
+  "healthBloodTypeBNeg": "B-",
+  "healthBloodTypeABPos": "AB+",
+  "healthBloodTypeABNeg": "AB-",
+  "healthBloodTypeOPos": "O+",
+  "healthBloodTypeONeg": "O-",
+
+  "errorNotificationPermissionDenied": "Permission notifications refusée.",
+
+  "practitionerYourAppointmentLabel": "Votre rendez-vous"
 }

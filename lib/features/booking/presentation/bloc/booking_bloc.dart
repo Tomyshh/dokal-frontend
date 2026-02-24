@@ -5,8 +5,17 @@ part 'booking_event.dart';
 part 'booking_state.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
-  BookingBloc({required String practitionerId})
-    : super(BookingState(practitionerId: practitionerId)) {
+  BookingBloc({
+    required String practitionerId,
+    String? initialAddressLine,
+    String? initialZipCode,
+    String? initialCity,
+  }) : super(BookingState(
+      practitionerId: practitionerId,
+      addressLine: initialAddressLine,
+      zipCode: initialZipCode,
+      city: initialCity,
+    )) {
     on<BookingReasonSelected>(_onReasonSelected);
     on<BookingPatientSelected>(_onPatientSelected);
     on<BookingInstructionsAccepted>(_onInstructionsAccepted);

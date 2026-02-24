@@ -8,7 +8,9 @@ import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../practitioner/presentation/bloc/practitioner_cubit.dart';
 import '../bloc/booking_bloc.dart';
 
 class BookingSuccessPage extends StatelessWidget {
@@ -18,10 +20,15 @@ class BookingSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final state = context.read<BookingBloc>().state;
-    final slot = state.slotLabel ?? '—';
-    final patient = state.patientLabel ?? '—';
+    final slot = state.slotLabel ?? l10n.commonFallbackDash;
+    final patient = state.patientLabel ?? l10n.commonFallbackDash;
 
-    return ListView(
+    return BlocBuilder<PractitionerCubit, PractitionerState>(
+      builder: (context, pState) {
+        final profile = pState.profile;
+        final practitionerName = profile?.name ?? l10n.commonFallbackDash;
+        final specialty = specialtyToDisplayLabel(profile?.specialty, l10n);
+        return ListView(
       padding: EdgeInsets.all(AppSpacing.xl.r),
       children: [
         Center(
@@ -73,10 +80,10 @@ class BookingSuccessPage extends StatelessWidget {
         SizedBox(height: AppSpacing.xl.h),
         _AppointmentSummaryCard(
           slotLabel: slot,
-          practitionerName: 'Dr Dan BOTBOL',
-          specialty: 'Dentiste',
+          practitionerName: practitionerName,
+          specialty: specialty,
           patientLabel: patient,
-          reason: state.reason ?? '—',
+          reason: state.reason ?? l10n.commonFallbackDash,
         ),
         SizedBox(height: AppSpacing.md.h),
         DokalCard(
@@ -150,6 +157,8 @@ class BookingSuccessPage extends StatelessWidget {
           child: Text(l10n.bookingBackToHome),
         ),
       ],
+    );
+      },
     );
   }
 }

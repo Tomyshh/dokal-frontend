@@ -45,6 +45,8 @@
   "profileCompletionStepIdentitySubtitle": "Tell us who you are.",
   "profileCompletionDateOfBirth": "Date of birth",
   "profileCompletionCity": "City (optional)",
+  "profileCompletionAddress": "Address (Israel)",
+  "profileCompletionAddressHint": "Search for your address...",
   "profileCompletionSex": "Sex (optional)",
   "profileCompletionSexMale": "Male",
   "profileCompletionSexFemale": "Female",
@@ -265,6 +267,15 @@
   "onboardingStep3Subtitle": "Never miss a visit—get reminders and quick summaries.",
   "onboardingContinueButton": "Continue",
   "onboardingStartButton": "Get started",
+
+  "permissionsGateTitle": "Enable permissions",
+  "permissionsGateSubtitle": "For a better experience, allow notifications and location.",
+  "permissionsGateNotificationsTitle": "Notifications",
+  "permissionsGateNotificationsSubtitle": "Appointment reminders and messages from your practitioners",
+  "permissionsGateLocationTitle": "Location",
+  "permissionsGateLocationSubtitle": "Find practitioners near you",
+  "permissionsGateValidateButton": "Validate and continue",
+  "permissionsGateLocationDenied": "Location permission denied.",
 
   "healthTitle": "My health",
   "healthSubtitle": "Manage your health profile",
@@ -758,5 +769,38 @@
   "navAppointments": "Appointments",
   "navHealth": "Health",
   "navMessages": "Messages",
-  "navAccount": "Account"
+  "navAccount": "Account",
+
+  "bookingFlowTitle": "Book an appointment",
+  "bookingStepReason": "Reason",
+  "bookingStepPatient": "Patient",
+  "bookingStepInstructions": "Instructions",
+  "bookingStepInstructionsOk": "Instructions OK",
+  "bookingStepSlot": "Time slot",
+  "bookingStepConfirmation": "Confirmation",
+  "bookingSelectReasonTitle": "Choose a reason",
+  "bookingSelectReasonSubtitle": "Select the reason for the appointment to personalise available slots and instructions.",
+  "bookingReasonNewPatient": "Consultation (new patient)",
+  "bookingReasonFollowUp": "Follow-up / check-up",
+  "bookingReasonUrgency": "Urgency (pain, discomfort)",
+  "bookingReasonPrescription": "Prescription renewal",
+  "bookingReasonResults": "Results / report",
+
+  "commonFallbackDash": "—",
+  "commonUnknown": "Unknown",
+  "commonDateHintDdMmYyyy": "DD/MM/YYYY",
+  "commonDateHintYyyyMmDd": "YYYY-MM-DD",
+
+  "healthBloodTypeAPos": "A+",
+  "healthBloodTypeANeg": "A-",
+  "healthBloodTypeBPos": "B+",
+  "healthBloodTypeBNeg": "B-",
+  "healthBloodTypeABPos": "AB+",
+  "healthBloodTypeABNeg": "AB-",
+  "healthBloodTypeOPos": "O+",
+  "healthBloodTypeONeg": "O-",
+
+  "errorNotificationPermissionDenied": "Notification permission denied.",
+
+  "practitionerYourAppointmentLabel": "Your appointment"
 }

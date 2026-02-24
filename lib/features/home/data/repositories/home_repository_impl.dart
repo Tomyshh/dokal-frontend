@@ -83,6 +83,7 @@ class HomeRepositoryImpl implements HomeRepository {
             name: '$firstName $lastName'.trim(),
             specialty:
                 specialties?['name_fr'] as String? ??
+                specialties?['name_he'] as String? ??
                 specialties?['name'] as String? ??
                 '',
           ),

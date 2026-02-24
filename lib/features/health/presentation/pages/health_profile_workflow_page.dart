@@ -121,7 +121,7 @@ class _HealthProfileWorkflowViewState
         if (state.status == HealthProfileStatus.loading) {
           return Scaffold(
             backgroundColor: AppColors.background,
-            appBar: const DokalAppBar(title: '—'),
+            appBar: DokalAppBar(title: l10n.commonFallbackDash),
             body: Padding(
               padding: EdgeInsets.all(AppSpacing.lg.r),
               child: const DokalLoader(lines: 7),
@@ -234,7 +234,7 @@ class _HealthProfileWorkflowViewState
                       controller: _dob,
                       decoration: InputDecoration(
                         labelText: l10n.healthProfileDateOfBirth,
-                        hintText: 'DD/MM/YYYY',
+                        hintText: l10n.commonDateHintDdMmYyyy,
                         border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.datetime,
@@ -354,15 +354,15 @@ class _HealthProfileWorkflowViewState
                         labelText: l10n.profileBloodType,
                         border: const OutlineInputBorder(),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'A+', child: Text('A+')),
-                        DropdownMenuItem(value: 'A-', child: Text('A-')),
-                        DropdownMenuItem(value: 'B+', child: Text('B+')),
-                        DropdownMenuItem(value: 'B-', child: Text('B-')),
-                        DropdownMenuItem(value: 'AB+', child: Text('AB+')),
-                        DropdownMenuItem(value: 'AB-', child: Text('AB-')),
-                        DropdownMenuItem(value: 'O+', child: Text('O+')),
-                        DropdownMenuItem(value: 'O-', child: Text('O-')),
+                      items: [
+                        DropdownMenuItem(value: 'A+', child: Text(l10n.healthBloodTypeAPos)),
+                        DropdownMenuItem(value: 'A-', child: Text(l10n.healthBloodTypeANeg)),
+                        DropdownMenuItem(value: 'B+', child: Text(l10n.healthBloodTypeBPos)),
+                        DropdownMenuItem(value: 'B-', child: Text(l10n.healthBloodTypeBNeg)),
+                        DropdownMenuItem(value: 'AB+', child: Text(l10n.healthBloodTypeABPos)),
+                        DropdownMenuItem(value: 'AB-', child: Text(l10n.healthBloodTypeABNeg)),
+                        DropdownMenuItem(value: 'O+', child: Text(l10n.healthBloodTypeOPos)),
+                        DropdownMenuItem(value: 'O-', child: Text(l10n.healthBloodTypeONeg)),
                       ],
                       onChanged: (v) => setState(() => _bloodType = v ?? ''),
                     ),

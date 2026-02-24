@@ -95,6 +95,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileCompletionCity => 'Ciudad (opcional)';
 
   @override
+  String get profileCompletionAddress => 'Dirección (Israel)';
+
+  @override
+  String get profileCompletionAddressHint => 'Busca tu dirección...';
+
+  @override
   String get profileCompletionSex => 'Sexo (opcional)';
 
   @override
@@ -604,6 +610,33 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get onboardingStartButton => 'Empezar';
+
+  @override
+  String get permissionsGateTitle => 'Activar permisos';
+
+  @override
+  String get permissionsGateSubtitle =>
+      'Para una mejor experiencia, permite notificaciones y ubicación.';
+
+  @override
+  String get permissionsGateNotificationsTitle => 'Notificaciones';
+
+  @override
+  String get permissionsGateNotificationsSubtitle =>
+      'Recordatorios de citas y mensajes de tus profesionales';
+
+  @override
+  String get permissionsGateLocationTitle => 'Ubicación';
+
+  @override
+  String get permissionsGateLocationSubtitle =>
+      'Encuentra profesionales cerca de ti';
+
+  @override
+  String get permissionsGateValidateButton => 'Validar y continuar';
+
+  @override
+  String get permissionsGateLocationDenied => 'Permiso de ubicación denegado.';
 
   @override
   String get healthTitle => 'Mi salud';
@@ -1824,4 +1857,90 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get navAccount => 'Cuenta';
+
+  @override
+  String get bookingFlowTitle => 'Reservar cita';
+
+  @override
+  String get bookingStepReason => 'Motivo';
+
+  @override
+  String get bookingStepPatient => 'Paciente';
+
+  @override
+  String get bookingStepInstructions => 'Instrucciones';
+
+  @override
+  String get bookingStepInstructionsOk => 'Instrucciones OK';
+
+  @override
+  String get bookingStepSlot => 'Franja horaria';
+
+  @override
+  String get bookingStepConfirmation => 'Confirmación';
+
+  @override
+  String get bookingSelectReasonTitle => 'Elegir un motivo';
+
+  @override
+  String get bookingSelectReasonSubtitle =>
+      'Seleccione el motivo de la cita para personalizar las franjas disponibles y las instrucciones.';
+
+  @override
+  String get bookingReasonNewPatient => 'Consulta (paciente nuevo)';
+
+  @override
+  String get bookingReasonFollowUp => 'Seguimiento / control';
+
+  @override
+  String get bookingReasonUrgency => 'Urgencia (dolor, molestia)';
+
+  @override
+  String get bookingReasonPrescription => 'Renovación de receta';
+
+  @override
+  String get bookingReasonResults => 'Resultados / informe';
+
+  @override
+  String get commonFallbackDash => '—';
+
+  @override
+  String get commonUnknown => 'Desconocido';
+
+  @override
+  String get commonDateHintDdMmYyyy => 'DD/MM/AAAA';
+
+  @override
+  String get commonDateHintYyyyMmDd => 'AAAA-MM-DD';
+
+  @override
+  String get healthBloodTypeAPos => 'A+';
+
+  @override
+  String get healthBloodTypeANeg => 'A-';
+
+  @override
+  String get healthBloodTypeBPos => 'B+';
+
+  @override
+  String get healthBloodTypeBNeg => 'B-';
+
+  @override
+  String get healthBloodTypeABPos => 'AB+';
+
+  @override
+  String get healthBloodTypeABNeg => 'AB-';
+
+  @override
+  String get healthBloodTypeOPos => 'O+';
+
+  @override
+  String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get errorNotificationPermissionDenied =>
+      'Permiso de notificaciones denegado.';
+
+  @override
+  String get practitionerYourAppointmentLabel => 'Su cita';
 }

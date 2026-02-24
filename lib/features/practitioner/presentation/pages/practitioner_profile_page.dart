@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/utils/format_appointment_date.dart';
 import '../../../../core/utils/format_time_slot.dart';
 import '../../../../core/constants/app_radii.dart';
@@ -121,11 +122,50 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
   String? _selectedTime;
   String? _selectedEndTime;
   int _selectedTabIndex = 0;
+  bool _didCheckBookingRedirect = false;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didCheckBookingRedirect) return;
+    final query = GoRouterState.of(context).uri.queryParameters;
+    if (query['book'] != '1') return;
+    final dateStr = query['date'];
+    final start = query['start'];
+    final end = query['end'];
+    if (dateStr == null || start == null || end == null) return;
+    final isAuthenticated = context.read<AuthBloc>().state.isAuthenticated;
+    if (!isAuthenticated) return;
+    _didCheckBookingRedirect = true;
+    final parts = dateStr.split('-');
+    if (parts.length != 3) return;
+    final year = int.tryParse(parts[0]);
+    final month = int.tryParse(parts[1]);
+    final day = int.tryParse(parts[2]);
+    if (year == null || month == null || day == null) return;
+    final appointmentDate = DateTime(year, month, day);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      QuickBookingSheet.show(
+        context,
+        practitionerId: widget.practitionerId,
+        practitionerName: widget.profile.name,
+        profile: widget.profile,
+        appointmentDate: appointmentDate,
+        startTime: start,
+        endTime: end,
+      );
+      final path = GoRouterState.of(context).uri.path;
+      if (GoRouterState.of(context).uri.queryParameters.isNotEmpty) {
+        context.go(path);
+      }
+    });
   }
 
   @override
@@ -549,7 +589,7 @@ class _HeaderSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadii.pill.r),
           ),
           child: Text(
-            profile.specialty,
+            specialtyToDisplayLabel(profile.specialty, context.l10n),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w600,
@@ -1825,7 +1865,7 @@ class _BookingConfirmation extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'התור שלך',
+                      l10n.practitionerYourAppointmentLabel,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: Colors.white.withValues(alpha: 0.8),
                         fontWeight: FontWeight.w500,
@@ -1850,15 +1890,33 @@ class _BookingConfirmation extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => QuickBookingSheet.show(
-                context,
-                practitionerId: practitionerId,
-                practitionerName: practitionerName,
-                profile: profile,
-                appointmentDate: selectedDate,
-                startTime: selectedTime,
-                endTime: selectedEndTime,
-              ),
+              onPressed: () {
+                final isAuthenticated =
+                    context.read<AuthBloc>().state.isAuthenticated;
+                if (!isAuthenticated) {
+                  final path =
+                      GoRouterState.of(context).matchedLocation;
+                  final redirectUri = Uri(path: path, queryParameters: {
+                    'book': '1',
+                    'date': DateFormat('yyyy-MM-dd').format(selectedDate),
+                    'start': selectedTime,
+                    'end': selectedEndTime,
+                  });
+                  context.go(
+                    '/login?redirect=${Uri.encodeComponent(redirectUri.toString())}',
+                  );
+                  return;
+                }
+                QuickBookingSheet.show(
+                  context,
+                  practitionerId: practitionerId,
+                  practitionerName: practitionerName,
+                  profile: profile,
+                  appointmentDate: selectedDate,
+                  startTime: selectedTime,
+                  endTime: selectedEndTime,
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: AppColors.primary,

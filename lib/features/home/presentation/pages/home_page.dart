@@ -11,6 +11,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/appointment_card.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/home_cubit.dart';
@@ -147,28 +148,76 @@ class _HomeHeader extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: AppSpacing.md.w),
-                  // Bouton notification
-                  Container(
-                    width: 44.r,
-                    height: 44.r,
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceVariant,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.notifications_none_rounded,
-                      size: 22.sp,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                  SizedBox(width: AppSpacing.sm.w),
-                  // Avatar utilisateur (cliquable → onglet compte)
-                  GestureDetector(
-                    onTap: () => context.go('/account'),
-                    child: _UserAvatar(
-                      avatarUrl: state.avatarUrl,
-                      name: displayName,
-                    ),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    buildWhen: (p, n) => p.isAuthenticated != n.isAuthenticated,
+                    builder: (context, authState) {
+                      if (authState.isAuthenticated) {
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Bouton notification
+                            Container(
+                              width: 44.r,
+                              height: 44.r,
+                              decoration: BoxDecoration(
+                                color: AppColors.surfaceVariant,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.notifications_none_rounded,
+                                size: 22.sp,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            SizedBox(width: AppSpacing.sm.w),
+                            // Avatar utilisateur (cliquable → onglet compte)
+                            GestureDetector(
+                              onTap: () => context.go('/account'),
+                              child: _UserAvatar(
+                                avatarUrl: state.avatarUrl,
+                                name: displayName,
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      // Utilisateur non connecté : bouton Sign In
+                      return GestureDetector(
+                        onTap: () => context.go('/account'),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.md.w,
+                            vertical: 10.h,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                AppColors.brandGradientStart,
+                                AppColors.brandGradientEnd,
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(AppRadii.pill.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primary.withValues(alpha: 0.3),
+                                blurRadius: 8.r,
+                                offset: Offset(0, 2.h),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            l10n.authLoginButton,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               );
@@ -494,7 +543,7 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
                 dateLabel: a.dateLabel,
                 timeLabel: a.timeLabel,
                 practitionerName: a.practitionerName,
-                specialty: a.specialty,
+                specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
                 reason: a.reason,
                 avatarUrl: a.avatarUrl,
                 isPast: a.isPast,
@@ -908,7 +957,7 @@ class _AppointmentHistorySection extends StatelessWidget {
                     dateLabel: a.dateLabel,
                     timeLabel: a.timeLabel,
                     practitionerName: a.practitionerName,
-                    specialty: a.specialty,
+                    specialty: specialtyToDisplayLabel(a.specialty, l10n),
                     reason: a.reason,
                     avatarUrl: a.avatarUrl,
                     isPast: a.isPast,

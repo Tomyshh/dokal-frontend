@@ -12,6 +12,7 @@ import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../injection_container.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../bloc/appointments_cubit.dart';
 
@@ -199,7 +200,7 @@ class _UpcomingTab extends StatelessWidget {
               dateLabel: a.dateLabel,
               timeLabel: a.timeLabel,
               practitionerName: a.practitionerName,
-              specialty: a.specialty,
+              specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
               reason: a.reason,
               onTap: () => context.push('/appointments/${a.id}'),
             );
@@ -266,7 +267,7 @@ class _PastTab extends StatelessWidget {
               dateLabel: a.dateLabel,
               timeLabel: a.timeLabel,
               practitionerName: a.practitionerName,
-              specialty: a.specialty,
+              specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
               reason: a.reason,
               onTap: () => context.push('/appointments/${a.id}'),
             );
