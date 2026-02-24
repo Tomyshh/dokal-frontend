@@ -143,4 +143,22 @@ class OneSignalService {
     if (Platform.isIOS) return 'ios';
     return 'unknown';
   }
+
+  /// Enregistre un callback appelé quand le token (subscription ID) change.
+  /// Utile pour re-enregistrer le token auprès du backend.
+  static void addTokenChangeObserver(void Function() onTokenChanged) {
+    if (kIsWeb) return;
+    try {
+      OneSignal.User.pushSubscription.addObserver((_) {
+        final id = OneSignal.User.pushSubscription.id;
+        if (id != null && id.isNotEmpty) {
+          onTokenChanged();
+        }
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[OneSignalService] addTokenChangeObserver error: $e');
+      }
+    }
+  }
 }

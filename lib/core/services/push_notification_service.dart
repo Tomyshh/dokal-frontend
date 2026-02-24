@@ -15,6 +15,12 @@ class PushNotificationService {
     return _oneSignal.requestPermission();
   }
 
+  /// Récupère le token actuel sans demander la permission (pour sync/re-enregistrement).
+  /// Retourne null si non abonné.
+  Future<String?> getCurrentToken() async {
+    return _oneSignal.getToken();
+  }
+
   /// Récupère le token (subscription ID) OneSignal.
   /// Appelle optIn puis attend que le token soit disponible.
   /// Retourne null si la permission est refusée ou en cas d'erreur.

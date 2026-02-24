@@ -129,6 +129,7 @@ import 'features/notifications/domain/usecases/mark_all_read.dart';
 import 'features/notifications/domain/usecases/mark_notification_read.dart';
 import 'features/notifications/domain/usecases/register_push_token.dart';
 import 'features/notifications/domain/usecases/remove_push_token.dart';
+import 'features/notifications/domain/usecases/sync_push_token.dart';
 import 'features/notifications/presentation/bloc/notifications_cubit.dart';
 import 'features/reviews/data/datasources/reviews_remote_data_source.dart';
 import 'features/reviews/data/repositories/reviews_repository_impl.dart';
@@ -664,6 +665,13 @@ void configureDependencies() {
   );
   sl.registerLazySingleton(
     () => RemovePushToken(sl<NotificationsRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => SyncPushToken(
+      sl<GetSettings>(),
+      sl<NotificationsRepository>(),
+      sl<PushNotificationService>(),
+    ),
   );
   sl.registerFactory(
     () => NotificationsCubit(

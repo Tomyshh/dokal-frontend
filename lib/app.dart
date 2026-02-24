@@ -7,11 +7,33 @@ import 'l10n/app_locale_controller.dart';
 import 'core/services/onesignal_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/notifications/domain/usecases/sync_push_token.dart';
 import 'injection_container.dart';
 import 'router/app_router.dart';
 
-class DokalApp extends StatelessWidget {
+class DokalApp extends StatefulWidget {
   const DokalApp({super.key});
+
+  @override
+  State<DokalApp> createState() => _DokalAppState();
+}
+
+class _DokalAppState extends State<DokalApp> {
+  static bool _tokenObserverSetup = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupTokenChangeObserver();
+  }
+
+  void _setupTokenChangeObserver() {
+    if (_tokenObserverSetup) return;
+    _tokenObserverSetup = true;
+    OneSignalService.addTokenChangeObserver(() {
+      sl<SyncPushToken>().call();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +46,8 @@ class DokalApp extends StatelessWidget {
         listener: (context, state) {
           if (state.isAuthenticated && state.session != null) {
             OneSignalService.login(state.session!.userId);
+            // Re-enregistrer le token si les notifications sont activées
+            sl<SyncPushToken>().call();
           } else if (state.status == AuthStatus.unauthenticated ||
               state.status == AuthStatus.loggingOut) {
             OneSignalService.logout();

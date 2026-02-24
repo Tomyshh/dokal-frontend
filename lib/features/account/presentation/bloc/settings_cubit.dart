@@ -75,7 +75,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         await _saveSettings(reverted);
         return;
       }
-      // 2. Permission Firebase (iOS)
+      // 2. Permission OneSignal (iOS)
       final firebaseGranted = await _pushService.requestPermission();
       if (!firebaseGranted) {
         emit(
@@ -95,7 +95,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         await _saveSettings(reverted);
         return;
       }
-      // 3. Récupérer le token FCM et l'enregistrer côté backend
+      // 3. Récupérer le token OneSignal et l'enregistrer côté backend
       final token = await _pushService.getToken();
       if (token != null) {
         final result = await _registerPushToken(
