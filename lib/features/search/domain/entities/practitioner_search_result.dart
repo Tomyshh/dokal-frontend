@@ -8,6 +8,7 @@ class PractitionerSearchResult extends Equatable {
     required this.address,
     required this.sector,
     required this.nextAvailabilityLabel,
+    this.city,
     this.distanceLabel,
     this.avatarUrl,
     this.languages,
@@ -24,6 +25,9 @@ class PractitionerSearchResult extends Equatable {
   final String specialty;
   final String address;
   final String sector;
+
+  /// Ville du praticien (pour affichage localisation)
+  final String? city;
   final String nextAvailabilityLabel;
   final String? distanceLabel;
   final String? avatarUrl;
@@ -56,6 +60,7 @@ class PractitionerSearchResult extends Equatable {
     specialty,
     address,
     sector,
+    city,
     nextAvailabilityLabel,
     distanceLabel,
     avatarUrl,

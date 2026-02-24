@@ -1,11 +1,9 @@
 import '../../../../core/network/api_client.dart';
 import '../../domain/entities/health_item.dart';
 import '../../domain/repositories/health_repository.dart';
-import 'health_demo_data_source.dart';
 
-/// Remote implementation of [HealthDemoDataSource] backed by the Dokal
-/// backend REST API.
-class HealthRemoteDataSourceImpl implements HealthDemoDataSource {
+/// Remote datasource for health data backed by the Dokal backend REST API.
+class HealthRemoteDataSourceImpl {
   HealthRemoteDataSourceImpl({required this.api});
 
   final ApiClient api;
@@ -16,14 +14,6 @@ class HealthRemoteDataSourceImpl implements HealthDemoDataSource {
     HealthListType.allergies: 'allergies',
     HealthListType.vaccinations: 'vaccinations',
   };
-
-  @override
-  List<HealthItem> list(HealthListType type) =>
-      throw UnimplementedError('Use listAsync');
-
-  @override
-  void addDemo(HealthListType type) =>
-      throw UnimplementedError('Use addItemAsync');
 
   Future<List<HealthItem>> listAsync(HealthListType type) async {
     final table = _tableMap[type]!;

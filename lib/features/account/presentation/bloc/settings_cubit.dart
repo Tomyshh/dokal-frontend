@@ -110,6 +110,8 @@ class SettingsCubit extends Cubit<SettingsState> {
         );
       }
     } else {
+      // Désactiver push sur l'appareil (OneSignal opt-out)
+      await _pushService.optOut();
       // Retirer le token du backend
       final storedToken = _pushService.storedToken;
       if (storedToken != null) {

@@ -404,6 +404,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchNoResultsSubtitle => 'Try a different term.';
 
   @override
+  String get searchLocationUnavailable =>
+      'Search without distance sorting (location unavailable)';
+
+  @override
   String get searchFilterTitle => 'Filter results';
 
   @override
@@ -431,6 +435,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchFilterSpecialtyAll => 'All specialties';
 
   @override
+  String get searchFilterSpecialtyFamily => 'Family physician';
+
+  @override
+  String get searchFilterSpecialtyOphthalmologist => 'Ophthalmologist';
+
+  @override
+  String get searchFilterSpecialtyCardiologist => 'Cardiologist';
+
+  @override
+  String get searchFilterSpecialtyDermatologist => 'Dermatologist';
+
+  @override
+  String get searchFilterSpecialtyPediatrician => 'Pediatrician';
+
+  @override
+  String get searchFilterSpecialtyGynecologist => 'Gynecologist';
+
+  @override
+  String get searchFilterSpecialtyOrthopedist => 'Orthopedist';
+
+  @override
+  String get searchFilterSpecialtyNeurologist => 'Neurologist';
+
+  @override
+  String get searchFilterSpecialtyInternal => 'Internal medicine';
+
+  @override
+  String get searchFilterSpecialtyPsychiatrist => 'Psychiatrist';
+
+  @override
   String get searchFilterKupatHolim => 'Health fund';
 
   @override
@@ -441,6 +475,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchFilterDistanceAny => 'No limit';
+
+  @override
+  String searchFilterDistanceKmValue(String value) {
+    return '$value km';
+  }
+
+  @override
+  String get searchFilterDistanceKm1 => '1 km';
+
+  @override
+  String get searchFilterDistanceKm50Plus => '50+ km';
 
   @override
   String get searchFilterApply => 'Apply filters';

@@ -127,26 +127,6 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> addRelativeDemo() async {
-    // In production, this is a no-op placeholder. Real relative creation
-    // happens through a dedicated form that calls addRelativeAsync().
-    // For now, we keep backward compat with the demo flow.
-    try {
-      await remote.addRelativeAsync(
-        firstName: 'Nouveau',
-        lastName: 'Proche',
-        teudatZehut: '123456789',
-        relation: 'other',
-      );
-      return const Right(unit);
-    } on ServerException catch (e) {
-      return Left(Failure(e.message));
-    } catch (_) {
-      return Left(Failure(l10nStatic.errorUnableToAddRelative));
-    }
-  }
-
-  @override
   Future<Either<Failure, List<PaymentMethod>>> listPaymentMethods() async {
     try {
       final methods = await remote.listPaymentMethodsAsync();
@@ -155,23 +135,6 @@ class AccountRepositoryImpl implements AccountRepository {
       return Left(Failure(e.message));
     } catch (_) {
       return Left(Failure(l10nStatic.errorUnableToLoadPayments));
-    }
-  }
-
-  @override
-  Future<Either<Failure, Unit>> addPaymentMethodDemo() async {
-    try {
-      await remote.addPaymentMethodAsync(
-        brand: 'Visa',
-        last4: '4242',
-        expiryMonth: 12,
-        expiryYear: 2027,
-      );
-      return const Right(unit);
-    } on ServerException catch (e) {
-      return Left(Failure(e.message));
-    } catch (_) {
-      return Left(Failure(l10nStatic.errorUnableToAddPaymentMethod));
     }
   }
 

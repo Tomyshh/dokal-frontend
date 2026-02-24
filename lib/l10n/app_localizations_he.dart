@@ -395,6 +395,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get searchNoResultsSubtitle => 'נסה מונח אחר.';
 
   @override
+  String get searchLocationUnavailable =>
+      'חיפוש ללא מיון לפי מרחק (מיקום לא זמין)';
+
+  @override
   String get searchFilterTitle => 'סינון תוצאות';
 
   @override
@@ -422,6 +426,36 @@ class AppLocalizationsHe extends AppLocalizations {
   String get searchFilterSpecialtyAll => 'כל ההתמחויות';
 
   @override
+  String get searchFilterSpecialtyFamily => 'רופא משפחה';
+
+  @override
+  String get searchFilterSpecialtyOphthalmologist => 'רופא עיניים';
+
+  @override
+  String get searchFilterSpecialtyCardiologist => 'קרדיולוג';
+
+  @override
+  String get searchFilterSpecialtyDermatologist => 'רופא עור';
+
+  @override
+  String get searchFilterSpecialtyPediatrician => 'רופא ילדים';
+
+  @override
+  String get searchFilterSpecialtyGynecologist => 'גינקולוגית';
+
+  @override
+  String get searchFilterSpecialtyOrthopedist => 'אורטופד';
+
+  @override
+  String get searchFilterSpecialtyNeurologist => 'נוירולוג';
+
+  @override
+  String get searchFilterSpecialtyInternal => 'רופא פנימי';
+
+  @override
+  String get searchFilterSpecialtyPsychiatrist => 'פסיכיאטר';
+
+  @override
   String get searchFilterKupatHolim => 'קופת חולים';
 
   @override
@@ -432,6 +466,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get searchFilterDistanceAny => 'ללא הגבלה';
+
+  @override
+  String searchFilterDistanceKmValue(String value) {
+    return '$value ק\"מ';
+  }
+
+  @override
+  String get searchFilterDistanceKm1 => '1 ק\"מ';
+
+  @override
+  String get searchFilterDistanceKm50Plus => '50+ ק\"מ';
 
   @override
   String get searchFilterApply => 'החל סינון';

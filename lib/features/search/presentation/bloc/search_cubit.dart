@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../domain/entities/practitioner_search_result.dart';
 import '../../domain/usecases/search_practitioners.dart';
@@ -28,8 +29,37 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> search() async {
     if (isClosed) return;
-    emit(state.copyWith(status: SearchStatus.loading));
-    final res = await _searchPractitioners(state.query);
+    emit(state.copyWith(status: SearchStatus.loading, locationUnavailable: false));
+    double? lat;
+    double? lng;
+    bool locationUnavailable = false;
+    try {
+      final enabled = await Geolocator.isLocationServiceEnabled();
+      if (enabled) {
+        var permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+        }
+        if (permission == LocationPermission.whileInUse ||
+            permission == LocationPermission.always) {
+          final pos = await Geolocator.getCurrentPosition(
+            locationSettings: const LocationSettings(
+              accuracy: LocationAccuracy.medium,
+              timeLimit: Duration(seconds: 8),
+            ),
+          );
+          lat = pos.latitude;
+          lng = pos.longitude;
+        } else {
+          locationUnavailable = true;
+        }
+      } else {
+        locationUnavailable = true;
+      }
+    } catch (_) {
+      locationUnavailable = true;
+    }
+    final res = await _searchPractitioners(state.query, lat: lat, lng: lng);
     if (isClosed) return;
     res.fold(
       (f) =>
@@ -48,6 +78,7 @@ class SearchCubit extends Cubit<SearchState> {
                 status: SearchStatus.success,
                 results: items,
                 error: null,
+                locationUnavailable: locationUnavailable,
               ),
             ),
     );

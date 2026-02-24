@@ -24,21 +24,4 @@ class HealthRepositoryImpl implements HealthRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, Unit>> addDemo(HealthListType type) async {
-    try {
-      final name = switch (type) {
-        HealthListType.conditions => 'New condition',
-        HealthListType.medications => 'New medication',
-        HealthListType.allergies => 'New allergy',
-        HealthListType.vaccinations => 'New vaccination',
-      };
-      await remote.addItemAsync(type, name);
-      return const Right(unit);
-    } on ServerException catch (e) {
-      return Left(Failure(e.message));
-    } catch (_) {
-      return Left(Failure(l10nStatic.errorUnableToAddHealthItem));
-    }
-  }
 }

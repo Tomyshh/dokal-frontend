@@ -1,36 +1,28 @@
-import 'dart:io';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-const _kStoredPushTokenKey = 'fcm_push_token';
+import 'onesignal_service.dart';
 
-/// Service pour gérer les tokens FCM et les permissions push.
+/// Service pour gérer les tokens push OneSignal et les permissions.
 /// Utilisé lors de l'activation/désactivation des notifications dans les paramètres.
+/// Délègue à [OneSignalService] pour l'implémentation.
 class PushNotificationService {
-  PushNotificationService(this._messaging, this._prefs);
+  PushNotificationService(this._oneSignal);
 
-  final FirebaseMessaging _messaging;
-  final SharedPreferences _prefs;
+  final OneSignalService _oneSignal;
 
-  /// Demande la permission push (requis sur iOS avant getToken).
+  /// Demande la permission push (requis sur iOS avant optIn).
   Future<bool> requestPermission() async {
-    if (!Platform.isIOS) return true;
-    final settings = await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-    return settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional;
+    return _oneSignal.requestPermission();
   }
 
-  /// Récupère le token FCM actuel.
+  /// Récupère le token (subscription ID) OneSignal.
+  /// Appelle optIn puis attend que le token soit disponible.
   /// Retourne null si la permission est refusée ou en cas d'erreur.
   Future<String?> getToken() async {
     try {
-      return await _messaging.getToken();
+      await _oneSignal.optIn();
+      // Le token peut ne pas être disponible immédiatement
+      return _oneSignal.waitForToken();
     } catch (e) {
       if (kDebugMode) {
         debugPrint('[PushNotificationService] getToken error: $e');
@@ -40,22 +32,23 @@ class PushNotificationService {
   }
 
   /// Token enregistré côté backend (pour le retirer lors de la désactivation).
-  String? get storedToken => _prefs.getString(_kStoredPushTokenKey);
+  String? get storedToken => _oneSignal.storedToken;
 
   /// Enregistre le token localement après envoi au backend.
   Future<void> storeToken(String token) async {
-    await _prefs.setString(_kStoredPushTokenKey, token);
+    await _oneSignal.storeToken(token);
   }
 
   /// Supprime le token stocké après retrait côté backend.
   Future<void> clearStoredToken() async {
-    await _prefs.remove(_kStoredPushTokenKey);
+    await _oneSignal.clearStoredToken();
+  }
+
+  /// Désactive les notifications push sur l'appareil (opt-out OneSignal).
+  Future<void> optOut() async {
+    await _oneSignal.optOut();
   }
 
   /// Plateforme pour l'enregistrement backend (android | ios).
-  static String get platform {
-    if (Platform.isAndroid) return 'android';
-    if (Platform.isIOS) return 'ios';
-    return 'unknown';
-  }
+  static String get platform => OneSignalService.platform;
 }

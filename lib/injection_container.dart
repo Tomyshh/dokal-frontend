@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/notifiers/appointment_refresh_notifier.dart';
+import 'core/services/onesignal_service.dart';
 import 'core/services/push_notification_service.dart';
 import 'core/notifiers/messages_refresh_notifier.dart';
 import 'core/permissions/permissions_service.dart';
@@ -80,7 +80,6 @@ import 'features/health/data/repositories/health_repository_impl.dart';
 import 'features/health/data/repositories/health_profile_repository_impl.dart';
 import 'features/health/domain/repositories/health_repository.dart';
 import 'features/health/domain/repositories/health_profile_repository.dart';
-import 'features/health/domain/usecases/add_health_item_demo.dart';
 import 'features/health/domain/usecases/get_health_list.dart';
 import 'features/health/domain/usecases/get_health_profile.dart';
 import 'features/health/domain/usecases/save_health_profile.dart';
@@ -89,9 +88,7 @@ import 'features/health/presentation/bloc/health_profile_cubit.dart';
 import 'features/account/data/datasources/account_remote_data_source.dart';
 import 'features/account/data/repositories/account_repository_impl.dart';
 import 'features/account/domain/repositories/account_repository.dart';
-import 'features/account/domain/usecases/add_payment_method_demo.dart';
 import 'features/account/domain/usecases/add_relative.dart';
-import 'features/account/domain/usecases/add_relative_demo.dart';
 import 'features/account/domain/usecases/delete_relative.dart';
 import 'features/account/domain/usecases/update_relative.dart';
 import 'features/account/domain/usecases/upload_relative_avatar.dart';
@@ -157,12 +154,12 @@ void configureDependencies() {
     () => FirebaseCrashlytics.instance,
   );
 
-  // Firebase Push Notifications
+  // Push Notifications (OneSignal)
+  sl.registerLazySingleton<OneSignalService>(
+    () => OneSignalService(sl<SharedPreferences>()),
+  );
   sl.registerLazySingleton<PushNotificationService>(
-    () => PushNotificationService(
-      FirebaseMessaging.instance,
-      sl<SharedPreferences>(),
-    ),
+    () => PushNotificationService(sl<OneSignalService>()),
   );
 
   // Supabase
@@ -486,12 +483,10 @@ void configureDependencies() {
     () => HealthRepositoryImpl(remote: sl<HealthRemoteDataSourceImpl>()),
   );
   sl.registerLazySingleton(() => GetHealthList(sl<HealthRepository>()));
-  sl.registerLazySingleton(() => AddHealthItemDemo(sl<HealthRepository>()));
   sl.registerFactoryParam<HealthListCubit, HealthListType, void>(
     (type, _) => HealthListCubit(
       type: type,
       getHealthList: sl<GetHealthList>(),
-      addHealthItemDemo: sl<AddHealthItemDemo>(),
     )..load(),
   );
 
@@ -531,11 +526,9 @@ void configureDependencies() {
   sl.registerLazySingleton(() => GetProfile(sl<AccountRepository>()));
   sl.registerLazySingleton(() => GetRelatives(sl<AccountRepository>()));
   sl.registerLazySingleton(() => AddRelative(sl<AccountRepository>()));
-  sl.registerLazySingleton(() => AddRelativeDemo(sl<AccountRepository>()));
   sl.registerLazySingleton(() => UpdateRelative(sl<AccountRepository>()));
   sl.registerLazySingleton(() => DeleteRelative(sl<AccountRepository>()));
   sl.registerLazySingleton(() => GetPaymentMethods(sl<AccountRepository>()));
-  sl.registerLazySingleton(() => AddPaymentMethodDemo(sl<AccountRepository>()));
   sl.registerLazySingleton(() => UpdateProfile(sl<AccountRepository>()));
   sl.registerLazySingleton(() => UploadAvatar(sl<AccountRepository>()));
   sl.registerLazySingleton(() => DeletePaymentMethod(sl<AccountRepository>()));
@@ -555,7 +548,6 @@ void configureDependencies() {
     () => RelativesCubit(
       getRelatives: sl<GetRelatives>(),
       getProfile: sl<GetProfile>(),
-      addRelativeDemo: sl<AddRelativeDemo>(),
     )..load(),
   );
   sl.registerFactory(
@@ -586,7 +578,6 @@ void configureDependencies() {
   sl.registerFactory(
     () => PaymentCubit(
       getPaymentMethods: sl<GetPaymentMethods>(),
-      addPaymentMethodDemo: sl<AddPaymentMethodDemo>(),
     )..load(),
   );
   sl.registerFactory(
@@ -643,7 +634,6 @@ void configureDependencies() {
     () => BookingPatientsCubit(
       getProfile: sl<GetProfile>(),
       getRelatives: sl<GetRelatives>(),
-      addRelativeDemo: sl<AddRelativeDemo>(),
     )..load(),
   );
 

@@ -838,6 +838,12 @@ abstract class AppLocalizations {
   /// **'נסה מונח אחר.'**
   String get searchNoResultsSubtitle;
 
+  /// No description provided for @searchLocationUnavailable.
+  ///
+  /// In he, this message translates to:
+  /// **'חיפוש ללא מיון לפי מרחק (מיקום לא זמין)'**
+  String get searchLocationUnavailable;
+
   /// No description provided for @searchFilterTitle.
   ///
   /// In he, this message translates to:
@@ -892,6 +898,66 @@ abstract class AppLocalizations {
   /// **'כל ההתמחויות'**
   String get searchFilterSpecialtyAll;
 
+  /// No description provided for @searchFilterSpecialtyFamily.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא משפחה'**
+  String get searchFilterSpecialtyFamily;
+
+  /// No description provided for @searchFilterSpecialtyOphthalmologist.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא עיניים'**
+  String get searchFilterSpecialtyOphthalmologist;
+
+  /// No description provided for @searchFilterSpecialtyCardiologist.
+  ///
+  /// In he, this message translates to:
+  /// **'קרדיולוג'**
+  String get searchFilterSpecialtyCardiologist;
+
+  /// No description provided for @searchFilterSpecialtyDermatologist.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא עור'**
+  String get searchFilterSpecialtyDermatologist;
+
+  /// No description provided for @searchFilterSpecialtyPediatrician.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא ילדים'**
+  String get searchFilterSpecialtyPediatrician;
+
+  /// No description provided for @searchFilterSpecialtyGynecologist.
+  ///
+  /// In he, this message translates to:
+  /// **'גינקולוגית'**
+  String get searchFilterSpecialtyGynecologist;
+
+  /// No description provided for @searchFilterSpecialtyOrthopedist.
+  ///
+  /// In he, this message translates to:
+  /// **'אורטופד'**
+  String get searchFilterSpecialtyOrthopedist;
+
+  /// No description provided for @searchFilterSpecialtyNeurologist.
+  ///
+  /// In he, this message translates to:
+  /// **'נוירולוג'**
+  String get searchFilterSpecialtyNeurologist;
+
+  /// No description provided for @searchFilterSpecialtyInternal.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא פנימי'**
+  String get searchFilterSpecialtyInternal;
+
+  /// No description provided for @searchFilterSpecialtyPsychiatrist.
+  ///
+  /// In he, this message translates to:
+  /// **'פסיכיאטר'**
+  String get searchFilterSpecialtyPsychiatrist;
+
   /// No description provided for @searchFilterKupatHolim.
   ///
   /// In he, this message translates to:
@@ -915,6 +981,24 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'ללא הגבלה'**
   String get searchFilterDistanceAny;
+
+  /// No description provided for @searchFilterDistanceKmValue.
+  ///
+  /// In he, this message translates to:
+  /// **'{value} ק\"מ'**
+  String searchFilterDistanceKmValue(String value);
+
+  /// No description provided for @searchFilterDistanceKm1.
+  ///
+  /// In he, this message translates to:
+  /// **'1 ק\"מ'**
+  String get searchFilterDistanceKm1;
+
+  /// No description provided for @searchFilterDistanceKm50Plus.
+  ///
+  /// In he, this message translates to:
+  /// **'50+ ק\"מ'**
+  String get searchFilterDistanceKm50Plus;
 
   /// No description provided for @searchFilterApply.
   ///

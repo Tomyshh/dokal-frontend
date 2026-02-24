@@ -1,31 +1,10 @@
 import '../../../../core/network/api_client.dart';
-import 'booking_demo_data_source.dart';
 
-/// Remote implementation of [BookingDemoDataSource] backed by the Dokal
-/// backend REST API.
-class BookingRemoteDataSourceImpl implements BookingDemoDataSource {
+/// Remote datasource for booking backed by the Dokal backend REST API.
+class BookingRemoteDataSourceImpl {
   BookingRemoteDataSourceImpl({required this.api});
 
   final ApiClient api;
-
-  @override
-  Future<String> confirm({
-    required String practitionerId,
-    required String reason,
-    required String patientLabel,
-    required String slotLabel,
-    required String addressLine,
-    required String zipCode,
-    required String city,
-    required bool visitedBefore,
-  }) async {
-    // Parse slotLabel ("Monday, February 3, 2026 • 11:00") into date + time
-    // The slot is selected from real backend slots so we receive structured
-    // data via an extended confirm method.  For backwards compat we fallback
-    // to passing raw strings if the structured data is not available.
-    // The repository will call confirmStructured() directly in production.
-    throw UnimplementedError('Use confirmStructured instead');
-  }
 
   /// Production booking call with structured slot data.
   /// Address fields can be empty; API accepts nullable values.

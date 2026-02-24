@@ -394,6 +394,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get searchNoResultsSubtitle => 'ሌላ ቃል ሞክር።';
 
   @override
+  String get searchLocationUnavailable => 'በርቀት ያለው ደርድር ያለ ፍለጋ (ቦታ አይገኝም)';
+
+  @override
   String get searchFilterTitle => 'ውጤቶችን አጣራ';
 
   @override
@@ -421,6 +424,36 @@ class AppLocalizationsAm extends AppLocalizations {
   String get searchFilterSpecialtyAll => 'ሁሉም ስፔሻሊቲዎች';
 
   @override
+  String get searchFilterSpecialtyFamily => 'የቤተሰብ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyOphthalmologist => 'የዓይን ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyCardiologist => 'የልብ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyDermatologist => 'የቆዳ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyPediatrician => 'የህፃናት ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyGynecologist => 'የሴቶች ጤና ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyOrthopedist => 'የአጥንት ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyNeurologist => 'የነርቭ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyInternal => 'የውስጥ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyPsychiatrist => 'የአእምሮ ሐኪም';
+
+  @override
   String get searchFilterKupatHolim => 'የጤና ፈንድ';
 
   @override
@@ -431,6 +464,17 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get searchFilterDistanceAny => 'ያለ ገደብ';
+
+  @override
+  String searchFilterDistanceKmValue(String value) {
+    return '$value ኪ.ሜ';
+  }
+
+  @override
+  String get searchFilterDistanceKm1 => '1 ኪ.ሜ';
+
+  @override
+  String get searchFilterDistanceKm50Plus => '50+ ኪ.ሜ';
 
   @override
   String get searchFilterApply => 'ማጣሪያዎችን ተግብር';

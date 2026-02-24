@@ -403,6 +403,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchNoResultsSubtitle => 'Попробуйте другой запрос.';
 
   @override
+  String get searchLocationUnavailable =>
+      'Поиск без сортировки по расстоянию (геолокация недоступна)';
+
+  @override
   String get searchFilterTitle => 'Фильтр результатов';
 
   @override
@@ -430,6 +434,36 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchFilterSpecialtyAll => 'Все специальности';
 
   @override
+  String get searchFilterSpecialtyFamily => 'Врач общей практики';
+
+  @override
+  String get searchFilterSpecialtyOphthalmologist => 'Офтальмолог';
+
+  @override
+  String get searchFilterSpecialtyCardiologist => 'Кардиолог';
+
+  @override
+  String get searchFilterSpecialtyDermatologist => 'Дерматолог';
+
+  @override
+  String get searchFilterSpecialtyPediatrician => 'Педиатр';
+
+  @override
+  String get searchFilterSpecialtyGynecologist => 'Гинеколог';
+
+  @override
+  String get searchFilterSpecialtyOrthopedist => 'Ортопед';
+
+  @override
+  String get searchFilterSpecialtyNeurologist => 'Невролог';
+
+  @override
+  String get searchFilterSpecialtyInternal => 'Терапевт';
+
+  @override
+  String get searchFilterSpecialtyPsychiatrist => 'Психиатр';
+
+  @override
   String get searchFilterKupatHolim => 'Больничная касса';
 
   @override
@@ -440,6 +474,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get searchFilterDistanceAny => 'Без ограничения';
+
+  @override
+  String searchFilterDistanceKmValue(String value) {
+    return '$value км';
+  }
+
+  @override
+  String get searchFilterDistanceKm1 => '1 км';
+
+  @override
+  String get searchFilterDistanceKm50Plus => '50+ км';
 
   @override
   String get searchFilterApply => 'Применить фильтры';

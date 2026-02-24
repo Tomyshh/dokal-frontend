@@ -15,13 +15,15 @@ class SearchRepositoryImpl implements SearchRepository {
   @override
   Future<Either<Failure, List<PractitionerSearchResult>>> search({
     required String query,
+    double? lat,
+    double? lng,
   }) async {
     try {
-      var results = await remote.searchAsync(query);
+      var results = await remote.searchAsync(query, lat: lat, lng: lng);
       // Si le backend retourne vide avec une requête, tenter sans filtre
       // puis filtrer côté client (le backend peut être trop strict)
       if (results.isEmpty && query.trim().isNotEmpty) {
-        final all = await remote.searchAsync('');
+        final all = await remote.searchAsync('', lat: lat, lng: lng);
         final q = query.trim().toLowerCase();
         results = all.where((p) {
           return p.name.toLowerCase().contains(q) ||

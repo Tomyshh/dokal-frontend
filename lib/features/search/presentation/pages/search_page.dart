@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/utils/language_filter_utils.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
@@ -18,6 +20,23 @@ import '../bloc/search_cubit.dart';
 
 /// Options de tri disponibles
 enum SortOption { availability, distance, name, rating, price }
+
+extension SortOptionX on SortOption {
+  IconData get icon {
+    switch (this) {
+      case SortOption.availability:
+        return Icons.schedule_rounded;
+      case SortOption.distance:
+        return Icons.near_me_rounded;
+      case SortOption.name:
+        return Icons.sort_by_alpha_rounded;
+      case SortOption.rating:
+        return Icons.star_rounded;
+      case SortOption.price:
+        return Icons.payments_rounded;
+    }
+  }
+}
 
 /// Plage de prix pour le filtre (agorot = ILS × 100)
 enum PriceRangeFilter {
@@ -35,41 +54,97 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
+/// État complet des filtres de recherche
+class _SearchFilters {
+  const _SearchFilters({
+    this.dateFilter,
+    this.specialtyFilter,
+    this.kupatFilter,
+    this.languageFilter,
+    this.priceFilter = PriceRangeFilter.all,
+    this.maxDistanceKm = 50,
+  });
+
+  final String? dateFilter;
+  final String? specialtyFilter;
+  final String? kupatFilter;
+  final String? languageFilter;
+  final PriceRangeFilter priceFilter;
+  final double maxDistanceKm;
+
+  _SearchFilters copyWith({
+    String? dateFilter,
+    String? specialtyFilter,
+    String? kupatFilter,
+    String? languageFilter,
+    PriceRangeFilter? priceFilter,
+    double? maxDistanceKm,
+  }) =>
+      _SearchFilters(
+        dateFilter: dateFilter ?? this.dateFilter,
+        specialtyFilter: specialtyFilter ?? this.specialtyFilter,
+        kupatFilter: kupatFilter ?? this.kupatFilter,
+        languageFilter: languageFilter ?? this.languageFilter,
+        priceFilter: priceFilter ?? this.priceFilter,
+        maxDistanceKm: maxDistanceKm ?? this.maxDistanceKm,
+      );
+}
+
 class _SearchPageState extends State<SearchPage> {
   SortOption _currentSort = SortOption.availability;
-  PriceRangeFilter _priceFilter = PriceRangeFilter.all;
-  String? _languageFilter;
+  _SearchFilters _filters = const _SearchFilters();
 
   List<PractitionerSearchResult> _applyFilters(
     List<PractitionerSearchResult> results,
   ) {
     var filtered = results;
-    if (_priceFilter != PriceRangeFilter.all) {
-      filtered = filtered.where((p) {
-      final min = p.priceMinAgorot;
-      final max = p.priceMaxAgorot ?? min;
-      final effectiveMax = max ?? min ?? 0;
-      final effectiveMin = min ?? max ?? 0;
-      switch (_priceFilter) {
-        case PriceRangeFilter.under200:
-          return effectiveMax <= 20000;
-        case PriceRangeFilter.range200_300:
-          return effectiveMin <= 30000 && effectiveMax >= 20000;
-        case PriceRangeFilter.range300_500:
-          return effectiveMin <= 50000 && effectiveMax >= 30000;
-        case PriceRangeFilter.over500:
-          return effectiveMin >= 50000;
-        default:
-          return true;
-      }
-    }).toList();
+    final f = _filters;
+
+    if (f.dateFilter != null && f.dateFilter!.isNotEmpty) {
+      filtered = filtered
+          .where((p) => dateMatchesFilter(f.dateFilter, p.nextAvailabilityLabel))
+          .toList();
     }
-    if (_languageFilter != null && _languageFilter!.isNotEmpty) {
-      final lang = _languageFilter!.trim().toLowerCase();
+    if (f.specialtyFilter != null && f.specialtyFilter!.isNotEmpty) {
+      filtered = filtered
+          .where((p) => specialtyMatchesFilter(f.specialtyFilter, p.specialty))
+          .toList();
+    }
+    if (f.kupatFilter != null && f.kupatFilter!.isNotEmpty) {
+      filtered = filtered
+          .where((p) => kupatMatchesFilter(f.kupatFilter, p.sector))
+          .toList();
+    }
+    if (f.languageFilter != null && f.languageFilter!.isNotEmpty) {
+      filtered = filtered
+          .where((p) => languageMatchesFilter(f.languageFilter, p.languages))
+          .toList();
+    }
+    if (f.priceFilter != PriceRangeFilter.all) {
       filtered = filtered.where((p) {
-        final langs = p.languages;
-        if (langs == null || langs.isEmpty) return false;
-        return langs.any((l) => l.trim().toLowerCase() == lang);
+        final min = p.priceMinAgorot;
+        final max = p.priceMaxAgorot ?? min;
+        final effectiveMax = max ?? min ?? 0;
+        final effectiveMin = min ?? max ?? 0;
+        switch (f.priceFilter) {
+          case PriceRangeFilter.under200:
+            return effectiveMax <= 20000;
+          case PriceRangeFilter.range200_300:
+            return effectiveMin <= 30000 && effectiveMax >= 20000;
+          case PriceRangeFilter.range300_500:
+            return effectiveMin <= 50000 && effectiveMax >= 30000;
+          case PriceRangeFilter.over500:
+            return effectiveMin >= 50000;
+          default:
+            return true;
+        }
+      }).toList();
+    }
+    if (f.maxDistanceKm < 50) {
+      filtered = filtered.where((p) {
+        final km = p.distanceKm;
+        if (km == null) return false;
+        return km <= f.maxDistanceKm;
       }).toList();
     }
     return filtered;
@@ -126,16 +201,16 @@ class _SearchPageState extends State<SearchPage> {
                 _SearchBar(
                   currentSort: _currentSort,
                   onSortChanged: (sort) => setState(() => _currentSort = sort),
-                  priceFilter: _priceFilter,
-                  onPriceFilterChanged: (f) =>
-                      setState(() => _priceFilter = f),
-                  languageFilter: _languageFilter,
-                  onLanguageFilterChanged: (l) =>
-                      setState(() => _languageFilter = l),
+                  filters: _filters,
+                  onFiltersChanged: (f) => setState(() => _filters = f),
                 ),
                 SizedBox(height: AppSpacing.md.h),
                 Expanded(
                   child: BlocBuilder<SearchCubit, SearchState>(
+                    buildWhen: (p, n) =>
+                        p.status != n.status ||
+                        p.results != n.results ||
+                        p.locationUnavailable != n.locationUnavailable,
                     builder: (context, state) {
                       if (state.status == SearchStatus.loading) {
                         return Padding(
@@ -161,7 +236,49 @@ class _SearchPageState extends State<SearchPage> {
                           icon: Icons.search_rounded,
                         );
                       }
-                      return ListView.separated(
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (state.locationUnavailable)
+                            Container(
+                              margin: EdgeInsets.only(bottom: AppSpacing.sm.h),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppSpacing.md.w,
+                                vertical: AppSpacing.sm.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.locationIndicatorLight,
+                                borderRadius:
+                                    BorderRadius.circular(AppRadii.sm.r),
+                                border: Border.all(
+                                  color: AppColors.locationIndicator
+                                      .withValues(alpha: 0.4),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_off_rounded,
+                                    size: 18.sp,
+                                    color: AppColors.locationIndicator,
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Expanded(
+                                    child: Text(
+                                      l10n.searchLocationUnavailable,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: AppColors.locationIndicator,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          Expanded(
+                            child: ListView.separated(
                         padding: EdgeInsets.only(bottom: AppSpacing.lg.h),
                         itemCount: results.length,
                         separatorBuilder: (context, index) =>
@@ -184,6 +301,9 @@ class _SearchPageState extends State<SearchPage> {
                             },
                           );
                         },
+                      ),
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -197,22 +317,30 @@ class _SearchPageState extends State<SearchPage> {
   }
 }
 
+/// Nombre de filtres actifs (hors options "Tout..." par défaut)
+int _activeFilterCount(_SearchFilters f) {
+  int count = 0;
+  if (f.dateFilter != null && f.dateFilter!.isNotEmpty) count++;
+  if (f.specialtyFilter != null && f.specialtyFilter!.isNotEmpty) count++;
+  if (f.kupatFilter != null && f.kupatFilter!.isNotEmpty) count++;
+  if (f.languageFilter != null && f.languageFilter!.isNotEmpty) count++;
+  if (f.priceFilter != PriceRangeFilter.all) count++;
+  if (f.maxDistanceKm < 50) count++;
+  return count;
+}
+
 class _SearchBar extends StatelessWidget {
   const _SearchBar({
     required this.currentSort,
     required this.onSortChanged,
-    required this.priceFilter,
-    required this.onPriceFilterChanged,
-    required this.languageFilter,
-    required this.onLanguageFilterChanged,
+    required this.filters,
+    required this.onFiltersChanged,
   });
 
   final SortOption currentSort;
   final ValueChanged<SortOption> onSortChanged;
-  final PriceRangeFilter priceFilter;
-  final ValueChanged<PriceRangeFilter> onPriceFilterChanged;
-  final String? languageFilter;
-  final ValueChanged<String?> onLanguageFilterChanged;
+  final _SearchFilters filters;
+  final ValueChanged<_SearchFilters> onFiltersChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +400,7 @@ class _SearchBar extends StatelessWidget {
                   },
                 ),
               ),
-              // Bouton de tri
+              // Bouton de tri (icône du tri actif en overlay en haut à droite)
               GestureDetector(
                 onTap: () => _showSortMenu(context),
                 child: Container(
@@ -280,54 +408,133 @@ class _SearchBar extends StatelessWidget {
                   height: 36.r,
                   decoration: BoxDecoration(
                     color: currentSort != SortOption.availability ||
-                            priceFilter != PriceRangeFilter.all ||
-                            languageFilter != null
+                            _activeFilterCount(filters) > 0
                         ? AppColors.accent.withValues(alpha: 0.1)
                         : AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(10.r),
                     border: currentSort != SortOption.availability ||
-                            priceFilter != PriceRangeFilter.all ||
-                            languageFilter != null
+                            _activeFilterCount(filters) > 0
                         ? Border.all(
                             color: AppColors.accent.withValues(alpha: 0.3),
                             width: 1.r,
                           )
                         : null,
                   ),
-                  child: Icon(
-                    Icons.swap_vert_rounded,
-                    color: currentSort != SortOption.availability
-                        ? AppColors.accent
-                        : AppColors.textSecondary,
-                    size: 18.sp,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      Icon(
+                        Icons.swap_vert_rounded,
+                        color: currentSort != SortOption.availability
+                            ? AppColors.accent
+                            : AppColors.textSecondary,
+                        size: 18.sp,
+                      ),
+                      Positioned(
+                        top: -2.r,
+                        right: -2.r,
+                        child: Container(
+                          width: 14.r,
+                          height: 14.r,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: currentSort != SortOption.availability
+                                  ? AppColors.accent
+                                  : AppColors.textSecondary.withValues(
+                                      alpha: 0.5,
+                                    ),
+                              width: 1.r,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.08),
+                                blurRadius: 4.r,
+                                offset: Offset(0, 1.r),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            currentSort.icon,
+                            size: 9.sp,
+                            color: currentSort != SortOption.availability
+                                ? AppColors.accent
+                                : AppColors.textSecondary,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               SizedBox(width: 8.w),
-              // Bouton de filtre
+              // Bouton de filtre (badge avec nombre de filtres actifs hors "Tout...")
               GestureDetector(
-                onTap: () => _showFilterBottomSheet(context),
+                onTap: () async => _showFilterBottomSheet(context),
                 child: Container(
                   width: 36.r,
                   height: 36.r,
                   decoration: BoxDecoration(
-                    color: priceFilter != PriceRangeFilter.all ||
-                            languageFilter != null
+                    color: _activeFilterCount(filters) > 0
                         ? AppColors.primary.withValues(alpha: 0.1)
                         : AppColors.primaryLightBackground,
                     borderRadius: BorderRadius.circular(10.r),
-                    border: priceFilter != PriceRangeFilter.all ||
-                            languageFilter != null
+                    border: _activeFilterCount(filters) > 0
                         ? Border.all(
                             color: AppColors.primary.withValues(alpha: 0.3),
                             width: 1.r,
                           )
                         : null,
                   ),
-                  child: Icon(
-                    Icons.tune_rounded,
-                    color: AppColors.primary,
-                    size: 20.sp,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      Icon(
+                        Icons.tune_rounded,
+                        color: AppColors.primary,
+                        size: 20.sp,
+                      ),
+                      if (_activeFilterCount(filters) > 0)
+                        Positioned(
+                          top: -4.r,
+                          right: -4.r,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              minWidth: 16.r,
+                              minHeight: 16.r,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 4.r,
+                              vertical: 2.r,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(8.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.15),
+                                  blurRadius: 4.r,
+                                  offset: Offset(0, 1.r),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${_activeFilterCount(filters)}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
@@ -465,21 +672,23 @@ class _SearchBar extends StatelessWidget {
     );
   }
 
-  void _showFilterBottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
+  Future<void> _showFilterBottomSheet(BuildContext context) async {
+    final result = await showModalBottomSheet<_FilterApplyResult>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => _FilterBottomSheet(
-        initialPriceFilter: priceFilter,
-        initialLanguageFilter: languageFilter,
-        onApply: (priceFilter, languageFilter) {
-          onPriceFilterChanged(priceFilter);
-          onLanguageFilterChanged(languageFilter);
-          Navigator.of(ctx).pop();
-        },
-      ),
+      builder: (ctx) => _FilterBottomSheet(initialFilters: filters),
     );
+    if (result != null && context.mounted) {
+      onFiltersChanged(_SearchFilters(
+        dateFilter: result.dateFilter,
+        specialtyFilter: result.specialtyFilter,
+        kupatFilter: result.kupatFilter,
+        languageFilter: result.languageFilter,
+        priceFilter: result.priceFilter,
+        maxDistanceKm: result.maxDistanceKm,
+      ));
+    }
   }
 }
 
@@ -568,17 +777,20 @@ class _SortOptionTile extends StatelessWidget {
   }
 }
 
-class _FilterBottomSheet extends StatefulWidget {
-  const _FilterBottomSheet({
-    required this.initialPriceFilter,
-    required this.initialLanguageFilter,
-    required this.onApply,
-  });
+/// Résultat des filtres appliqués (pour persistance via Navigator.pop)
+typedef _FilterApplyResult = ({
+  String? dateFilter,
+  String? specialtyFilter,
+  String? kupatFilter,
+  String? languageFilter,
+  PriceRangeFilter priceFilter,
+  double maxDistanceKm,
+});
 
-  final PriceRangeFilter initialPriceFilter;
-  final String? initialLanguageFilter;
-  final void Function(PriceRangeFilter priceFilter, String? languageFilter)
-      onApply;
+class _FilterBottomSheet extends StatefulWidget {
+  const _FilterBottomSheet({required this.initialFilters});
+
+  final _SearchFilters initialFilters;
 
   @override
   State<_FilterBottomSheet> createState() => _FilterBottomSheetState();
@@ -613,6 +825,48 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
     }
   }
 
+  String _getSpecialtyLabel(dynamic l10n, String l10nKey) {
+    switch (l10nKey) {
+      case 'searchFilterSpecialtyFamily':
+        return l10n.searchFilterSpecialtyFamily;
+      case 'searchFilterSpecialtyOphthalmologist':
+        return l10n.searchFilterSpecialtyOphthalmologist;
+      case 'searchFilterSpecialtyCardiologist':
+        return l10n.searchFilterSpecialtyCardiologist;
+      case 'searchFilterSpecialtyDermatologist':
+        return l10n.searchFilterSpecialtyDermatologist;
+      case 'searchFilterSpecialtyPediatrician':
+        return l10n.searchFilterSpecialtyPediatrician;
+      case 'searchFilterSpecialtyGynecologist':
+        return l10n.searchFilterSpecialtyGynecologist;
+      case 'searchFilterSpecialtyOrthopedist':
+        return l10n.searchFilterSpecialtyOrthopedist;
+      case 'searchFilterSpecialtyNeurologist':
+        return l10n.searchFilterSpecialtyNeurologist;
+      case 'searchFilterSpecialtyInternal':
+        return l10n.searchFilterSpecialtyInternal;
+      case 'searchFilterSpecialtyPsychiatrist':
+        return l10n.searchFilterSpecialtyPsychiatrist;
+      default:
+        return l10nKey;
+    }
+  }
+
+  String _getKupatLabel(dynamic l10n, String l10nKey) {
+    switch (l10nKey) {
+      case 'kupatClalit':
+        return l10n.kupatClalit;
+      case 'kupatMaccabi':
+        return l10n.kupatMaccabi;
+      case 'kupatMeuhedet':
+        return l10n.kupatMeuhedet;
+      case 'kupatLeumit':
+        return l10n.kupatLeumit;
+      default:
+        return l10nKey;
+    }
+  }
+
   static const List<({String code, String l10nKey})> _languageOptions = [
     (code: 'he', l10nKey: 'practitionerLanguageHebrew'),
     (code: 'fr', l10nKey: 'practitionerLanguageFrench'),
@@ -626,24 +880,33 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
   @override
   void initState() {
     super.initState();
-    _priceFilter = widget.initialPriceFilter;
-    _selectedLanguage = widget.initialLanguageFilter;
+    _selectedDate = widget.initialFilters.dateFilter;
+    _selectedSpecialty = widget.initialFilters.specialtyFilter;
+    _selectedKupat = widget.initialFilters.kupatFilter;
+    _selectedLanguage = widget.initialFilters.languageFilter;
+    _priceFilter = widget.initialFilters.priceFilter;
+    _maxDistance = widget.initialFilters.maxDistanceKm;
   }
 
-  static const List<String> _specialties = [
-    'רופא משפחה',
-    'רופא עיניים',
-    'קרדיולוג',
-    'רופא עור',
-    'רופא ילדים',
-    'גינקולוגית',
-    'אורטופד',
-    'נוירולוג',
-    'רופא פנימי',
-    'פסיכיאטר',
+  static const List<({String key, String l10nKey})> _specialtyOptions = [
+    (key: 'specialty_family', l10nKey: 'searchFilterSpecialtyFamily'),
+    (key: 'specialty_ophthalmologist', l10nKey: 'searchFilterSpecialtyOphthalmologist'),
+    (key: 'specialty_cardiologist', l10nKey: 'searchFilterSpecialtyCardiologist'),
+    (key: 'specialty_dermatologist', l10nKey: 'searchFilterSpecialtyDermatologist'),
+    (key: 'specialty_pediatrician', l10nKey: 'searchFilterSpecialtyPediatrician'),
+    (key: 'specialty_gynecologist', l10nKey: 'searchFilterSpecialtyGynecologist'),
+    (key: 'specialty_orthopedist', l10nKey: 'searchFilterSpecialtyOrthopedist'),
+    (key: 'specialty_neurologist', l10nKey: 'searchFilterSpecialtyNeurologist'),
+    (key: 'specialty_internal', l10nKey: 'searchFilterSpecialtyInternal'),
+    (key: 'specialty_psychiatrist', l10nKey: 'searchFilterSpecialtyPsychiatrist'),
   ];
 
-  static const List<String> _kupatHolim = ['כללית', 'מכבי', 'מאוחדת', 'לאומית'];
+  static const List<({String sector, String l10nKey})> _kupatOptions = [
+    (sector: 'Clalit', l10nKey: 'kupatClalit'),
+    (sector: 'Maccabi', l10nKey: 'kupatMaccabi'),
+    (sector: 'Meuhedet', l10nKey: 'kupatMeuhedet'),
+    (sector: 'Leumit', l10nKey: 'kupatLeumit'),
+  ];
 
   int get _activeFilterCount {
     int count = 0;
@@ -779,11 +1042,11 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                           onTap: () =>
                               setState(() => _selectedSpecialty = null),
                         ),
-                        ..._specialties.map(
-                          (s) => _FilterChip(
-                            label: s,
-                            isSelected: _selectedSpecialty == s,
-                            onTap: () => setState(() => _selectedSpecialty = s),
+                        ..._specialtyOptions.map(
+                          (opt) => _FilterChip(
+                            label: _getSpecialtyLabel(l10n, opt.l10nKey),
+                            isSelected: _selectedSpecialty == opt.key,
+                            onTap: () => setState(() => _selectedSpecialty = opt.key),
                           ),
                         ),
                       ],
@@ -831,11 +1094,11 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                           isSelected: _selectedKupat == null,
                           onTap: () => setState(() => _selectedKupat = null),
                         ),
-                        ..._kupatHolim.map(
-                          (k) => _FilterChip(
-                            label: k,
-                            isSelected: _selectedKupat == k,
-                            onTap: () => setState(() => _selectedKupat = k),
+                        ..._kupatOptions.map(
+                          (opt) => _FilterChip(
+                            label: _getKupatLabel(l10n, opt.l10nKey),
+                            isSelected: _selectedKupat == opt.sector,
+                            onTap: () => setState(() => _selectedKupat = opt.sector),
                           ),
                         ),
                       ],
@@ -908,7 +1171,9 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                             Text(
                               _maxDistance >= 50
                                   ? l10n.searchFilterDistanceAny
-                                  : '${_maxDistance.round()} ק"מ',
+                                  : l10n.searchFilterDistanceKmValue(
+                                      _maxDistance.round().toString(),
+                                    ),
                               style: Theme.of(context).textTheme.titleSmall
                                   ?.copyWith(
                                     color: _maxDistance < 50
@@ -949,12 +1214,12 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '1 ק"מ',
+                                l10n.searchFilterDistanceKm1,
                                 style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(color: AppColors.textSecondary),
                               ),
                               Text(
-                                '50+ ק"מ',
+                                l10n.searchFilterDistanceKm50Plus,
                                 style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(color: AppColors.textSecondary),
                               ),
@@ -1015,8 +1280,16 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                   Expanded(
                     flex: 2,
                     child: DokalButton.primary(
-                      onPressed: () =>
-                          widget.onApply(_priceFilter, _selectedLanguage),
+                      onPressed: () => Navigator.of(context).pop(
+                        (
+                          dateFilter: _selectedDate,
+                          specialtyFilter: _selectedSpecialty,
+                          kupatFilter: _selectedKupat,
+                          languageFilter: _selectedLanguage,
+                          priceFilter: _priceFilter,
+                          maxDistanceKm: _maxDistance,
+                        ),
+                      ),
                       child: Text(l10n.searchFilterApply),
                     ),
                   ),

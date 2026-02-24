@@ -30,4 +30,8 @@ class AppColors {
 
   // Misc
   static const Color shadow = Color(0x0D000000);
+
+  /// Indicateur de localisation (ville, distance) – jaune/orange discret
+  static const Color locationIndicator = Color(0xFFE8A54B);
+  static const Color locationIndicatorLight = Color(0xFFFFF4E0);
 }

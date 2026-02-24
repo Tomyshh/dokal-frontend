@@ -1,24 +1,27 @@
 import '../../../../core/network/api_client.dart';
 import '../../domain/entities/practitioner_search_result.dart';
-import 'search_demo_data_source.dart';
 
-/// Remote implementation of [SearchDemoDataSource] backed by the Dokal
-/// backend REST API.
-class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
+/// Remote datasource for practitioner search backed by the Dokal backend REST API.
+class SearchRemoteDataSourceImpl {
   SearchRemoteDataSourceImpl({required this.api});
 
   final ApiClient api;
 
-  @override
-  List<PractitionerSearchResult> search(String query) {
-    throw UnimplementedError('Use searchAsync instead');
-  }
-
-  Future<List<PractitionerSearchResult>> searchAsync(String query) async {
+  Future<List<PractitionerSearchResult>> searchAsync(
+    String query, {
+    double? lat,
+    double? lng,
+  }) async {
+    // lat et lng doivent toujours être envoyés ensemble (sinon API 400)
+    final params = <String, dynamic>{
+      if (query.isNotEmpty) 'q': query,
+      'limit': 50,
+      if (lat != null && lng != null) ...{'lat': lat, 'lng': lng},
+    };
     final data =
         await api.get(
               '/api/v1/practitioners/search',
-              queryParameters: {if (query.isNotEmpty) 'q': query, 'limit': 50},
+              queryParameters: params,
             )
             as List<dynamic>;
 
@@ -81,6 +84,30 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
         if (languages.isEmpty) languages = null;
       }
 
+      // Ville (praticien, organisation, ou extraite de l'adresse)
+      final org = json['organizations'];
+      final orgMap = org is Map<String, dynamic>
+          ? org
+          : org is List && org.isNotEmpty
+              ? org.first as Map<String, dynamic>?
+              : null;
+      final cityRaw = json['city'] ?? orgMap?['city'];
+      var cityStr =
+          (cityRaw is String? ? cityRaw : cityRaw?.toString())?.trim();
+      if ((cityStr == null || cityStr.isEmpty) && json['address_line'] != null) {
+        final addr = json['address_line'].toString().trim();
+        final parts = addr.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
+        if (parts.length > 1) {
+          cityStr = parts.last;
+        }
+      }
+      final city =
+          (cityStr != null && cityStr.isNotEmpty) ? cityStr : null;
+
+      // distance_km fourni par l'API lorsque lat/lng sont envoyés
+      final distanceKm = (json['distance_km'] as num?)?.toDouble();
+      final distanceLabel = distanceKm != null ? _formatDistanceKm(distanceKm) : null;
+
       return PractitionerSearchResult(
         id: json['id'] as String,
         name: '$firstName $lastName'.trim(),
@@ -88,10 +115,12 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
             spec?['name_fr'] as String? ?? spec?['name'] as String? ?? '',
         address: '${json['address_line'] ?? ''}, ${json['city'] ?? ''}'.trim(),
         sector: json['sector'] as String? ?? '',
+        city: city,
         nextAvailabilityLabel: nextAvailabilityLabel,
         avatarUrl: profiles?['avatar_url'] as String?,
         languages: languages,
-        distanceKm: null,
+        distanceKm: distanceKm,
+        distanceLabel: distanceLabel,
         availabilityOrder: null,
         rating: rating,
         reviewCount: reviewCount,
@@ -99,5 +128,14 @@ class SearchRemoteDataSourceImpl implements SearchDemoDataSource {
         priceMaxAgorot: priceMax,
       );
     }).toList();
+  }
+
+  static String _formatDistanceKm(double km) {
+    if (km < 1) {
+      return '${km.toStringAsFixed(1)} km';
+    }
+    return km == km.roundToDouble()
+        ? '${km.round()} km'
+        : '${km.toStringAsFixed(1)} km';
   }
 }

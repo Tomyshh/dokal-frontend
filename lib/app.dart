@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/app_locale_controller.dart';
 
+import 'core/services/onesignal_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'injection_container.dart';
@@ -19,7 +20,16 @@ class DokalApp extends StatelessWidget {
         // `AuthBloc` est un singleton (GetIt). On le fournit sans le "dispose".
         BlocProvider<AuthBloc>.value(value: sl<AuthBloc>()),
       ],
-      child: ValueListenableBuilder<Locale>(
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state.isAuthenticated && state.session != null) {
+            OneSignalService.login(state.session!.userId);
+          } else if (state.status == AuthStatus.unauthenticated ||
+              state.status == AuthStatus.loggingOut) {
+            OneSignalService.logout();
+          }
+        },
+        child: ValueListenableBuilder<Locale>(
         valueListenable: AppLocaleController.locale,
         builder: (context, locale, _) {
           return ScreenUtilInit(
@@ -61,6 +71,7 @@ class DokalApp extends StatelessWidget {
           );
         },
       ),
+    ),
     );
   }
 }

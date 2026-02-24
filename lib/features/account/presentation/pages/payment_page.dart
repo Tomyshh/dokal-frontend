@@ -97,11 +97,6 @@ class PaymentPage extends StatelessWidget {
                       );
                     },
                   ),
-            floatingActionButton: FloatingActionButton.small(
-              heroTag: 'fab_payment_methods',
-              onPressed: () => context.read<PaymentCubit>().addDemo(),
-              child: Icon(Icons.add_rounded, size: 20.sp),
-            ),
           );
         },
       ),

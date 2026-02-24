@@ -174,6 +174,7 @@
   "searchUnavailableTitle": "Поиск недоступен",
   "searchNoResultsTitle": "Нет результатов",
   "searchNoResultsSubtitle": "Попробуйте другой запрос.",
+  "searchLocationUnavailable": "Поиск без сортировки по расстоянию (геолокация недоступна)",
 
   "searchFilterTitle": "Фильтр результатов",
   "searchFilterDate": "Дата доступности",
@@ -184,10 +185,28 @@
   "searchFilterDateAny": "Любая дата",
   "searchFilterSpecialty": "Специальность",
   "searchFilterSpecialtyAll": "Все специальности",
+  "searchFilterSpecialtyFamily": "Врач общей практики",
+  "searchFilterSpecialtyOphthalmologist": "Офтальмолог",
+  "searchFilterSpecialtyCardiologist": "Кардиолог",
+  "searchFilterSpecialtyDermatologist": "Дерматолог",
+  "searchFilterSpecialtyPediatrician": "Педиатр",
+  "searchFilterSpecialtyGynecologist": "Гинеколог",
+  "searchFilterSpecialtyOrthopedist": "Ортопед",
+  "searchFilterSpecialtyNeurologist": "Невролог",
+  "searchFilterSpecialtyInternal": "Терапевт",
+  "searchFilterSpecialtyPsychiatrist": "Психиатр",
   "searchFilterKupatHolim": "Больничная касса",
   "searchFilterKupatHolimAll": "Все кассы",
   "searchFilterDistance": "Максимальная дистанция",
   "searchFilterDistanceAny": "Без ограничения",
+  "searchFilterDistanceKmValue": "{value} км",
+  "@searchFilterDistanceKmValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "searchFilterDistanceKm1": "1 км",
+  "searchFilterDistanceKm50Plus": "50+ км",
   "searchFilterApply": "Применить фильтры",
   "searchFilterReset": "Сбросить все",
   "searchFilterActiveCount": "Активных фильтров: {count}",

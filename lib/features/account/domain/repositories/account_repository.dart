@@ -9,7 +9,6 @@ abstract class AccountRepository {
   Future<Either<Failure, UserProfile>> getProfile();
 
   Future<Either<Failure, List<Relative>>> listRelatives();
-  Future<Either<Failure, Unit>> addRelativeDemo();
   Future<Either<Failure, Relative>> addRelative({
     required String firstName,
     required String lastName,
@@ -39,7 +38,6 @@ abstract class AccountRepository {
   Future<Either<Failure, Unit>> deleteRelative(String id);
 
   Future<Either<Failure, List<PaymentMethod>>> listPaymentMethods();
-  Future<Either<Failure, Unit>> addPaymentMethodDemo();
 
   Future<Either<Failure, Unit>> updateProfile({
     String? firstName,

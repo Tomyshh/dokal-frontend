@@ -1,11 +1,9 @@
 import '../../../../core/network/api_client.dart';
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/conversation_preview.dart';
-import 'messages_demo_data_source.dart';
 
-/// Remote implementation of [MessagesDemoDataSource] backed by the Dokal
-/// backend REST API.
-class MessagesRemoteDataSourceImpl implements MessagesDemoDataSource {
+/// Remote datasource for messages backed by the Dokal backend REST API.
+class MessagesRemoteDataSourceImpl {
   MessagesRemoteDataSourceImpl({
     required this.api,
     required this.currentUserId,
@@ -14,21 +12,7 @@ class MessagesRemoteDataSourceImpl implements MessagesDemoDataSource {
   final ApiClient api;
   final String Function() currentUserId;
 
-  // ---- sync stubs ----
-
-  @override
-  List<ConversationPreview> listConversations() =>
-      throw UnimplementedError('Use listConversationsAsync');
-
-  @override
-  List<ChatMessage> getMessages(String conversationId) =>
-      throw UnimplementedError('Use getMessagesAsync');
-
-  @override
-  void appendMessage(String conversationId, ChatMessage message) =>
-      throw UnimplementedError('Use sendMessageAsync');
-
-  // ---- async real implementations ----
+  // ---- async ----
 
   Future<List<ConversationPreview>> listConversationsAsync() async {
     final data = await api.get('/api/v1/conversations') as List<dynamic>;

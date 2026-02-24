@@ -6,5 +6,7 @@ import '../entities/practitioner_search_result.dart';
 abstract class SearchRepository {
   Future<Either<Failure, List<PractitionerSearchResult>>> search({
     required String query,
+    double? lat,
+    double? lng,
   });
 }

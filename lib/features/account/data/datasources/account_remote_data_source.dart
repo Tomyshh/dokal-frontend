@@ -4,11 +4,9 @@ import '../../../../core/network/api_client.dart';
 import '../../domain/entities/payment_method.dart';
 import '../../domain/entities/relative.dart';
 import '../../domain/entities/user_profile.dart';
-import 'account_demo_data_source.dart';
 
-/// Remote implementation of [AccountDemoDataSource] backed by the Dokal
-/// backend REST API.
-class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
+/// Remote datasource for account backed by the Dokal backend REST API.
+class AccountRemoteDataSourceImpl {
   AccountRemoteDataSourceImpl({required this.api});
 
   final ApiClient api;
@@ -16,10 +14,6 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
   // ---------------------------------------------------------------------------
   // Profile
   // ---------------------------------------------------------------------------
-
-  @override
-  UserProfile getProfile() =>
-      throw UnimplementedError('Use getProfileAsync instead');
 
   Future<UserProfile> getProfileAsync() async {
     final json = await api.get('/api/v1/profile') as Map<String, dynamic>;
@@ -77,10 +71,6 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
   // Relatives
   // ---------------------------------------------------------------------------
 
-  @override
-  List<Relative> listRelatives() =>
-      throw UnimplementedError('Use listRelativesAsync instead');
-
   Future<List<Relative>> listRelativesAsync() async {
     final data = await api.get('/api/v1/relatives') as List<dynamic>;
     return data.map((json) {
@@ -105,10 +95,6 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
       );
     }).toList();
   }
-
-  @override
-  void addRelativeDemo() =>
-      throw UnimplementedError('Use addRelativeAsync instead');
 
   Future<Relative> addRelativeAsync({
     required String firstName,
@@ -222,10 +208,6 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
   // Payment methods
   // ---------------------------------------------------------------------------
 
-  @override
-  List<PaymentMethod> listPaymentMethods() =>
-      throw UnimplementedError('Use listPaymentMethodsAsync instead');
-
   Future<List<PaymentMethod>> listPaymentMethodsAsync() async {
     final data = await api.get('/api/v1/payments/methods') as List<dynamic>;
     return data.map((json) {
@@ -239,10 +221,6 @@ class AccountRemoteDataSourceImpl implements AccountDemoDataSource {
       );
     }).toList();
   }
-
-  @override
-  void addPaymentMethodDemo() =>
-      throw UnimplementedError('Use addPaymentMethodAsync instead');
 
   Future<PaymentMethod> addPaymentMethodAsync({
     required String brand,

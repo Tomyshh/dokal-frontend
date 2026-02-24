@@ -38,6 +38,10 @@ class SearchPractitionerCard extends StatelessWidget {
     return '?';
   }
 
+  bool get _hasLocationInfo =>
+      (practitioner.city?.trim().isNotEmpty ?? false) ||
+      (practitioner.distanceLabel?.trim().isNotEmpty ?? false);
+
   String _formatPriceLabel() {
     final min = practitioner.priceMinAgorot;
     final max = practitioner.priceMaxAgorot;
@@ -153,6 +157,13 @@ class SearchPractitionerCard extends StatelessWidget {
                           color: AppColors.textSecondary,
                         ),
                   ),
+                  if (_hasLocationInfo) ...[
+                    SizedBox(height: 4.h),
+                    _LocationIndicator(
+                      city: practitioner.city,
+                      distanceLabel: practitioner.distanceLabel,
+                    ),
+                  ],
                   SizedBox(height: 6.h),
                   // Rating
                   if (practitioner.rating != null) ...[
@@ -231,6 +242,48 @@ class SearchPractitionerCard extends StatelessWidget {
         ),
         ),
       ),
+    );
+  }
+}
+
+/// Indicateur de localisation (ville + distance) – style jaune/orange discret.
+class _LocationIndicator extends StatelessWidget {
+  const _LocationIndicator({
+    this.city,
+    this.distanceLabel,
+  });
+
+  final String? city;
+  final String? distanceLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final parts = <String>[];
+    if (city?.trim().isNotEmpty ?? false) parts.add(city!.trim());
+    if (distanceLabel?.trim().isNotEmpty ?? false) parts.add(distanceLabel!);
+    if (parts.isEmpty) return const SizedBox.shrink();
+
+    final label = parts.join(' • ');
+    return Row(
+      children: [
+        Icon(
+          Icons.location_on_rounded,
+          size: 13.sp,
+          color: AppColors.locationIndicator,
+        ),
+        SizedBox(width: 4.w),
+        Flexible(
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.locationIndicator,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12.sp,
+                ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }

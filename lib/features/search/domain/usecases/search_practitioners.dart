@@ -9,6 +9,10 @@ class SearchPractitioners {
 
   final SearchRepository repo;
 
-  Future<Either<Failure, List<PractitionerSearchResult>>> call(String query) =>
-      repo.search(query: query);
+  Future<Either<Failure, List<PractitionerSearchResult>>> call(
+    String query, {
+    double? lat,
+    double? lng,
+  }) =>
+      repo.search(query: query, lat: lat, lng: lng);
 }
