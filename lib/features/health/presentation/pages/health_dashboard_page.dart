@@ -296,10 +296,15 @@ class _MenuCard extends StatelessWidget {
                 color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(10.r),
               ),
-              child: Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.textSecondary,
-                size: 20.sp,
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: Icon(
+                  Directionality.of(context) == TextDirection.rtl
+                      ? Icons.chevron_left_rounded
+                      : Icons.chevron_right_rounded,
+                  color: AppColors.textSecondary,
+                  size: 20.sp,
+                ),
               ),
             ),
           ],

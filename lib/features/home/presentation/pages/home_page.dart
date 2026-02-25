@@ -853,10 +853,15 @@ class _NewMessageSection extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: AppSpacing.xs.w),
-                    Icon(
-                      Icons.chevron_right_rounded,
-                      size: 20.sp,
-                      color: AppColors.primary,
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Icon(
+                        Directionality.of(context) == TextDirection.rtl
+                            ? Icons.chevron_left_rounded
+                            : Icons.chevron_right_rounded,
+                        size: 20.sp,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ],
                 ),

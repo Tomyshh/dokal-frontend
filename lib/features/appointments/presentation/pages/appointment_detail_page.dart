@@ -432,6 +432,16 @@ class _DetailTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final effectiveTrailing = trailing == null
+        ? null
+        : (isRtl
+            ? (trailing == Icons.chevron_right_rounded
+                ? Icons.chevron_left_rounded
+                : trailing == Icons.chevron_left_rounded
+                    ? Icons.chevron_right_rounded
+                    : trailing)
+            : trailing);
     return ListTile(
       contentPadding: EdgeInsets.symmetric(
         horizontal: AppSpacing.lg.w,
@@ -447,7 +457,15 @@ class _DetailTile extends StatelessWidget {
       ),
       subtitle: subtitle != null ? Text(subtitle!) : null,
       trailing:
-          trailing != null ? Icon(trailing, color: AppColors.textSecondary) : null,
+          effectiveTrailing != null
+              ? Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: Icon(
+                    effectiveTrailing,
+                    color: AppColors.textSecondary,
+                  ),
+                )
+              : null,
       onTap: onTap,
     );
   }

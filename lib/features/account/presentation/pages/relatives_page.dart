@@ -154,10 +154,15 @@ class RelativesPage extends StatelessWidget {
               ),
             ),
             if (onTap != null)
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 18.sp,
-                color: AppColors.textSecondary,
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: Icon(
+                  Directionality.of(context) == TextDirection.rtl
+                      ? Icons.chevron_left_rounded
+                      : Icons.chevron_right_rounded,
+                  size: 18.sp,
+                  color: AppColors.textSecondary,
+                ),
               ),
           ],
         ),

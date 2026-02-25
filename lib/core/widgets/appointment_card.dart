@@ -235,10 +235,16 @@ class AppointmentCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 20.sp,
-                              color: AppColors.textSecondary.withValues(alpha: 0.6),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Icon(
+                                Directionality.of(context) == TextDirection.rtl
+                                    ? Icons.chevron_left_rounded
+                                    : Icons.chevron_right_rounded,
+                                size: 20.sp,
+                                color:
+                                    AppColors.textSecondary.withValues(alpha: 0.6),
+                              ),
                             ),
                           ],
                         ),

@@ -63,6 +63,18 @@ class _LoginPageState extends State<LoginPage> {
     return uri.toString();
   }
 
+  String get _postAuthTarget {
+    final safe = _safeRedirectTo;
+    if (safe == null) return '/home';
+    final uri = Uri.tryParse(safe);
+    final path = uri?.path ?? '';
+    // Quand le login est affiché inline dans l'onglet Compte, la redirection
+    // naturelle (`/account`) laisserait l'utilisateur sur l'onglet 3.
+    // On force donc un atterrissage sur Home (onglet 0) après authentification.
+    if (path == '/account' || path.startsWith('/account/')) return '/home';
+    return safe;
+  }
+
   String? get _bookingPractitionerId {
     final redirect = (widget.redirectTo ?? '').trim();
     final match = RegExp(r'^/booking/([^/?]+)').firstMatch(redirect);
@@ -529,8 +541,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               );
                               WidgetsBinding.instance.addPostFrameCallback((_) {
-                                final target = _safeRedirectTo ?? '/home';
-                                appRouter.go(target);
+                                appRouter.go(_postAuthTarget);
                               });
                             }
                             if (state.status == LoginStatus.needsEmailVerification &&
@@ -693,7 +704,11 @@ class _LoginPageState extends State<LoginPage> {
                                 context.go('/home/search');
                               }
                             },
-                            icon: const Icon(Icons.arrow_back_rounded),
+                            icon: Icon(
+                              Directionality.of(context) == TextDirection.rtl
+                                  ? Icons.arrow_forward_rounded
+                                  : Icons.arrow_back_rounded,
+                            ),
                             label: Text(l10n.commonBack),
                           )
                         else if (!_isAccountInline)
@@ -735,8 +750,12 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   IconButton(
                                     onPressed: _goToLogin,
-                                    icon:
-                                        const Icon(Icons.arrow_back_rounded),
+                                    icon: Icon(
+                                      Directionality.of(context) ==
+                                              TextDirection.rtl
+                                          ? Icons.arrow_forward_rounded
+                                          : Icons.arrow_back_rounded,
+                                    ),
                                     color: AppColors.textSecondary,
                                     tooltip:
                                         MaterialLocalizations.of(context)
@@ -931,7 +950,11 @@ class _LoginPageState extends State<LoginPage> {
                                   context.go('/home/search');
                                 }
                               },
-                              icon: const Icon(Icons.arrow_back_rounded),
+                              icon: Icon(
+                                Directionality.of(context) == TextDirection.rtl
+                                    ? Icons.arrow_forward_rounded
+                                    : Icons.arrow_back_rounded,
+                              ),
                               label: Text(l10n.commonBack),
                             )
                           else if (!_isAccountInline)

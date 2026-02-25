@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/search_filter_utils.dart';
@@ -254,7 +254,8 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                   },
                   child: Builder(
                     builder: (context) {
-                      final isRtl = Localizations.localeOf(context).languageCode == 'he';
+                      final isRtl =
+                          Directionality.of(context) == TextDirection.rtl;
                       return Container(
                         width: 36.r,
                         height: 36.r,
@@ -262,12 +263,15 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                           color: AppColors.textPrimary.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(10.r),
                         ),
-                        child: Icon(
-                          isRtl
-                              ? Icons.arrow_forward_ios_rounded
-                              : Icons.arrow_back_ios_new_rounded,
-                          size: 16.sp,
-                          color: AppColors.textPrimary,
+                        child: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Icon(
+                            isRtl
+                                ? Icons.arrow_forward_ios_rounded
+                                : Icons.arrow_back_ios_new_rounded,
+                            size: 16.sp,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                       );
                     },
@@ -1379,7 +1383,7 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
           // Month navigation: LTR = left=previous, right=next | RTL (Hebrew) = left=next, right=previous
           Builder(
             builder: (context) {
-              final isRtl = Localizations.localeOf(context).languageCode == 'he';
+              final isRtl = Directionality.of(context) == TextDirection.rtl;
               final prevBtn = GestureDetector(
                 onTap: canGoBack ? _previousMonth : null,
                 child: Container(
@@ -1390,12 +1394,15 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                         : AppColors.surfaceVariant.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
-                  child: Icon(
-                    Icons.chevron_left_rounded,
-                    size: 20.sp,
-                    color: canGoBack
-                        ? AppColors.textPrimary
-                        : AppColors.textSecondary.withValues(alpha: 0.5),
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Icon(
+                      Icons.chevron_left_rounded,
+                      size: 20.sp,
+                      color: canGoBack
+                          ? AppColors.textPrimary
+                          : AppColors.textSecondary.withValues(alpha: 0.5),
+                    ),
                   ),
                 ),
               );
@@ -1409,12 +1416,15 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                         : AppColors.surfaceVariant.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
-                  child: Icon(
-                    Icons.chevron_right_rounded,
-                    size: 20.sp,
-                    color: canGoNext
-                        ? AppColors.textPrimary
-                        : AppColors.textSecondary.withValues(alpha: 0.5),
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Icon(
+                      Icons.chevron_right_rounded,
+                      size: 20.sp,
+                      color: canGoNext
+                          ? AppColors.textPrimary
+                          : AppColors.textSecondary.withValues(alpha: 0.5),
+                    ),
                   ),
                 ),
               );

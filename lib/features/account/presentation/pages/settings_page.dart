@@ -297,10 +297,15 @@ class _SettingsLinkCard extends StatelessWidget {
               color: AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(AppRadii.pill.r),
             ),
-            child: Icon(
-              Icons.chevron_right_rounded,
-              size: 18.sp,
-              color: AppColors.textSecondary,
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: Icon(
+                Directionality.of(context) == TextDirection.rtl
+                    ? Icons.chevron_left_rounded
+                    : Icons.chevron_right_rounded,
+                size: 18.sp,
+                color: AppColors.textSecondary,
+              ),
             ),
           ),
         ],

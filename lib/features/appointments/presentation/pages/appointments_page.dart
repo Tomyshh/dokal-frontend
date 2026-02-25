@@ -31,9 +31,64 @@ class AppointmentsPage extends StatelessWidget {
         initialIndex: initialIndex,
         child: Scaffold(
           backgroundColor: AppColors.background,
+          appBar: AppBar(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            scrolledUnderElevation: 0,
+            toolbarHeight: 48.h,
+            centerTitle: true,
+            title: Text(
+              l10n.appointmentsTitle,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+          ),
           body: Column(
             children: [
-              _AppointmentsHeader(l10n: l10n),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg.w,
+                  vertical: AppSpacing.sm.h,
+                ),
+                padding: EdgeInsets.all(4.r),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceVariant,
+                  borderRadius: BorderRadius.circular(AppRadii.xl.r),
+                ),
+                child: TabBar(
+                  dividerColor: Colors.transparent,
+                  labelStyle: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  unselectedLabelStyle: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: AppColors.textSecondary,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(AppRadii.lg.r),
+                  ),
+                  indicatorPadding: EdgeInsets.zero,
+                  splashBorderRadius: BorderRadius.circular(AppRadii.lg.r),
+                  tabs: [
+                    Tab(
+                      height: 36.h,
+                      text: l10n.appointmentsTabUpcoming,
+                    ),
+                    Tab(
+                      height: 36.h,
+                      text: l10n.appointmentsTabPast,
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: const TabBarView(
                   children: [_UpcomingTab(), _PastTab()],
@@ -51,94 +106,6 @@ class AppointmentsPage extends StatelessWidget {
             child: Icon(Icons.add_rounded, size: 26.sp),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _AppointmentsHeader extends StatelessWidget {
-  const _AppointmentsHeader({required this.l10n});
-
-  final dynamic l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 10.r,
-            offset: Offset(0, 2.h),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              AppSpacing.lg.w,
-              MediaQuery.paddingOf(context).top + AppSpacing.md.h,
-              AppSpacing.lg.w,
-              AppSpacing.sm.h,
-            ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                l10n.appointmentsTitle,
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                  letterSpacing: -0.5,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg.w,
-              vertical: AppSpacing.xs.h,
-            ),
-            padding: EdgeInsets.all(4.r),
-            decoration: BoxDecoration(
-              color: AppColors.surfaceVariant,
-              borderRadius: BorderRadius.circular(AppRadii.xl.r),
-            ),
-            child: TabBar(
-              dividerColor: Colors.transparent,
-              labelStyle: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w700,
-              ),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              labelColor: Colors.white,
-              unselectedLabelColor: AppColors.textSecondary,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(AppRadii.lg.r),
-              ),
-              indicatorPadding: EdgeInsets.zero,
-              splashBorderRadius: BorderRadius.circular(AppRadii.lg.r),
-              tabs: [
-                Tab(
-                  height: 36.h,
-                  text: l10n.appointmentsTabUpcoming,
-                ),
-                Tab(
-                  height: 36.h,
-                  text: l10n.appointmentsTabPast,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: AppSpacing.xs.h),
-        ],
       ),
     );
   }

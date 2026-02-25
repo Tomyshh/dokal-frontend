@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/search_filter_utils.dart';
@@ -287,7 +287,14 @@ class _PatientStep extends StatelessWidget {
                   SizedBox(height: AppSpacing.xl.h),
                   DokalButton.primary(
                     onPressed: hasPatient ? onNext : null,
-                    leading: const Icon(Icons.arrow_forward_rounded),
+                    leading: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Icon(
+                        Directionality.of(context) == TextDirection.rtl
+                            ? Icons.arrow_back_rounded
+                            : Icons.arrow_forward_rounded,
+                      ),
+                    ),
                     child: Text(l10n.commonContinue),
                   ),
                 ],

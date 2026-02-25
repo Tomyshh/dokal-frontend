@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -385,7 +385,7 @@ class _RescheduleSlotPickerState extends State<_RescheduleSlotPicker> {
             children: [
               Builder(
                 builder: (context) {
-                  final isRtl = Localizations.localeOf(context).languageCode == 'he';
+                  final isRtl = Directionality.of(context) == TextDirection.rtl;
                   final prevBtn = GestureDetector(
                     onTap: canGoBack ? _previousMonth : null,
                     child: Container(
@@ -396,12 +396,15 @@ class _RescheduleSlotPickerState extends State<_RescheduleSlotPicker> {
                             : AppColors.surfaceVariant.withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
-                      child: Icon(
-                        Icons.chevron_left_rounded,
-                        size: 20.sp,
-                        color: canGoBack
-                            ? AppColors.textPrimary
-                            : AppColors.textSecondary.withValues(alpha: 0.5),
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Icon(
+                          Icons.chevron_left_rounded,
+                          size: 20.sp,
+                          color: canGoBack
+                              ? AppColors.textPrimary
+                              : AppColors.textSecondary.withValues(alpha: 0.5),
+                        ),
                       ),
                     ),
                   );
@@ -415,12 +418,15 @@ class _RescheduleSlotPickerState extends State<_RescheduleSlotPicker> {
                             : AppColors.surfaceVariant.withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
-                      child: Icon(
-                        Icons.chevron_right_rounded,
-                        size: 20.sp,
-                        color: canGoNext
-                            ? AppColors.textPrimary
-                            : AppColors.textSecondary.withValues(alpha: 0.5),
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Icon(
+                          Icons.chevron_right_rounded,
+                          size: 20.sp,
+                          color: canGoNext
+                              ? AppColors.textPrimary
+                              : AppColors.textSecondary.withValues(alpha: 0.5),
+                        ),
                       ),
                     ),
                   );

@@ -95,7 +95,15 @@ class SelectPatientPage extends StatelessWidget {
                                         context,
                                       ).colorScheme.primary,
                                     )
-                                  : const Icon(Icons.chevron_right_rounded),
+                                  : Directionality(
+                                      textDirection: TextDirection.ltr,
+                                      child: Icon(
+                                        Directionality.of(context) ==
+                                                TextDirection.rtl
+                                            ? Icons.chevron_left_rounded
+                                            : Icons.chevron_right_rounded,
+                                      ),
+                                    ),
                               onTap: () {
                                 context.read<BookingBloc>().add(
                                   BookingPatientSelected(meName),
@@ -162,7 +170,15 @@ class SelectPatientPage extends StatelessWidget {
                                             context,
                                           ).colorScheme.primary,
                                         )
-                                      : const Icon(Icons.chevron_right_rounded),
+                                      : Directionality(
+                                          textDirection: TextDirection.ltr,
+                                          child: Icon(
+                                            Directionality.of(context) ==
+                                                    TextDirection.rtl
+                                                ? Icons.chevron_left_rounded
+                                                : Icons.chevron_right_rounded,
+                                          ),
+                                        ),
                                   onTap: () {
                                     context.read<BookingBloc>().add(
                                       BookingPatientSelected(r.name),
