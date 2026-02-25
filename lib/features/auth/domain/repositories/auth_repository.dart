@@ -13,6 +13,8 @@ abstract class AuthRepository {
 
   Future<Either<Failure, AuthSession>> signInWithGoogle();
 
+  Future<Either<Failure, AuthSession>> signInWithApple();
+
   Future<Either<Failure, AuthSession>> signUp({
     required String email,
     required String password,

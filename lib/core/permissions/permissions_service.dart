@@ -2,8 +2,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsService {
+  /// Demande la permission des notifications.
+  /// Sur iOS, permission_handler peut retourner [denied] au premier appel
+  /// alors que l'utilisateur a cliqué "Allow" (bug connu). On refait une
+  /// seconde tentative dans ce cas.
   Future<bool> requestNotifications() async {
-    final status = await Permission.notification.request();
+    var status = await Permission.notification.request();
+    if (!status.isGranted && (status.isDenied || status.isPermanentlyDenied)) {
+      // Workaround iOS : second appel si le premier retourne un faux négatif
+      status = await Permission.notification.request();
+    }
     return status.isGranted;
   }
 

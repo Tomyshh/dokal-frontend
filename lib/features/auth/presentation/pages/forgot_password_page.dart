@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -35,7 +36,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return BlocProvider(
       create: (_) => sl<ForgotPasswordCubit>(),
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          surfaceTintColor: Colors.transparent,
+          foregroundColor: AppColors.primary,
+          leading: BackButton(
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/login');
+              }
+            },
+          ),
+        ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(AppSpacing.xl.r),
@@ -48,6 +64,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     'assets/branding/icononly_transparent_nobuffer.png',
                     height: 56.h,
                     fit: BoxFit.contain,
+                    color: AppColors.primary,
                   ),
                 ),
                 SizedBox(height: AppSpacing.xxl.h),
@@ -94,7 +111,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   ),
                                 ),
                               );
-                              context.go(
+                              context.push(
                                 '/forgot-password/verify',
                                 extra: _email.text.trim(),
                               );
@@ -121,11 +138,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ],
                     ),
                   ),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => context.go('/login'),
-                  child: Text(l10n.authBackToLogin),
                 ),
               ],
             ),

@@ -327,27 +327,24 @@ class _WizardViewState extends State<_WizardView> {
       context: context,
       showDragHandle: true,
       builder: (sheetContext) {
-        final locale = Localizations.localeOf(sheetContext).languageCode;
-        final cameraLabel = locale == 'fr' ? 'Prendre une photo' : 'Take photo';
-        final galleryLabel =
-            locale == 'fr' ? 'Choisir depuis la galerie' : 'Choose from gallery';
+        final l10n = sheetContext.l10n;
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
                 leading: const Icon(Icons.photo_camera_rounded),
-                title: Text(cameraLabel),
+                title: Text(l10n.avatarPickTakePhoto),
                 onTap: () => Navigator.of(sheetContext).pop(ImageSource.camera),
               ),
               ListTile(
                 leading: const Icon(Icons.photo_library_rounded),
-                title: Text(galleryLabel),
+                title: Text(l10n.avatarPickChooseFromGallery),
                 onTap: () => Navigator.of(sheetContext).pop(ImageSource.gallery),
               ),
               ListTile(
                 leading: const Icon(Icons.close_rounded),
-                title: Text(context.l10n.commonCancel),
+                title: Text(l10n.commonCancel),
                 onTap: () => Navigator.of(sheetContext).pop(),
               ),
             ],

@@ -12,17 +12,12 @@ class ApiClient {
   ApiClient({
     required Dio dio,
     required Future<SupabaseClient> supabaseClientFuture,
+    required String backendUrl,
   }) : _dio = dio,
        _supabaseClientFuture = supabaseClientFuture {
-    // Read BACKEND_URL from dart-define / .env.prod
-    const backendUrl = String.fromEnvironment(
-      'BACKEND_URL',
-      defaultValue: 'https://dokal-backend.onrender.com',
-    );
     if (backendUrl.isEmpty) {
       throw StateError(
-        'BACKEND_URL is not configured. '
-        'Pass it via --dart-define=BACKEND_URL=... or --dart-define-from-file=.env.prod',
+        'BACKEND_URL is not configured. Vérifiez que `.env.prod` contient BACKEND_URL.',
       );
     }
 

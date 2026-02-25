@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
@@ -53,16 +53,25 @@ class _VerifyPasswordResetOtpPageState extends State<VerifyPasswordResetOtpPage>
             curr.status == VerifyPasswordResetStatus.verifySuccess,
         listener: (context, state) {
           if (state.status == VerifyPasswordResetStatus.verifySuccess) {
-            context.go('/forgot-password/reset', extra: widget.email.trim());
+            context.push('/forgot-password/reset', extra: widget.email.trim());
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.primary,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            iconTheme: const IconThemeData(color: Colors.white),
-            foregroundColor: Colors.white,
+            scrolledUnderElevation: 0,
+            surfaceTintColor: Colors.transparent,
+            foregroundColor: AppColors.primary,
+            leading: BackButton(
+              onPressed: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.go('/forgot-password');
+                }
+              },
+            ),
           ),
           body: SafeArea(
             child: Padding(
@@ -75,75 +84,51 @@ class _VerifyPasswordResetOtpPageState extends State<VerifyPasswordResetOtpPage>
                       'assets/branding/icononly_transparent_nobuffer.png',
                       height: 56.h,
                       fit: BoxFit.contain,
-                      color: const Color(0xFFD4AF37),
+                      color: AppColors.primary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.xxl.h),
                   Text(
                     l10n.authResetPasswordVerifyTitle,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   SizedBox(height: AppSpacing.sm.h),
                   Text(
                     l10n.authResetPasswordVerifyDescription(widget.email.trim()),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white,
-                        ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(height: AppSpacing.xl.h),
                   DokalCard(
-                    color: Colors.transparent,
-                    borderColor: Colors.white,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        TextField(
-                          controller: _otpController,
-                          focusNode: _otpFocusNode,
-                          keyboardType: TextInputType.number,
-                          maxLength: 6,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(
-                                letterSpacing: 8,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          decoration: InputDecoration(
-                            hintText: l10n.authVerifyEmailOtpHint,
-                            hintStyle: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.6),
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: TextField(
+                            controller: _otpController,
+                            focusNode: _otpFocusNode,
+                            keyboardType: TextInputType.number,
+                            maxLength: 6,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  letterSpacing: 8,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primary,
+                                ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            decoration: InputDecoration(
+                              labelText: l10n.securityChangePasswordOtpLabel,
+                              hintText: l10n.authVerifyEmailOtpHint,
+                              counterText: '',
                             ),
-                            counterText: '',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(AppRadii.md.r),
-                              borderSide:
-                                  const BorderSide(color: Colors.white),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(AppRadii.md.r),
-                              borderSide: BorderSide(
-                                color: Colors.white.withValues(alpha: 0.8),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(AppRadii.md.r),
-                              borderSide: const BorderSide(
-                                color: Colors.white,
-                                width: 2,
-                              ),
-                            ),
-                          ),
-                          cursorColor: Colors.white,
-                          onChanged: (_) => setState(() {}),
+                            cursorColor: AppColors.primary,
+                            onChanged: (_) => setState(() {}),
+                        ),
                         ),
                         SizedBox(height: AppSpacing.md.h),
                         BlocConsumer<VerifyPasswordResetCubit,
@@ -177,59 +162,20 @@ class _VerifyPasswordResetOtpPageState extends State<VerifyPasswordResetOtpPage>
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                FilledButton(
+                                DokalButton.primary(
                                   onPressed: isLoading || !canSubmit
                                       ? null
                                       : () => _submitOtp(context),
-                                  style: FilledButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: AppColors.primary,
-                                    disabledBackgroundColor:
-                                        Colors.white.withValues(alpha: 0.5),
-                                    disabledForegroundColor: AppColors.primary
-                                        .withValues(alpha: 0.6),
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 14.h),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        AppRadii.md.r,
-                                      ),
-                                    ),
-                                    elevation: 0,
-                                  ),
-                                  child: state.status ==
-                                          VerifyPasswordResetStatus.loading
-                                      ? SizedBox(
-                                          height: 20.h,
-                                          width: 20.w,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: AppColors.primary,
-                                          ),
-                                        )
-                                      : Text(l10n.authVerifyEmailVerify),
+                                  isLoading: isLoading,
+                                  child: Text(l10n.authVerifyEmailVerify),
                                 ),
                                 SizedBox(height: AppSpacing.sm.h),
-                                OutlinedButton(
+                                DokalButton.outline(
                                   onPressed: isLoading
                                       ? null
                                       : () => context
                                           .read<VerifyPasswordResetCubit>()
                                           .resend(email: widget.email.trim()),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    side: BorderSide(
-                                      color: isLoading
-                                          ? Colors.white.withValues(alpha: 0.4)
-                                          : Colors.white,
-                                    ),
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 14.h),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(AppRadii.md.r),
-                                    ),
-                                  ),
                                   child: Text(l10n.authVerifyEmailResend),
                                 ),
                               ],
@@ -237,14 +183,6 @@ class _VerifyPasswordResetOtpPageState extends State<VerifyPasswordResetOtpPage>
                           },
                         ),
                       ],
-                    ),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () => context.go('/login'),
-                    child: Text(
-                      l10n.commonBack,
-                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ],

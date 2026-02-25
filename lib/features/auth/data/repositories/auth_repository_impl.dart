@@ -59,6 +59,17 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, AuthSession>> signInWithApple() async {
+    try {
+      final session = await remote.signInWithApple();
+      await _assertPatientRoleOrLogout();
+      return Right(session);
+    } catch (e) {
+      return Left(Failure(_messageFrom(e)));
+    }
+  }
+
+  @override
   Future<Either<Failure, AuthSession>> signUp({
     required String email,
     required String password,

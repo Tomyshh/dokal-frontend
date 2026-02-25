@@ -20,3 +20,7 @@ class LoginSubmitted extends LoginEvent {
 class LoginWithGoogleRequested extends LoginEvent {
   const LoginWithGoogleRequested();
 }
+
+class LoginWithAppleRequested extends LoginEvent {
+  const LoginWithAppleRequested();
+}

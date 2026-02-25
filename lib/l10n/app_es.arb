@@ -26,6 +26,7 @@
   "authForgotPasswordCta": "¿Olvidaste tu contraseña?",
   "authCreateAccountCta": "Crear una cuenta",
   "authContinueWithGoogle": "Continuar con Google",
+  "authContinueWithApple": "Continuar con Apple",
   "authContinueWithoutAccount": "Continuar sin cuenta",
 
   "authRegisterTitle": "Crear una cuenta",
@@ -56,7 +57,7 @@
   "profileCompletionStepContactSubtitle": "¿Cómo podemos contactarte?",
   "profileCompletionEmailLockedHint": "Tu correo está vinculado a tu cuenta y no se puede cambiar aquí.",
   "profileCompletionPhone": "Número de teléfono",
-  "profileCompletionPhoneHint": "p. ej. +972 50 123 4567",
+  "profileCompletionPhoneHint": "Teléfono",
   "profileCompletionPhoneInvalid": "Número de teléfono inválido",
   "profileCompletionStepIsraelTitle": "Israel",
   "profileCompletionStepIsraelSubtitle": "Información requerida para la atención en Israel.",
@@ -609,6 +610,28 @@
   "errorUnableToLoadAppointment": "No se pudo cargar la cita.",
   "errorUnableToCancelAppointment": "No se pudo cancelar la cita.",
   "errorUnableToRescheduleAppointment": "No se pudo reprogramar la cita.",
+  "appointmentRescheduleTitle": "Elige una nueva fecha",
+  "appointmentRescheduleSubtitle": "Selecciona un horario disponible para tu cita con {practitionerName}.",
+  "@appointmentRescheduleSubtitle": {
+    "placeholders": {
+      "practitionerName": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleCurrent": "Actualmente: {date} a las {time}",
+  "@appointmentRescheduleCurrent": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleConfirm": "Confirmar cambio",
+  "appointmentRescheduleSuccessSnack": "Cita reprogramada correctamente",
   "errorUnableToLoadConversations": "No se pudieron cargar las conversaciones.",
   "errorUnableToLoadConversation": "No se pudo cargar la conversación.",
   "errorUnableToSendMessage": "No se pudo enviar el mensaje.",
@@ -777,6 +800,32 @@
   "healthBloodTypeABNeg": "AB-",
   "healthBloodTypeOPos": "O+",
   "healthBloodTypeONeg": "O-",
+
+  "avatarPickTakePhoto": "Tomar una foto",
+  "avatarPickChooseFromGallery": "Elegir de la galería",
+
+  "placesErrorGeneric": "No se pudieron cargar las sugerencias de dirección.",
+  "placesErrorInvalidResponse": "Respuesta inválida del servicio de direcciones.",
+  "placesErrorBackend": "El servicio de direcciones no está disponible. Inténtalo más tarde.",
+  "placesErrorUnexpected": "Error inesperado. Inténtalo de nuevo.",
+
+  "authGoogleSignInNotConfigured": "El inicio de sesión con Google no está disponible.",
+  "authGoogleSignInUnavailableIos": "El inicio de sesión con Google no está disponible en iOS.",
+  "authGoogleSignInCancelled": "Inicio de sesión con Google cancelado.",
+  "authAppleSignInCancelled": "Inicio de sesión con Apple cancelado.",
+
+  "pushTokenInvalidMinChars": "Token push inválido (mínimo {min} caracteres).",
+  "@pushTokenInvalidMinChars": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "pushPlatformInvalid": "Plataforma inválida: {platform}",
+  "@pushPlatformInvalid": {
+    "placeholders": {
+      "platform": { "type": "String" }
+    }
+  },
 
   "errorNotificationPermissionDenied": "Permiso de notificaciones denegado.",
 

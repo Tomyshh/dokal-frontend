@@ -26,6 +26,7 @@
   "authForgotPasswordCta": "שכחת סיסמה?",
   "authCreateAccountCta": "צור חשבון",
   "authContinueWithGoogle": "המשך עם Google",
+  "authContinueWithApple": "המשך עם Apple",
   "authContinueWithoutAccount": "המשך ללא חשבון",
 
   "authRegisterTitle": "צור חשבון",
@@ -56,7 +57,7 @@
   "profileCompletionStepContactSubtitle": "איך נוכל ליצור איתך קשר?",
   "profileCompletionEmailLockedHint": "כתובת האימייל מקושרת לחשבון ולא ניתן לשנות אותה כאן.",
   "profileCompletionPhone": "מספר טלפון",
-  "profileCompletionPhoneHint": "לדוגמה: +972 50 123 4567",
+  "profileCompletionPhoneHint": "מס טלפון",
   "profileCompletionPhoneInvalid": "מספר טלפון לא תקין",
   "profileCompletionStepIsraelTitle": "ישראל",
   "profileCompletionStepIsraelSubtitle": "מידע נדרש לטיפול בישראל.",
@@ -799,6 +800,32 @@
   "healthBloodTypeABNeg": "AB-",
   "healthBloodTypeOPos": "O+",
   "healthBloodTypeONeg": "O-",
+
+  "avatarPickTakePhoto": "צלם תמונה",
+  "avatarPickChooseFromGallery": "בחר מהגלריה",
+
+  "placesErrorGeneric": "לא ניתן לטעון הצעות לכתובת.",
+  "placesErrorInvalidResponse": "תגובה לא תקינה משירות הכתובות.",
+  "placesErrorBackend": "שירות הכתובות אינו זמין. נסה שוב מאוחר יותר.",
+  "placesErrorUnexpected": "שגיאה לא צפויה. נסה שוב.",
+
+  "authGoogleSignInNotConfigured": "התחברות עם Google אינה זמינה.",
+  "authGoogleSignInUnavailableIos": "התחברות עם Google אינה זמינה ב‑iOS.",
+  "authGoogleSignInCancelled": "התחברות עם Google בוטלה.",
+  "authAppleSignInCancelled": "התחברות עם Apple בוטלה.",
+
+  "pushTokenInvalidMinChars": "אסימון התראות לא תקין (מינימום {min} תווים).",
+  "@pushTokenInvalidMinChars": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "pushPlatformInvalid": "פלטפורמה לא תקינה: {platform}",
+  "@pushPlatformInvalid": {
+    "placeholders": {
+      "platform": { "type": "String" }
+    }
+  },
 
   "errorNotificationPermissionDenied": "הרשאת התראות נדחתה.",
 

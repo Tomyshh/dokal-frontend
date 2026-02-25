@@ -56,6 +56,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get authContinueWithGoogle => 'በGoogle ቀጥል';
 
   @override
+  String get authContinueWithApple => 'በApple ቀጥል';
+
+  @override
   String get authContinueWithoutAccount => 'ያለ መለያ ቀጥል';
 
   @override
@@ -128,7 +131,7 @@ class AppLocalizationsAm extends AppLocalizations {
   String get profileCompletionPhone => 'ስልክ ቁጥር';
 
   @override
-  String get profileCompletionPhoneHint => 'ለምሳሌ +972 50 123 4567';
+  String get profileCompletionPhoneHint => 'ስልክ';
 
   @override
   String get profileCompletionPhoneInvalid => 'የስልክ ቁጥር ትክክል አይደለም';
@@ -754,23 +757,23 @@ class AppLocalizationsAm extends AppLocalizations {
   String get appointmentDetailReschedule => 'ዳግም ያቅዱ';
 
   @override
-  String get appointmentRescheduleTitle => 'בחר תאריך חדש';
+  String get appointmentRescheduleTitle => 'አዲስ ቀን ይምረጡ';
 
   @override
   String appointmentRescheduleSubtitle(String practitionerName) {
-    return 'בחר תור זמין עם $practitionerName.';
+    return 'ከ$practitionerName ጋር ለቀጠሮዎ የሚገኝ ጊዜ ይምረጡ።';
   }
 
   @override
   String appointmentRescheduleCurrent(String date, String time) {
-    return 'כרגע: $date בשעה $time';
+    return 'አሁን: $date በ$time';
   }
 
   @override
-  String get appointmentRescheduleConfirm => 'אשר שינוי';
+  String get appointmentRescheduleConfirm => 'ለውጡን አረጋግጥ';
 
   @override
-  String get appointmentRescheduleSuccessSnack => 'התור נקבע מחדש בהצלחה';
+  String get appointmentRescheduleSuccessSnack => 'ቀጠሮ በተሳካ ሁኔታ ተቀይሯል';
 
   @override
   String get appointmentDetailCancelQuestion => 'ቀጠሮውን ልሰርዝ?';
@@ -1852,6 +1855,46 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get avatarPickTakePhoto => 'ፎቶ አንሳ';
+
+  @override
+  String get avatarPickChooseFromGallery => 'ከጋለሪ ምረጥ';
+
+  @override
+  String get placesErrorGeneric => 'የአድራሻ ምክሮችን መጫን አልተቻለም።';
+
+  @override
+  String get placesErrorInvalidResponse => 'ከአድራሻ አገልግሎት የተሳሳተ ምላሽ ተመልሷል።';
+
+  @override
+  String get placesErrorBackend => 'የአድራሻ አገልግሎት አይገኝም። ቆይተህ እንደገና ሞክር።';
+
+  @override
+  String get placesErrorUnexpected => 'ያልተጠበቀ ስህተት ተከስቷል። እንደገና ሞክር።';
+
+  @override
+  String get authGoogleSignInNotConfigured => 'በGoogle መግባት አይገኝም።';
+
+  @override
+  String get authGoogleSignInUnavailableIos => 'በiOS ላይ በGoogle መግባት አይገኝም።';
+
+  @override
+  String get authGoogleSignInCancelled => 'በGoogle መግባት ተሰርዟል።';
+
+  @override
+  String get authAppleSignInCancelled => 'በApple መግባት ተሰርዟል።';
+
+  @override
+  String pushTokenInvalidMinChars(int min) {
+    return 'የpush token ትክክል አይደለም (ቢያንስ $min ቁምፊዎች).';
+  }
+
+  @override
+  String pushPlatformInvalid(String platform) {
+    return 'የተሳሳተ መድረክ: $platform';
+  }
 
   @override
   String get errorNotificationPermissionDenied => 'የማሳወቂያ ፍቃድ ተቀባይነት አላገኘም.';

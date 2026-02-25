@@ -56,6 +56,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get authContinueWithGoogle => 'המשך עם Google';
 
   @override
+  String get authContinueWithApple => 'המשך עם Apple';
+
+  @override
   String get authContinueWithoutAccount => 'המשך ללא חשבון';
 
   @override
@@ -129,7 +132,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get profileCompletionPhone => 'מספר טלפון';
 
   @override
-  String get profileCompletionPhoneHint => 'לדוגמה: +972 50 123 4567';
+  String get profileCompletionPhoneHint => 'מס טלפון';
 
   @override
   String get profileCompletionPhoneInvalid => 'מספר טלפון לא תקין';
@@ -1869,6 +1872,48 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get avatarPickTakePhoto => 'צלם תמונה';
+
+  @override
+  String get avatarPickChooseFromGallery => 'בחר מהגלריה';
+
+  @override
+  String get placesErrorGeneric => 'לא ניתן לטעון הצעות לכתובת.';
+
+  @override
+  String get placesErrorInvalidResponse => 'תגובה לא תקינה משירות הכתובות.';
+
+  @override
+  String get placesErrorBackend =>
+      'שירות הכתובות אינו זמין. נסה שוב מאוחר יותר.';
+
+  @override
+  String get placesErrorUnexpected => 'שגיאה לא צפויה. נסה שוב.';
+
+  @override
+  String get authGoogleSignInNotConfigured => 'התחברות עם Google אינה זמינה.';
+
+  @override
+  String get authGoogleSignInUnavailableIos =>
+      'התחברות עם Google אינה זמינה ב‑iOS.';
+
+  @override
+  String get authGoogleSignInCancelled => 'התחברות עם Google בוטלה.';
+
+  @override
+  String get authAppleSignInCancelled => 'התחברות עם Apple בוטלה.';
+
+  @override
+  String pushTokenInvalidMinChars(int min) {
+    return 'אסימון התראות לא תקין (מינימום $min תווים).';
+  }
+
+  @override
+  String pushPlatformInvalid(String platform) {
+    return 'פלטפורמה לא תקינה: $platform';
+  }
 
   @override
   String get errorNotificationPermissionDenied => 'הרשאת התראות נדחתה.';

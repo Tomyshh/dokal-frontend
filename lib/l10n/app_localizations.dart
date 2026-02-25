@@ -196,6 +196,12 @@ abstract class AppLocalizations {
   /// **'המשך עם Google'**
   String get authContinueWithGoogle;
 
+  /// No description provided for @authContinueWithApple.
+  ///
+  /// In he, this message translates to:
+  /// **'המשך עם Apple'**
+  String get authContinueWithApple;
+
   /// No description provided for @authContinueWithoutAccount.
   ///
   /// In he, this message translates to:
@@ -337,7 +343,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileCompletionPhoneHint.
   ///
   /// In he, this message translates to:
-  /// **'לדוגמה: +972 50 123 4567'**
+  /// **'מס טלפון'**
   String get profileCompletionPhoneHint;
 
   /// No description provided for @profileCompletionPhoneInvalid.
@@ -3657,6 +3663,78 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'O-'**
   String get healthBloodTypeONeg;
+
+  /// No description provided for @avatarPickTakePhoto.
+  ///
+  /// In he, this message translates to:
+  /// **'צלם תמונה'**
+  String get avatarPickTakePhoto;
+
+  /// No description provided for @avatarPickChooseFromGallery.
+  ///
+  /// In he, this message translates to:
+  /// **'בחר מהגלריה'**
+  String get avatarPickChooseFromGallery;
+
+  /// No description provided for @placesErrorGeneric.
+  ///
+  /// In he, this message translates to:
+  /// **'לא ניתן לטעון הצעות לכתובת.'**
+  String get placesErrorGeneric;
+
+  /// No description provided for @placesErrorInvalidResponse.
+  ///
+  /// In he, this message translates to:
+  /// **'תגובה לא תקינה משירות הכתובות.'**
+  String get placesErrorInvalidResponse;
+
+  /// No description provided for @placesErrorBackend.
+  ///
+  /// In he, this message translates to:
+  /// **'שירות הכתובות אינו זמין. נסה שוב מאוחר יותר.'**
+  String get placesErrorBackend;
+
+  /// No description provided for @placesErrorUnexpected.
+  ///
+  /// In he, this message translates to:
+  /// **'שגיאה לא צפויה. נסה שוב.'**
+  String get placesErrorUnexpected;
+
+  /// No description provided for @authGoogleSignInNotConfigured.
+  ///
+  /// In he, this message translates to:
+  /// **'התחברות עם Google אינה זמינה.'**
+  String get authGoogleSignInNotConfigured;
+
+  /// No description provided for @authGoogleSignInUnavailableIos.
+  ///
+  /// In he, this message translates to:
+  /// **'התחברות עם Google אינה זמינה ב‑iOS.'**
+  String get authGoogleSignInUnavailableIos;
+
+  /// No description provided for @authGoogleSignInCancelled.
+  ///
+  /// In he, this message translates to:
+  /// **'התחברות עם Google בוטלה.'**
+  String get authGoogleSignInCancelled;
+
+  /// No description provided for @authAppleSignInCancelled.
+  ///
+  /// In he, this message translates to:
+  /// **'התחברות עם Apple בוטלה.'**
+  String get authAppleSignInCancelled;
+
+  /// No description provided for @pushTokenInvalidMinChars.
+  ///
+  /// In he, this message translates to:
+  /// **'אסימון התראות לא תקין (מינימום {min} תווים).'**
+  String pushTokenInvalidMinChars(int min);
+
+  /// No description provided for @pushPlatformInvalid.
+  ///
+  /// In he, this message translates to:
+  /// **'פלטפורמה לא תקינה: {platform}'**
+  String pushPlatformInvalid(String platform);
 
   /// No description provided for @errorNotificationPermissionDenied.
   ///

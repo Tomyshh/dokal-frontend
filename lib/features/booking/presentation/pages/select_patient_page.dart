@@ -22,7 +22,7 @@ class SelectPatientPage extends StatelessWidget {
     final practitionerId = context.read<BookingBloc>().state.practitionerId;
 
     return BlocProvider(
-      create: (_) => sl<BookingPatientsCubit>(),
+      create: (_) => sl<BookingPatientsCubit>()..load(),
       child: Padding(
         padding: EdgeInsets.all(AppSpacing.xl.r),
         child: Column(
@@ -38,7 +38,8 @@ class SelectPatientPage extends StatelessWidget {
             Expanded(
               child: BlocBuilder<BookingPatientsCubit, BookingPatientsState>(
                 builder: (context, pState) {
-                  if (pState.status == BookingPatientsStatus.loading) {
+                  if (pState.status == BookingPatientsStatus.initial ||
+                      pState.status == BookingPatientsStatus.loading) {
                     return const DokalLoader(lines: 5);
                   }
                   if (pState.status == BookingPatientsStatus.failure) {

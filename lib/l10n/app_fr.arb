@@ -26,6 +26,7 @@
   "authForgotPasswordCta": "Mot de passe oublié ?",
   "authCreateAccountCta": "Créer un compte",
   "authContinueWithGoogle": "Continuer avec Google",
+  "authContinueWithApple": "Continuer avec Apple",
   "authContinueWithoutAccount": "Continuer sans compte",
 
   "authRegisterTitle": "Créer un compte",
@@ -56,7 +57,7 @@
   "profileCompletionStepContactSubtitle": "Comment peut-on vous joindre ?",
   "profileCompletionEmailLockedHint": "Votre email est lié à votre compte et ne peut pas être modifié ici.",
   "profileCompletionPhone": "Numéro de téléphone",
-  "profileCompletionPhoneHint": "ex. +972 50 123 4567",
+  "profileCompletionPhoneHint": "Téléphone",
   "profileCompletionPhoneInvalid": "Numéro de téléphone invalide",
   "profileCompletionStepIsraelTitle": "Israël",
   "profileCompletionStepIsraelSubtitle": "Informations requises pour les soins en Israël.",
@@ -798,6 +799,32 @@
   "healthBloodTypeABNeg": "AB-",
   "healthBloodTypeOPos": "O+",
   "healthBloodTypeONeg": "O-",
+
+  "avatarPickTakePhoto": "Prendre une photo",
+  "avatarPickChooseFromGallery": "Choisir depuis la galerie",
+
+  "placesErrorGeneric": "Impossible de charger les suggestions d’adresse.",
+  "placesErrorInvalidResponse": "Réponse du service d’adresse invalide.",
+  "placesErrorBackend": "Le service d’adresse est indisponible. Réessayez plus tard.",
+  "placesErrorUnexpected": "Erreur inattendue. Réessayez.",
+
+  "authGoogleSignInNotConfigured": "Connexion Google indisponible.",
+  "authGoogleSignInUnavailableIos": "Connexion Google indisponible sur iOS.",
+  "authGoogleSignInCancelled": "Connexion Google annulée.",
+  "authAppleSignInCancelled": "Connexion Apple annulée.",
+
+  "pushTokenInvalidMinChars": "Token push invalide (minimum {min} caractères).",
+  "@pushTokenInvalidMinChars": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "pushPlatformInvalid": "Plateforme invalide : {platform}",
+  "@pushPlatformInvalid": {
+    "placeholders": {
+      "platform": { "type": "String" }
+    }
+  },
 
   "errorNotificationPermissionDenied": "Permission notifications refusée.",
 

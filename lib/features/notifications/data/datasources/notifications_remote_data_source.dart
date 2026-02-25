@@ -1,5 +1,6 @@
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/notification_item.dart';
 
 abstract class NotificationsRemoteDataSource {
@@ -64,11 +65,11 @@ class NotificationsRemoteDataSourceImpl
   }) async {
     // Backend: token min 10 caractères, platform: "ios" | "android" | "web"
     if (token.length < 10) {
-      throw ServerException('Token push invalide (min 10 caractères)');
+      throw ServerException(l10nStatic.pushTokenInvalidMinChars(10));
     }
     final validPlatforms = ['ios', 'android', 'web'];
     if (!validPlatforms.contains(platform)) {
-      throw ServerException('Platform invalide: $platform');
+      throw ServerException(l10nStatic.pushPlatformInvalid(platform));
     }
     await api.post(
       '/api/v1/notifications/push-tokens',

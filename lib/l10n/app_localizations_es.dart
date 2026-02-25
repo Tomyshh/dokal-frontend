@@ -56,6 +56,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get authContinueWithGoogle => 'Continuar con Google';
 
   @override
+  String get authContinueWithApple => 'Continuar con Apple';
+
+  @override
   String get authContinueWithoutAccount => 'Continuar sin cuenta';
 
   @override
@@ -130,7 +133,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileCompletionPhone => 'Número de teléfono';
 
   @override
-  String get profileCompletionPhoneHint => 'p. ej. +972 50 123 4567';
+  String get profileCompletionPhoneHint => 'Teléfono';
 
   @override
   String get profileCompletionPhoneInvalid => 'Número de teléfono inválido';
@@ -778,23 +781,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get appointmentDetailReschedule => 'Reprogramar';
 
   @override
-  String get appointmentRescheduleTitle => 'בחר תאריך חדש';
+  String get appointmentRescheduleTitle => 'Elige una nueva fecha';
 
   @override
   String appointmentRescheduleSubtitle(String practitionerName) {
-    return 'בחר תור זמין עם $practitionerName.';
+    return 'Selecciona un horario disponible para tu cita con $practitionerName.';
   }
 
   @override
   String appointmentRescheduleCurrent(String date, String time) {
-    return 'כרגע: $date בשעה $time';
+    return 'Actualmente: $date a las $time';
   }
 
   @override
-  String get appointmentRescheduleConfirm => 'אשר שינוי';
+  String get appointmentRescheduleConfirm => 'Confirmar cambio';
 
   @override
-  String get appointmentRescheduleSuccessSnack => 'התור נקבע מחדש בהצלחה';
+  String get appointmentRescheduleSuccessSnack =>
+      'Cita reprogramada correctamente';
 
   @override
   String get appointmentDetailCancelQuestion => '¿Cancelar la cita?';
@@ -1936,6 +1940,53 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get avatarPickTakePhoto => 'Tomar una foto';
+
+  @override
+  String get avatarPickChooseFromGallery => 'Elegir de la galería';
+
+  @override
+  String get placesErrorGeneric =>
+      'No se pudieron cargar las sugerencias de dirección.';
+
+  @override
+  String get placesErrorInvalidResponse =>
+      'Respuesta inválida del servicio de direcciones.';
+
+  @override
+  String get placesErrorBackend =>
+      'El servicio de direcciones no está disponible. Inténtalo más tarde.';
+
+  @override
+  String get placesErrorUnexpected => 'Error inesperado. Inténtalo de nuevo.';
+
+  @override
+  String get authGoogleSignInNotConfigured =>
+      'El inicio de sesión con Google no está disponible.';
+
+  @override
+  String get authGoogleSignInUnavailableIos =>
+      'El inicio de sesión con Google no está disponible en iOS.';
+
+  @override
+  String get authGoogleSignInCancelled =>
+      'Inicio de sesión con Google cancelado.';
+
+  @override
+  String get authAppleSignInCancelled =>
+      'Inicio de sesión con Apple cancelado.';
+
+  @override
+  String pushTokenInvalidMinChars(int min) {
+    return 'Token push inválido (mínimo $min caracteres).';
+  }
+
+  @override
+  String pushPlatformInvalid(String platform) {
+    return 'Plataforma inválida: $platform';
+  }
 
   @override
   String get errorNotificationPermissionDenied =>

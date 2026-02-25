@@ -62,15 +62,18 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         border: Border.all(color: AppColors.primary, width: 2),
       ),
     );
-    return Pinput(
-      controller: _otpController,
-      focusNode: _otpFocusNode,
-      length: 6,
-      defaultPinTheme: defaultPinTheme,
-      focusedPinTheme: focusedPinTheme,
-      submittedPinTheme: defaultPinTheme,
-      keyboardType: TextInputType.number,
-      onChanged: (_) => setState(() {}),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Pinput(
+        controller: _otpController,
+        focusNode: _otpFocusNode,
+        length: 6,
+        defaultPinTheme: defaultPinTheme,
+        focusedPinTheme: focusedPinTheme,
+        submittedPinTheme: defaultPinTheme,
+        keyboardType: TextInputType.number,
+        onChanged: (_) => setState(() {}),
+      ),
     );
   }
 

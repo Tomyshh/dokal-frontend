@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/auth_session.dart';
 import '../../domain/usecases/sign_in.dart';
+import '../../domain/usecases/sign_in_with_apple.dart';
 import '../../domain/usecases/sign_in_with_google.dart';
 
 part 'login_event.dart';
@@ -12,15 +13,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     required SignIn signIn,
     required SignInWithGoogle signInWithGoogle,
+    required SignInWithApple signInWithApple,
   })  : _signIn = signIn,
         _signInWithGoogle = signInWithGoogle,
+        _signInWithApple = signInWithApple,
         super(const LoginState.initial()) {
     on<LoginSubmitted>(_onSubmitted);
     on<LoginWithGoogleRequested>(_onLoginWithGoogleRequested);
+    on<LoginWithAppleRequested>(_onLoginWithAppleRequested);
   }
 
   final SignIn _signIn;
   final SignInWithGoogle _signInWithGoogle;
+  final SignInWithApple _signInWithApple;
 
   Future<void> _onLoginWithGoogleRequested(
     LoginWithGoogleRequested event,
@@ -28,6 +33,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(const LoginState.loading());
     final res = await _signInWithGoogle();
+    res.fold(
+      (f) => emit(LoginState.failure(f.message)),
+      (session) => emit(LoginState.success(session)),
+    );
+  }
+
+  Future<void> _onLoginWithAppleRequested(
+    LoginWithAppleRequested event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(const LoginState.loading());
+    final res = await _signInWithApple();
     res.fold(
       (f) => emit(LoginState.failure(f.message)),
       (session) => emit(LoginState.success(session)),

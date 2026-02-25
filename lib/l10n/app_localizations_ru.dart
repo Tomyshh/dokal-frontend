@@ -57,6 +57,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authContinueWithGoogle => 'Войти через Google';
 
   @override
+  String get authContinueWithApple => 'Войти через Apple';
+
+  @override
   String get authContinueWithoutAccount => 'Продолжить без аккаунта';
 
   @override
@@ -130,7 +133,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get profileCompletionPhone => 'Телефон';
 
   @override
-  String get profileCompletionPhoneHint => 'например, +972 50 123 4567';
+  String get profileCompletionPhoneHint => 'Телефон';
 
   @override
   String get profileCompletionPhoneInvalid => 'Неверный номер телефона';
@@ -773,23 +776,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get appointmentDetailReschedule => 'Перенести';
 
   @override
-  String get appointmentRescheduleTitle => 'בחר תאריך חדש';
+  String get appointmentRescheduleTitle => 'Выберите новую дату';
 
   @override
   String appointmentRescheduleSubtitle(String practitionerName) {
-    return 'בחר תור זמין עם $practitionerName.';
+    return 'Выберите доступное время для приёма у $practitionerName.';
   }
 
   @override
   String appointmentRescheduleCurrent(String date, String time) {
-    return 'כרגע: $date בשעה $time';
+    return 'Сейчас: $date в $time';
   }
 
   @override
-  String get appointmentRescheduleConfirm => 'אשר שינוי';
+  String get appointmentRescheduleConfirm => 'Подтвердить изменение';
 
   @override
-  String get appointmentRescheduleSuccessSnack => 'התור נקבע מחדש בהצלחה';
+  String get appointmentRescheduleSuccessSnack => 'Прием успешно перенесен';
 
   @override
   String get appointmentDetailCancelQuestion => 'Отменить прием?';
@@ -1922,6 +1925,49 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get avatarPickTakePhoto => 'Сделать фото';
+
+  @override
+  String get avatarPickChooseFromGallery => 'Выбрать из галереи';
+
+  @override
+  String get placesErrorGeneric => 'Не удалось загрузить подсказки адреса.';
+
+  @override
+  String get placesErrorInvalidResponse => 'Неверный ответ сервиса адресов.';
+
+  @override
+  String get placesErrorBackend =>
+      'Сервис адресов недоступен. Попробуйте позже.';
+
+  @override
+  String get placesErrorUnexpected =>
+      'Непредвиденная ошибка. Попробуйте снова.';
+
+  @override
+  String get authGoogleSignInNotConfigured => 'Вход через Google недоступен.';
+
+  @override
+  String get authGoogleSignInUnavailableIos =>
+      'Вход через Google недоступен на iOS.';
+
+  @override
+  String get authGoogleSignInCancelled => 'Вход через Google отменён.';
+
+  @override
+  String get authAppleSignInCancelled => 'Вход через Apple отменён.';
+
+  @override
+  String pushTokenInvalidMinChars(int min) {
+    return 'Неверный push-токен (минимум $min символов).';
+  }
+
+  @override
+  String pushPlatformInvalid(String platform) {
+    return 'Неверная платформа: $platform';
+  }
 
   @override
   String get errorNotificationPermissionDenied =>

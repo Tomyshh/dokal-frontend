@@ -26,6 +26,7 @@
   "authForgotPasswordCta": "Forgot password?",
   "authCreateAccountCta": "Create an account",
   "authContinueWithGoogle": "Continue with Google",
+  "authContinueWithApple": "Continue with Apple",
   "authContinueWithoutAccount": "Continue without an account",
 
   "authRegisterTitle": "Create an account",
@@ -56,7 +57,7 @@
   "profileCompletionStepContactSubtitle": "How can we reach you?",
   "profileCompletionEmailLockedHint": "Your email is linked to your account and cannot be changed here.",
   "profileCompletionPhone": "Phone number",
-  "profileCompletionPhoneHint": "e.g. +972 50 123 4567",
+  "profileCompletionPhoneHint": "Phone",
   "profileCompletionPhoneInvalid": "Invalid phone number",
   "profileCompletionStepIsraelTitle": "Israel",
   "profileCompletionStepIsraelSubtitle": "Required info for care in Israel.",
@@ -799,6 +800,32 @@
   "healthBloodTypeABNeg": "AB-",
   "healthBloodTypeOPos": "O+",
   "healthBloodTypeONeg": "O-",
+
+  "avatarPickTakePhoto": "Take photo",
+  "avatarPickChooseFromGallery": "Choose from gallery",
+
+  "placesErrorGeneric": "Unable to load address suggestions.",
+  "placesErrorInvalidResponse": "Address service returned an invalid response.",
+  "placesErrorBackend": "Address service is unavailable. Try again later.",
+  "placesErrorUnexpected": "Unexpected error. Try again.",
+
+  "authGoogleSignInNotConfigured": "Google sign-in is unavailable.",
+  "authGoogleSignInUnavailableIos": "Google sign-in is unavailable on iOS.",
+  "authGoogleSignInCancelled": "Google sign-in cancelled.",
+  "authAppleSignInCancelled": "Apple sign-in cancelled.",
+
+  "pushTokenInvalidMinChars": "Invalid push token (minimum {min} characters).",
+  "@pushTokenInvalidMinChars": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "pushPlatformInvalid": "Invalid platform: {platform}",
+  "@pushPlatformInvalid": {
+    "placeholders": {
+      "platform": { "type": "String" }
+    }
+  },
 
   "errorNotificationPermissionDenied": "Notification permission denied.",
 

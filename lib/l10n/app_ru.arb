@@ -26,6 +26,7 @@
   "authForgotPasswordCta": "Забыли пароль?",
   "authCreateAccountCta": "Создать аккаунт",
   "authContinueWithGoogle": "Войти через Google",
+  "authContinueWithApple": "Войти через Apple",
   "authContinueWithoutAccount": "Продолжить без аккаунта",
 
   "authRegisterTitle": "Создать аккаунт",
@@ -56,7 +57,7 @@
   "profileCompletionStepContactSubtitle": "Как с вами связаться?",
   "profileCompletionEmailLockedHint": "Email привязан к аккаунту и не может быть изменён здесь.",
   "profileCompletionPhone": "Телефон",
-  "profileCompletionPhoneHint": "например, +972 50 123 4567",
+  "profileCompletionPhoneHint": "Телефон",
   "profileCompletionPhoneInvalid": "Неверный номер телефона",
   "profileCompletionStepIsraelTitle": "Израиль",
   "profileCompletionStepIsraelSubtitle": "Данные, необходимые для медицинского обслуживания в Израиле.",
@@ -609,6 +610,28 @@
   "errorUnableToLoadAppointment": "Не удалось загрузить прием.",
   "errorUnableToCancelAppointment": "Не удалось отменить прием.",
   "errorUnableToRescheduleAppointment": "Не удалось перенести прием.",
+  "appointmentRescheduleTitle": "Выберите новую дату",
+  "appointmentRescheduleSubtitle": "Выберите доступное время для приёма у {practitionerName}.",
+  "@appointmentRescheduleSubtitle": {
+    "placeholders": {
+      "practitionerName": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleCurrent": "Сейчас: {date} в {time}",
+  "@appointmentRescheduleCurrent": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleConfirm": "Подтвердить изменение",
+  "appointmentRescheduleSuccessSnack": "Прием успешно перенесен",
   "errorUnableToLoadConversations": "Не удалось загрузить диалоги.",
   "errorUnableToLoadConversation": "Не удалось загрузить диалог.",
   "errorUnableToSendMessage": "Не удалось отправить сообщение.",
@@ -777,6 +800,32 @@
   "healthBloodTypeABNeg": "AB-",
   "healthBloodTypeOPos": "O+",
   "healthBloodTypeONeg": "O-",
+
+  "avatarPickTakePhoto": "Сделать фото",
+  "avatarPickChooseFromGallery": "Выбрать из галереи",
+
+  "placesErrorGeneric": "Не удалось загрузить подсказки адреса.",
+  "placesErrorInvalidResponse": "Неверный ответ сервиса адресов.",
+  "placesErrorBackend": "Сервис адресов недоступен. Попробуйте позже.",
+  "placesErrorUnexpected": "Непредвиденная ошибка. Попробуйте снова.",
+
+  "authGoogleSignInNotConfigured": "Вход через Google недоступен.",
+  "authGoogleSignInUnavailableIos": "Вход через Google недоступен на iOS.",
+  "authGoogleSignInCancelled": "Вход через Google отменён.",
+  "authAppleSignInCancelled": "Вход через Apple отменён.",
+
+  "pushTokenInvalidMinChars": "Неверный push-токен (минимум {min} символов).",
+  "@pushTokenInvalidMinChars": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "pushPlatformInvalid": "Неверная платформа: {platform}",
+  "@pushPlatformInvalid": {
+    "placeholders": {
+      "platform": { "type": "String" }
+    }
+  },
 
   "errorNotificationPermissionDenied": "Разрешение на уведомления отклонено.",
 

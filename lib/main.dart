@@ -4,9 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show FlutterError, kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'core/config/env_config.dart';
 import 'core/profile_completion/profile_completion_notifier.dart';
 import 'core/services/onesignal_service.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
@@ -17,16 +19,15 @@ import 'router/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Charger .env.prod au runtime (iOS, Android) - plus besoin de --dart-define-from-file
+  await dotenv.load(fileName: '.env.prod');
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // OneSignal : initialisation avec l'App ID depuis .env.prod / Render
-  const oneSignalAppId = String.fromEnvironment(
-    'ONESIGNAL_APP_ID',
-    defaultValue: '',
-  );
-  await OneSignalService.initialize(oneSignalAppId);
+  await OneSignalService.initialize(EnvConfig.oneSignalAppId);
 
   // Crashlytics : capture des erreurs Flutter et asynchrones
   FlutterError.onError = (details) {

@@ -26,6 +26,7 @@
   "authForgotPasswordCta": "የይለፍ ቃል ረሳህ?",
   "authCreateAccountCta": "መለያ ፍጠር",
   "authContinueWithGoogle": "በGoogle ቀጥል",
+  "authContinueWithApple": "በApple ቀጥል",
   "authContinueWithoutAccount": "ያለ መለያ ቀጥል",
 
   "authRegisterTitle": "መለያ ፍጠር",
@@ -56,7 +57,7 @@
   "profileCompletionStepContactSubtitle": "እንዴት እንገናኝብዎት?",
   "profileCompletionEmailLockedHint": "ኢሜይሉ ከመለያዎ ጋር ተያይዟል እና እዚህ መቀየር አይቻልም።",
   "profileCompletionPhone": "ስልክ ቁጥር",
-  "profileCompletionPhoneHint": "ለምሳሌ +972 50 123 4567",
+  "profileCompletionPhoneHint": "ስልክ",
   "profileCompletionPhoneInvalid": "የስልክ ቁጥር ትክክል አይደለም",
   "profileCompletionStepIsraelTitle": "እስራኤል",
   "profileCompletionStepIsraelSubtitle": "በእስራኤል ሕክምና ለመቀበል የሚያስፈልጉ መረጃዎች።",
@@ -609,6 +610,28 @@
   "errorUnableToLoadAppointment": "ቀጠሮውን መጫን አልተቻለም።",
   "errorUnableToCancelAppointment": "ቀጠሮውን መሰረዝ አልተቻለም።",
   "errorUnableToRescheduleAppointment": "ቀጠሮውን እንደገና ማቅደም አልተቻለም።",
+  "appointmentRescheduleTitle": "አዲስ ቀን ይምረጡ",
+  "appointmentRescheduleSubtitle": "ከ{practitionerName} ጋር ለቀጠሮዎ የሚገኝ ጊዜ ይምረጡ።",
+  "@appointmentRescheduleSubtitle": {
+    "placeholders": {
+      "practitionerName": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleCurrent": "አሁን: {date} በ{time}",
+  "@appointmentRescheduleCurrent": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentRescheduleConfirm": "ለውጡን አረጋግጥ",
+  "appointmentRescheduleSuccessSnack": "ቀጠሮ በተሳካ ሁኔታ ተቀይሯል",
   "errorUnableToLoadConversations": "ውይይቶችን መጫን አልተቻለም።",
   "errorUnableToLoadConversation": "ውይይቱን መጫን አልተቻለም።",
   "errorUnableToSendMessage": "መልዕክት መላክ አልተቻለም።",
@@ -777,6 +800,32 @@
   "healthBloodTypeABNeg": "AB-",
   "healthBloodTypeOPos": "O+",
   "healthBloodTypeONeg": "O-",
+
+  "avatarPickTakePhoto": "ፎቶ አንሳ",
+  "avatarPickChooseFromGallery": "ከጋለሪ ምረጥ",
+
+  "placesErrorGeneric": "የአድራሻ ምክሮችን መጫን አልተቻለም።",
+  "placesErrorInvalidResponse": "ከአድራሻ አገልግሎት የተሳሳተ ምላሽ ተመልሷል።",
+  "placesErrorBackend": "የአድራሻ አገልግሎት አይገኝም። ቆይተህ እንደገና ሞክር።",
+  "placesErrorUnexpected": "ያልተጠበቀ ስህተት ተከስቷል። እንደገና ሞክር።",
+
+  "authGoogleSignInNotConfigured": "በGoogle መግባት አይገኝም።",
+  "authGoogleSignInUnavailableIos": "በiOS ላይ በGoogle መግባት አይገኝም።",
+  "authGoogleSignInCancelled": "በGoogle መግባት ተሰርዟል።",
+  "authAppleSignInCancelled": "በApple መግባት ተሰርዟል።",
+
+  "pushTokenInvalidMinChars": "የpush token ትክክል አይደለም (ቢያንስ {min} ቁምፊዎች).",
+  "@pushTokenInvalidMinChars": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "pushPlatformInvalid": "የተሳሳተ መድረክ: {platform}",
+  "@pushPlatformInvalid": {
+    "placeholders": {
+      "platform": { "type": "String" }
+    }
+  },
 
   "errorNotificationPermissionDenied": "የማሳወቂያ ፍቃድ ተቀባይነት አላገኘም.",
 

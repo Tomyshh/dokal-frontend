@@ -57,6 +57,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authContinueWithGoogle => 'Continuer avec Google';
 
   @override
+  String get authContinueWithApple => 'Continuer avec Apple';
+
+  @override
   String get authContinueWithoutAccount => 'Continuer sans compte';
 
   @override
@@ -132,7 +135,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileCompletionPhone => 'Numéro de téléphone';
 
   @override
-  String get profileCompletionPhoneHint => 'ex. +972 50 123 4567';
+  String get profileCompletionPhoneHint => 'Téléphone';
 
   @override
   String get profileCompletionPhoneInvalid => 'Numéro de téléphone invalide';
@@ -1949,6 +1952,50 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get avatarPickTakePhoto => 'Prendre une photo';
+
+  @override
+  String get avatarPickChooseFromGallery => 'Choisir depuis la galerie';
+
+  @override
+  String get placesErrorGeneric =>
+      'Impossible de charger les suggestions d’adresse.';
+
+  @override
+  String get placesErrorInvalidResponse =>
+      'Réponse du service d’adresse invalide.';
+
+  @override
+  String get placesErrorBackend =>
+      'Le service d’adresse est indisponible. Réessayez plus tard.';
+
+  @override
+  String get placesErrorUnexpected => 'Erreur inattendue. Réessayez.';
+
+  @override
+  String get authGoogleSignInNotConfigured => 'Connexion Google indisponible.';
+
+  @override
+  String get authGoogleSignInUnavailableIos =>
+      'Connexion Google indisponible sur iOS.';
+
+  @override
+  String get authGoogleSignInCancelled => 'Connexion Google annulée.';
+
+  @override
+  String get authAppleSignInCancelled => 'Connexion Apple annulée.';
+
+  @override
+  String pushTokenInvalidMinChars(int min) {
+    return 'Token push invalide (minimum $min caractères).';
+  }
+
+  @override
+  String pushPlatformInvalid(String platform) {
+    return 'Plateforme invalide : $platform';
+  }
 
   @override
   String get errorNotificationPermissionDenied =>

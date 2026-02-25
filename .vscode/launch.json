@@ -7,28 +7,19 @@
         {
             "name": "dokal",
             "request": "launch",
-            "type": "dart",
-            "toolArgs": [
-                "--dart-define-from-file=.env.prod"
-            ]
+            "type": "dart"
         },
         {
             "name": "dokal (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile",
-            "toolArgs": [
-                "--dart-define-from-file=.env.prod"
-            ]
+            "flutterMode": "profile"
         },
         {
             "name": "dokal (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release",
-            "toolArgs": [
-                "--dart-define-from-file=.env.prod"
-            ]
+            "flutterMode": "release"
         }
     ]
 }

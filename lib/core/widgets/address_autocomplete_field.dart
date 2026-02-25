@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 import '../services/google_places_service.dart';
+import '../../l10n/l10n.dart';
 
 /// Champ d'adresse avec autocomplétion Google Places, limité à Israël.
 /// Retourne [PlaceDetails] (address_line, zip_code, city) lors de la sélection.
@@ -162,9 +163,15 @@ class _AddressAutocompleteFieldState extends State<AddressAutocompleteField> {
   }
 
   void _showPlacesError(Object error) {
+    final l10n = context.l10n;
     final message = error is PlacesApiException
-        ? error.userMessage
-        : 'Erreur Google Places: $error';
+        ? switch (error.status) {
+            'INVALID_RESPONSE' => l10n.placesErrorInvalidResponse,
+            'BACKEND_ERROR' => l10n.placesErrorBackend,
+            'UNEXPECTED_ERROR' => l10n.placesErrorUnexpected,
+            _ => l10n.placesErrorGeneric,
+          }
+        : l10n.placesErrorGeneric;
     final now = DateTime.now();
     final recentlyShown = _lastErrorShown == message &&
         _lastErrorAt != null &&

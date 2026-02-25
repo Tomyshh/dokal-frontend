@@ -57,6 +57,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authContinueWithGoogle => 'Continue with Google';
 
   @override
+  String get authContinueWithApple => 'Continue with Apple';
+
+  @override
   String get authContinueWithoutAccount => 'Continue without an account';
 
   @override
@@ -130,7 +133,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileCompletionPhone => 'Phone number';
 
   @override
-  String get profileCompletionPhoneHint => 'e.g. +972 50 123 4567';
+  String get profileCompletionPhoneHint => 'Phone';
 
   @override
   String get profileCompletionPhoneInvalid => 'Invalid phone number';
@@ -1917,6 +1920,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get healthBloodTypeONeg => 'O-';
+
+  @override
+  String get avatarPickTakePhoto => 'Take photo';
+
+  @override
+  String get avatarPickChooseFromGallery => 'Choose from gallery';
+
+  @override
+  String get placesErrorGeneric => 'Unable to load address suggestions.';
+
+  @override
+  String get placesErrorInvalidResponse =>
+      'Address service returned an invalid response.';
+
+  @override
+  String get placesErrorBackend =>
+      'Address service is unavailable. Try again later.';
+
+  @override
+  String get placesErrorUnexpected => 'Unexpected error. Try again.';
+
+  @override
+  String get authGoogleSignInNotConfigured => 'Google sign-in is unavailable.';
+
+  @override
+  String get authGoogleSignInUnavailableIos =>
+      'Google sign-in is unavailable on iOS.';
+
+  @override
+  String get authGoogleSignInCancelled => 'Google sign-in cancelled.';
+
+  @override
+  String get authAppleSignInCancelled => 'Apple sign-in cancelled.';
+
+  @override
+  String pushTokenInvalidMinChars(int min) {
+    return 'Invalid push token (minimum $min characters).';
+  }
+
+  @override
+  String pushPlatformInvalid(String platform) {
+    return 'Invalid platform: $platform';
+  }
 
   @override
   String get errorNotificationPermissionDenied =>

@@ -1,9 +1,11 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart' as apple_auth;
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
@@ -128,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final isIos = defaultTargetPlatform == TargetPlatform.iOS;
     return BlocProvider(
       create: (_) => sl<LoginBloc>(),
       child: Scaffold(
@@ -148,8 +151,18 @@ class _LoginPageState extends State<LoginPage> {
             final collapsedSheetHeight = MediaQuery.of(context).size.height/2.8.h;
             final expandedTargetHeight =
                 _view == _AuthSheetView.login ? 560.0.h : 630.0.h;
-            final expandedSheetHeight =
-                expandedTargetHeight.clamp(500.0.h, constraints.maxHeight - 36.h).toDouble();
+            final minSheetHeight = 500.0.h;
+            final maxSheetHeight = constraints.maxHeight - 36.h;
+            final expandedSheetHeight = expandedTargetHeight
+                .clamp(
+                  minSheetHeight <= maxSheetHeight
+                      ? minSheetHeight
+                      : maxSheetHeight,
+                  minSheetHeight <= maxSheetHeight
+                      ? maxSheetHeight
+                      : minSheetHeight,
+                )
+                .toDouble();
             final sheetHeight =
                 _expanded ? expandedSheetHeight : collapsedSheetHeight;
 
@@ -179,6 +192,17 @@ class _LoginPageState extends State<LoginPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14.r),
               ),
+            );
+
+            final appleButtonStyle = FilledButton.styleFrom(
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              minimumSize: Size(double.infinity, 48.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.r),
+              ),
+              elevation: 0,
             );
 
             final accentOutlinedButtonStyle = OutlinedButton.styleFrom(
@@ -478,7 +502,7 @@ class _LoginPageState extends State<LoginPage> {
                               alignment: AlignmentDirectional.centerEnd,
                               child: TextButton(
                                 onPressed: () =>
-                                    context.go('/forgot-password'),
+                                    context.push('/forgot-password'),
                                 child: Text(
                                   l10n.authForgotPasswordCta,
                                   style: const TextStyle(
@@ -561,6 +585,52 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: AppSpacing.lg.h),
                         Divider(height: 1.h, color: AppColors.outline),
                         SizedBox(height: AppSpacing.lg.h),
+                        if (isIos) ...[
+                          BlocBuilder<LoginBloc, LoginState>(
+                            buildWhen: (prev, curr) =>
+                                prev.status != curr.status ||
+                                curr.status == LoginStatus.loading,
+                            builder: (context, state) {
+                              final isLoading =
+                                  state.status == LoginStatus.loading;
+                              return Opacity(
+                                opacity: isLoading ? 0.7 : 1,
+                                child: IgnorePointer(
+                                  ignoring: isLoading,
+                                  child: FilledButton(
+                                    onPressed: () => context
+                                        .read<LoginBloc>()
+                                        .add(const LoginWithAppleRequested()),
+                                    style: appleButtonStyle,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 18.r,
+                                          height: 18.r,
+                                          child: CustomPaint(
+                                            painter: apple_auth.AppleLogoPainter(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: AppSpacing.sm.w),
+                                        Text(
+                                          l10n.authContinueWithApple,
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: AppSpacing.sm.h),
+                        ],
                         BlocBuilder<LoginBloc, LoginState>(
                           buildWhen: (prev, curr) =>
                               prev.status != curr.status ||

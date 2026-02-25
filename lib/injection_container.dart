@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/config/env_config.dart';
 import 'core/notifiers/appointment_refresh_notifier.dart';
 import 'core/services/onesignal_service.dart';
 import 'core/services/push_notification_service.dart';
@@ -25,6 +26,7 @@ import 'features/auth/domain/usecases/get_onboarding_completed.dart';
 import 'features/auth/domain/usecases/request_password_reset.dart';
 import 'features/auth/domain/usecases/resend_signup_confirmation_email.dart';
 import 'features/auth/domain/usecases/sign_in.dart';
+import 'features/auth/domain/usecases/sign_in_with_apple.dart';
 import 'features/auth/domain/usecases/sign_in_with_google.dart';
 import 'features/auth/domain/usecases/sign_out.dart';
 import 'features/auth/domain/usecases/sign_up.dart';
@@ -169,58 +171,11 @@ void configureDependencies() {
     () => GooglePlacesService(api: sl<ApiClient>()),
   );
 
-  // Supabase
-  const supabaseUrlDefine = String.fromEnvironment(
-    'SUPABASE_URL',
-    defaultValue: '',
-  );
-  const supabaseUrlExpo = String.fromEnvironment(
-    'EXPO_PUBLIC_SUPABASE_URL',
-    defaultValue: '',
-  );
-  const supabaseAnonKeyDefine = String.fromEnvironment(
-    'SUPABASE_ANON_KEY',
-    defaultValue: '',
-  );
-  const supabaseKeyDefine = String.fromEnvironment(
-    'SUPABASE_KEY',
-    defaultValue: '',
-  );
-  const supabaseKeyExpo = String.fromEnvironment(
-    'EXPO_PUBLIC_SUPABASE_KEY',
-    defaultValue: '',
-  );
-
-  final supabaseUrl = supabaseUrlDefine.isNotEmpty
-      ? supabaseUrlDefine
-      : supabaseUrlExpo;
-  final supabaseAnonKey = supabaseAnonKeyDefine.isNotEmpty
-      ? supabaseAnonKeyDefine
-      : (supabaseKeyDefine.isNotEmpty ? supabaseKeyDefine : supabaseKeyExpo);
-
-  // Support GOOGLE_WEB_CLIENT_ID ou EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
-  // (certains setups ne passent que les clés EXPO_PUBLIC_* depuis le .env)
-  const googleWebRaw = String.fromEnvironment(
-    'GOOGLE_WEB_CLIENT_ID',
-    defaultValue: '',
-  );
-  const googleWebExpo = String.fromEnvironment(
-    'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID',
-    defaultValue: '',
-  );
-  final googleWebClientId =
-      googleWebRaw.isNotEmpty ? googleWebRaw : googleWebExpo;
-  const googleIosClientId = String.fromEnvironment(
-    'GOOGLE_IOS_CLIENT_ID',
-    defaultValue: '',
-  );
-  const googleIosExpo = String.fromEnvironment(
-    'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID',
-    defaultValue: '',
-  );
-  final googleIosClientIdResolved = googleIosClientId.isNotEmpty
-      ? googleIosClientId
-      : googleIosExpo;
+  // Supabase, Google, etc. : chargés depuis .env.prod via EnvConfig
+  final supabaseUrl = EnvConfig.supabaseUrl;
+  final supabaseAnonKey = EnvConfig.supabaseAnonKey;
+  final googleWebClientId = EnvConfig.googleWebClientId;
+  final googleIosClientIdResolved = EnvConfig.googleIosClientId;
 
   if (kDebugMode) {
     debugPrint('[Dokal] Supabase URL: $supabaseUrl');
@@ -231,9 +186,8 @@ void configureDependencies() {
   sl.registerSingletonAsync<SupabaseClient>(() async {
     if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
       throw StateError(
-        "Supabase n'est pas configuré. Ajoutez `EXPO_PUBLIC_SUPABASE_URL` et "
-        "`EXPO_PUBLIC_SUPABASE_KEY` dans `.env.prod` puis lancez l'app avec "
-        "`--dart-define-from-file=.env.prod`.",
+        "Supabase n'est pas configuré. Vérifiez que `.env.prod` contient "
+        "`EXPO_PUBLIC_SUPABASE_URL` et `EXPO_PUBLIC_SUPABASE_KEY`.",
       );
     }
 
@@ -249,6 +203,7 @@ void configureDependencies() {
     () => ApiClient(
       dio: Dio(),
       supabaseClientFuture: sl.getAsync<SupabaseClient>(),
+      backendUrl: EnvConfig.backendUrl,
     ),
   );
 
@@ -278,6 +233,7 @@ void configureDependencies() {
 
   sl.registerLazySingleton(() => SignIn(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignInWithGoogle(sl<AuthRepository>()));
+  sl.registerLazySingleton(() => SignInWithApple(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignUp(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SignOut(sl<AuthRepository>()));
   sl.registerLazySingleton(() => GetSession(sl<AuthRepository>()));
@@ -303,6 +259,7 @@ void configureDependencies() {
     () => LoginBloc(
       signIn: sl<SignIn>(),
       signInWithGoogle: sl<SignInWithGoogle>(),
+      signInWithApple: sl<SignInWithApple>(),
     ),
   );
   sl.registerFactory(() => RegisterBloc(signUp: sl<SignUp>()));

@@ -23,10 +23,7 @@ class GooglePlacesService {
         },
       );
       if (raw is! Map<String, dynamic>) {
-        throw const PlacesApiException(
-          status: 'INVALID_RESPONSE',
-          message: 'Réponse backend invalide (autocomplete).',
-        );
+        throw const PlacesApiException(status: 'INVALID_RESPONSE');
       }
       final predictionsRaw =
           raw['predictions'] ?? raw['items'] ?? const <dynamic>[];
@@ -71,10 +68,7 @@ class GooglePlacesService {
         },
       );
       if (raw is! Map<String, dynamic>) {
-        throw const PlacesApiException(
-          status: 'INVALID_RESPONSE',
-          message: 'Réponse backend invalide (details).',
-        );
+        throw const PlacesApiException(status: 'INVALID_RESPONSE');
       }
       final detailsRaw = raw['result'] ?? raw;
       if (detailsRaw is! Map<String, dynamic>) return null;
@@ -170,13 +164,8 @@ class PlacesApiException implements Exception {
   final String status;
   final String? message;
 
-  String get userMessage =>
-      message == null || message!.trim().isEmpty
-      ? 'Google Places error: $status'
-      : 'Google Places error: $status - ${message!.trim()}';
-
   @override
-  String toString() => userMessage;
+  String toString() => status;
 }
 
 class PlacePrediction {

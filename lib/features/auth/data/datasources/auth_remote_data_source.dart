@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/entities/auth_session.dart';
@@ -9,6 +11,8 @@ abstract class AuthRemoteDataSource {
   Future<AuthSession> signIn({required String email, required String password});
   /// Connexion avec Google (OAuth ID token). Nécessite que le provider Google soit configuré dans Supabase.
   Future<AuthSession> signInWithGoogle();
+  /// Connexion avec Apple (OAuth ID token). Nécessite que le provider Apple soit configuré dans Supabase.
+  Future<AuthSession> signInWithApple();
   Future<AuthSession> signUp({
     required String email,
     required String password,
@@ -80,9 +84,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthSession> signInWithGoogle() async {
     if (googleWebClientId.isEmpty) {
-      throw const AuthException(
-        'Google Sign-In non configuré. Ajoutez GOOGLE_WEB_CLIENT_ID.',
-      );
+      throw AuthException(l10nStatic.authGoogleSignInNotConfigured);
+    }
+    // Sur iOS, le SDK natif peut crasher si aucun clientId iOS n'est fourni
+    // (et/ou si la config iOS n'est pas présente). On échoue proprement.
+    if (defaultTargetPlatform == TargetPlatform.iOS &&
+        (googleIosClientId == null || googleIosClientId!.trim().isEmpty)) {
+      throw AuthException(l10nStatic.authGoogleSignInUnavailableIos);
     }
     final client = await _client;
     return _signInWithGoogleLegacy(client);
@@ -102,7 +110,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (_) {}
     final account = await googleSignIn.signIn();
     if (account == null) {
-      throw const AuthException('Connexion Google annulée.');
+      throw AuthException(l10nStatic.authGoogleSignInCancelled);
     }
     final auth = await account.authentication;
     final idToken = auth.idToken;
@@ -124,6 +132,41 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await googleSignIn.signOut();
     } catch (_) {}
     return AuthSession(userId: user.id, email: user.email);
+  }
+
+  @override
+  Future<AuthSession> signInWithApple() async {
+    final client = await _client;
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      final idToken = credential.identityToken;
+      if (idToken == null || idToken.isEmpty) {
+        throw AuthException(l10nStatic.authSignInFailedTryAgain);
+      }
+      final res = await client.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: idToken,
+        accessToken: credential.authorizationCode,
+      );
+      final user = res.user;
+      if (user == null) {
+        throw AuthException(l10nStatic.authSignInFailedTryAgain);
+      }
+      return AuthSession(userId: user.id, email: user.email);
+    } on SignInWithAppleAuthorizationException catch (e) {
+      // Annulation utilisateur ou erreurs Apple → message propre (pas de crash).
+      if (e.code == AuthorizationErrorCode.canceled) {
+        throw AuthException(l10nStatic.authAppleSignInCancelled);
+      }
+      throw AuthException(l10nStatic.authSignInFailedTryAgain);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

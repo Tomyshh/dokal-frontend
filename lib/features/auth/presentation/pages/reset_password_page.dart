@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -46,7 +47,22 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return BlocProvider(
       create: (_) => sl<ResetPasswordCubit>(),
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          surfaceTintColor: Colors.transparent,
+          foregroundColor: AppColors.primary,
+          leading: BackButton(
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/forgot-password/verify', extra: widget.email.trim());
+              }
+            },
+          ),
+        ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(AppSpacing.xl.r),
@@ -58,6 +74,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     'assets/branding/icononly_transparent_nobuffer.png',
                     height: 56.h,
                     fit: BoxFit.contain,
+                    color: AppColors.primary,
                   ),
                 ),
                 SizedBox(height: AppSpacing.xxl.h),
@@ -169,11 +186,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       ],
                     ),
                   ),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => context.go('/login'),
-                  child: Text(l10n.authBackToLogin),
                 ),
               ],
             ),

@@ -38,11 +38,11 @@ class BookingPatientsCubit extends Cubit<BookingPatientsState> {
       state.copyWith(
         status: BookingPatientsStatus.success,
         me: profRes.getOrElse(
-          () => const UserProfile(
+          () => UserProfile(
             id: '',
-            fullName: '—',
-            email: '—',
-            city: '—',
+            fullName: l10nStatic.commonFallbackDash,
+            email: l10nStatic.commonFallbackDash,
+            city: l10nStatic.commonFallbackDash,
             role: 'patient',
           ),
         ),

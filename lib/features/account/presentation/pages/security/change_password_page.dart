@@ -159,25 +159,28 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           SizedBox(height: AppSpacing.xl.h),
-          TextField(
-            controller: _otpController,
-            focusNode: _otpFocusNode,
-            keyboardType: TextInputType.number,
-            maxLength: 6,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  letterSpacing: 8,
-                  fontWeight: FontWeight.w600,
-                ),
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            decoration: InputDecoration(
-              labelText: l10n.securityChangePasswordOtpLabel,
-              hintText: l10n.authVerifyEmailOtpHint,
-              counterText: '',
-            ),
-            onChanged: (_) => setState(() {}),
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: TextField(
+              controller: _otpController,
+              focusNode: _otpFocusNode,
+              keyboardType: TextInputType.number,
+              maxLength: 6,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    letterSpacing: 8,
+                    fontWeight: FontWeight.w600,
+                  ),
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              decoration: InputDecoration(
+                labelText: l10n.securityChangePasswordOtpLabel,
+                hintText: l10n.authVerifyEmailOtpHint,
+                counterText: '',
+              ),
+              onChanged: (_) => setState(() {}),
+          ),
           ),
           SizedBox(height: AppSpacing.md.h),
           DokalButton.primary(

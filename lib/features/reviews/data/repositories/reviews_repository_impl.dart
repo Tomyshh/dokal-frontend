@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
+import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/review.dart';
 import '../../domain/repositories/reviews_repository.dart';
 import '../datasources/reviews_remote_data_source.dart';
@@ -29,7 +30,7 @@ class ReviewsRepositoryImpl implements ReviewsRepository {
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     } catch (_) {
-      return Left(Failure('Unable to submit review'));
+      return Left(Failure(l10nStatic.errorGenericTryAgain));
     }
   }
 }
