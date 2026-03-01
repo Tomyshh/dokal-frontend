@@ -839,5 +839,13 @@
 
   "addressCopied": "አድራሻ ተቀድቷል",
   "addressOpenInMaps": "በካርታ ክፈት",
-  "addressOpenInGoogleMaps": "በGoogle Maps ክፈት"
+  "addressOpenInGoogleMaps": "በGoogle Maps ክፈት",
+
+  "cardSaveContact": "በአድራሻ ዝርዝር ውስጥ አስቀምጥ",
+  "cardCallMe": "ደውልልኝ",
+  "cardEmail": "ኢሜይል",
+  "cardAbout": "ስለ",
+  "cardYearsExperience": "ዓመት ልምድ",
+  "cardBookAppointment": "ቀጠሮ ያዝ",
+  "cardNotFound": "የንግድ ካርድ አልተገኘም"
 }

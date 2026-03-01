@@ -1,5 +1,6 @@
 import '../../../../core/network/api_client.dart';
 import '../../../reviews/domain/entities/review.dart';
+import '../../domain/entities/practitioner_card.dart';
 import '../../domain/entities/practitioner_profile.dart';
 import 'practitioner_demo_data_source.dart';
 
@@ -141,5 +142,11 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
         patientName: '$firstName $lastName'.trim(),
       );
     }).toList();
+  }
+
+  Future<PractitionerCard> getCardAsync(String idOrSlug) async {
+    final json = await api.get('/api/v1/practitioners/$idOrSlug/card')
+        as Map<String, dynamic>;
+    return PractitionerCard.fromJson(json);
   }
 }

@@ -839,5 +839,13 @@
 
   "addressCopied": "Address copied",
   "addressOpenInMaps": "Open in Maps",
-  "addressOpenInGoogleMaps": "Open in Google Maps"
+  "addressOpenInGoogleMaps": "Open in Google Maps",
+
+  "cardSaveContact": "Save to contacts",
+  "cardCallMe": "Call me",
+  "cardEmail": "Email",
+  "cardAbout": "About",
+  "cardYearsExperience": "years of experience",
+  "cardBookAppointment": "Book an appointment",
+  "cardNotFound": "Business card not found"
 }

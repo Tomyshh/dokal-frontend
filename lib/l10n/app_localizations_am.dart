@@ -1930,4 +1930,25 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get addressOpenInGoogleMaps => 'በGoogle Maps ክፈት';
+
+  @override
+  String get cardSaveContact => 'በአድራሻ ዝርዝር ውስጥ አስቀምጥ';
+
+  @override
+  String get cardCallMe => 'ደውልልኝ';
+
+  @override
+  String get cardEmail => 'ኢሜይል';
+
+  @override
+  String get cardAbout => 'ስለ';
+
+  @override
+  String get cardYearsExperience => 'ዓመት ልምድ';
+
+  @override
+  String get cardBookAppointment => 'ቀጠሮ ያዝ';
+
+  @override
+  String get cardNotFound => 'የንግድ ካርድ አልተገኘም';
 }

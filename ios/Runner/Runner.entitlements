@@ -12,5 +12,9 @@
 	<array>
 		<string>group.com.yapio.dokal.onesignal</string>
 	</array>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:dokal.co.il</string>
+	</array>
 </dict>
 </plist>

@@ -3801,6 +3801,48 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'פתח ב-Google Maps'**
   String get addressOpenInGoogleMaps;
+
+  /// No description provided for @cardSaveContact.
+  ///
+  /// In he, this message translates to:
+  /// **'שמרו באנשי קשר'**
+  String get cardSaveContact;
+
+  /// No description provided for @cardCallMe.
+  ///
+  /// In he, this message translates to:
+  /// **'חייגו אליי'**
+  String get cardCallMe;
+
+  /// No description provided for @cardEmail.
+  ///
+  /// In he, this message translates to:
+  /// **'אימייל'**
+  String get cardEmail;
+
+  /// No description provided for @cardAbout.
+  ///
+  /// In he, this message translates to:
+  /// **'אודות'**
+  String get cardAbout;
+
+  /// No description provided for @cardYearsExperience.
+  ///
+  /// In he, this message translates to:
+  /// **'שנות ניסיון'**
+  String get cardYearsExperience;
+
+  /// No description provided for @cardBookAppointment.
+  ///
+  /// In he, this message translates to:
+  /// **'קבעו תור'**
+  String get cardBookAppointment;
+
+  /// No description provided for @cardNotFound.
+  ///
+  /// In he, this message translates to:
+  /// **'כרטיס ביקור לא נמצא'**
+  String get cardNotFound;
 }
 
 class _AppLocalizationsDelegate

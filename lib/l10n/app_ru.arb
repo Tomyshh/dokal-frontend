@@ -839,5 +839,13 @@
 
   "addressCopied": "Адрес скопирован",
   "addressOpenInMaps": "Открыть в Картах",
-  "addressOpenInGoogleMaps": "Открыть в Google Картах"
+  "addressOpenInGoogleMaps": "Открыть в Google Картах",
+
+  "cardSaveContact": "Сохранить в контактах",
+  "cardCallMe": "Позвонить",
+  "cardEmail": "Эл. почта",
+  "cardAbout": "О враче",
+  "cardYearsExperience": "лет опыта",
+  "cardBookAppointment": "Записаться на приём",
+  "cardNotFound": "Визитка не найдена"
 }

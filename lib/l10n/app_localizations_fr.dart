@@ -2033,4 +2033,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get addressOpenInGoogleMaps => 'Ouvrir dans Google Maps';
+
+  @override
+  String get cardSaveContact => 'Enregistrer dans les contacts';
+
+  @override
+  String get cardCallMe => 'Appelez-moi';
+
+  @override
+  String get cardEmail => 'Email';
+
+  @override
+  String get cardAbout => 'À propos';
+
+  @override
+  String get cardYearsExperience => 'ans d\'expérience';
+
+  @override
+  String get cardBookAppointment => 'Prendre rendez-vous';
+
+  @override
+  String get cardNotFound => 'Carte de visite introuvable';
 }

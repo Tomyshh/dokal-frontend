@@ -839,5 +839,13 @@
 
   "addressCopied": "Dirección copiada",
   "addressOpenInMaps": "Abrir en Mapas",
-  "addressOpenInGoogleMaps": "Abrir en Google Maps"
+  "addressOpenInGoogleMaps": "Abrir en Google Maps",
+
+  "cardSaveContact": "Guardar en contactos",
+  "cardCallMe": "Llámame",
+  "cardEmail": "Correo",
+  "cardAbout": "Acerca de",
+  "cardYearsExperience": "años de experiencia",
+  "cardBookAppointment": "Reservar cita",
+  "cardNotFound": "Tarjeta no encontrada"
 }

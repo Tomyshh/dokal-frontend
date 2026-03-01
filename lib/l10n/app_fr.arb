@@ -838,5 +838,13 @@
 
   "addressCopied": "Adresse copiée",
   "addressOpenInMaps": "Ouvrir dans Plans",
-  "addressOpenInGoogleMaps": "Ouvrir dans Google Maps"
+  "addressOpenInGoogleMaps": "Ouvrir dans Google Maps",
+
+  "cardSaveContact": "Enregistrer dans les contacts",
+  "cardCallMe": "Appelez-moi",
+  "cardEmail": "Email",
+  "cardAbout": "À propos",
+  "cardYearsExperience": "ans d'expérience",
+  "cardBookAppointment": "Prendre rendez-vous",
+  "cardNotFound": "Carte de visite introuvable"
 }

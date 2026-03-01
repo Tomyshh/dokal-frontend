@@ -2024,4 +2024,25 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get addressOpenInGoogleMaps => 'Abrir en Google Maps';
+
+  @override
+  String get cardSaveContact => 'Guardar en contactos';
+
+  @override
+  String get cardCallMe => 'Llámame';
+
+  @override
+  String get cardEmail => 'Correo';
+
+  @override
+  String get cardAbout => 'Acerca de';
+
+  @override
+  String get cardYearsExperience => 'años de experiencia';
+
+  @override
+  String get cardBookAppointment => 'Reservar cita';
+
+  @override
+  String get cardNotFound => 'Tarjeta no encontrada';
 }

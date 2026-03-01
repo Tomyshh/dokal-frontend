@@ -2005,4 +2005,25 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get addressOpenInGoogleMaps => 'Открыть в Google Картах';
+
+  @override
+  String get cardSaveContact => 'Сохранить в контактах';
+
+  @override
+  String get cardCallMe => 'Позвонить';
+
+  @override
+  String get cardEmail => 'Эл. почта';
+
+  @override
+  String get cardAbout => 'О враче';
+
+  @override
+  String get cardYearsExperience => 'лет опыта';
+
+  @override
+  String get cardBookAppointment => 'Записаться на приём';
+
+  @override
+  String get cardNotFound => 'Визитка не найдена';
 }

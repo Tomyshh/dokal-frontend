@@ -35,6 +35,24 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Deep links for business card pages -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="dokal.co.il" android:pathPrefix="/he/card/" />
+                <data android:scheme="https" android:host="dokal.co.il" android:pathPrefix="/en/card/" />
+                <data android:scheme="https" android:host="dokal.co.il" android:pathPrefix="/fr/card/" />
+                <data android:scheme="https" android:host="dokal.co.il" android:pathPrefix="/es/card/" />
+                <data android:scheme="https" android:host="dokal.co.il" android:pathPrefix="/ru/card/" />
+                <data android:scheme="https" android:host="dokal.co.il" android:pathPrefix="/am/card/" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="dokal" android:host="card" />
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

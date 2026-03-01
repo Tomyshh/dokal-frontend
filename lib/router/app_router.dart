@@ -23,6 +23,7 @@ import '../features/health/presentation/pages/health_dashboard_page.dart';
 import '../features/health/presentation/pages/health_profile_workflow_page.dart';
 import '../features/home/presentation/pages/home_page.dart';
 import '../features/messages/presentation/pages/messages_list_page.dart';
+import '../features/practitioner/presentation/pages/business_card_page.dart';
 import '../features/practitioner/presentation/pages/practitioner_profile_page.dart';
 import '../features/search/presentation/pages/search_page.dart';
 import '../features/booking/presentation/pages/booking_flow_shell.dart';
@@ -296,6 +297,12 @@ void initAppRouter(
             VerifyEmailPage(email: (state.extra as String?) ?? ''),
       ),
       GoRoute(path: '/search', builder: (context, state) => const SearchPage()),
+      GoRoute(
+        path: '/card/:id',
+        builder: (context, state) => BusinessCardPage(
+          practitionerIdOrSlug: state.pathParameters['id']!,
+        ),
+      ),
       GoRoute(
         path: '/practitioner/:id',
         builder: (context, state) => PractitionerProfilePage(

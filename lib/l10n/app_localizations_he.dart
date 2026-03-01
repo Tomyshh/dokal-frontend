@@ -1948,4 +1948,25 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get addressOpenInGoogleMaps => 'פתח ב-Google Maps';
+
+  @override
+  String get cardSaveContact => 'שמרו באנשי קשר';
+
+  @override
+  String get cardCallMe => 'חייגו אליי';
+
+  @override
+  String get cardEmail => 'אימייל';
+
+  @override
+  String get cardAbout => 'אודות';
+
+  @override
+  String get cardYearsExperience => 'שנות ניסיון';
+
+  @override
+  String get cardBookAppointment => 'קבעו תור';
+
+  @override
+  String get cardNotFound => 'כרטיס ביקור לא נמצא';
 }

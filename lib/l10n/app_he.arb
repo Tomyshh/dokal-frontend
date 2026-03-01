@@ -839,5 +839,13 @@
 
   "addressCopied": "הכתובת הועתקה",
   "addressOpenInMaps": "פתח במפות",
-  "addressOpenInGoogleMaps": "פתח ב-Google Maps"
+  "addressOpenInGoogleMaps": "פתח ב-Google Maps",
+
+  "cardSaveContact": "שמרו באנשי קשר",
+  "cardCallMe": "חייגו אליי",
+  "cardEmail": "אימייל",
+  "cardAbout": "אודות",
+  "cardYearsExperience": "שנות ניסיון",
+  "cardBookAppointment": "קבעו תור",
+  "cardNotFound": "כרטיס ביקור לא נמצא"
 }
