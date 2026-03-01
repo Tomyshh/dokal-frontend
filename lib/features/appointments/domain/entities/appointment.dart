@@ -22,6 +22,7 @@ class Appointment extends Equatable {
     this.cancelledAt,
     this.completedAt,
     this.instructions = const [],
+    this.instructionsTranslations,
     this.questionnaireFields = const [],
     this.questionnaireSubmittedAt,
   });
@@ -44,8 +45,11 @@ class Appointment extends Equatable {
   final String? cancelledAt;
   final String? completedAt;
 
-  /// Pre-visit instructions set by the practitioner.
+  /// Pre-visit instructions in the practitioner's language.
   final List<String> instructions;
+
+  /// AI-generated translations of instructions keyed by locale (e.g. {"en": [...], "he": [...]}).
+  final Map<String, List<String>>? instructionsTranslations;
 
   /// Dynamic questionnaire fields configured by the practitioner.
   final List<QuestionnaireField> questionnaireFields;
@@ -57,9 +61,15 @@ class Appointment extends Equatable {
   bool get hasQuestionnaire => questionnaireFields.isNotEmpty;
   bool get questionnaireSubmitted => questionnaireSubmittedAt != null;
 
+  /// Returns instructions in the given locale, falling back to source.
+  List<String> localizedInstructions(String locale) {
+    return instructionsTranslations?[locale] ?? instructions;
+  }
+
   Appointment copyWith({
     String? address,
     List<String>? instructions,
+    Map<String, List<String>>? instructionsTranslations,
     List<QuestionnaireField>? questionnaireFields,
     String? questionnaireSubmittedAt,
   }) =>
@@ -82,6 +92,8 @@ class Appointment extends Equatable {
         cancelledAt: cancelledAt,
         completedAt: completedAt,
         instructions: instructions ?? this.instructions,
+        instructionsTranslations:
+            instructionsTranslations ?? this.instructionsTranslations,
         questionnaireFields: questionnaireFields ?? this.questionnaireFields,
         questionnaireSubmittedAt:
             questionnaireSubmittedAt ?? this.questionnaireSubmittedAt,
@@ -114,6 +126,7 @@ class Appointment extends Equatable {
     cancelledAt,
     completedAt,
     instructions,
+    instructionsTranslations,
     questionnaireFields,
     questionnaireSubmittedAt,
   ];

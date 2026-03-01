@@ -1,4 +1,5 @@
 import '../../../../core/network/api_client.dart';
+import '../../../../l10n/app_locale_controller.dart';
 import '../../domain/entities/appointment.dart';
 import '../../domain/entities/questionnaire_field.dart';
 import 'appointments_demo_data_source.dart';
@@ -217,6 +218,23 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
             .toList() ??
         [];
 
+    // Translations of instructions keyed by locale
+    final rawInstrTrans =
+        json['pre_visit_instructions_translations'] as Map<String, dynamic>?;
+    Map<String, List<String>>? instructionsTranslations;
+    if (rawInstrTrans != null && rawInstrTrans.isNotEmpty) {
+      instructionsTranslations = {};
+      for (final entry in rawInstrTrans.entries) {
+        final list = (entry.value as List<dynamic>?)
+            ?.whereType<String>()
+            .toList();
+        if (list != null && list.isNotEmpty) {
+          instructionsTranslations[entry.key] = list;
+        }
+      }
+      if (instructionsTranslations.isEmpty) instructionsTranslations = null;
+    }
+
     // Dynamic questionnaire fields configured by the practitioner
     final rawFields = json['questionnaire_fields'] as List<dynamic>?;
     final questionnaireFields = rawFields
@@ -248,6 +266,7 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
       cancelledAt: json['cancelled_at'] as String?,
       completedAt: json['completed_at'] as String?,
       instructions: instructions,
+      instructionsTranslations: instructionsTranslations,
       questionnaireFields: questionnaireFields,
       questionnaireSubmittedAt:
           json['questionnaire_submitted_at'] as String?,
@@ -257,17 +276,27 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
   static QuestionnaireField _mapQuestionnaireField(
     Map<String, dynamic> json,
   ) {
-    // Label: prefer locale-specific key (label_fr, label_he…) then fall back to label
-    final label =
-        json['label_fr'] as String? ??
-        json['label_he'] as String? ??
-        json['label'] as String? ??
-        '';
+    final label = json['label'] as String? ?? '';
+
+    // Parse translations map from backend (AI-generated)
+    Map<String, String>? translations;
+    final rawTrans = json['translations'] as Map<String, dynamic>?;
+    if (rawTrans != null && rawTrans.isNotEmpty) {
+      translations = {};
+      for (final entry in rawTrans.entries) {
+        if (entry.value is String) {
+          translations[entry.key] = entry.value as String;
+        }
+      }
+      if (translations.isEmpty) translations = null;
+    }
+
     return QuestionnaireField(
       id: json['id'] as String? ?? '',
       label: label,
       isRequired: json['required'] as bool? ?? false,
       maxLines: json['max_lines'] as int? ?? 2,
+      translations: translations,
     );
   }
 }

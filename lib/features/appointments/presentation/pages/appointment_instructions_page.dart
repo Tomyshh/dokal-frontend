@@ -7,6 +7,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../l10n/app_locale_controller.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/appointment.dart';
 
@@ -32,7 +33,8 @@ class _AppointmentInstructionsPageState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final instructions = widget.appointment.instructions;
+    final locale = AppLocaleController.locale.value.languageCode;
+    final instructions = widget.appointment.localizedInstructions(locale);
 
     return Scaffold(
       backgroundColor: AppColors.background,

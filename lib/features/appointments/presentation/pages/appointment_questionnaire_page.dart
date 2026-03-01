@@ -8,6 +8,7 @@ import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/app_locale_controller.dart';
 import '../../../../l10n/l10n.dart';
 import '../../data/datasources/appointments_remote_data_source.dart';
 import '../../domain/entities/appointment.dart';
@@ -255,13 +256,15 @@ class _DynamicTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final locale = AppLocaleController.locale.value.languageCode;
+    final localizedLabel = field.localizedLabel(locale);
     return TextFormField(
       controller: controller,
       maxLines: field.maxLines,
       decoration: InputDecoration(
         labelText: field.isRequired
-              ? field.label
-              : '${field.label} (${l10n.addRelativeKupatOptional.toLowerCase()})',
+              ? localizedLabel
+              : '$localizedLabel (${l10n.addRelativeKupatOptional.toLowerCase()})',
         border: const OutlineInputBorder(),
         alignLabelWithHint: true,
       ),
