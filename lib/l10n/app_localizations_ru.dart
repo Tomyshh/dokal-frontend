@@ -863,6 +863,27 @@ class AppLocalizationsRu extends AppLocalizations {
       'Я прочитал(а) и принимаю эти инструкции';
 
   @override
+  String get appointmentPrepNoInstructions =>
+      'Этот специалист не добавил инструкций перед приёмом.';
+
+  @override
+  String get appointmentPrepNoQuestionnaire =>
+      'Этот специалист не настроил анкету.';
+
+  @override
+  String get appointmentPrepSubmitting => 'Отправка…';
+
+  @override
+  String get appointmentPrepSubmitError =>
+      'Не удалось отправить анкету. Попробуйте ещё раз.';
+
+  @override
+  String get appointmentPrepQuestionnaireDone => 'Завершено';
+
+  @override
+  String get appointmentPrepInstructionsDone => 'Прочитано';
+
+  @override
   String get appointmentDetailSendDocsTitle => 'Отправить документы';
 
   @override
@@ -1975,4 +1996,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get practitionerYourAppointmentLabel => 'Ваш приём';
+
+  @override
+  String get addressCopied => 'Адрес скопирован';
+
+  @override
+  String get addressOpenInMaps => 'Открыть в Картах';
+
+  @override
+  String get addressOpenInGoogleMaps => 'Открыть в Google Картах';
 }

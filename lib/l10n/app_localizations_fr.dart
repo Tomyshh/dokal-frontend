@@ -873,6 +873,27 @@ class AppLocalizationsFr extends AppLocalizations {
       'J’ai lu et j’accepte ces instructions';
 
   @override
+  String get appointmentPrepNoInstructions =>
+      'Ce praticien n’a pas ajouté d’instructions avant la consultation.';
+
+  @override
+  String get appointmentPrepNoQuestionnaire =>
+      'Ce praticien n’a pas configuré de questionnaire.';
+
+  @override
+  String get appointmentPrepSubmitting => 'Envoi en cours…';
+
+  @override
+  String get appointmentPrepSubmitError =>
+      'Impossible d’envoyer le questionnaire. Veuillez réessayer.';
+
+  @override
+  String get appointmentPrepQuestionnaireDone => 'Complété';
+
+  @override
+  String get appointmentPrepInstructionsDone => 'Lu';
+
+  @override
   String get appointmentDetailSendDocsTitle => 'Envoyer des documents';
 
   @override
@@ -2003,4 +2024,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get practitionerYourAppointmentLabel => 'Votre rendez-vous';
+
+  @override
+  String get addressCopied => 'Adresse copiée';
+
+  @override
+  String get addressOpenInMaps => 'Ouvrir dans Plans';
+
+  @override
+  String get addressOpenInGoogleMaps => 'Ouvrir dans Google Maps';
 }

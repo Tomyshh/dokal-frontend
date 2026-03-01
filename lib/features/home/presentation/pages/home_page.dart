@@ -545,6 +545,7 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
                 practitionerName: a.practitionerName,
                 specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
                 reason: a.reason,
+                address: a.address,
                 avatarUrl: a.avatarUrl,
                 isPast: a.isPast,
                 trailing: _PatientChip(
@@ -964,6 +965,7 @@ class _AppointmentHistorySection extends StatelessWidget {
                     practitionerName: a.practitionerName,
                     specialty: specialtyToDisplayLabel(a.specialty, l10n),
                     reason: a.reason,
+                    address: a.address,
                     avatarUrl: a.avatarUrl,
                     isPast: a.isPast,
                     trailing: _PatientChip(

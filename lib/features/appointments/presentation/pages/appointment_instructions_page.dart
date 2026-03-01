@@ -8,11 +8,17 @@ import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../l10n/l10n.dart';
+import '../../domain/entities/appointment.dart';
 
 class AppointmentInstructionsPage extends StatefulWidget {
-  const AppointmentInstructionsPage({super.key, required this.appointmentId});
+  const AppointmentInstructionsPage({
+    super.key,
+    required this.appointmentId,
+    required this.appointment,
+  });
 
   final String appointmentId;
+  final Appointment appointment;
 
   @override
   State<AppointmentInstructionsPage> createState() =>
@@ -26,6 +32,7 @@ class _AppointmentInstructionsPageState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final instructions = widget.appointment.instructions;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -34,43 +41,84 @@ class _AppointmentInstructionsPageState
         subtitle: l10n.appointmentPrepInstructionsSubtitle,
       ),
       body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.all(AppSpacing.lg.r),
-          children: [
-            DokalCard(
-              padding: EdgeInsets.all(AppSpacing.md.r),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: instructions.isEmpty
+            ? const _EmptyInstructions()
+            : ListView(
+                padding: EdgeInsets.all(AppSpacing.lg.r),
                 children: [
-                  _Bullet(text: l10n.appointmentPrepInstruction1),
-                  SizedBox(height: AppSpacing.sm.h),
-                  _Bullet(text: l10n.appointmentPrepInstruction2),
-                  SizedBox(height: AppSpacing.sm.h),
-                  _Bullet(text: l10n.appointmentPrepInstruction3),
-                  SizedBox(height: AppSpacing.md.h),
-                  CheckboxListTile(
-                    value: _accepted,
-                    onChanged: (v) => setState(() => _accepted = v ?? false),
-                    title: Text(l10n.appointmentPrepInstructionsAccept),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    contentPadding: EdgeInsets.zero,
-                    activeColor: AppColors.primary,
+                  DokalCard(
+                    padding: EdgeInsets.all(AppSpacing.md.r),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...instructions.asMap().entries.map((entry) {
+                          return Column(
+                            children: [
+                              _Bullet(text: entry.value),
+                              if (entry.key < instructions.length - 1)
+                                SizedBox(height: AppSpacing.sm.h),
+                            ],
+                          );
+                        }),
+                        SizedBox(height: AppSpacing.md.h),
+                        CheckboxListTile(
+                          value: _accepted,
+                          onChanged: (v) =>
+                              setState(() => _accepted = v ?? false),
+                          title: Text(l10n.appointmentPrepInstructionsAccept),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          contentPadding: EdgeInsets.zero,
+                          activeColor: AppColors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: AppSpacing.lg.h),
+                  DokalButton.primary(
+                    onPressed: !_accepted
+                        ? null
+                        : () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(l10n.appointmentPrepSavedSnack),
+                              ),
+                            );
+                            if (context.canPop()) context.pop();
+                          },
+                    leading: const Icon(Icons.check_rounded),
+                    child: Text(l10n.commonContinue),
                   ),
                 ],
               ),
+      ),
+    );
+  }
+}
+
+class _EmptyInstructions extends StatelessWidget {
+  const _EmptyInstructions();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.xl.r),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.info_outline_rounded,
+              size: 48.sp,
+              color: AppColors.textSecondary,
             ),
-            SizedBox(height: AppSpacing.lg.h),
-            DokalButton.primary(
-              onPressed: !_accepted
-                  ? null
-                  : () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.appointmentPrepSavedSnack)),
-                      );
-                      if (context.canPop()) context.pop();
-                    },
-              leading: const Icon(Icons.check_rounded),
-              child: Text(l10n.commonContinue),
+            SizedBox(height: AppSpacing.md.h),
+            Text(
+              l10n.appointmentPrepNoInstructions,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
           ],
         ),
@@ -102,9 +150,9 @@ class _Bullet extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(height: 1.35),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              height: 1.35,
+            ),
           ),
         ),
       ],

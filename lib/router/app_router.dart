@@ -32,6 +32,7 @@ import '../features/booking/presentation/pages/instructions_page.dart';
 import '../features/booking/presentation/pages/select_patient_page.dart';
 import '../features/booking/presentation/pages/select_reason_page.dart';
 import '../features/booking/presentation/pages/select_slot_page.dart';
+import '../features/appointments/domain/entities/appointment.dart';
 import '../features/appointments/presentation/pages/appointment_detail_page.dart';
 import '../features/appointments/presentation/pages/appointment_instructions_page.dart';
 import '../features/appointments/presentation/pages/appointment_questionnaire_page.dart';
@@ -393,6 +394,7 @@ void initAppRouter(
                         builder: (context, state) =>
                             AppointmentQuestionnairePage(
                               appointmentId: state.pathParameters['id']!,
+                              appointment: state.extra! as Appointment,
                             ),
                       ),
                       GoRoute(
@@ -400,6 +402,7 @@ void initAppRouter(
                         builder: (context, state) =>
                             AppointmentInstructionsPage(
                               appointmentId: state.pathParameters['id']!,
+                              appointment: state.extra! as Appointment,
                             ),
                       ),
                     ],

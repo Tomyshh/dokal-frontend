@@ -1,5 +1,6 @@
 import '../../../../core/network/api_client.dart';
 import '../../domain/entities/appointment.dart';
+import '../../domain/entities/questionnaire_field.dart';
 import 'appointments_demo_data_source.dart';
 
 /// Remote implementation of [AppointmentsDemoDataSource] backed by the Dokal
@@ -29,18 +30,27 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
   Future<List<Appointment>> upcomingAsync() async {
     final data =
         await api.get('/api/v1/appointments/upcoming') as List<dynamic>;
-    return data.map(_mapAppointment).toList();
+    final appointments = data.map(_mapAppointment).toList();
+    return _enrichWithPractitionerAddresses(appointments);
   }
 
   Future<List<Appointment>> pastAsync() async {
     final data = await api.get('/api/v1/appointments/past') as List<dynamic>;
-    return data.map((j) => _mapAppointment(j, isPast: true)).toList();
+    final appointments =
+        data.map((j) => _mapAppointment(j, isPast: true)).toList();
+    return _enrichWithPractitionerAddresses(appointments);
   }
 
   Future<Appointment?> getByIdAsync(String id) async {
     final json =
         await api.get('/api/v1/appointments/$id') as Map<String, dynamic>;
-    return _mapAppointment(json);
+    final appointment = _mapAppointment(json);
+    if (appointment.address == null &&
+        appointment.practitionerId.isNotEmpty) {
+      final addr = await _fetchPractitionerAddress(appointment.practitionerId);
+      if (addr != null) return appointment.copyWith(address: addr);
+    }
+    return appointment;
   }
 
   Future<void> cancelAsync(String id, {String? reason}) async {
@@ -68,7 +78,98 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
         'end_time': end,
       },
     ) as Map<String, dynamic>?;
-    return json != null ? _mapAppointment(json) : null;
+    if (json == null) return null;
+    final appointment = _mapAppointment(json);
+    if (appointment.address == null &&
+        appointment.practitionerId.isNotEmpty) {
+      final addr = await _fetchPractitionerAddress(appointment.practitionerId);
+      if (addr != null) return appointment.copyWith(address: addr);
+    }
+    return appointment;
+  }
+
+  /// Submit the patient's questionnaire answers before the appointment.
+  ///
+  /// Backend: POST /api/v1/appointments/{id}/questionnaire
+  /// Body: `{ "consent": true, "answers": { "<field_id>": "<value>", ... } }`
+  Future<void> submitQuestionnaireAsync(
+    String appointmentId, {
+    required Map<String, String> answers,
+    required bool consent,
+  }) async {
+    await api.post(
+      '/api/v1/appointments/$appointmentId/questionnaire',
+      data: {
+        'consent': consent,
+        'answers': answers,
+      },
+    );
+  }
+
+  /// Mark the pre-visit instructions as read by the patient.
+  ///
+  /// Backend: POST /api/v1/appointments/{id}/instructions/read
+  Future<void> markInstructionsReadAsync(String appointmentId) async {
+    await api.post(
+      '/api/v1/appointments/$appointmentId/instructions/read',
+      data: {},
+    );
+  }
+
+  /// Fetches practitioner addresses for appointments that are missing one.
+  Future<List<Appointment>> _enrichWithPractitionerAddresses(
+    List<Appointment> appointments,
+  ) async {
+    final needsAddress =
+        appointments.where((a) => a.address == null && a.practitionerId.isNotEmpty);
+    if (needsAddress.isEmpty) return appointments;
+
+    final uniqueIds = needsAddress.map((a) => a.practitionerId).toSet();
+    final addressMap = <String, String>{};
+    await Future.wait(
+      uniqueIds.map((id) async {
+        final addr = await _fetchPractitionerAddress(id);
+        if (addr != null) addressMap[id] = addr;
+      }),
+    );
+    if (addressMap.isEmpty) return appointments;
+
+    return appointments.map((a) {
+      if (a.address == null && addressMap.containsKey(a.practitionerId)) {
+        return a.copyWith(address: addressMap[a.practitionerId]);
+      }
+      return a;
+    }).toList();
+  }
+
+  Future<String?> _fetchPractitionerAddress(String practitionerId) async {
+    try {
+      final json = await api.get('/api/v1/practitioners/$practitionerId')
+          as Map<String, dynamic>;
+      final addrLine = json['address_line'] as String?;
+      if (addrLine == null || addrLine.isEmpty) return null;
+      final zip = json['zip_code'] as String? ?? '';
+      final city = json['city'] as String? ?? '';
+      final suffix = '$zip $city'.trim();
+      return suffix.isEmpty ? addrLine : '$addrLine, $suffix';
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Tries practitioner address fields first, falls back to patient_address_line.
+  static String? _extractAddress(
+    Map<String, dynamic> json,
+    Map<String, dynamic>? practitioners,
+  ) {
+    final addrLine = practitioners?['address_line'] as String?;
+    if (addrLine != null && addrLine.isNotEmpty) {
+      final zip = practitioners?['zip_code'] as String? ?? '';
+      final city = practitioners?['city'] as String? ?? '';
+      final suffix = '$zip $city'.trim();
+      return suffix.isEmpty ? addrLine : '$addrLine, $suffix';
+    }
+    return json['patient_address_line'] as String?;
   }
 
   static String _ensureTimeFormat(String time) {
@@ -76,7 +177,7 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
     return time;
   }
 
-  // ---- mapping helper ----
+  // ---- mapping helpers ----
 
   static Appointment _mapAppointment(dynamic raw, {bool isPast = false}) {
     final json = raw as Map<String, dynamic>;
@@ -108,6 +209,22 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
       if (patientName.isEmpty) patientName = null;
     }
 
+    // Dynamic pre-visit instructions set by the practitioner
+    final rawInstructions = json['pre_visit_instructions'] as List<dynamic>?;
+    final instructions = rawInstructions
+            ?.whereType<String>()
+            .where((s) => s.trim().isNotEmpty)
+            .toList() ??
+        [];
+
+    // Dynamic questionnaire fields configured by the practitioner
+    final rawFields = json['questionnaire_fields'] as List<dynamic>?;
+    final questionnaireFields = rawFields
+            ?.whereType<Map<String, dynamic>>()
+            .map(_mapQuestionnaireField)
+            .toList() ??
+        [];
+
     return Appointment(
       id: json['id'] as String,
       practitionerId: practitioners?['id'] as String? ?? '',
@@ -123,13 +240,34 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
       status: status,
       isPast: computedIsPast,
       patientName: patientName,
-      address: json['patient_address_line'] as String?,
+      address: _extractAddress(json, practitioners),
       avatarUrl: practitionerProfiles?['avatar_url'] as String?,
       cancellationReason: json['cancellation_reason'] as String?,
       practitionerNotes: json['practitioner_notes'] as String?,
       confirmedAt: json['confirmed_at'] as String?,
       cancelledAt: json['cancelled_at'] as String?,
       completedAt: json['completed_at'] as String?,
+      instructions: instructions,
+      questionnaireFields: questionnaireFields,
+      questionnaireSubmittedAt:
+          json['questionnaire_submitted_at'] as String?,
+    );
+  }
+
+  static QuestionnaireField _mapQuestionnaireField(
+    Map<String, dynamic> json,
+  ) {
+    // Label: prefer locale-specific key (label_fr, label_he…) then fall back to label
+    final label =
+        json['label_fr'] as String? ??
+        json['label_he'] as String? ??
+        json['label'] as String? ??
+        '';
+    return QuestionnaireField(
+      id: json['id'] as String? ?? '',
+      label: label,
+      isRequired: json['required'] as bool? ?? false,
+      maxLines: json['max_lines'] as int? ?? 2,
     );
   }
 }

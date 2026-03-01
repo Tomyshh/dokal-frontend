@@ -863,6 +863,27 @@ class AppLocalizationsEn extends AppLocalizations {
       'I have read and accept these instructions';
 
   @override
+  String get appointmentPrepNoInstructions =>
+      'This practitioner has not added any pre-visit instructions.';
+
+  @override
+  String get appointmentPrepNoQuestionnaire =>
+      'This practitioner has not configured a questionnaire.';
+
+  @override
+  String get appointmentPrepSubmitting => 'Submitting…';
+
+  @override
+  String get appointmentPrepSubmitError =>
+      'Unable to submit the questionnaire. Please try again.';
+
+  @override
+  String get appointmentPrepQuestionnaireDone => 'Completed';
+
+  @override
+  String get appointmentPrepInstructionsDone => 'Read';
+
+  @override
   String get appointmentDetailSendDocsTitle => 'Send documents';
 
   @override
@@ -1970,4 +1991,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get practitionerYourAppointmentLabel => 'Your appointment';
+
+  @override
+  String get addressCopied => 'Address copied';
+
+  @override
+  String get addressOpenInMaps => 'Open in Maps';
+
+  @override
+  String get addressOpenInGoogleMaps => 'Open in Google Maps';
 }

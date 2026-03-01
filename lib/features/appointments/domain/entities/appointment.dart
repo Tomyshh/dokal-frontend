@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'questionnaire_field.dart';
+
 class Appointment extends Equatable {
   const Appointment({
     required this.id,
@@ -19,6 +21,9 @@ class Appointment extends Equatable {
     this.confirmedAt,
     this.cancelledAt,
     this.completedAt,
+    this.instructions = const [],
+    this.questionnaireFields = const [],
+    this.questionnaireSubmittedAt,
   });
 
   final String id;
@@ -38,6 +43,49 @@ class Appointment extends Equatable {
   final String? confirmedAt;
   final String? cancelledAt;
   final String? completedAt;
+
+  /// Pre-visit instructions set by the practitioner.
+  final List<String> instructions;
+
+  /// Dynamic questionnaire fields configured by the practitioner.
+  final List<QuestionnaireField> questionnaireFields;
+
+  /// ISO timestamp set by the backend once the patient submits the questionnaire.
+  final String? questionnaireSubmittedAt;
+
+  bool get hasInstructions => instructions.isNotEmpty;
+  bool get hasQuestionnaire => questionnaireFields.isNotEmpty;
+  bool get questionnaireSubmitted => questionnaireSubmittedAt != null;
+
+  Appointment copyWith({
+    String? address,
+    List<String>? instructions,
+    List<QuestionnaireField>? questionnaireFields,
+    String? questionnaireSubmittedAt,
+  }) =>
+      Appointment(
+        id: id,
+        practitionerId: practitionerId,
+        dateLabel: dateLabel,
+        timeLabel: timeLabel,
+        practitionerName: practitionerName,
+        specialty: specialty,
+        reason: reason,
+        status: status,
+        isPast: isPast,
+        patientName: patientName,
+        address: address ?? this.address,
+        avatarUrl: avatarUrl,
+        cancellationReason: cancellationReason,
+        practitionerNotes: practitionerNotes,
+        confirmedAt: confirmedAt,
+        cancelledAt: cancelledAt,
+        completedAt: completedAt,
+        instructions: instructions ?? this.instructions,
+        questionnaireFields: questionnaireFields ?? this.questionnaireFields,
+        questionnaireSubmittedAt:
+            questionnaireSubmittedAt ?? this.questionnaireSubmittedAt,
+      );
 
   bool get isPending => status == 'pending';
   bool get isConfirmed => status == 'confirmed';
@@ -65,5 +113,8 @@ class Appointment extends Equatable {
     confirmedAt,
     cancelledAt,
     completedAt,
+    instructions,
+    questionnaireFields,
+    questionnaireSubmittedAt,
   ];
 }

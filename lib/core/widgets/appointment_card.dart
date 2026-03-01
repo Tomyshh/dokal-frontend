@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
-import '../utils/format_appointment_date.dart';
 import '../constants/app_spacing.dart';
+import '../utils/address_actions.dart';
+import '../utils/format_appointment_date.dart';
 
 /// Carte de rendez-vous moderne et épurée.
 class AppointmentCard extends StatelessWidget {
@@ -18,6 +19,7 @@ class AppointmentCard extends StatelessWidget {
     this.onTap,
     this.trailing,
     this.avatarUrl,
+    this.address,
     this.isPast = false,
   });
 
@@ -29,6 +31,7 @@ class AppointmentCard extends StatelessWidget {
   final VoidCallback? onTap;
   final Widget? trailing;
   final String? avatarUrl;
+  final String? address;
   final bool isPast;
 
   String _getInitials() {
@@ -269,6 +272,48 @@ class AppointmentCard extends StatelessWidget {
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        if (address != null && address!.isNotEmpty) ...[
+                          SizedBox(height: AppSpacing.sm.h),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.location_on_outlined,
+                                size: 14.sp,
+                                color: AppColors.primary.withValues(alpha: 0.7),
+                              ),
+                              SizedBox(width: 6.w),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => openAddressInMaps(address!),
+                                  child: Text(
+                                    address!,
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColors.primary,
+                                      height: 1.35,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: AppColors.primary
+                                          .withValues(alpha: 0.4),
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 4.w),
+                              GestureDetector(
+                                onTap: () => copyAddress(context, address!),
+                                child: Icon(
+                                  Icons.copy_rounded,
+                                  size: 14.sp,
+                                  color: AppColors.textSecondary
+                                      .withValues(alpha: 0.6),
                                 ),
                               ),
                             ],

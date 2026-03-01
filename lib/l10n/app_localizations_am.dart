@@ -834,6 +834,26 @@ class AppLocalizationsAm extends AppLocalizations {
   String get appointmentPrepInstructionsAccept => 'እነዚህን መመሪያዎች አንብቤ ተቀብያለሁ';
 
   @override
+  String get appointmentPrepNoInstructions =>
+      'ይህ ክረምና ካል ቃዳሜ Ꭻእናት አዜመጥክዎት አልሰጦንም።';
+
+  @override
+  String get appointmentPrepNoQuestionnaire => 'ይህ ክረምና ሮሃከተኛ ዓይነት አልዋቀነም።';
+
+  @override
+  String get appointmentPrepSubmitting => 'እየሚጋበት…';
+
+  @override
+  String get appointmentPrepSubmitError =>
+      'የተግበተ መጋውን መላክ አልታችም። እባክሀዐን የሞካዘው።';
+
+  @override
+  String get appointmentPrepQuestionnaireDone => 'ተሰርቷል';
+
+  @override
+  String get appointmentPrepInstructionsDone => 'ተኵቶል';
+
+  @override
   String get appointmentDetailSendDocsTitle => 'ሰነዶችን ላክ';
 
   @override
@@ -1901,4 +1921,13 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get practitionerYourAppointmentLabel => 'ቀጠሮዎ';
+
+  @override
+  String get addressCopied => 'አድራሻ ተቀድቷል';
+
+  @override
+  String get addressOpenInMaps => 'በካርታ ክፈት';
+
+  @override
+  String get addressOpenInGoogleMaps => 'በGoogle Maps ክፈት';
 }

@@ -343,6 +343,12 @@
   "appointmentPrepInstruction2": "10 ደቂቃ ቀድሞ ይድረሱ።",
   "appointmentPrepInstruction3": "አስፈላጊ የሕክምና ሰነዶችን አዘጋጁ።",
   "appointmentPrepInstructionsAccept": "እነዚህን መመሪያዎች አንብቤ ተቀብያለሁ",
+  "appointmentPrepNoInstructions": "ይህ ክረምና ካል ቃዳሜ Ꭻእናት አዜመጥክዎት አልሰጦንም።",
+  "appointmentPrepNoQuestionnaire": "ይህ ክረምና ሮሃከተኛ ዓይነት አልዋቀነም።",
+  "appointmentPrepSubmitting": "እየሚጋበት…",
+  "appointmentPrepSubmitError": "የተግበተ መጋውን መላክ አልታችም። እባክሀዐን የሞካዘው።",
+  "appointmentPrepQuestionnaireDone": "ተሰርቷል",
+  "appointmentPrepInstructionsDone": "ተኵቶል",
   "appointmentDetailSendDocsTitle": "ሰነዶችን ላክ",
   "appointmentDetailSendDocsSubtitle": "ከቀጠሮው በፊት ሰነዶችን ለሐኪሙ ላክ።",
   "appointmentDetailAddDocs": "ሰነዶች ጨምር",
@@ -829,5 +835,9 @@
 
   "errorNotificationPermissionDenied": "የማሳወቂያ ፍቃድ ተቀባይነት አላገኘም.",
 
-  "practitionerYourAppointmentLabel": "ቀጠሮዎ"
+  "practitionerYourAppointmentLabel": "ቀጠሮዎ",
+
+  "addressCopied": "አድራሻ ተቀድቷል",
+  "addressOpenInMaps": "በካርታ ክፈት",
+  "addressOpenInGoogleMaps": "በGoogle Maps ክፈት"
 }

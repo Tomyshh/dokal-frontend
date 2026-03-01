@@ -364,6 +364,12 @@
   "appointmentPrepInstruction2": "Arrivez 10 minutes en avance.",
   "appointmentPrepInstruction3": "Préparez vos documents médicaux importants.",
   "appointmentPrepInstructionsAccept": "J’ai lu et j’accepte ces instructions",
+  "appointmentPrepNoInstructions": "Ce praticien n’a pas ajouté d’instructions avant la consultation.",
+  "appointmentPrepNoQuestionnaire": "Ce praticien n’a pas configuré de questionnaire.",
+  "appointmentPrepSubmitting": "Envoi en cours…",
+  "appointmentPrepSubmitError": "Impossible d’envoyer le questionnaire. Veuillez réessayer.",
+  "appointmentPrepQuestionnaireDone": "Complété",
+  "appointmentPrepInstructionsDone": "Lu",
   "appointmentDetailSendDocsTitle": "Envoyer des documents",
   "appointmentDetailSendDocsSubtitle": "Envoyez des documents au praticien avant la consultation.",
   "appointmentDetailAddDocs": "Ajouter des documents",
@@ -828,5 +834,9 @@
 
   "errorNotificationPermissionDenied": "Permission notifications refusée.",
 
-  "practitionerYourAppointmentLabel": "Votre rendez-vous"
+  "practitionerYourAppointmentLabel": "Votre rendez-vous",
+
+  "addressCopied": "Adresse copiée",
+  "addressOpenInMaps": "Ouvrir dans Plans",
+  "addressOpenInGoogleMaps": "Ouvrir dans Google Maps"
 }

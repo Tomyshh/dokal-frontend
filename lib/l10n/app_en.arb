@@ -343,6 +343,12 @@
   "appointmentPrepInstruction2": "Arrive 10 minutes early.",
   "appointmentPrepInstruction3": "Prepare your important medical documents.",
   "appointmentPrepInstructionsAccept": "I have read and accept these instructions",
+  "appointmentPrepNoInstructions": "This practitioner has not added any pre-visit instructions.",
+  "appointmentPrepNoQuestionnaire": "This practitioner has not configured a questionnaire.",
+  "appointmentPrepSubmitting": "Submitting…",
+  "appointmentPrepSubmitError": "Unable to submit the questionnaire. Please try again.",
+  "appointmentPrepQuestionnaireDone": "Completed",
+  "appointmentPrepInstructionsDone": "Read",
   "appointmentDetailSendDocsTitle": "Send documents",
   "appointmentDetailSendDocsSubtitle": "Send documents to the practitioner before the appointment.",
   "appointmentDetailAddDocs": "Add documents",
@@ -829,5 +835,9 @@
 
   "errorNotificationPermissionDenied": "Notification permission denied.",
 
-  "practitionerYourAppointmentLabel": "Your appointment"
+  "practitionerYourAppointmentLabel": "Your appointment",
+
+  "addressCopied": "Address copied",
+  "addressOpenInMaps": "Open in Maps",
+  "addressOpenInGoogleMaps": "Open in Google Maps"
 }

@@ -343,6 +343,12 @@
   "appointmentPrepInstruction2": "Llega 10 minutos antes.",
   "appointmentPrepInstruction3": "Prepara tus documentos médicos importantes.",
   "appointmentPrepInstructionsAccept": "He leído y acepto estas instrucciones",
+  "appointmentPrepNoInstructions": "Este profesional no ha añadido instrucciones previas a la consulta.",
+  "appointmentPrepNoQuestionnaire": "Este profesional no ha configurado un cuestionario.",
+  "appointmentPrepSubmitting": "Enviando…",
+  "appointmentPrepSubmitError": "No se pudo enviar el cuestionario. Inténtelo de nuevo.",
+  "appointmentPrepQuestionnaireDone": "Completado",
+  "appointmentPrepInstructionsDone": "Leído",
   "appointmentDetailSendDocsTitle": "Enviar documentos",
   "appointmentDetailSendDocsSubtitle": "Envía documentos al profesional antes de la cita.",
   "appointmentDetailAddDocs": "Añadir documentos",
@@ -829,5 +835,9 @@
 
   "errorNotificationPermissionDenied": "Permiso de notificaciones denegado.",
 
-  "practitionerYourAppointmentLabel": "Su cita"
+  "practitionerYourAppointmentLabel": "Su cita",
+
+  "addressCopied": "Dirección copiada",
+  "addressOpenInMaps": "Abrir en Mapas",
+  "addressOpenInGoogleMaps": "Abrir en Google Maps"
 }

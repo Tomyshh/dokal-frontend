@@ -169,6 +169,7 @@ class _UpcomingTab extends StatelessWidget {
               practitionerName: a.practitionerName,
               specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
               reason: a.reason,
+              address: a.address,
               onTap: () => context.push('/appointments/${a.id}'),
             );
           },
@@ -236,6 +237,7 @@ class _PastTab extends StatelessWidget {
               practitionerName: a.practitionerName,
               specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
               reason: a.reason,
+              address: a.address,
               onTap: () => context.push('/appointments/${a.id}'),
             );
           },

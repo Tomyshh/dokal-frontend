@@ -1684,6 +1684,42 @@ abstract class AppLocalizations {
   /// **'קראתי ואני מסכים/ה להנחיות אלו'**
   String get appointmentPrepInstructionsAccept;
 
+  /// No description provided for @appointmentPrepNoInstructions.
+  ///
+  /// In he, this message translates to:
+  /// **'פרקטיקאית זה לא הוסיף הנחיות לפני הביקור.'**
+  String get appointmentPrepNoInstructions;
+
+  /// No description provided for @appointmentPrepNoQuestionnaire.
+  ///
+  /// In he, this message translates to:
+  /// **'פרקטיקאית זה לא הגדיר שאלון.'**
+  String get appointmentPrepNoQuestionnaire;
+
+  /// No description provided for @appointmentPrepSubmitting.
+  ///
+  /// In he, this message translates to:
+  /// **'שולח…'**
+  String get appointmentPrepSubmitting;
+
+  /// No description provided for @appointmentPrepSubmitError.
+  ///
+  /// In he, this message translates to:
+  /// **'לא ניתן לשלוח את השאלון. נסו שנית.'**
+  String get appointmentPrepSubmitError;
+
+  /// No description provided for @appointmentPrepQuestionnaireDone.
+  ///
+  /// In he, this message translates to:
+  /// **'הושלם'**
+  String get appointmentPrepQuestionnaireDone;
+
+  /// No description provided for @appointmentPrepInstructionsDone.
+  ///
+  /// In he, this message translates to:
+  /// **'נקרא'**
+  String get appointmentPrepInstructionsDone;
+
   /// No description provided for @appointmentDetailSendDocsTitle.
   ///
   /// In he, this message translates to:
@@ -3747,6 +3783,24 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'התור שלך'**
   String get practitionerYourAppointmentLabel;
+
+  /// No description provided for @addressCopied.
+  ///
+  /// In he, this message translates to:
+  /// **'הכתובת הועתקה'**
+  String get addressCopied;
+
+  /// No description provided for @addressOpenInMaps.
+  ///
+  /// In he, this message translates to:
+  /// **'פתח במפות'**
+  String get addressOpenInMaps;
+
+  /// No description provided for @addressOpenInGoogleMaps.
+  ///
+  /// In he, this message translates to:
+  /// **'פתח ב-Google Maps'**
+  String get addressOpenInGoogleMaps;
 }
 
 class _AppLocalizationsDelegate

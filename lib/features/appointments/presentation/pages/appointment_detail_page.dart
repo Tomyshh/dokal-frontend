@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/utils/address_actions.dart';
 import '../../../../core/utils/format_appointment_date.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
@@ -179,37 +180,48 @@ class AppointmentDetailPage extends StatelessWidget {
                               ),
                               SizedBox(height: AppSpacing.md.h),
                             ],
-                            if (!a.isPast) ...[
+                            if (!a.isPast &&
+                                (a.hasQuestionnaire || a.hasInstructions)) ...[
                               _SectionCard(
                                 title:
                                     l10n.appointmentDetailPreparationTitle,
                                 subtitle:
                                     l10n.appointmentDetailPreparationSubtitle,
                                 children: [
-                                  _PrepTile(
-                                    icon: Icons.assignment_rounded,
-                                    title:
-                                        l10n.appointmentDetailPrepQuestionnaire,
-                                    statusLabel: l10n.commonTodo,
-                                    onTap: () => context.push(
-                                      '/appointments/${a.id}/questionnaire',
+                                  if (a.hasQuestionnaire) ...[
+                                    _PrepTile(
+                                      icon: Icons.assignment_rounded,
+                                      title: l10n
+                                          .appointmentDetailPrepQuestionnaire,
+                                      statusLabel: a.questionnaireSubmitted
+                                          ? l10n.appointmentPrepQuestionnaireDone
+                                          : l10n.commonTodo,
+                                      isDone: a.questionnaireSubmitted,
+                                      onTap: () => context.push(
+                                        '/appointments/${a.id}/questionnaire',
+                                        extra: a,
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: AppSpacing.lg.w,
+                                  ],
+                                  if (a.hasQuestionnaire && a.hasInstructions)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: AppSpacing.lg.w,
+                                      ),
+                                      child: Divider(height: 1.h),
                                     ),
-                                    child: Divider(height: 1.h),
-                                  ),
-                                  _PrepTile(
-                                    icon: Icons.info_outline_rounded,
-                                    title:
-                                        l10n.appointmentDetailPrepInstructions,
-                                    statusLabel: l10n.commonToRead,
-                                    onTap: () => context.push(
-                                      '/appointments/${a.id}/instructions',
+                                  if (a.hasInstructions) ...[
+                                    _PrepTile(
+                                      icon: Icons.info_outline_rounded,
+                                      title: l10n
+                                          .appointmentDetailPrepInstructions,
+                                      statusLabel: l10n.commonToRead,
+                                      onTap: () => context.push(
+                                        '/appointments/${a.id}/instructions',
+                                        extra: a,
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ],
                               ),
                               SizedBox(height: AppSpacing.md.h),
@@ -327,13 +339,51 @@ class _AppointmentTopCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
               child: Divider(height: 1.h),
             ),
-            _DetailTile(
-              icon: Icons.location_on_rounded,
-              title: a.address!,
-            ),
+            _AddressTile(address: a.address!),
           ],
         ],
       ),
+    );
+  }
+}
+
+class _AddressTile extends StatelessWidget {
+  const _AddressTile({required this.address});
+  final String address;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg.w,
+        vertical: AppSpacing.xs.h,
+      ),
+      leading: Icon(
+        Icons.location_on_rounded,
+        color: AppColors.primary,
+        size: 24.sp,
+      ),
+      title: GestureDetector(
+        onTap: () => openAddressInMaps(address),
+        child: Text(
+          address,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.primary,
+            decoration: TextDecoration.underline,
+            decorationColor: AppColors.primary.withValues(alpha: 0.4),
+          ),
+        ),
+      ),
+      trailing: IconButton(
+        icon: Icon(
+          Icons.copy_rounded,
+          size: 20.sp,
+          color: AppColors.textSecondary,
+        ),
+        onPressed: () => copyAddress(context, address),
+      ),
+      onTap: () => openAddressInMaps(address),
     );
   }
 }
@@ -526,45 +576,42 @@ class _PrepTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.statusLabel,
+    this.isDone = false,
     this.onTap,
   });
 
   final IconData icon;
   final String title;
   final String statusLabel;
+  final bool isDone;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    final color = isDone ? AppColors.textSecondary : AppColors.primary;
     return ListTile(
       contentPadding: EdgeInsets.symmetric(
         horizontal: AppSpacing.lg.w,
         vertical: AppSpacing.xs.h,
       ),
-      leading: Icon(icon, color: AppColors.primary, size: 24.sp),
+      leading: Icon(icon, color: color, size: 24.sp),
       title: Text(title),
       trailing: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
         decoration: BoxDecoration(
-          color: AppColors.primary.withValues(alpha: 0.10),
+          color: color.withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(999.r),
         ),
         child: Text(
           statusLabel,
           style: TextStyle(
-            color: AppColors.primary,
+            color: color,
             fontWeight: FontWeight.w700,
             fontSize: 12.sp,
           ),
         ),
       ),
-      onTap: onTap ??
-          () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(l10n.commonAvailableSoon)),
-            );
-          },
+      onTap: onTap,
     );
   }
 }

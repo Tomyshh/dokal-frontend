@@ -842,6 +842,25 @@ class AppLocalizationsHe extends AppLocalizations {
       'קראתי ואני מסכים/ה להנחיות אלו';
 
   @override
+  String get appointmentPrepNoInstructions =>
+      'פרקטיקאית זה לא הוסיף הנחיות לפני הביקור.';
+
+  @override
+  String get appointmentPrepNoQuestionnaire => 'פרקטיקאית זה לא הגדיר שאלון.';
+
+  @override
+  String get appointmentPrepSubmitting => 'שולח…';
+
+  @override
+  String get appointmentPrepSubmitError => 'לא ניתן לשלוח את השאלון. נסו שנית.';
+
+  @override
+  String get appointmentPrepQuestionnaireDone => 'הושלם';
+
+  @override
+  String get appointmentPrepInstructionsDone => 'נקרא';
+
+  @override
   String get appointmentDetailSendDocsTitle => 'שליחת מסמכים';
 
   @override
@@ -1920,4 +1939,13 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get practitionerYourAppointmentLabel => 'התור שלך';
+
+  @override
+  String get addressCopied => 'הכתובת הועתקה';
+
+  @override
+  String get addressOpenInMaps => 'פתח במפות';
+
+  @override
+  String get addressOpenInGoogleMaps => 'פתח ב-Google Maps';
 }

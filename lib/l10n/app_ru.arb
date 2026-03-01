@@ -343,6 +343,12 @@
   "appointmentPrepInstruction2": "Приходите на 10 минут раньше.",
   "appointmentPrepInstruction3": "Подготовьте важные медицинские документы.",
   "appointmentPrepInstructionsAccept": "Я прочитал(а) и принимаю эти инструкции",
+  "appointmentPrepNoInstructions": "Этот специалист не добавил инструкций перед приёмом.",
+  "appointmentPrepNoQuestionnaire": "Этот специалист не настроил анкету.",
+  "appointmentPrepSubmitting": "Отправка…",
+  "appointmentPrepSubmitError": "Не удалось отправить анкету. Попробуйте ещё раз.",
+  "appointmentPrepQuestionnaireDone": "Завершено",
+  "appointmentPrepInstructionsDone": "Прочитано",
   "appointmentDetailSendDocsTitle": "Отправить документы",
   "appointmentDetailSendDocsSubtitle": "Отправьте документы специалисту до приема.",
   "appointmentDetailAddDocs": "Добавить документы",
@@ -829,5 +835,9 @@
 
   "errorNotificationPermissionDenied": "Разрешение на уведомления отклонено.",
 
-  "practitionerYourAppointmentLabel": "Ваш приём"
+  "practitionerYourAppointmentLabel": "Ваш приём",
+
+  "addressCopied": "Адрес скопирован",
+  "addressOpenInMaps": "Открыть в Картах",
+  "addressOpenInGoogleMaps": "Открыть в Google Картах"
 }

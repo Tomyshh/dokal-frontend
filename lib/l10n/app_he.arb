@@ -365,6 +365,12 @@
   "appointmentPrepInstruction2": "הגיעו 10 דקות מוקדם יותר.",
   "appointmentPrepInstruction3": "הכינו מסמכים רפואיים חשובים.",
   "appointmentPrepInstructionsAccept": "קראתי ואני מסכים/ה להנחיות אלו",
+  "appointmentPrepNoInstructions": "פרקטיקאית זה לא הוסיף הנחיות לפני הביקור.",
+  "appointmentPrepNoQuestionnaire": "פרקטיקאית זה לא הגדיר שאלון.",
+  "appointmentPrepSubmitting": "שולח…",
+  "appointmentPrepSubmitError": "לא ניתן לשלוח את השאלון. נסו שנית.",
+  "appointmentPrepQuestionnaireDone": "הושלם",
+  "appointmentPrepInstructionsDone": "נקרא",
   "appointmentDetailSendDocsTitle": "שליחת מסמכים",
   "appointmentDetailSendDocsSubtitle": "שלח מסמכים לרופא לפני הביקור.",
   "appointmentDetailAddDocs": "הוסף מסמכים",
@@ -829,5 +835,9 @@
 
   "errorNotificationPermissionDenied": "הרשאת התראות נדחתה.",
 
-  "practitionerYourAppointmentLabel": "התור שלך"
+  "practitionerYourAppointmentLabel": "התור שלך",
+
+  "addressCopied": "הכתובת הועתקה",
+  "addressOpenInMaps": "פתח במפות",
+  "addressOpenInGoogleMaps": "פתח ב-Google Maps"
 }
