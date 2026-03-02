@@ -136,37 +136,59 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
     super.didChangeDependencies();
     if (_didCheckBookingRedirect) return;
     final query = GoRouterState.of(context).uri.queryParameters;
-    if (query['book'] != '1') return;
+
     final dateStr = query['date'];
-    final start = query['start'];
-    final end = query['end'];
-    if (dateStr == null || start == null || end == null) return;
-    final isAuthenticated = context.read<AuthBloc>().state.isAuthenticated;
-    if (!isAuthenticated) return;
-    _didCheckBookingRedirect = true;
-    final parts = dateStr.split('-');
-    if (parts.length != 3) return;
-    final year = int.tryParse(parts[0]);
-    final month = int.tryParse(parts[1]);
-    final day = int.tryParse(parts[2]);
-    if (year == null || month == null || day == null) return;
-    final appointmentDate = DateTime(year, month, day);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      QuickBookingSheet.show(
-        context,
-        practitionerId: widget.practitionerId,
-        practitionerName: widget.profile.name,
-        profile: widget.profile,
-        appointmentDate: appointmentDate,
-        startTime: start,
-        endTime: end,
-      );
-      final path = GoRouterState.of(context).uri.path;
-      if (GoRouterState.of(context).uri.queryParameters.isNotEmpty) {
-        context.go(path);
+    if (dateStr != null) {
+      final parts = dateStr.split('-');
+      if (parts.length == 3) {
+        final year = int.tryParse(parts[0]);
+        final month = int.tryParse(parts[1]);
+        final day = int.tryParse(parts[2]);
+        if (year != null && month != null && day != null) {
+          final parsedDate = DateTime(year, month, day);
+
+          if (query['book'] == '1') {
+            final start = query['start'];
+            final end = query['end'];
+            if (start != null && end != null) {
+              final isAuthenticated = context.read<AuthBloc>().state.isAuthenticated;
+              if (!isAuthenticated) return;
+              _didCheckBookingRedirect = true;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (!mounted) return;
+                QuickBookingSheet.show(
+                  context,
+                  practitionerId: widget.practitionerId,
+                  practitionerName: widget.profile.name,
+                  profile: widget.profile,
+                  appointmentDate: parsedDate,
+                  startTime: start,
+                  endTime: end,
+                );
+                final path = GoRouterState.of(context).uri.path;
+                if (GoRouterState.of(context).uri.queryParameters.isNotEmpty) {
+                  context.go(path);
+                }
+              });
+              return;
+            }
+          }
+
+          _didCheckBookingRedirect = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            _onDateSelected(parsedDate);
+            final path = GoRouterState.of(context).uri.path;
+            if (GoRouterState.of(context).uri.queryParameters.isNotEmpty) {
+              context.go(path);
+            }
+          });
+          return;
+        }
       }
-    });
+    }
+
+    _didCheckBookingRedirect = true;
   }
 
   @override

@@ -73,12 +73,20 @@ void _handleNotificationClick(Map<String, dynamic>? data) {
 
   if (type == 'new_message' && conversationId != null) {
     appRouter.go('/messages/c/$conversationId');
+  } else if (type == 'earlier_slot_available') {
+    final practitionerId = data['practitioner_id'] as String?;
+    final freedDate = data['freed_date'] as String?;
+    if (practitionerId != null) {
+      final dateParam = freedDate != null ? '?date=$freedDate' : '';
+      appRouter.go('/practitioner/$practitionerId$dateParam');
+    } else if (appointmentId != null) {
+      appRouter.go('/appointments/$appointmentId');
+    }
   } else if (appointmentId != null &&
       (type == 'appointment_cancelled' ||
           type == 'appointment_confirmed' ||
           type == 'appointment_request' ||
-          type == 'appointment_reminder' ||
-          type == 'earlier_slot_available')) {
+          type == 'appointment_reminder')) {
     appRouter.go('/appointments/$appointmentId');
   } else if (type == 'review_received') {
     appRouter.go('/account');
