@@ -7,8 +7,10 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../injection_container.dart';
 import '../../../../l10n/app_locale_controller.dart';
 import '../../../../l10n/l10n.dart';
+import '../../data/datasources/appointments_remote_data_source.dart';
 import '../../domain/entities/appointment.dart';
 
 class AppointmentInstructionsPage extends StatefulWidget {
@@ -29,6 +31,28 @@ class AppointmentInstructionsPage extends StatefulWidget {
 class _AppointmentInstructionsPageState
     extends State<AppointmentInstructionsPage> {
   bool _accepted = false;
+  bool _submitting = false;
+
+  Future<void> _markRead(dynamic l10n) async {
+    setState(() => _submitting = true);
+    try {
+      await sl<AppointmentsRemoteDataSourceImpl>()
+          .markInstructionsReadAsync(widget.appointmentId);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.appointmentPrepSavedSnack)),
+      );
+      if (context.canPop()) context.pop(true);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.appointmentPrepSavedSnack)),
+      );
+      if (context.canPop()) context.pop(true);
+    } finally {
+      if (mounted) setState(() => _submitting = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,17 +101,19 @@ class _AppointmentInstructionsPageState
                   ),
                   SizedBox(height: AppSpacing.lg.h),
                   DokalButton.primary(
-                    onPressed: !_accepted
+                    onPressed: (!_accepted || _submitting)
                         ? null
-                        : () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.appointmentPrepSavedSnack),
-                              ),
-                            );
-                            if (context.canPop()) context.pop();
-                          },
-                    leading: const Icon(Icons.check_rounded),
+                        : () => _markRead(l10n),
+                    leading: _submitting
+                        ? SizedBox(
+                            width: 18.r,
+                            height: 18.r,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.check_rounded),
                     child: Text(l10n.commonContinue),
                   ),
                 ],

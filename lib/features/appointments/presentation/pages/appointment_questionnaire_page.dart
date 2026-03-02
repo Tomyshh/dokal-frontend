@@ -79,7 +79,7 @@ class _AppointmentQuestionnairePageState
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.appointmentPrepSavedSnack)),
       );
-      if (context.canPop()) context.pop();
+      if (context.canPop()) context.pop(true);
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

@@ -25,6 +25,7 @@ class Appointment extends Equatable {
     this.instructionsTranslations,
     this.questionnaireFields = const [],
     this.questionnaireSubmittedAt,
+    this.instructionsReadAt,
   });
 
   final String id;
@@ -57,9 +58,13 @@ class Appointment extends Equatable {
   /// ISO timestamp set by the backend once the patient submits the questionnaire.
   final String? questionnaireSubmittedAt;
 
+  /// ISO timestamp set by the backend once the patient reads the instructions.
+  final String? instructionsReadAt;
+
   bool get hasInstructions => instructions.isNotEmpty;
   bool get hasQuestionnaire => questionnaireFields.isNotEmpty;
   bool get questionnaireSubmitted => questionnaireSubmittedAt != null;
+  bool get instructionsRead => instructionsReadAt != null;
 
   /// Returns instructions in the given locale, falling back to source.
   List<String> localizedInstructions(String locale) {
@@ -72,6 +77,7 @@ class Appointment extends Equatable {
     Map<String, List<String>>? instructionsTranslations,
     List<QuestionnaireField>? questionnaireFields,
     String? questionnaireSubmittedAt,
+    String? instructionsReadAt,
   }) =>
       Appointment(
         id: id,
@@ -97,6 +103,7 @@ class Appointment extends Equatable {
         questionnaireFields: questionnaireFields ?? this.questionnaireFields,
         questionnaireSubmittedAt:
             questionnaireSubmittedAt ?? this.questionnaireSubmittedAt,
+        instructionsReadAt: instructionsReadAt ?? this.instructionsReadAt,
       );
 
   bool get isPending => status == 'pending';
@@ -129,5 +136,6 @@ class Appointment extends Equatable {
     instructionsTranslations,
     questionnaireFields,
     questionnaireSubmittedAt,
+    instructionsReadAt,
   ];
 }

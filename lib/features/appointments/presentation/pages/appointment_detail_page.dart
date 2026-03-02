@@ -197,10 +197,15 @@ class AppointmentDetailPage extends StatelessWidget {
                                           ? l10n.appointmentPrepQuestionnaireDone
                                           : l10n.commonTodo,
                                       isDone: a.questionnaireSubmitted,
-                                      onTap: () => context.push(
-                                        '/appointments/${a.id}/questionnaire',
-                                        extra: a,
-                                      ),
+                                      onTap: () async {
+                                        final result = await context.push<bool>(
+                                          '/appointments/${a.id}/questionnaire',
+                                          extra: a,
+                                        );
+                                        if (result == true && context.mounted) {
+                                          context.read<AppointmentDetailCubit>().load();
+                                        }
+                                      },
                                     ),
                                   ],
                                   if (a.hasQuestionnaire && a.hasInstructions)
@@ -215,11 +220,19 @@ class AppointmentDetailPage extends StatelessWidget {
                                       icon: Icons.info_outline_rounded,
                                       title: l10n
                                           .appointmentDetailPrepInstructions,
-                                      statusLabel: l10n.commonToRead,
-                                      onTap: () => context.push(
-                                        '/appointments/${a.id}/instructions',
-                                        extra: a,
-                                      ),
+                                      statusLabel: a.instructionsRead
+                                          ? l10n.appointmentPrepQuestionnaireDone
+                                          : l10n.commonToRead,
+                                      isDone: a.instructionsRead,
+                                      onTap: () async {
+                                        final result = await context.push<bool>(
+                                          '/appointments/${a.id}/instructions',
+                                          extra: a,
+                                        );
+                                        if (result == true && context.mounted) {
+                                          context.read<AppointmentDetailCubit>().load();
+                                        }
+                                      },
                                     ),
                                   ],
                                 ],

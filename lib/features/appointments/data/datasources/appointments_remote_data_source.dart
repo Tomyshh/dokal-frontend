@@ -270,6 +270,8 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
       questionnaireFields: questionnaireFields,
       questionnaireSubmittedAt:
           json['questionnaire_submitted_at'] as String?,
+      instructionsReadAt:
+          json['instructions_read_at'] as String?,
     );
   }
 
