@@ -77,7 +77,8 @@ void _handleNotificationClick(Map<String, dynamic>? data) {
       (type == 'appointment_cancelled' ||
           type == 'appointment_confirmed' ||
           type == 'appointment_request' ||
-          type == 'appointment_reminder')) {
+          type == 'appointment_reminder' ||
+          type == 'earlier_slot_available')) {
     appRouter.go('/appointments/$appointmentId');
   } else if (type == 'review_received') {
     appRouter.go('/account');

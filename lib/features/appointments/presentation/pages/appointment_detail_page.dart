@@ -16,6 +16,7 @@ import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../injection_container.dart';
 import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
+import '../../data/datasources/appointments_remote_data_source.dart';
 import '../../domain/entities/appointment.dart';
 import '../bloc/appointment_detail_cubit.dart';
 import '../widgets/reschedule_sheet.dart';
@@ -238,33 +239,7 @@ class AppointmentDetailPage extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: AppSpacing.md.h),
-                              _SectionCard(
-                                title:
-                                    l10n.appointmentDetailEarlierSlotTitle,
-                                subtitle:
-                                    l10n.appointmentDetailEarlierSlotSubtitle,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: AppSpacing.xl.w,
-                                      vertical: AppSpacing.md.h,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            l10n.appointmentDetailEnableAlerts,
-                                          ),
-                                        ),
-                                        const Switch(
-                                          value: false,
-                                          onChanged: null,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              _EarlierSlotAlertSection(appointmentId: a.id),
                               SizedBox(height: AppSpacing.lg.h),
                               DokalButton.primary(
                                 onPressed: () => context.push('/messages'),
@@ -625,6 +600,78 @@ class _PrepTile extends StatelessWidget {
         ),
       ),
       onTap: onTap,
+    );
+  }
+}
+
+class _EarlierSlotAlertSection extends StatefulWidget {
+  const _EarlierSlotAlertSection({required this.appointmentId});
+  final String appointmentId;
+
+  @override
+  State<_EarlierSlotAlertSection> createState() => _EarlierSlotAlertSectionState();
+}
+
+class _EarlierSlotAlertSectionState extends State<_EarlierSlotAlertSection> {
+  bool _enabled = false;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStatus();
+  }
+
+  Future<void> _loadStatus() async {
+    try {
+      final enabled = await sl<AppointmentsRemoteDataSourceImpl>()
+          .getEarlierSlotAlertAsync(widget.appointmentId);
+      if (mounted) setState(() { _enabled = enabled; _loading = false; });
+    } catch (_) {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _toggle(bool value) async {
+    setState(() => _enabled = value);
+    try {
+      await sl<AppointmentsRemoteDataSourceImpl>()
+          .setEarlierSlotAlertAsync(widget.appointmentId, enabled: value);
+    } catch (_) {
+      if (mounted) setState(() => _enabled = !value);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return _SectionCard(
+      title: l10n.appointmentDetailEarlierSlotTitle,
+      subtitle: l10n.appointmentDetailEarlierSlotSubtitle,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.xl.w,
+            vertical: AppSpacing.md.h,
+          ),
+          child: Row(
+            children: [
+              Expanded(child: Text(l10n.appointmentDetailEnableAlerts)),
+              _loading
+                  ? SizedBox(
+                      width: 20.r,
+                      height: 20.r,
+                      child: const CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Switch.adaptive(
+                      value: _enabled,
+                      onChanged: _toggle,
+                      activeColor: AppColors.primary,
+                    ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

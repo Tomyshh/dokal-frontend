@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/services/notification_prompt_service.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../core/utils/search_filter_utils.dart';
@@ -13,8 +16,26 @@ import '../../../../l10n/l10n.dart';
 import '../../../practitioner/presentation/bloc/practitioner_cubit.dart';
 import '../bloc/booking_bloc.dart';
 
-class BookingSuccessPage extends StatelessWidget {
+class BookingSuccessPage extends StatefulWidget {
   const BookingSuccessPage({super.key});
+
+  @override
+  State<BookingSuccessPage> createState() => _BookingSuccessPageState();
+}
+
+class _BookingSuccessPageState extends State<BookingSuccessPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Après 1,5 s, on propose les notifications si elles ne sont pas encore accordées.
+    // Le délai laisse le temps à l'utilisateur de lire la confirmation de réservation.
+    Timer(const Duration(milliseconds: 1500), _maybeShowNotificationPrompt);
+  }
+
+  Future<void> _maybeShowNotificationPrompt() async {
+    if (!mounted) return;
+    await NotificationPromptService.show(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,11 +157,11 @@ class BookingSuccessPage extends StatelessWidget {
                 horizontal: AppSpacing.lg.w,
                 vertical: AppSpacing.md.h,
               ),
-              child: Row(
-                children: [
-                  Expanded(child: Text(l10n.appointmentDetailEnableAlerts)),
-                  const Switch(value: false, onChanged: null),
-                ],
+              child: Text(
+                l10n.appointmentDetailEnableAlerts,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             ),
           ],

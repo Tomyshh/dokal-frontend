@@ -117,6 +117,21 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
     );
   }
 
+  /// Get earlier slot alert status for an appointment.
+  Future<bool> getEarlierSlotAlertAsync(String appointmentId) async {
+    final json = await api.get('/api/v1/appointments/$appointmentId/earlier-alert')
+        as Map<String, dynamic>;
+    return json['enabled'] as bool? ?? false;
+  }
+
+  /// Enable or disable earlier slot alert for an appointment.
+  Future<void> setEarlierSlotAlertAsync(String appointmentId, {required bool enabled}) async {
+    await api.post(
+      '/api/v1/appointments/$appointmentId/earlier-alert',
+      data: {'enabled': enabled},
+    );
+  }
+
   /// Fetches practitioner addresses for appointments that are missing one.
   Future<List<Appointment>> _enrichWithPractitionerAddresses(
     List<Appointment> appointments,
