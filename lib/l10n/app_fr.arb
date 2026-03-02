@@ -276,6 +276,12 @@
   "permissionsGateLocationSubtitle": "Trouvez des praticiens près de chez vous",
   "permissionsGateValidateButton": "Valider et continuer",
   "permissionsGateLocationDenied": "Permission de localisation refusée.",
+  "permissionsGateNotificationsOptional": "Facultatif – vous pourrez l'activer plus tard",
+
+  "notificationPromptTitle": "Ne ratez plus un rendez-vous",
+  "notificationPromptBody": "Activez les notifications pour recevoir des rappels et des mises à jour pour vos prochains rendez-vous.",
+  "notificationPromptAllow": "Activer les notifications",
+  "notificationPromptSkip": "Peut-être plus tard",
 
   "healthTitle": "Ma Santé",
   "healthSubtitle": "Gérez votre profil santé",

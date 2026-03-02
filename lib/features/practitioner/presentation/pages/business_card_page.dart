@@ -9,6 +9,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../injection_container.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../l10n/l10n.dart';
 import '../../data/datasources/practitioner_remote_data_source.dart';
 import '../../domain/entities/practitioner_card.dart';
@@ -61,11 +62,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
     final siteUrl = 'https://dokal.co.il';
     final identifier = _card!.cardSlug ?? _card!.id;
     final url = '$siteUrl/he/card/$identifier';
-    await SharePlus.instance.share(
-      ShareParams(
-        text: '${_card!.fullName}\n${_card!.headline}\n$url',
-      ),
-    );
+    await Share.share('${_card!.fullName}\n${_card!.headline}\n$url');
   }
 
   @override

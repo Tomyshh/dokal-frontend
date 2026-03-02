@@ -1270,6 +1270,36 @@ abstract class AppLocalizations {
   /// **'הרשאת מיקום נדחתה.'**
   String get permissionsGateLocationDenied;
 
+  /// No description provided for @permissionsGateNotificationsOptional.
+  ///
+  /// In he, this message translates to:
+  /// **'אופציונלי – ניתן להפעיל מאוחר יותר'**
+  String get permissionsGateNotificationsOptional;
+
+  /// No description provided for @notificationPromptTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'אל תפספס תור'**
+  String get notificationPromptTitle;
+
+  /// No description provided for @notificationPromptBody.
+  ///
+  /// In he, this message translates to:
+  /// **'הפעל התראות כדי לקבל תזכורות ועדכונים על התורים הקרובים שלך.'**
+  String get notificationPromptBody;
+
+  /// No description provided for @notificationPromptAllow.
+  ///
+  /// In he, this message translates to:
+  /// **'הפעל התראות'**
+  String get notificationPromptAllow;
+
+  /// No description provided for @notificationPromptSkip.
+  ///
+  /// In he, this message translates to:
+  /// **'אולי מאוחר יותר'**
+  String get notificationPromptSkip;
+
   /// No description provided for @healthTitle.
   ///
   /// In he, this message translates to:

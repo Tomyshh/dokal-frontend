@@ -637,6 +637,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get permissionsGateLocationDenied => 'Location permission denied.';
 
   @override
+  String get permissionsGateNotificationsOptional =>
+      'Optional – you can enable it later';
+
+  @override
+  String get notificationPromptTitle => 'Never miss an appointment';
+
+  @override
+  String get notificationPromptBody =>
+      'Enable notifications to receive reminders and updates for your upcoming appointments.';
+
+  @override
+  String get notificationPromptAllow => 'Enable notifications';
+
+  @override
+  String get notificationPromptSkip => 'Maybe later';
+
+  @override
   String get healthTitle => 'My health';
 
   @override

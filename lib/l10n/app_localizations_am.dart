@@ -621,6 +621,21 @@ class AppLocalizationsAm extends AppLocalizations {
   String get permissionsGateLocationDenied => 'የቦታ ፍቃድ ተቀባይነት አላገኘም.';
 
   @override
+  String get permissionsGateNotificationsOptional => 'አማራጭ – በኋላ ማንቃት ይቻላል';
+
+  @override
+  String get notificationPromptTitle => 'ቀጠሮዎን አያምልጡ';
+
+  @override
+  String get notificationPromptBody => 'ለሚቀጥሉት ቀጠሮዎች ማስታወሻ ለማግኘት ማሳወቂያዎችን ያንቁ።';
+
+  @override
+  String get notificationPromptAllow => 'ማሳወቂያዎችን አንቃ';
+
+  @override
+  String get notificationPromptSkip => 'ምናልባት ቆይቶ';
+
+  @override
   String get healthTitle => 'ጤናዬ';
 
   @override

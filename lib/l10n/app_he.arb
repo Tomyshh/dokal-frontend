@@ -277,6 +277,12 @@
   "permissionsGateLocationSubtitle": "מצא רופאים לידך",
   "permissionsGateValidateButton": "אישור והמשך",
   "permissionsGateLocationDenied": "הרשאת מיקום נדחתה.",
+  "permissionsGateNotificationsOptional": "אופציונלי – ניתן להפעיל מאוחר יותר",
+
+  "notificationPromptTitle": "אל תפספס תור",
+  "notificationPromptBody": "הפעל התראות כדי לקבל תזכורות ועדכונים על התורים הקרובים שלך.",
+  "notificationPromptAllow": "הפעל התראות",
+  "notificationPromptSkip": "אולי מאוחר יותר",
 
   "healthTitle": "הבריאות שלי",
   "healthSubtitle": "נהל את פרופיל הבריאות שלך",

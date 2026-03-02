@@ -277,6 +277,12 @@
   "permissionsGateLocationSubtitle": "Найдите врачей рядом с вами",
   "permissionsGateValidateButton": "Подтвердить и продолжить",
   "permissionsGateLocationDenied": "Разрешение на геолокацию отклонено.",
+  "permissionsGateNotificationsOptional": "Необязательно — можно включить позже",
+
+  "notificationPromptTitle": "Не пропустите приём",
+  "notificationPromptBody": "Включите уведомления, чтобы получать напоминания о предстоящих приёмах.",
+  "notificationPromptAllow": "Включить уведомления",
+  "notificationPromptSkip": "Может быть позже",
 
   "healthTitle": "Мое здоровье",
   "healthSubtitle": "Управляйте профилем здоровья",

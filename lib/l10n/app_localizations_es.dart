@@ -642,6 +642,23 @@ class AppLocalizationsEs extends AppLocalizations {
   String get permissionsGateLocationDenied => 'Permiso de ubicación denegado.';
 
   @override
+  String get permissionsGateNotificationsOptional =>
+      'Opcional – puedes activarlo más tarde';
+
+  @override
+  String get notificationPromptTitle => 'No te pierdas una cita';
+
+  @override
+  String get notificationPromptBody =>
+      'Activa las notificaciones para recibir recordatorios y actualizaciones de tus próximas citas.';
+
+  @override
+  String get notificationPromptAllow => 'Activar notificaciones';
+
+  @override
+  String get notificationPromptSkip => 'Quizás más tarde';
+
+  @override
   String get healthTitle => 'Mi salud';
 
   @override

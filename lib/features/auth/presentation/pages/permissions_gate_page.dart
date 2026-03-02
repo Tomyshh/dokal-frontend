@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -26,7 +27,9 @@ class _PermissionsGatePageState extends State<PermissionsGatePage> {
   bool _locationEnabled = false;
   bool _isValidating = false;
 
-  bool get _canValidate => _notificationsEnabled && _locationEnabled;
+  // Sur iOS, les notifications sont optionnelles (on les demandera plus tard).
+  bool get _canValidate =>
+      Platform.isIOS ? _locationEnabled : (_notificationsEnabled && _locationEnabled);
 
   Future<void> _toggleNotifications() async {
     if (_notificationsEnabled) {
@@ -80,11 +83,10 @@ class _PermissionsGatePageState extends State<PermissionsGatePage> {
     final pushService = sl<PushNotificationService>();
 
     try {
-      // Les permissions ont déjà été demandées au toggle des switches, on vérifie juste l'état.
-      if (!_notificationsEnabled || !_locationEnabled) return;
-      await pushService.getToken();
+      if (_notificationsEnabled) {
+        await pushService.getToken();
+      }
 
-      // Marquer comme complété et rediriger
       await prefs.setBool('permissions_completed', true);
       if (mounted) {
         context.go('/home');
@@ -198,6 +200,9 @@ class _PermissionsGatePageState extends State<PermissionsGatePage> {
                         subtitle: l10n.permissionsGateNotificationsSubtitle,
                         value: _notificationsEnabled,
                         onTap: _toggleNotifications,
+                        optionalBadge: Platform.isIOS
+                            ? l10n.permissionsGateNotificationsOptional
+                            : null,
                       ),
                       SizedBox(height: AppSpacing.md.h),
                       // Carte localisation
@@ -288,6 +293,7 @@ class _PermissionCard extends StatelessWidget {
     required this.subtitle,
     required this.value,
     required this.onTap,
+    this.optionalBadge,
   });
 
   final IconData icon;
@@ -295,6 +301,7 @@ class _PermissionCard extends StatelessWidget {
   final String subtitle;
   final bool value;
   final VoidCallback onTap;
+  final String? optionalBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -338,13 +345,38 @@ class _PermissionCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          title,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15.sp,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              title,
+                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                            if (optionalBadge != null) ...[
+                              SizedBox(width: 6.w),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 6.w,
+                                  vertical: 2.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Text(
+                                  optionalBadge!,
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.9),
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                         SizedBox(height: 2.h),
                         Text(

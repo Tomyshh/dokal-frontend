@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' hide TextDirection;
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/search_filter_utils.dart';
@@ -225,6 +226,12 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
     });
   }
 
+  Future<void> _shareProfile(BuildContext context, PractitionerProfile profile) async {
+    const siteUrl = 'https://dokal.co.il';
+    final url = '$siteUrl/he/card/${profile.id}';
+    await Share.share('${profile.name}\n${profile.specialty}\n$url');
+  }
+
   @override
   Widget build(BuildContext context) {
     final profile = widget.profile;
@@ -336,6 +343,12 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
               ),
             ),
             centerTitle: true,
+            actions: [
+              IconButton(
+                icon: Icon(Icons.share_outlined, size: 22.sp, color: AppColors.textPrimary),
+                onPressed: () => _shareProfile(context, profile),
+              ),
+            ],
           ),
 
           // Content

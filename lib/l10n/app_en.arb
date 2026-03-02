@@ -277,6 +277,12 @@
   "permissionsGateLocationSubtitle": "Find practitioners near you",
   "permissionsGateValidateButton": "Validate and continue",
   "permissionsGateLocationDenied": "Location permission denied.",
+  "permissionsGateNotificationsOptional": "Optional – you can enable it later",
+
+  "notificationPromptTitle": "Never miss an appointment",
+  "notificationPromptBody": "Enable notifications to receive reminders and updates for your upcoming appointments.",
+  "notificationPromptAllow": "Enable notifications",
+  "notificationPromptSkip": "Maybe later",
 
   "healthTitle": "My health",
   "healthSubtitle": "Manage your health profile",

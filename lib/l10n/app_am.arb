@@ -277,6 +277,12 @@
   "permissionsGateLocationSubtitle": "በእርስዎ አካባቢ ሐኪሞችን ያግኙ",
   "permissionsGateValidateButton": "አረጋግጥ እና ቀጥል",
   "permissionsGateLocationDenied": "የቦታ ፍቃድ ተቀባይነት አላገኘም.",
+  "permissionsGateNotificationsOptional": "አማራጭ – በኋላ ማንቃት ይቻላል",
+
+  "notificationPromptTitle": "ቀጠሮዎን አያምልጡ",
+  "notificationPromptBody": "ለሚቀጥሉት ቀጠሮዎች ማስታወሻ ለማግኘት ማሳወቂያዎችን ያንቁ።",
+  "notificationPromptAllow": "ማሳወቂያዎችን አንቃ",
+  "notificationPromptSkip": "ምናልባት ቆይቶ",
 
   "healthTitle": "ጤናዬ",
   "healthSubtitle": "የጤና መገለጫዎን ያስተዳድሩ",

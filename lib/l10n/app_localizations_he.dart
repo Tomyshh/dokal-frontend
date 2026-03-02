@@ -626,6 +626,23 @@ class AppLocalizationsHe extends AppLocalizations {
   String get permissionsGateLocationDenied => 'הרשאת מיקום נדחתה.';
 
   @override
+  String get permissionsGateNotificationsOptional =>
+      'אופציונלי – ניתן להפעיל מאוחר יותר';
+
+  @override
+  String get notificationPromptTitle => 'אל תפספס תור';
+
+  @override
+  String get notificationPromptBody =>
+      'הפעל התראות כדי לקבל תזכורות ועדכונים על התורים הקרובים שלך.';
+
+  @override
+  String get notificationPromptAllow => 'הפעל התראות';
+
+  @override
+  String get notificationPromptSkip => 'אולי מאוחר יותר';
+
+  @override
   String get healthTitle => 'הבריאות שלי';
 
   @override

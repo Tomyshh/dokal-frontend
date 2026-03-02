@@ -638,6 +638,23 @@ class AppLocalizationsRu extends AppLocalizations {
       'Разрешение на геолокацию отклонено.';
 
   @override
+  String get permissionsGateNotificationsOptional =>
+      'Необязательно — можно включить позже';
+
+  @override
+  String get notificationPromptTitle => 'Не пропустите приём';
+
+  @override
+  String get notificationPromptBody =>
+      'Включите уведомления, чтобы получать напоминания о предстоящих приёмах.';
+
+  @override
+  String get notificationPromptAllow => 'Включить уведомления';
+
+  @override
+  String get notificationPromptSkip => 'Может быть позже';
+
+  @override
   String get healthTitle => 'Мое здоровье';
 
   @override

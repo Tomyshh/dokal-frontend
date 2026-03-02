@@ -644,6 +644,23 @@ class AppLocalizationsFr extends AppLocalizations {
       'Permission de localisation refusée.';
 
   @override
+  String get permissionsGateNotificationsOptional =>
+      'Facultatif – vous pourrez l\'activer plus tard';
+
+  @override
+  String get notificationPromptTitle => 'Ne ratez plus un rendez-vous';
+
+  @override
+  String get notificationPromptBody =>
+      'Activez les notifications pour recevoir des rappels et des mises à jour pour vos prochains rendez-vous.';
+
+  @override
+  String get notificationPromptAllow => 'Activer les notifications';
+
+  @override
+  String get notificationPromptSkip => 'Peut-être plus tard';
+
+  @override
   String get healthTitle => 'Ma Santé';
 
   @override
