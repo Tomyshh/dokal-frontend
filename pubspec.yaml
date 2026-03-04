@@ -104,6 +104,7 @@ flutter:
   assets:
     - assets/images/
     - assets/branding/
+    - assets/branding/social/
     - assets/icons/
     - assets/lotties/
     - .env.prod

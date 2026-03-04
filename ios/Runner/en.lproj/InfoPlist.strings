@@ -1,5 +1,5 @@
-"NSCameraUsageDescription" = "We need camera access so you can add documents or a profile photo.";
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "We use your location to show your city and country in the app.";
-"NSLocationWhenInUseUsageDescription" = "We use your location to show your city and country in the app.";
-"NSPhotoLibraryAddUsageDescription" = "We need access to save items to your photo library when you ask.";
-"NSPhotoLibraryUsageDescription" = "We need access to your photos so you can add documents or a profile photo.";
+"NSCameraUsageDescription" = "Dokal needs camera access so you can take photos to add as identity documents or profile pictures. For example, you can photograph your ID card when uploading documents for verification.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Dokal uses your location to display your city and country on your profile, and to find healthcare practitioners near you when you search. For example, when you search for \"dentist\" or \"doctor\", the app shows practitioners sorted by distance from your current location.";
+"NSLocationWhenInUseUsageDescription" = "Dokal uses your location to display your city and country on your profile, and to find healthcare practitioners near you when you search. For example, when you search for \"dentist\" or \"doctor\", the app shows practitioners sorted by distance from your current location.";
+"NSPhotoLibraryAddUsageDescription" = "Dokal needs access to save items to your photo library when you explicitly request it. For example, when you tap \"Save to photos\" on a document or image, the app will save it to your device's photo library.";
+"NSPhotoLibraryUsageDescription" = "Dokal needs access to your photos so you can select documents or a profile picture for your account. For example, you can choose an existing photo from your gallery to use as your profile picture.";

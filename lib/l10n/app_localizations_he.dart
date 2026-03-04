@@ -1092,6 +1092,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get practitionerAddressAndContact => 'כתובת ויצירת קשר';
 
   @override
+  String get practitionerSocialNetworks => 'רשתות חברתיות';
+
+  @override
   String get practitionerAppointmentStatusCompleted => 'הושלם';
 
   @override

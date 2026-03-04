@@ -1116,6 +1116,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get practitionerAddressAndContact => 'Адрес и контакты';
 
   @override
+  String get practitionerSocialNetworks => 'Социальные сети';
+
+  @override
   String get practitionerAppointmentStatusCompleted => 'Завершено';
 
   @override

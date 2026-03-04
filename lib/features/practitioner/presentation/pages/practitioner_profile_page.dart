@@ -3,9 +3,11 @@ import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/search_filter_utils.dart';
@@ -489,8 +491,20 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                     phone: profile.phone,
                     email: profile.email,
                     sector: profile.sector,
+                    wazeLink: profile.wazeLink,
+                    googleMapsLink: profile.googleMapsLink,
                   ),
                   SizedBox(height: AppSpacing.sm.h),
+
+                  // Section Réseaux sociaux (si au moins un présent)
+                  if (profile.instagramUrl != null ||
+                      profile.facebookUrl != null ||
+                      profile.linkedinUrl != null ||
+                      profile.whatsappNumber != null ||
+                      profile.websiteUrl != null) ...[
+                    _SocialSection(profile: profile),
+                    SizedBox(height: AppSpacing.sm.h),
+                  ],
 
                   // Section Profil (masquée si vide)
                   if (profile.about.isNotEmpty || profile.education != null)
@@ -2050,12 +2064,23 @@ class _ContactSection extends StatelessWidget {
     this.phone,
     this.email,
     this.sector,
+    this.wazeLink,
+    this.googleMapsLink,
   });
 
   final String address;
   final String? phone;
   final String? email;
   final String? sector;
+  final String? wazeLink;
+  final String? googleMapsLink;
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -2090,11 +2115,58 @@ class _ContactSection extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md.h),
 
-          // Address
-          _ContactItem(
-            icon: Icons.place_rounded,
-            iconColor: AppColors.accent,
-            text: address,
+          // Address + Waze/Maps
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.place_rounded, size: 16.sp, color: AppColors.accent),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Text(
+                  address,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ),
+              if (wazeLink != null || googleMapsLink != null) ...[
+                SizedBox(width: 8.w),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (wazeLink != null)
+                      GestureDetector(
+                        onTap: () => _launchUrl(wazeLink!),
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 8.w),
+                          child: SvgPicture.asset(
+                            'assets/branding/social/waze.svg',
+                            width: 24.r,
+                            height: 24.r,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.primary,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (googleMapsLink != null)
+                      GestureDetector(
+                        onTap: () => _launchUrl(googleMapsLink!),
+                        child: SvgPicture.asset(
+                          'assets/branding/social/google_maps.svg',
+                          width: 24.r,
+                          height: 24.r,
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.primary,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ],
           ),
 
           // Sector (Kupat Holim)
@@ -2126,6 +2198,168 @@ class _ContactSection extends StatelessWidget {
               text: email!,
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _SocialSection extends StatelessWidget {
+  const _SocialSection({required this.profile});
+  final PractitionerProfile profile;
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = <Widget>[];
+
+    if (profile.whatsappNumber != null) {
+      final num = profile.whatsappNumber!.replaceAll(RegExp(r'[^0-9]'), '');
+      actions.add(_SocialIcon(
+        icon: Icons.chat,
+        color: Colors.green,
+        label: 'WhatsApp',
+        onTap: () => _launchUrl('https://wa.me/$num'),
+      ));
+    }
+    if (profile.instagramUrl != null) {
+      actions.add(_SocialIcon(
+        svgAsset: 'assets/branding/social/instagram.svg',
+        useOriginalColors: true,
+        color: Colors.pink,
+        label: 'Instagram',
+        onTap: () => _launchUrl(profile.instagramUrl!),
+      ));
+    }
+    if (profile.facebookUrl != null) {
+      actions.add(_SocialIcon(
+        svgAsset: 'assets/branding/social/facebook.svg',
+        useOriginalColors: true,
+        color: Colors.blue,
+        label: 'Facebook',
+        onTap: () => _launchUrl(profile.facebookUrl!),
+      ));
+    }
+    if (profile.linkedinUrl != null) {
+      actions.add(_SocialIcon(
+        svgAsset: 'assets/branding/social/linkedin.svg',
+        useOriginalColors: true,
+        color: Colors.blue.shade800,
+        label: 'LinkedIn',
+        onTap: () => _launchUrl(profile.linkedinUrl!),
+      ));
+    }
+    if (profile.websiteUrl != null) {
+      actions.add(_SocialIcon(
+        svgAsset: null,
+        icon: Icons.language,
+        color: AppColors.primary,
+        label: 'Web',
+        onTap: () => _launchUrl(profile.websiteUrl!),
+      ));
+    }
+
+    if (actions.isEmpty) return const SizedBox.shrink();
+
+    return DokalCard(
+      padding: EdgeInsets.all(AppSpacing.md.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8.r),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Icon(
+                  Icons.share_rounded,
+                  size: 18.sp,
+                  color: AppColors.primary,
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Text(
+                context.l10n.practitionerSocialNetworks,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.md.h),
+          Wrap(
+            spacing: AppSpacing.lg.w,
+            runSpacing: AppSpacing.md.h,
+            children: actions,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SocialIcon extends StatelessWidget {
+  const _SocialIcon({
+    this.svgAsset,
+    this.icon,
+    this.useOriginalColors = false,
+    required this.color,
+    required this.label,
+    required this.onTap,
+  }) : assert(svgAsset != null || icon != null);
+
+  final String? svgAsset;
+  final IconData? icon;
+  final bool useOriginalColors;
+  final Color color;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 48.r,
+            height: 48.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: useOriginalColors ? AppColors.outline : color,
+                width: 2,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(12.r),
+              child: svgAsset != null
+                  ? SvgPicture.asset(
+                      svgAsset!,
+                      colorFilter: useOriginalColors
+                          ? null
+                          : ColorFilter.mode(color, BlendMode.srcIn),
+                      fit: BoxFit.contain,
+                    )
+                  : Icon(icon!, color: color, size: 22.sp),
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            label,
+            style: TextStyle(fontSize: 10.sp, color: AppColors.textSecondary),
+          ),
         ],
       ),
     );

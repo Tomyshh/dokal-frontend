@@ -83,6 +83,13 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
           json['is_accepting_new_patients'] as bool? ?? true,
       rating: rating,
       reviewCount: rawReviews.length,
+      websiteUrl: json['website_url'] as String?,
+      facebookUrl: json['facebook_url'] as String?,
+      instagramUrl: json['instagram_url'] as String?,
+      whatsappNumber: json['whatsapp_number'] as String?,
+      linkedinUrl: json['linkedin_url'] as String?,
+      wazeLink: json['waze_link'] as String?,
+      googleMapsLink: json['google_maps_link'] as String?,
     );
   }
 

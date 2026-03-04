@@ -427,6 +427,7 @@
   "practitionerNoSlotsForDate": "Нет доступных слотов на эту дату",
   "practitionerYourAppointment": "Ваша запись",
   "practitionerAddressAndContact": "Адрес и контакты",
+  "practitionerSocialNetworks": "Социальные сети",
   "practitionerAppointmentStatusCompleted": "Завершено",
   "practitionerAppointmentStatusConfirmed": "Подтверждено",
   "practitionerAppointmentStatusPending": "Ожидание",

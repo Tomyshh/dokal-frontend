@@ -1131,6 +1131,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get practitionerAddressAndContact => 'Adresse et contact';
 
   @override
+  String get practitionerSocialNetworks => 'Réseaux sociaux';
+
+  @override
   String get practitionerAppointmentStatusCompleted => 'Terminé';
 
   @override

@@ -1081,6 +1081,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get practitionerAddressAndContact => 'አድራሻ እና መገናኛ';
 
   @override
+  String get practitionerSocialNetworks => 'ማህበራዊ መረቦች';
+
+  @override
   String get practitionerAppointmentStatusCompleted => 'ተጠናቋል';
 
   @override

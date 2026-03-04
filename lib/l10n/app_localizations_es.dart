@@ -1126,6 +1126,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get practitionerAddressAndContact => 'Dirección y contacto';
 
   @override
+  String get practitionerSocialNetworks => 'Redes sociales';
+
+  @override
   String get practitionerAppointmentStatusCompleted => 'Completado';
 
   @override

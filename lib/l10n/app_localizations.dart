@@ -2164,6 +2164,12 @@ abstract class AppLocalizations {
   /// **'כתובת ויצירת קשר'**
   String get practitionerAddressAndContact;
 
+  /// No description provided for @practitionerSocialNetworks.
+  ///
+  /// In he, this message translates to:
+  /// **'רשתות חברתיות'**
+  String get practitionerSocialNetworks;
+
   /// No description provided for @practitionerAppointmentStatusCompleted.
   ///
   /// In he, this message translates to:

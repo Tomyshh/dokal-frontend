@@ -1,5 +1,5 @@
-"NSCameraUsageDescription" = "ሰነዶች ወይም የመገለጫ ፎቶ ለመጨመር የካሜራ ፍቃድ ያስፈልገናል።";
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "በመተግበሪያው ውስጥ ከተማዎን እና አገርዎን ለማሳየት አካባቢዎን እንጠቀማለን።";
-"NSLocationWhenInUseUsageDescription" = "በመተግበሪያው ውስጥ ከተማዎን እና አገርዎን ለማሳየት አካባቢዎን እንጠቀማለን።";
-"NSPhotoLibraryAddUsageDescription" = "በጥያቄዎ መሰረት ፋይሎችን ወደ ፎቶ ቤተ-መጽሐፍትዎ ለማስቀመጥ ፍቃድ ያስፈልገናል።";
-"NSPhotoLibraryUsageDescription" = "ሰነዶች ወይም የመገለጫ ፎቶ ለመጨመር ወደ ፎቶዎችዎ መዳረሻ ያስፈልገናል።";
+"NSCameraUsageDescription" = "Dokal ሰነዶች ወይም የመገለጫ ፎቶ ለመጨመር የካሜራ ፍቃድ ያስፈልጋል። ለምሳሌ፣ ለማረጋገጫ ሰነዶች ሲጫኑ የመታወቂያ ካርድዎን መፍለግ ይችላሉ።";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Dokal በመገለጫዎ ውስጥ ከተማዎን እና አገርዎን ለማሳየት እና ሲፈልጉ በአካባቢዎ የጤና ባለሙያዎችን ለማግኘት አካባቢዎን ይጠቀማል። ለምሳሌ፣ \"ጥርጣሬ\" ወይም \"ሐኪም\" ሲፈልጉ መተግበሪያው ከአሁኑ አካባቢዎ በርቀት የተደረደሩ ባለሙያዎችን ያሳያል።";
+"NSLocationWhenInUseUsageDescription" = "Dokal በመገለጫዎ ውስጥ ከተማዎን እና አገርዎን ለማሳየት እና ሲፈልጉ በአካባቢዎ የጤና ባለሙያዎችን ለማግኘት አካባቢዎን ይጠቀማል። ለምሳሌ፣ \"ጥርጣሬ\" ወይም \"ሐኪም\" ሲፈልጉ መተግበሪያው ከአሁኑ አካባቢዎ በርቀት የተደረደሩ ባለሙያዎችን ያሳያል።";
+"NSPhotoLibraryAddUsageDescription" = "Dokal በግልጽ ሲጠይቁ ወደ ፎቶ ቤተ-መጽሐፍትዎ ዕቃዎችን ለማስቀመጥ ፍቃድ ያስፈልጋል። ለምሳሌ፣ በሰነድ ወይም ምስል ላይ \"ወደ ፎቶዎች አስቀምጥ\" ሲጫኑ መተግበሪያው ወደ የመሣሪያዎ ፎቶ ቤተ-መጽሐፍት ያስቀምጣል።";
+"NSPhotoLibraryUsageDescription" = "Dokal ለመለያዎ ሰነዶች ወይም የመገለጫ ፎቶ ለመምረጥ ወደ ፎቶዎችዎ መዳረሻ ያስፈልጋል። ለምሳሌ፣ ከጋለሪዎ ያለውን ፎቶ ለመገለጫ ፎቶ ለመጠቀም መምረጥ ይችላሉ።";

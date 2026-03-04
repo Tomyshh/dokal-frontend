@@ -19,6 +19,13 @@ class PractitionerProfile extends Equatable {
     this.isAcceptingNewPatients = true,
     this.rating,
     this.reviewCount = 0,
+    this.websiteUrl,
+    this.facebookUrl,
+    this.instagramUrl,
+    this.whatsappNumber,
+    this.linkedinUrl,
+    this.wazeLink,
+    this.googleMapsLink,
   });
 
   final String id;
@@ -38,6 +45,13 @@ class PractitionerProfile extends Equatable {
   final bool isAcceptingNewPatients;
   final double? rating;
   final int reviewCount;
+  final String? websiteUrl;
+  final String? facebookUrl;
+  final String? instagramUrl;
+  final String? whatsappNumber;
+  final String? linkedinUrl;
+  final String? wazeLink;
+  final String? googleMapsLink;
 
   @override
   List<Object?> get props => [
@@ -58,5 +72,12 @@ class PractitionerProfile extends Equatable {
     isAcceptingNewPatients,
     rating,
     reviewCount,
+    websiteUrl,
+    facebookUrl,
+    instagramUrl,
+    whatsappNumber,
+    linkedinUrl,
+    wazeLink,
+    googleMapsLink,
   ];
 }

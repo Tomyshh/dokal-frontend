@@ -40,15 +40,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need camera access so you can add documents or a profile photo.</string>
+	<string>Dokal needs camera access so you can take photos to add as identity documents or profile pictures. For example, you can photograph your ID card when uploading documents for verification.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We use your location to show your city and country in the app.</string>
+	<string>Dokal uses your location to display your city and country on your profile, and to find healthcare practitioners near you when you search. For example, when you search for "dentist" or "doctor", the app shows practitioners sorted by distance from your current location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We use your location to show your city and country in the app.</string>
+	<string>Dokal uses your location to display your city and country on your profile, and to find healthcare practitioners near you when you search. For example, when you search for "dentist" or "doctor", the app shows practitioners sorted by distance from your current location.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need access to save items to your photo library when you ask.</string>
+	<string>Dokal needs access to save items to your photo library when you explicitly request it. For example, when you tap "Save to photos" on a document or image, the app will save it to your device's photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photos so you can add documents or a profile photo.</string>
+	<string>Dokal needs access to your photos so you can select documents or a profile picture for your account. For example, you can choose an existing photo from your gallery to use as your profile picture.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

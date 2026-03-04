@@ -281,6 +281,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
     if (card.instagramUrl != null) {
       actions.add(_ActionData(
         svgAsset: 'assets/branding/social/instagram.svg',
+        useOriginalColors: true,
         label: 'Instagram',
         color: Colors.pink,
         onTap: () => _launchUrl(card.instagramUrl!),
@@ -289,6 +290,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
     if (card.facebookUrl != null) {
       actions.add(_ActionData(
         svgAsset: 'assets/branding/social/facebook.svg',
+        useOriginalColors: true,
         label: 'Facebook',
         color: Colors.blue,
         onTap: () => _launchUrl(card.facebookUrl!),
@@ -297,6 +299,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
     if (card.linkedinUrl != null) {
       actions.add(_ActionData(
         svgAsset: 'assets/branding/social/linkedin.svg',
+        useOriginalColors: true,
         label: 'LinkedIn',
         color: Colors.blue.shade800,
         onTap: () => _launchUrl(card.linkedinUrl!),
@@ -453,12 +456,14 @@ class _ActionData {
   _ActionData({
     this.icon,
     this.svgAsset,
+    this.useOriginalColors = false,
     required this.label,
     required this.color,
     required this.onTap,
   }) : assert(icon != null || svgAsset != null);
   final IconData? icon;
   final String? svgAsset;
+  final bool useOriginalColors;
   final String label;
   final Color color;
   final VoidCallback onTap;
@@ -480,14 +485,19 @@ class _ActionButton extends StatelessWidget {
             height: 56,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: data.color, width: 2),
+              border: Border.all(
+                color: data.useOriginalColors ? AppColors.outline : data.color,
+                width: 2,
+              ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(14),
               child: data.svgAsset != null
                   ? SvgPicture.asset(
                       data.svgAsset!,
-                      colorFilter: ColorFilter.mode(data.color, BlendMode.srcIn),
+                      colorFilter: data.useOriginalColors
+                          ? null
+                          : ColorFilter.mode(data.color, BlendMode.srcIn),
                       fit: BoxFit.contain,
                     )
                   : Icon(data.icon!, color: data.color, size: 24),
