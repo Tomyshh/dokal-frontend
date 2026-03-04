@@ -27,16 +27,18 @@ class SearchPractitionerCard extends StatelessWidget {
   final VoidCallback onBookTap;
 
   String _getInitials() {
-    final parts = practitioner.name
+    final name = practitioner.name
         .replaceAll('ד"ר ', '')
         .replaceAll('Dr. ', '')
-        .split(' ');
+        .trim();
+    if (name.isEmpty) return '?';
+
+    final parts = name.split(' ').where((s) => s.isNotEmpty).toList();
+    if (parts.isEmpty) return '?';
     if (parts.length >= 2) {
       return '${parts[0][0]}${parts[1][0]}';
-    } else if (parts.isNotEmpty && parts[0].isNotEmpty) {
-      return parts[0][0];
     }
-    return '?';
+    return parts[0][0];
   }
 
   bool get _hasLocationInfo =>

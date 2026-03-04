@@ -44,13 +44,16 @@ class PractitionerCard extends StatelessWidget {
 
   // Génère les initiales à partir du nom
   String _getInitials() {
-    final parts = name.replaceAll('ד"ר ', '').replaceAll('Dr. ', '').split(' ');
+    final trimmed =
+        name.replaceAll('ד"ר ', '').replaceAll('Dr. ', '').trim();
+    if (trimmed.isEmpty) return '?';
+
+    final parts = trimmed.split(' ').where((s) => s.isNotEmpty).toList();
+    if (parts.isEmpty) return '?';
     if (parts.length >= 2) {
       return '${parts[0][0]}${parts[1][0]}';
-    } else if (parts.isNotEmpty && parts[0].isNotEmpty) {
-      return parts[0][0];
     }
-    return '?';
+    return parts[0][0];
   }
 
   @override

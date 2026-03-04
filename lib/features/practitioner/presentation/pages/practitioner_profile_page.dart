@@ -206,16 +206,18 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
   }
 
   String _getInitials() {
-    final parts = widget.profile.name
+    final name = widget.profile.name
         .replaceAll('ד"ר ', '')
         .replaceAll('Dr. ', '')
-        .split(' ');
+        .trim();
+    if (name.isEmpty) return '?';
+
+    final parts = name.split(' ').where((s) => s.isNotEmpty).toList();
+    if (parts.isEmpty) return '?';
     if (parts.length >= 2) {
       return '${parts[0][0]}${parts[1][0]}';
-    } else if (parts.isNotEmpty && parts[0].isNotEmpty) {
-      return parts[0][0];
     }
-    return '?';
+    return parts[0][0];
   }
 
   void _onDateSelected(DateTime date) {
