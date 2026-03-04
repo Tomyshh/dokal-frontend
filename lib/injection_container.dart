@@ -180,7 +180,9 @@ void configureDependencies() {
   if (kDebugMode) {
     debugPrint('[Dokal] Supabase URL: $supabaseUrl');
     debugPrint('[Dokal] Supabase key present: ${supabaseAnonKey.isNotEmpty}');
-    debugPrint('[Dokal] Google Sign-In: ${googleWebClientId.isNotEmpty ? "configuré" : "non configuré"}');
+    debugPrint(
+      '[Dokal] Google Sign-In: ${googleWebClientId.isNotEmpty ? "configuré" : "non configuré"}',
+    );
   }
 
   sl.registerSingletonAsync<SupabaseClient>(() async {
@@ -220,7 +222,10 @@ void configureDependencies() {
     ),
   );
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(remote: sl<AuthRemoteDataSource>(), api: sl<ApiClient>()),
+    () => AuthRepositoryImpl(
+      remote: sl<AuthRemoteDataSource>(),
+      api: sl<ApiClient>(),
+    ),
   );
 
   // Onboarding (local)
@@ -451,10 +456,8 @@ void configureDependencies() {
   );
   sl.registerLazySingleton(() => GetHealthList(sl<HealthRepository>()));
   sl.registerFactoryParam<HealthListCubit, HealthListType, void>(
-    (type, _) => HealthListCubit(
-      type: type,
-      getHealthList: sl<GetHealthList>(),
-    )..load(),
+    (type, _) =>
+        HealthListCubit(type: type, getHealthList: sl<GetHealthList>())..load(),
   );
 
   // ---------------------------------------------------------------------------
@@ -523,9 +526,7 @@ void configureDependencies() {
       uploadRelativeAvatar: sl<UploadRelativeAvatar>(),
     ),
   );
-  sl.registerLazySingleton(
-    () => UploadRelativeAvatar(sl<AccountRepository>()),
-  );
+  sl.registerLazySingleton(() => UploadRelativeAvatar(sl<AccountRepository>()));
   sl.registerFactory(
     () => EditProfileCubit(
       getProfile: sl<GetProfile>(),
@@ -543,9 +544,7 @@ void configureDependencies() {
     ),
   );
   sl.registerFactory(
-    () => PaymentCubit(
-      getPaymentMethods: sl<GetPaymentMethods>(),
-    )..load(),
+    () => PaymentCubit(getPaymentMethods: sl<GetPaymentMethods>())..load(),
   );
   sl.registerFactory(
     () => ChangePasswordCubit(
@@ -669,6 +668,35 @@ void configureDependencies() {
       getAuthEmail: () {
         try {
           return Supabase.instance.client.auth.currentUser?.email;
+        } catch (_) {
+          return null;
+        }
+      },
+      getAuthFirstName: () {
+        try {
+          final user = Supabase.instance.client.auth.currentUser;
+          final metadata = user?.userMetadata ?? const <String, dynamic>{};
+          final firstName = (metadata['first_name'] as String?)?.trim();
+          if (firstName != null && firstName.isNotEmpty) return firstName;
+          final fullName = (metadata['full_name'] as String?)?.trim();
+          if (fullName == null || fullName.isEmpty) return null;
+          final parts = fullName.split(RegExp(r'\s+'));
+          return parts.isEmpty ? null : parts.first.trim();
+        } catch (_) {
+          return null;
+        }
+      },
+      getAuthLastName: () {
+        try {
+          final user = Supabase.instance.client.auth.currentUser;
+          final metadata = user?.userMetadata ?? const <String, dynamic>{};
+          final lastName = (metadata['last_name'] as String?)?.trim();
+          if (lastName != null && lastName.isNotEmpty) return lastName;
+          final fullName = (metadata['full_name'] as String?)?.trim();
+          if (fullName == null || fullName.isEmpty) return null;
+          final parts = fullName.split(RegExp(r'\s+'));
+          if (parts.length < 2) return null;
+          return parts.sublist(1).join(' ').trim();
         } catch (_) {
           return null;
         }

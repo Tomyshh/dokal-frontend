@@ -1,0 +1,5 @@
+"NSCameraUsageDescription" = "Nous avons besoin de la camera pour ajouter des documents ou une photo de profil.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Nous utilisons votre localisation pour afficher votre ville et votre pays dans l'application.";
+"NSLocationWhenInUseUsageDescription" = "Nous utilisons votre localisation pour afficher votre ville et votre pays dans l'application.";
+"NSPhotoLibraryAddUsageDescription" = "Nous avons besoin d'acceder a votre phototheque pour enregistrer des elements a votre demande.";
+"NSPhotoLibraryUsageDescription" = "Nous avons besoin d'acceder a vos photos pour ajouter des documents ou une photo de profil.";

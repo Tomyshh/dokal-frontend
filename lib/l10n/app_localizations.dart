@@ -976,6 +976,96 @@ abstract class AppLocalizations {
   /// **'פסיכיאטר'**
   String get searchFilterSpecialtyPsychiatrist;
 
+  /// No description provided for @searchFilterSpecialtyAnesthesiologist.
+  ///
+  /// In he, this message translates to:
+  /// **'הרדמה'**
+  String get searchFilterSpecialtyAnesthesiologist;
+
+  /// No description provided for @searchFilterSpecialtyUrologist.
+  ///
+  /// In he, this message translates to:
+  /// **'אורולוג'**
+  String get searchFilterSpecialtyUrologist;
+
+  /// No description provided for @searchFilterSpecialtyEnt.
+  ///
+  /// In he, this message translates to:
+  /// **'אף אוזן גרון'**
+  String get searchFilterSpecialtyEnt;
+
+  /// No description provided for @searchFilterSpecialtyPulmonologist.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא ריאות'**
+  String get searchFilterSpecialtyPulmonologist;
+
+  /// No description provided for @searchFilterSpecialtyGastroenterologist.
+  ///
+  /// In he, this message translates to:
+  /// **'גסטרואנטרולוג'**
+  String get searchFilterSpecialtyGastroenterologist;
+
+  /// No description provided for @searchFilterSpecialtyEndocrinologist.
+  ///
+  /// In he, this message translates to:
+  /// **'אנדוקרינולוג'**
+  String get searchFilterSpecialtyEndocrinologist;
+
+  /// No description provided for @searchFilterSpecialtySurgeon.
+  ///
+  /// In he, this message translates to:
+  /// **'כירורג'**
+  String get searchFilterSpecialtySurgeon;
+
+  /// No description provided for @searchFilterSpecialtyOncologist.
+  ///
+  /// In he, this message translates to:
+  /// **'אונקולוג'**
+  String get searchFilterSpecialtyOncologist;
+
+  /// No description provided for @searchFilterSpecialtyAllergist.
+  ///
+  /// In he, this message translates to:
+  /// **'אלרגולוג'**
+  String get searchFilterSpecialtyAllergist;
+
+  /// No description provided for @searchFilterSpecialtyRheumatologist.
+  ///
+  /// In he, this message translates to:
+  /// **'ראומטולוג'**
+  String get searchFilterSpecialtyRheumatologist;
+
+  /// No description provided for @searchFilterSpecialtyNephrologist.
+  ///
+  /// In he, this message translates to:
+  /// **'נפרולוג'**
+  String get searchFilterSpecialtyNephrologist;
+
+  /// No description provided for @searchFilterSpecialtyHematologist.
+  ///
+  /// In he, this message translates to:
+  /// **'המטולוג'**
+  String get searchFilterSpecialtyHematologist;
+
+  /// No description provided for @searchFilterSpecialtyDentist.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא שיניים'**
+  String get searchFilterSpecialtyDentist;
+
+  /// No description provided for @searchFilterSpecialtyPlasticSurgeon.
+  ///
+  /// In he, this message translates to:
+  /// **'כירורג פלסטי'**
+  String get searchFilterSpecialtyPlasticSurgeon;
+
+  /// No description provided for @searchFilterSpecialtyGeneralPractitioner.
+  ///
+  /// In he, this message translates to:
+  /// **'רופא כללי'**
+  String get searchFilterSpecialtyGeneralPractitioner;
+
   /// No description provided for @searchFilterKupatHolim.
   ///
   /// In he, this message translates to:

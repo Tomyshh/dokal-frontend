@@ -1,0 +1,5 @@
+"NSCameraUsageDescription" = "ሰነዶች ወይም የመገለጫ ፎቶ ለመጨመር የካሜራ ፍቃድ ያስፈልገናል።";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "በመተግበሪያው ውስጥ ከተማዎን እና አገርዎን ለማሳየት አካባቢዎን እንጠቀማለን።";
+"NSLocationWhenInUseUsageDescription" = "በመተግበሪያው ውስጥ ከተማዎን እና አገርዎን ለማሳየት አካባቢዎን እንጠቀማለን።";
+"NSPhotoLibraryAddUsageDescription" = "በጥያቄዎ መሰረት ፋይሎችን ወደ ፎቶ ቤተ-መጽሐፍትዎ ለማስቀመጥ ፍቃድ ያስፈልገናል።";
+"NSPhotoLibraryUsageDescription" = "ሰነዶች ወይም የመገለጫ ፎቶ ለመጨመር ወደ ፎቶዎችዎ መዳረሻ ያስፈልገናል።";

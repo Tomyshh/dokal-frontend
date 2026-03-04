@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n_static.dart';
 import '../../domain/entities/home_practitioner.dart';
 import '../../domain/repositories/home_repository.dart';
@@ -81,11 +82,7 @@ class HomeRepositoryImpl implements HomeRepository {
           HomePractitioner(
             id: pId,
             name: '$firstName $lastName'.trim(),
-            specialty:
-                specialties?['name_fr'] as String? ??
-                specialties?['name_he'] as String? ??
-                specialties?['name'] as String? ??
-                '',
+            specialty: pickLocalizedSpecialty(specialties),
           ),
         );
         if (result.length >= 3) break;

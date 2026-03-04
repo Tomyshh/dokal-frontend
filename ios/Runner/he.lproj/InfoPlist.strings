@@ -1,0 +1,5 @@
+"NSCameraUsageDescription" = "נדרשת גישה למצלמה כדי להוסיף מסמכים או תמונת פרופיל.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "אנחנו משתמשים במיקום שלך כדי להציג את העיר והמדינה שלך באפליקציה.";
+"NSLocationWhenInUseUsageDescription" = "אנחנו משתמשים במיקום שלך כדי להציג את העיר והמדינה שלך באפליקציה.";
+"NSPhotoLibraryAddUsageDescription" = "נדרשת גישה כדי לשמור פריטים בספריית התמונות שלך לפי בקשתך.";
+"NSPhotoLibraryUsageDescription" = "נדרשת גישה לתמונות שלך כדי להוסיף מסמכים או תמונת פרופיל.";

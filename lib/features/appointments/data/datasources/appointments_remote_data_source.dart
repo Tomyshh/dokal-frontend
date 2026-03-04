@@ -1,5 +1,5 @@
 import '../../../../core/network/api_client.dart';
-import '../../../../l10n/app_locale_controller.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../domain/entities/appointment.dart';
 import '../../domain/entities/questionnaire_field.dart';
 import 'appointments_demo_data_source.dart';
@@ -264,12 +264,8 @@ class AppointmentsRemoteDataSourceImpl implements AppointmentsDemoDataSource {
       dateLabel: json['appointment_date'] as String? ?? '',
       timeLabel: (json['start_time'] as String? ?? '').substring(0, 5), // HH:mm
       practitionerName: '$practFirstName $practLastName'.trim(),
-      specialty:
-          specialties?['name_fr'] as String? ??
-          specialties?['name'] as String? ??
-          '',
-      reason:
-          reasons?['label_fr'] as String? ?? reasons?['label'] as String? ?? '',
+      specialty: pickLocalizedSpecialty(specialties),
+      reason: pickLocalizedLabel(reasons),
       status: status,
       isPast: computedIsPast,
       patientName: patientName,

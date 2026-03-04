@@ -1,0 +1,5 @@
+"NSCameraUsageDescription" = "We need camera access so you can add documents or a profile photo.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "We use your location to show your city and country in the app.";
+"NSLocationWhenInUseUsageDescription" = "We use your location to show your city and country in the app.";
+"NSPhotoLibraryAddUsageDescription" = "We need access to save items to your photo library when you ask.";
+"NSPhotoLibraryUsageDescription" = "We need access to your photos so you can add documents or a profile photo.";

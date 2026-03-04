@@ -463,6 +463,51 @@ class AppLocalizationsAm extends AppLocalizations {
   String get searchFilterSpecialtyPsychiatrist => 'የአእምሮ ሐኪም';
 
   @override
+  String get searchFilterSpecialtyAnesthesiologist => 'የሰመመን ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyUrologist => 'የሽንት ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyEnt => 'የአፍንጫ ጆሮ ጉሮሮ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyPulmonologist => 'የሳንባ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyGastroenterologist => 'የሆድ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyEndocrinologist => 'የሆርሞን ሐኪም';
+
+  @override
+  String get searchFilterSpecialtySurgeon => 'ቀዶ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyOncologist => 'የካንሰር ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyAllergist => 'የአለርጂ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyRheumatologist => 'የመገጣጠሚያ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyNephrologist => 'የኩላሊት ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyHematologist => 'የደም ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyDentist => 'የጥርስ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyPlasticSurgeon => 'የፕላስቲክ ቀዶ ሐኪም';
+
+  @override
+  String get searchFilterSpecialtyGeneralPractitioner => 'ጠቅላላ ሐኪም';
+
+  @override
   String get searchFilterKupatHolim => 'የጤና ፈንድ';
 
   @override

@@ -477,6 +477,51 @@ class AppLocalizationsEs extends AppLocalizations {
   String get searchFilterSpecialtyPsychiatrist => 'Psiquiatra';
 
   @override
+  String get searchFilterSpecialtyAnesthesiologist => 'Anestesiólogo';
+
+  @override
+  String get searchFilterSpecialtyUrologist => 'Urólogo';
+
+  @override
+  String get searchFilterSpecialtyEnt => 'Otorrinolaringólogo';
+
+  @override
+  String get searchFilterSpecialtyPulmonologist => 'Neumólogo';
+
+  @override
+  String get searchFilterSpecialtyGastroenterologist => 'Gastroenterólogo';
+
+  @override
+  String get searchFilterSpecialtyEndocrinologist => 'Endocrinólogo';
+
+  @override
+  String get searchFilterSpecialtySurgeon => 'Cirujano';
+
+  @override
+  String get searchFilterSpecialtyOncologist => 'Oncólogo';
+
+  @override
+  String get searchFilterSpecialtyAllergist => 'Alergólogo';
+
+  @override
+  String get searchFilterSpecialtyRheumatologist => 'Reumatólogo';
+
+  @override
+  String get searchFilterSpecialtyNephrologist => 'Nefrólogo';
+
+  @override
+  String get searchFilterSpecialtyHematologist => 'Hematólogo';
+
+  @override
+  String get searchFilterSpecialtyDentist => 'Dentista';
+
+  @override
+  String get searchFilterSpecialtyPlasticSurgeon => 'Cirujano plástico';
+
+  @override
+  String get searchFilterSpecialtyGeneralPractitioner => 'Médico general';
+
+  @override
   String get searchFilterKupatHolim => 'Caja de salud';
 
   @override

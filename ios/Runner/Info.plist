@@ -40,15 +40,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Nous avons besoin de la caméra pour ajouter des documents ou une photo de profil.</string>
+	<string>We need camera access so you can add documents or a profile photo.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Nous utilisons votre localisation pour afficher votre ville et pays dans l'application.</string>
+	<string>We use your location to show your city and country in the app.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Nous utilisons votre localisation pour afficher votre ville et pays dans l'application.</string>
+	<string>We use your location to show your city and country in the app.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Nous avons besoin d’enregistrer des éléments dans votre photothèque si vous le demandez.</string>
+	<string>We need access to save items to your photo library when you ask.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Nous avons besoin d’accéder à vos photos pour ajouter des documents ou une photo de profil.</string>
+	<string>We need access to your photos so you can add documents or a profile photo.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

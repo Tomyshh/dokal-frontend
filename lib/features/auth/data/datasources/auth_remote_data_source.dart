@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,8 +10,10 @@ import '../../../../l10n/l10n_static.dart';
 abstract class AuthRemoteDataSource {
   Future<AuthSession?> getSession();
   Future<AuthSession> signIn({required String email, required String password});
+
   /// Connexion avec Google (OAuth ID token). Nécessite que le provider Google soit configuré dans Supabase.
   Future<AuthSession> signInWithGoogle();
+
   /// Connexion avec Apple (OAuth ID token). Nécessite que le provider Apple soit configuré dans Supabase.
   Future<AuthSession> signInWithApple();
   Future<AuthSession> signUp({
@@ -48,8 +51,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   });
 
   final Future<SupabaseClient> supabaseClientFuture;
+
   /// Web Client ID (Google Cloud) — requis pour le flux OIDC avec Supabase.
   final String googleWebClientId;
+
   /// iOS Client ID (optionnel, recommandé sur iOS).
   final String? googleIosClientId;
 
@@ -157,6 +162,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (user == null) {
         throw AuthException(l10nStatic.authSignInFailedTryAgain);
       }
+      await _persistAppleIdentityMetadata(client, credential);
       return AuthSession(userId: user.id, email: user.email);
     } on SignInWithAppleAuthorizationException catch (e) {
       // Annulation utilisateur ou erreurs Apple → message propre (pas de crash).
@@ -166,6 +172,52 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw AuthException(l10nStatic.authSignInFailedTryAgain);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> _persistAppleIdentityMetadata(
+    SupabaseClient client,
+    AuthorizationCredentialAppleID credential,
+  ) async {
+    final firstName = credential.givenName?.trim();
+    final lastName = credential.familyName?.trim();
+    final email = credential.email?.trim();
+    final hasFirst = firstName != null && firstName.isNotEmpty;
+    final hasLast = lastName != null && lastName.isNotEmpty;
+    final hasEmail = email != null && email.isNotEmpty;
+    if (!hasFirst && !hasLast && !hasEmail) return;
+
+    try {
+      final currentUser = client.auth.currentUser;
+      final currentMeta =
+          (currentUser?.userMetadata ?? const <String, dynamic>{});
+      final data = <String, dynamic>{...currentMeta};
+      String metaString(String key) {
+        final raw = data[key];
+        if (raw is String) return raw.trim();
+        return '';
+      }
+
+      if (hasFirst && metaString('first_name').isEmpty) {
+        data['first_name'] = firstName;
+      }
+      if (hasLast && metaString('last_name').isEmpty) {
+        data['last_name'] = lastName;
+      }
+      final fullName = [
+        firstName,
+        lastName,
+      ].whereType<String>().join(' ').trim();
+      if (fullName.isNotEmpty && metaString('full_name').isEmpty) {
+        data['full_name'] = fullName;
+      }
+      if (hasEmail && metaString('email').isEmpty) {
+        data['email'] = email;
+      }
+
+      await client.auth.updateUser(UserAttributes(data: data));
+    } catch (_) {
+      // Best-effort only: auth session is already valid.
     }
   }
 

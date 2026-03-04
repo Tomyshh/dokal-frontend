@@ -1,6 +1,24 @@
+import '../../l10n/app_locale_controller.dart';
+
 // Utilitaires pour les filtres de recherche (spécialité, kupat holim, date).
 // Les options du filtre sont en hébreu (UI). L'API peut retourner des valeurs
 // en français, hébreu ou anglais. Ces mappings permettent la correspondance.
+
+/// Extrait le nom de spécialité localisé depuis l'objet `specialties` de l'API
+/// en fonction de la locale courante de l'app (AppLocaleController).
+/// Fallback : name → chaîne vide.
+String pickLocalizedSpecialty(Map<String, dynamic>? spec) {
+  if (spec == null) return '';
+  final lang = AppLocaleController.locale.value.languageCode;
+  return spec['name_$lang'] as String? ?? spec['name'] as String? ?? '';
+}
+
+/// Même logique pour les libellés localisés génériques (ex. reasons).
+String pickLocalizedLabel(Map<String, dynamic>? map, {String prefix = 'label'}) {
+  if (map == null) return '';
+  final lang = AppLocaleController.locale.value.languageCode;
+  return map['${prefix}_$lang'] as String? ?? map[prefix] as String? ?? '';
+}
 
 /// Mapping: clé du filtre spécialité (l10n) -> valeurs possibles de l'API (toutes langues)
 const Map<String, Set<String>> _specialtyFilterKeyToApiValues = {
@@ -25,7 +43,7 @@ const Map<String, Set<String>> _specialtyFilterKeyToApiValues = {
     'የህፃናት ሐኪም', 'Педиатр',
   },
   'specialty_gynecologist': {
-    'גינקולוגית', 'Gynécologue', 'Gynecologist', 'Ginecólogo',
+    'גינקולוגית', 'גינקולוג', 'Gynécologue', 'Gynecologist', 'Ginecólogo',
     'የሴቶች ጤና ሐኪም', 'Гинеколог',
   },
   'specialty_orthopedist': {
@@ -44,6 +62,69 @@ const Map<String, Set<String>> _specialtyFilterKeyToApiValues = {
     'פסיכיאטר', 'פסיכיאטרית', 'Psychiatre', 'Psychiatrist',
     'Psiquiatra', 'የአእምሮ ሐኪም', 'Психиатр',
   },
+  'specialty_anesthesiologist': {
+    'הרדמה', 'מרדים', 'מרדימה', 'Anesthésiologie', 'Anesthésiste',
+    'Anesthesiologist', 'Anesthesiology', 'Anestesiólogo', 'Anestesiología',
+    'የሰመመን ሐኪም', 'Анестезиолог',
+  },
+  'specialty_urologist': {
+    'אורולוג', 'Urologue', 'Urologist', 'Urólogo',
+    'የሽንት ሐኪም', 'Уролог',
+  },
+  'specialty_ent': {
+    'רופא אף אוזן גרון', 'אף אוזן גרון', 'ORL', 'Oto-rhino-laryngologiste',
+    'ENT', 'Otolaryngologist', 'Otorrinolaringólogo',
+    'የአፍንጫ ጆሮ ጉሮሮ ሐኪም', 'Отоларинголог', 'ЛОР',
+  },
+  'specialty_pulmonologist': {
+    'רופא ריאות', 'Pneumologue', 'Pulmonologist', 'Neumólogo',
+    'የሳንባ ሐኪም', 'Пульмонолог',
+  },
+  'specialty_gastroenterologist': {
+    'גסטרואנטרולוג', 'Gastro-entérologue', 'Gastroentérologue',
+    'Gastroenterologist', 'Gastroenterólogo',
+    'የሆድ ሐኪም', 'Гастроэнтеролог',
+  },
+  'specialty_endocrinologist': {
+    'אנדוקרינולוג', 'Endocrinologue', 'Endocrinologist', 'Endocrinólogo',
+    'የሆርሞን ሐኪም', 'Эндокринолог',
+  },
+  'specialty_surgeon': {
+    'כירורג', 'כירורגית', 'Chirurgien', 'Surgeon', 'General surgeon',
+    'Cirujano', 'ቀዶ ሐኪም', 'Хирург',
+  },
+  'specialty_oncologist': {
+    'אונקולוג', 'Oncologue', 'Oncologist', 'Oncólogo',
+    'የካንሰር ሐኪም', 'Онколог',
+  },
+  'specialty_allergist': {
+    'אלרגולוג', 'Allergologue', 'Allergist', 'Alergólogo',
+    'የአለርጂ ሐኪም', 'Аллерголог',
+  },
+  'specialty_rheumatologist': {
+    'ראומטולוג', 'Rhumatologue', 'Rheumatologist', 'Reumatólogo',
+    'የመገጣጠሚያ ሐኪም', 'Ревматолог',
+  },
+  'specialty_nephrologist': {
+    'נפרולוג', 'Néphrologue', 'Nephrologist', 'Nefrólogo',
+    'የኩላሊት ሐኪም', 'Нефролог',
+  },
+  'specialty_hematologist': {
+    'המטולוג', 'Hématologue', 'Hematologist', 'Hematólogo',
+    'የደም ሐኪም', 'Гематолог',
+  },
+  'specialty_dentist': {
+    'רופא שיניים', 'רופאת שיניים', 'Dentiste', 'Dentist', 'Dentista',
+    'የጥርስ ሐኪም', 'Стоматолог',
+  },
+  'specialty_plastic_surgeon': {
+    'כירורג פלסטי', 'Chirurgien plasticien', 'Plastic surgeon',
+    'Cirujano plástico', 'የፕላስቲክ ቀዶ ሐኪም', 'Пластический хирург',
+  },
+  'specialty_general_practitioner': {
+    'רופא כללי', 'רופאה כללית', 'Médecin généraliste', 'General practitioner',
+    'Médico general', 'ጠቅላላ ሐኪም', 'Врач общей практики',
+  },
 };
 
 /// Mapping: clé l10n -> getter name sur AppLocalizations
@@ -58,6 +139,21 @@ const Map<String, String> _specialtyKeyToL10nGetter = {
   'specialty_neurologist': 'searchFilterSpecialtyNeurologist',
   'specialty_internal': 'searchFilterSpecialtyInternal',
   'specialty_psychiatrist': 'searchFilterSpecialtyPsychiatrist',
+  'specialty_anesthesiologist': 'searchFilterSpecialtyAnesthesiologist',
+  'specialty_urologist': 'searchFilterSpecialtyUrologist',
+  'specialty_ent': 'searchFilterSpecialtyEnt',
+  'specialty_pulmonologist': 'searchFilterSpecialtyPulmonologist',
+  'specialty_gastroenterologist': 'searchFilterSpecialtyGastroenterologist',
+  'specialty_endocrinologist': 'searchFilterSpecialtyEndocrinologist',
+  'specialty_surgeon': 'searchFilterSpecialtySurgeon',
+  'specialty_oncologist': 'searchFilterSpecialtyOncologist',
+  'specialty_allergist': 'searchFilterSpecialtyAllergist',
+  'specialty_rheumatologist': 'searchFilterSpecialtyRheumatologist',
+  'specialty_nephrologist': 'searchFilterSpecialtyNephrologist',
+  'specialty_hematologist': 'searchFilterSpecialtyHematologist',
+  'specialty_dentist': 'searchFilterSpecialtyDentist',
+  'specialty_plastic_surgeon': 'searchFilterSpecialtyPlasticSurgeon',
+  'specialty_general_practitioner': 'searchFilterSpecialtyGeneralPractitioner',
 };
 
 /// Retourne le libellé localisé d'une spécialité API pour l'affichage.
@@ -94,6 +190,36 @@ String specialtyToDisplayLabel(String? apiSpecialty, dynamic l10n) {
             return l10n.searchFilterSpecialtyInternal;
           case 'searchFilterSpecialtyPsychiatrist':
             return l10n.searchFilterSpecialtyPsychiatrist;
+          case 'searchFilterSpecialtyAnesthesiologist':
+            return l10n.searchFilterSpecialtyAnesthesiologist;
+          case 'searchFilterSpecialtyUrologist':
+            return l10n.searchFilterSpecialtyUrologist;
+          case 'searchFilterSpecialtyEnt':
+            return l10n.searchFilterSpecialtyEnt;
+          case 'searchFilterSpecialtyPulmonologist':
+            return l10n.searchFilterSpecialtyPulmonologist;
+          case 'searchFilterSpecialtyGastroenterologist':
+            return l10n.searchFilterSpecialtyGastroenterologist;
+          case 'searchFilterSpecialtyEndocrinologist':
+            return l10n.searchFilterSpecialtyEndocrinologist;
+          case 'searchFilterSpecialtySurgeon':
+            return l10n.searchFilterSpecialtySurgeon;
+          case 'searchFilterSpecialtyOncologist':
+            return l10n.searchFilterSpecialtyOncologist;
+          case 'searchFilterSpecialtyAllergist':
+            return l10n.searchFilterSpecialtyAllergist;
+          case 'searchFilterSpecialtyRheumatologist':
+            return l10n.searchFilterSpecialtyRheumatologist;
+          case 'searchFilterSpecialtyNephrologist':
+            return l10n.searchFilterSpecialtyNephrologist;
+          case 'searchFilterSpecialtyHematologist':
+            return l10n.searchFilterSpecialtyHematologist;
+          case 'searchFilterSpecialtyDentist':
+            return l10n.searchFilterSpecialtyDentist;
+          case 'searchFilterSpecialtyPlasticSurgeon':
+            return l10n.searchFilterSpecialtyPlasticSurgeon;
+          case 'searchFilterSpecialtyGeneralPractitioner':
+            return l10n.searchFilterSpecialtyGeneralPractitioner;
           default:
             return specNorm;
         }

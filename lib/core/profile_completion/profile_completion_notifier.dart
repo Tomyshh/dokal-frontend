@@ -12,13 +12,19 @@ class ProfileCompletionNotifier extends ChangeNotifier {
     required GetProfile getProfile,
     required GetHealthProfile getHealthProfile,
     required String? Function() getAuthEmail,
+    required String? Function() getAuthFirstName,
+    required String? Function() getAuthLastName,
   }) : _getProfile = getProfile,
        _getHealthProfile = getHealthProfile,
-       _getAuthEmail = getAuthEmail;
+       _getAuthEmail = getAuthEmail,
+       _getAuthFirstName = getAuthFirstName,
+       _getAuthLastName = getAuthLastName;
 
   final GetProfile _getProfile;
   final GetHealthProfile _getHealthProfile;
   final String? Function() _getAuthEmail;
+  final String? Function() _getAuthFirstName;
+  final String? Function() _getAuthLastName;
 
   ProfileGuardStatus _status = ProfileGuardStatus.unknown;
   ProfileGuardStatus get status => _status;
@@ -57,11 +63,15 @@ class ProfileCompletionNotifier extends ChangeNotifier {
       final profile = profRes.getOrElse(() => throw StateError('No profile'));
       final healthProfile = healthRes.getOrElse(() => null);
       final authEmail = _getAuthEmail();
+      final authFirstName = _getAuthFirstName();
+      final authLastName = _getAuthLastName();
 
       final complete = _isCompletePatientProfile(
         profile: profile,
         healthProfile: healthProfile,
         authEmail: authEmail,
+        authFirstName: authFirstName,
+        authLastName: authLastName,
       );
 
       _errorMessage = null;
@@ -84,12 +94,20 @@ bool _isCompletePatientProfile({
   required UserProfile profile,
   required HealthProfile? healthProfile,
   required String? authEmail,
+  required String? authFirstName,
+  required String? authLastName,
 }) {
   // Only enforce for patient accounts; other roles can have a different workflow.
   if (profile.role != 'patient') return true;
 
-  final firstName = (profile.firstName ?? '').trim();
-  final lastName = (profile.lastName ?? '').trim();
+  final profileFirstName = (profile.firstName ?? '').trim();
+  final profileLastName = (profile.lastName ?? '').trim();
+  final firstName =
+      (profileFirstName.isNotEmpty ? profileFirstName : (authFirstName ?? ''))
+          .trim();
+  final lastName =
+      (profileLastName.isNotEmpty ? profileLastName : (authLastName ?? ''))
+          .trim();
   final phone = (profile.phone ?? '').trim();
   final dob = (profile.dateOfBirth ?? '').trim();
 

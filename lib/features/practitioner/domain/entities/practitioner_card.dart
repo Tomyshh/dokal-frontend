@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/utils/search_filter_utils.dart';
+
 class PractitionerCard extends Equatable {
   const PractitionerCard({
     required this.id,
@@ -73,7 +75,7 @@ class PractitionerCard extends Equatable {
       firstName: profiles?['first_name'] as String? ?? '',
       lastName: profiles?['last_name'] as String? ?? '',
       avatarUrl: profiles?['avatar_url'] as String?,
-      specialty: specialties?['name'] as String?,
+      specialty: pickLocalizedSpecialty(specialties),
       organizationName: organizations?['name'] as String?,
       phone: json['phone'] as String?,
       email: json['email'] as String?,

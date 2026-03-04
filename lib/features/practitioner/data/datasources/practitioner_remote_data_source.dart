@@ -1,4 +1,5 @@
 import '../../../../core/network/api_client.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../reviews/domain/entities/review.dart';
 import '../../domain/entities/practitioner_card.dart';
 import '../../domain/entities/practitioner_profile.dart';
@@ -63,10 +64,7 @@ class PractitionerRemoteDataSourceImpl implements PractitionerDemoDataSource {
     return PractitionerProfile(
       id: json['id'] as String,
       name: '$firstName $lastName'.trim(),
-      specialty:
-          specialties?['name_fr'] as String? ??
-          specialties?['name'] as String? ??
-          '',
+      specialty: pickLocalizedSpecialty(specialties),
       address:
           '${json['address_line'] ?? ''}, ${json['zip_code'] ?? ''} ${json['city'] ?? ''}'
               .trim(),

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -279,7 +280,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
     }
     if (card.instagramUrl != null) {
       actions.add(_ActionData(
-        icon: Icons.camera_alt_outlined,
+        svgAsset: 'assets/branding/social/instagram.svg',
         label: 'Instagram',
         color: Colors.pink,
         onTap: () => _launchUrl(card.instagramUrl!),
@@ -287,7 +288,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
     }
     if (card.facebookUrl != null) {
       actions.add(_ActionData(
-        icon: Icons.facebook,
+        svgAsset: 'assets/branding/social/facebook.svg',
         label: 'Facebook',
         color: Colors.blue,
         onTap: () => _launchUrl(card.facebookUrl!),
@@ -295,7 +296,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
     }
     if (card.linkedinUrl != null) {
       actions.add(_ActionData(
-        icon: Icons.work_outline,
+        svgAsset: 'assets/branding/social/linkedin.svg',
         label: 'LinkedIn',
         color: Colors.blue.shade800,
         onTap: () => _launchUrl(card.linkedinUrl!),
@@ -378,13 +379,25 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
                   if (card.wazeLink != null)
                     GestureDetector(
                       onTap: () => _launchUrl(card.wazeLink!),
-                      child: const Text('Waze', style: TextStyle(fontSize: 12, color: AppColors.primary)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: SvgPicture.asset(
+                          'assets/branding/social/waze.svg',
+                          width: 24,
+                          height: 24,
+                          colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                        ),
+                      ),
                     ),
-                  if (card.wazeLink != null && card.googleMapsLink != null) const SizedBox(width: 8),
                   if (card.googleMapsLink != null)
                     GestureDetector(
                       onTap: () => _launchUrl(card.googleMapsLink!),
-                      child: const Text('Maps', style: TextStyle(fontSize: 12, color: AppColors.primary)),
+                      child: SvgPicture.asset(
+                        'assets/branding/social/google_maps.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                      ),
                     ),
                 ],
               )
@@ -437,8 +450,15 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
 }
 
 class _ActionData {
-  _ActionData({required this.icon, required this.label, required this.color, required this.onTap});
-  final IconData icon;
+  _ActionData({
+    this.icon,
+    this.svgAsset,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  }) : assert(icon != null || svgAsset != null);
+  final IconData? icon;
+  final String? svgAsset;
   final String label;
   final Color color;
   final VoidCallback onTap;
@@ -462,7 +482,16 @@ class _ActionButton extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: data.color, width: 2),
             ),
-            child: Icon(data.icon, color: data.color, size: 24),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: data.svgAsset != null
+                  ? SvgPicture.asset(
+                      data.svgAsset!,
+                      colorFilter: ColorFilter.mode(data.color, BlendMode.srcIn),
+                      fit: BoxFit.contain,
+                    )
+                  : Icon(data.icon!, color: data.color, size: 24),
+            ),
           ),
           const SizedBox(height: 6),
           Text(data.label, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
