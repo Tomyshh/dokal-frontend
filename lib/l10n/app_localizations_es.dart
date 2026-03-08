@@ -401,6 +401,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tus citas completadas aparecerán aquí.';
 
   @override
+  String get appointmentStatusCancelledByPatient => 'Cancelado por usted';
+
+  @override
+  String get appointmentStatusCancelledByPractitioner =>
+      'Cancelado por el profesional';
+
+  @override
   String get searchTitle => 'Buscar';
 
   @override

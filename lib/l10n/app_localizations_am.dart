@@ -388,6 +388,12 @@ class AppLocalizationsAm extends AppLocalizations {
   String get appointmentsNoPastSubtitle => 'የተጠናቀቁ ቀጠሮዎችዎ እዚህ ይታያሉ።';
 
   @override
+  String get appointmentStatusCancelledByPatient => 'በእርስዎ ተሰርዟል';
+
+  @override
+  String get appointmentStatusCancelledByPractitioner => 'በባለሙያ ተሰርዟል';
+
+  @override
   String get searchTitle => 'ፈልግ';
 
   @override

@@ -170,6 +170,7 @@ class _UpcomingTab extends StatelessWidget {
               specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
               reason: a.reason,
               address: a.address,
+              status: a.status,
               onTap: () => context.push('/appointments/${a.id}'),
             );
           },
@@ -238,6 +239,7 @@ class _PastTab extends StatelessWidget {
               specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
               reason: a.reason,
               address: a.address,
+              status: a.status,
               onTap: () => context.push('/appointments/${a.id}'),
             );
           },

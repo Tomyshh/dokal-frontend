@@ -826,6 +826,18 @@ abstract class AppLocalizations {
   /// **'תורים שהסתיימו יופיעו כאן.'**
   String get appointmentsNoPastSubtitle;
 
+  /// No description provided for @appointmentStatusCancelledByPatient.
+  ///
+  /// In he, this message translates to:
+  /// **'בוטל על ידך'**
+  String get appointmentStatusCancelledByPatient;
+
+  /// No description provided for @appointmentStatusCancelledByPractitioner.
+  ///
+  /// In he, this message translates to:
+  /// **'בוטל על ידי המטפל'**
+  String get appointmentStatusCancelledByPractitioner;
+
   /// No description provided for @searchTitle.
   ///
   /// In he, this message translates to:

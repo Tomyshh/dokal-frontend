@@ -309,6 +309,7 @@ class _AppointmentTopCard extends StatelessWidget {
             title: a.practitionerName,
             subtitle: specialtyToDisplayLabel(a.specialty, context.l10n),
             trailing: Icons.chevron_right_rounded,
+            statusLabel: context.l10n.patientAppointmentStatusLabel(a.status),
             onTap: () =>
                 context.push('/home/practitioner/${a.practitionerId}'),
           ),
@@ -459,6 +460,7 @@ class _DetailTile extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.trailing,
+    this.statusLabel,
     this.onTap,
   });
 
@@ -466,6 +468,7 @@ class _DetailTile extends StatelessWidget {
   final String title;
   final String? subtitle;
   final IconData? trailing;
+  final String? statusLabel;
   final VoidCallback? onTap;
 
   @override
@@ -486,12 +489,36 @@ class _DetailTile extends StatelessWidget {
         vertical: AppSpacing.xs.h,
       ),
       leading: Icon(icon, color: AppColors.primary, size: 24.sp),
-      title: Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .titleSmall
-            ?.copyWith(fontWeight: FontWeight.w600),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.w600),
+            ),
+          ),
+          if (statusLabel != null) ...[
+            SizedBox(width: 8.w),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              decoration: BoxDecoration(
+                color: AppColors.error.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                statusLabel!,
+                style: TextStyle(
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.error,
+                ),
+              ),
+            ),
+          ],
+        ],
       ),
       subtitle: subtitle != null ? Text(subtitle!) : null,
       trailing:

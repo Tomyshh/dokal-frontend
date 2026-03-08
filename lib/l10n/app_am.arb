@@ -171,6 +171,8 @@
   "appointmentsNoUpcomingSubtitle": "ቀጣይ ቀጠሮዎችዎ እዚህ ይታያሉ።",
   "appointmentsNoPastTitle": "ያለፉ ቀጠሮ የለም",
   "appointmentsNoPastSubtitle": "የተጠናቀቁ ቀጠሮዎችዎ እዚህ ይታያሉ።",
+  "appointmentStatusCancelledByPatient": "በእርስዎ ተሰርዟል",
+  "appointmentStatusCancelledByPractitioner": "በባለሙያ ተሰርዟል",
 
   "searchTitle": "ፈልግ",
   "searchHint": "ሐኪም፣ ስፔሻሊቲ...",

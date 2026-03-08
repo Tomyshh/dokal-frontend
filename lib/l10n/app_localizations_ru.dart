@@ -397,6 +397,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get appointmentsNoPastSubtitle => 'Завершенные приемы появятся здесь.';
 
   @override
+  String get appointmentStatusCancelledByPatient => 'Отменено вами';
+
+  @override
+  String get appointmentStatusCancelledByPractitioner =>
+      'Отменено специалистом';
+
+  @override
   String get searchTitle => 'Поиск';
 
   @override

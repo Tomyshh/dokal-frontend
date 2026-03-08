@@ -402,6 +402,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get appointmentsNoPastSubtitle => 'Vos RDV terminés apparaîtront ici.';
 
   @override
+  String get appointmentStatusCancelledByPatient => 'Annulé par vous';
+
+  @override
+  String get appointmentStatusCancelledByPractitioner =>
+      'Annulé par le praticien';
+
+  @override
   String get searchTitle => 'Rechercher';
 
   @override

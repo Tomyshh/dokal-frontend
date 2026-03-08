@@ -171,6 +171,8 @@
   "appointmentsNoUpcomingSubtitle": "Ваши следующие приемы появятся здесь.",
   "appointmentsNoPastTitle": "Нет прошедших приемов",
   "appointmentsNoPastSubtitle": "Завершенные приемы появятся здесь.",
+  "appointmentStatusCancelledByPatient": "Отменено вами",
+  "appointmentStatusCancelledByPractitioner": "Отменено специалистом",
 
   "searchTitle": "Поиск",
   "searchHint": "Врач, специальность...",

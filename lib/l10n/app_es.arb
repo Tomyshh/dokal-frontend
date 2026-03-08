@@ -171,6 +171,8 @@
   "appointmentsNoUpcomingSubtitle": "Tus próximas citas aparecerán aquí.",
   "appointmentsNoPastTitle": "No hay citas pasadas",
   "appointmentsNoPastSubtitle": "Tus citas completadas aparecerán aquí.",
+  "appointmentStatusCancelledByPatient": "Cancelado por usted",
+  "appointmentStatusCancelledByPractitioner": "Cancelado por el profesional",
 
   "searchTitle": "Buscar",
   "searchHint": "Profesional, especialidad...",

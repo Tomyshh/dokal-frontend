@@ -398,6 +398,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your completed appointments will appear here.';
 
   @override
+  String get appointmentStatusCancelledByPatient => 'Cancelled by you';
+
+  @override
+  String get appointmentStatusCancelledByPractitioner =>
+      'Cancelled by practitioner';
+
+  @override
   String get searchTitle => 'Search';
 
   @override

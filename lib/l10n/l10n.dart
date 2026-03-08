@@ -24,3 +24,17 @@ extension AppLocalizationsRelationExtension on AppLocalizations {
     }
   }
 }
+
+/// Retourne le libellé localisé pour le statut d'annulation d'un rendez-vous (vue patient).
+extension AppLocalizationsAppointmentStatusExtension on AppLocalizations {
+  String? patientAppointmentStatusLabel(String status) {
+    switch (status) {
+      case 'cancelled_by_patient':
+        return appointmentStatusCancelledByPatient;
+      case 'cancelled_by_practitioner':
+        return appointmentStatusCancelledByPractitioner;
+      default:
+        return null;
+    }
+  }
+}

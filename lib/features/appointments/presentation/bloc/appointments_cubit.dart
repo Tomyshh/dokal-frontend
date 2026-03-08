@@ -68,14 +68,8 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
       return;
     }
 
-    final upcoming = upcomingEither
-        .getOrElse(() => const <Appointment>[])
-        .where((a) => !a.isCancelled)
-        .toList();
-    final past = pastEither
-        .getOrElse(() => const <Appointment>[])
-        .where((a) => !a.isCancelled)
-        .toList();
+    final upcoming = upcomingEither.getOrElse(() => const <Appointment>[]);
+    final past = pastEither.getOrElse(() => const <Appointment>[]);
 
     emit(
       state.copyWith(

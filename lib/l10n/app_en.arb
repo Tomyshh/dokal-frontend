@@ -171,6 +171,8 @@
   "appointmentsNoUpcomingSubtitle": "Your next appointments will appear here.",
   "appointmentsNoPastTitle": "No past appointments",
   "appointmentsNoPastSubtitle": "Your completed appointments will appear here.",
+  "appointmentStatusCancelledByPatient": "Cancelled by you",
+  "appointmentStatusCancelledByPractitioner": "Cancelled by practitioner",
 
   "searchTitle": "Search",
   "searchHint": "Practitioner, specialty...",

@@ -6,6 +6,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
 import '../utils/address_actions.dart';
 import '../utils/format_appointment_date.dart';
+import '../../l10n/l10n.dart';
 
 /// Carte de rendez-vous moderne et épurée.
 class AppointmentCard extends StatelessWidget {
@@ -21,6 +22,7 @@ class AppointmentCard extends StatelessWidget {
     this.avatarUrl,
     this.address,
     this.isPast = false,
+    this.status,
   });
 
   final String dateLabel;
@@ -33,6 +35,12 @@ class AppointmentCard extends StatelessWidget {
   final String? avatarUrl;
   final String? address;
   final bool isPast;
+  final String? status;
+
+  String? _statusLabel(BuildContext context) {
+    if (status == null) return null;
+    return context.l10n.patientAppointmentStatusLabel(status!);
+  }
 
   String _getInitials() {
     final name = practitionerName
@@ -205,16 +213,28 @@ class AppointmentCard extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    practitionerName,
-                                    style: TextStyle(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.textPrimary,
-                                      letterSpacing: -0.2,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          practitionerName,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.textPrimary,
+                                            letterSpacing: -0.2,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      if (_statusLabel(context) != null) ...[
+                                        SizedBox(width: 8.w),
+                                        _StatusChip(
+                                          label: _statusLabel(context)!,
+                                        ),
+                                      ],
+                                    ],
                                   ),
                                   SizedBox(height: 4.h),
                                   Container(
@@ -330,6 +350,33 @@ class AppointmentCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 11.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColors.error,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

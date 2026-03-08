@@ -171,6 +171,8 @@
   "appointmentsNoUpcomingSubtitle": "Vos prochains RDV apparaîtront ici.",
   "appointmentsNoPastTitle": "Aucun rendez-vous passé",
   "appointmentsNoPastSubtitle": "Vos RDV terminés apparaîtront ici.",
+  "appointmentStatusCancelledByPatient": "Annulé par vous",
+  "appointmentStatusCancelledByPractitioner": "Annulé par le praticien",
 
   "searchTitle": "Rechercher",
   "searchHint": "Praticien, spécialité...",

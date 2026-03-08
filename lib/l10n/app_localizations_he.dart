@@ -389,6 +389,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get appointmentsNoPastSubtitle => 'תורים שהסתיימו יופיעו כאן.';
 
   @override
+  String get appointmentStatusCancelledByPatient => 'בוטל על ידך';
+
+  @override
+  String get appointmentStatusCancelledByPractitioner => 'בוטל על ידי המטפל';
+
+  @override
   String get searchTitle => 'חיפוש';
 
   @override

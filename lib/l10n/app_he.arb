@@ -171,6 +171,8 @@
   "appointmentsNoUpcomingSubtitle": "התורים הבאים שלך יופיעו כאן.",
   "appointmentsNoPastTitle": "אין תורים קודמים",
   "appointmentsNoPastSubtitle": "תורים שהסתיימו יופיעו כאן.",
+  "appointmentStatusCancelledByPatient": "בוטל על ידך",
+  "appointmentStatusCancelledByPractitioner": "בוטל על ידי המטפל",
 
   "searchTitle": "חיפוש",
   "searchHint": "רופא, התמחות...",

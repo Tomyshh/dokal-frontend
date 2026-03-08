@@ -548,6 +548,7 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
                 address: a.address,
                 avatarUrl: a.avatarUrl,
                 isPast: a.isPast,
+                status: a.status,
                 trailing: _PatientChip(
                   name: a.patientName ?? state.greetingName,
                 ),
@@ -968,6 +969,7 @@ class _AppointmentHistorySection extends StatelessWidget {
                     address: a.address,
                     avatarUrl: a.avatarUrl,
                     isPast: a.isPast,
+                    status: a.status,
                     trailing: _PatientChip(
                       name: a.patientName ?? l10n.commonMe,
                     ),

@@ -112,14 +112,8 @@ class HomeCubit extends Cubit<HomeState> {
     final upcoming = upcomingRes.getOrElse(() => const <Appointment>[]);
     final past = pastRes.getOrElse(() => const <Appointment>[]);
 
-    final upcomingList = upcoming
-        .where((a) => !a.isCancelled)
-        .take(3)
-        .toList(growable: false);
-    final history = past
-        .where((a) => !a.isCancelled)
-        .take(3)
-        .toList(growable: false);
+    final upcomingList = upcoming.take(3).toList(growable: false);
+    final history = past.take(3).toList(growable: false);
 
     final conversations = convRes.getOrElse(
       () => const <ConversationPreview>[],
