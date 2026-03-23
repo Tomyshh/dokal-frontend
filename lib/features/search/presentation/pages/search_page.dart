@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
+import '../../../../core/constants/app_shadows.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/language_filter_utils.dart';
 import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
@@ -359,14 +361,7 @@ class _SearchBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.06),
-                blurRadius: 16.r,
-                spreadRadius: 0,
-                offset: Offset(0, 4.h),
-              ),
-            ],
+            boxShadow: AppShadows.md,
           ),
           child: Row(
             children: [
@@ -381,11 +376,7 @@ class _SearchBar extends StatelessWidget {
                   buildWhen: (p, n) => p.query != n.query,
                   builder: (context, state) {
                     return TextField(
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textPrimary,
-                      ),
+                      style: AppTextStyles.bodySm(color: AppColors.textPrimary),
                       decoration: InputDecoration(
                         hintText: l10n.searchHint,
                         border: InputBorder.none,
@@ -393,11 +384,8 @@ class _SearchBar extends StatelessWidget {
                         focusedBorder: InputBorder.none,
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
-                        hintStyle: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
+                        hintStyle: AppTextStyles.bodySm(
                           color: AppColors.textSecondary.withValues(alpha: 0.7),
-                          letterSpacing: 0.1,
                         ),
                       ),
                       onChanged: context.read<SearchCubit>().setQuery,
@@ -453,13 +441,7 @@ class _SearchBar extends StatelessWidget {
                                     ),
                               width: 1.r,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.08),
-                                blurRadius: 4.r,
-                                offset: Offset(0, 1.r),
-                              ),
-                            ],
+                            boxShadow: AppShadows.xs,
                           ),
                           child: Icon(
                             currentSort.icon,
@@ -519,22 +501,12 @@ class _SearchBar extends StatelessWidget {
                               color: AppColors.primary,
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(8.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.15),
-                                  blurRadius: 4.r,
-                                  offset: Offset(0, 1.r),
-                                ),
-                              ],
+                              boxShadow: AppShadows.xs,
                             ),
                             child: Center(
                               child: Text(
                                 '${_activeFilterCount(filters)}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                style: AppTextStyles.labelXs(color: AppColors.textOnPrimary),
                               ),
                             ),
                           ),
@@ -771,7 +743,7 @@ class _SortOptionTile extends StatelessWidget {
                 decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                 child: Icon(
                   Icons.check_rounded,
-                  color: Colors.white,
+                  color: AppColors.textOnPrimary,
                   size: 16.sp,
                 ),
               ),
@@ -1243,13 +1215,7 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
             padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 20.h),
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10.r,
-                  offset: Offset(0, -4.h),
-                ),
-              ],
+              boxShadow: AppShadows.sm,
             ),
             child: SafeArea(
               top: false,

@@ -8,7 +8,6 @@ import '../../../../core/utils/format_next_availability.dart';
 import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../core/constants/app_spacing.dart';
-import '../../../../core/widgets/dokal_button.dart';
 import '../../../../injection_container.dart';
 import '../../domain/entities/practitioner_search_result.dart';
 import '../../../practitioner/domain/usecases/get_practitioner_slots.dart';
@@ -224,17 +223,27 @@ class SearchPractitionerCard extends StatelessWidget {
                         color: AppColors.textPrimary,
                       ),
                 ),
-                SizedBox(height: 10.h),
-                DokalButton.primary(
+                const Spacer(),
+                FilledButton(
                   onPressed: onBookTap,
-                  compact: true,
-                  child: Text(
-                    l10n.searchBookNow,
-                    style: TextStyle(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.textOnPrimary,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 8.h,
+                    ),
+                    minimumSize: Size(0, 34.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    elevation: 0,
+                    textStyle: TextStyle(
                       fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
+                  child: Text(l10n.searchBookNow),
                 ),
               ],
             ),

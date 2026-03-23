@@ -153,8 +153,14 @@ class OneSignalService {
     if (kIsWeb) return;
     try {
       OneSignal.Notifications.addClickListener((event) {
-        final additionalData = event.notification.additionalData;
-        if (additionalData != null && additionalData.isNotEmpty) {
+        final additionalData =
+            Map<String, dynamic>.from(event.notification.additionalData ?? {});
+        // Injecte l'actionId des boutons (ex: "rate_3", "rate_5")
+        final actionId = event.result.actionId;
+        if (actionId != null && actionId.isNotEmpty) {
+          additionalData['action_id'] = actionId;
+        }
+        if (additionalData.isNotEmpty) {
           onNotificationClicked(additionalData);
         } else {
           onNotificationClicked(null);

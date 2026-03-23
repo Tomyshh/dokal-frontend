@@ -9,5 +9,7 @@ abstract class ReviewsRepository {
     required String practitionerId,
     required int rating,
     String? comment,
+    String? waitTime,
+    bool isAnonymous = false,
   });
 }

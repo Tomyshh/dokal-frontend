@@ -25,6 +25,7 @@ import '../features/home/presentation/pages/home_page.dart';
 import '../features/messages/presentation/pages/messages_list_page.dart';
 import '../features/practitioner/presentation/pages/business_card_page.dart';
 import '../features/practitioner/presentation/pages/practitioner_profile_page.dart';
+import '../features/reviews/presentation/pages/review_survey_page.dart';
 import '../features/search/presentation/pages/search_page.dart';
 import '../features/booking/presentation/pages/booking_flow_shell.dart';
 import '../features/booking/presentation/pages/booking_success_page.dart';
@@ -297,6 +298,17 @@ void initAppRouter(
             VerifyEmailPage(email: (state.extra as String?) ?? ''),
       ),
       GoRoute(path: '/search', builder: (context, state) => const SearchPage()),
+      GoRoute(
+        path: '/review',
+        builder: (context, state) {
+          final params = state.uri.queryParameters;
+          return ReviewSurveyPage(
+            appointmentId: params['appointment_id'] ?? '',
+            practitionerId: params['practitioner_id'] ?? '',
+            prefilledRating: int.tryParse(params['rating'] ?? ''),
+          );
+        },
+      ),
       GoRoute(
         path: '/card/:id',
         builder: (context, state) => BusinessCardPage(

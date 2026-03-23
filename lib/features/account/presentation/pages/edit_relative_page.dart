@@ -9,9 +9,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/widgets/dokal_avatar.dart';
-import '../../../../core/constants/insurance_providers.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/insurance_providers.dart';
+import '../../../../core/widgets/dokal_avatar.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -222,7 +223,7 @@ class _EditRelativePageState extends State<EditRelativePage> {
                                   child: Icon(
                                     Icons.camera_alt_rounded,
                                     size: 16.sp,
-                                    color: Colors.white,
+                                    color: AppColors.textOnPrimary,
                                   ),
                                 ),
                               ],
@@ -331,9 +332,7 @@ class _EditRelativePageState extends State<EditRelativePage> {
                           padding: EdgeInsets.symmetric(vertical: AppSpacing.sm.h),
                           child: Text(
                             l10n.addRelativeOptionalSection,
-                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                  color: AppColors.textSecondary,
-                                ),
+                            style: AppTextStyles.labelLg(color: AppColors.textSecondary),
                           ),
                         ),
                         DropdownButtonFormField<String>(
@@ -388,7 +387,7 @@ class _EditRelativePageState extends State<EditRelativePage> {
                             ...insuranceProviders.map(
                               (p) => DropdownMenuItem<String>(
                                 value: p,
-                                child: Text(p),
+                                child: Text(insuranceDisplayName(context, p)),
                               ),
                             ),
                           ],

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../core/widgets/dokal_text_field.dart';
@@ -70,12 +71,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 SizedBox(height: AppSpacing.xxl.h),
                 Text(
                   l10n.authForgotPasswordTitle,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: AppTextStyles.headingLg(),
                 ),
                 SizedBox(height: AppSpacing.sm.h),
                 Text(
                   l10n.authForgotPasswordSubtitle,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: AppTextStyles.bodyLg(),
                 ),
                 SizedBox(height: AppSpacing.xl.h),
                 DokalCard(

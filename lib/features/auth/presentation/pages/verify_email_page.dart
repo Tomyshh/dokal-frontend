@@ -7,6 +7,7 @@ import 'package:pinput/pinput.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
@@ -47,10 +48,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final defaultPinTheme = PinTheme(
       width: 44.w,
       height: 52.h,
-      textStyle: Theme.of(context).textTheme.headlineSmall!.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.primary,
-          ),
+      textStyle: AppTextStyles.headingMd(color: AppColors.primary),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadii.md.r),
@@ -110,17 +108,12 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       SizedBox(height: AppSpacing.xxl.h),
                       Text(
                         l10n.authVerifyEmailTitle,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: AppTextStyles.headingLg(color: AppColors.textOnPrimary),
                       ),
                       SizedBox(height: AppSpacing.sm.h),
                       Text(
                         l10n.authVerifyEmailDescription(widget.email),
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Colors.white,
-                            ),
+                        style: AppTextStyles.bodyLg(color: AppColors.textOnPrimary),
                       ),
                       SizedBox(height: AppSpacing.xl.h),
                       DokalCard(
@@ -233,7 +226,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         onPressed: () => context.go('/login'),
                         child: Text(
                           l10n.commonBack,
-                          style: const TextStyle(color: Colors.white),
+                          style: AppTextStyles.labelMd(color: AppColors.textOnPrimary),
                         ),
                       ),
                 ],

@@ -794,6 +794,48 @@ class AppLocalizationsEs extends AppLocalizations {
   String get kupatOther => 'Otro';
 
   @override
+  String get insuranceAig => 'AIG';
+
+  @override
+  String get insuranceAyalon => 'Ayalon';
+
+  @override
+  String get insuranceBituchHaklay => 'Bituach Haklay';
+
+  @override
+  String get insuranceDikla => 'Dikla';
+
+  @override
+  String get insuranceHarel => 'Harel';
+
+  @override
+  String get insuranceHachshara => 'Hachshara';
+
+  @override
+  String get insuranceHaphenix => 'Haphenix';
+
+  @override
+  String get insuranceClal => 'Clal';
+
+  @override
+  String get insuranceMigdal => 'Migdal';
+
+  @override
+  String get insuranceMenora => 'Menora';
+
+  @override
+  String get insuranceBituchYashir => 'Bituach Yashir';
+
+  @override
+  String get insuranceShirbit => 'Shirbit';
+
+  @override
+  String get insuranceShlomo => 'Shlomo';
+
+  @override
+  String get insuranceShomera => 'Shomera';
+
+  @override
   String get healthMyFileSectionTitle => 'Mi expediente';
 
   @override
@@ -1208,6 +1250,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get authLoginSuccess => '¡Bienvenido de nuevo!';
+
+  @override
+  String get authNoAccountFound =>
+      'No se encontró ninguna cuenta — regístrate primero.';
+
+  @override
+  String get authAccountAlreadyExists =>
+      'La cuenta ya existe — has sido conectado.';
 
   @override
   String get securityTitle => 'Seguridad';
@@ -2117,4 +2167,71 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cardNotFound => 'Tarjeta no encontrada';
+
+  @override
+  String get reviewSurveyTitle => 'Tu opinión';
+
+  @override
+  String get reviewSuccessMessage => '¡Gracias por tu opinión!';
+
+  @override
+  String get reviewSubmitButton => 'Enviar reseña';
+
+  @override
+  String get reviewOverallRating => '¿Cómo fue tu visita?';
+
+  @override
+  String get reviewRatingPrompt => 'Toca una estrella';
+
+  @override
+  String get reviewRating1 => 'Muy malo';
+
+  @override
+  String get reviewRating2 => 'Malo';
+
+  @override
+  String get reviewRating3 => 'Regular';
+
+  @override
+  String get reviewRating4 => 'Bueno';
+
+  @override
+  String get reviewRating5 => 'Excelente';
+
+  @override
+  String get reviewWaitTimeTitle => 'Tiempo de espera';
+
+  @override
+  String get reviewWaitTimeSubtitle =>
+      '¿Cuánto esperaste antes de ser atendido?';
+
+  @override
+  String get reviewWaitUnder15 => '< 15 min';
+
+  @override
+  String get reviewWait1530 => '15–30 min';
+
+  @override
+  String get reviewWait3045 => '30–45 min';
+
+  @override
+  String get reviewWait4560 => '45–60 min';
+
+  @override
+  String get reviewWaitOver60 => '> 60 min';
+
+  @override
+  String get reviewCommentTitle => 'Tu comentario';
+
+  @override
+  String get reviewCommentOptional => 'Opcional — comparte tu experiencia';
+
+  @override
+  String get reviewCommentHint => 'Cuéntanos sobre tu visita...';
+
+  @override
+  String get reviewAnonymousTitle => 'Mantener el anonimato';
+
+  @override
+  String get reviewAnonymousSubtitle => 'Solo se mostrarán tus iniciales';
 }

@@ -776,6 +776,48 @@ class AppLocalizationsHe extends AppLocalizations {
   String get kupatOther => 'אחר';
 
   @override
+  String get insuranceAig => 'AIG';
+
+  @override
+  String get insuranceAyalon => 'איילון';
+
+  @override
+  String get insuranceBituchHaklay => 'ביטוח חקלאי';
+
+  @override
+  String get insuranceDikla => 'דקלה';
+
+  @override
+  String get insuranceHarel => 'הראל';
+
+  @override
+  String get insuranceHachshara => 'הכשרה';
+
+  @override
+  String get insuranceHaphenix => 'הפניקס';
+
+  @override
+  String get insuranceClal => 'כלל';
+
+  @override
+  String get insuranceMigdal => 'מגדל';
+
+  @override
+  String get insuranceMenora => 'מנורה';
+
+  @override
+  String get insuranceBituchYashir => 'ביטוח ישיר';
+
+  @override
+  String get insuranceShirbit => 'שירביט';
+
+  @override
+  String get insuranceShlomo => 'שלמה';
+
+  @override
+  String get insuranceShomera => 'שומרה';
+
+  @override
   String get healthMyFileSectionTitle => 'התיק שלי';
 
   @override
@@ -1171,6 +1213,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get authLoginSuccess => 'ברוך הבא!';
+
+  @override
+  String get authNoAccountFound => 'לא נמצא חשבון — נא להירשם תחילה.';
+
+  @override
+  String get authAccountAlreadyExists => 'חשבון קיים — התחברת בהצלחה.';
 
   @override
   String get securityTitle => 'אבטחה';
@@ -2040,4 +2088,70 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get cardNotFound => 'כרטיס ביקור לא נמצא';
+
+  @override
+  String get reviewSurveyTitle => 'המשוב שלך';
+
+  @override
+  String get reviewSuccessMessage => 'תודה על המשוב!';
+
+  @override
+  String get reviewSubmitButton => 'שלח ביקורת';
+
+  @override
+  String get reviewOverallRating => 'איך הייתה הפגישה?';
+
+  @override
+  String get reviewRatingPrompt => 'לחצו על כוכב לדירוג';
+
+  @override
+  String get reviewRating1 => 'גרוע מאוד';
+
+  @override
+  String get reviewRating2 => 'גרוע';
+
+  @override
+  String get reviewRating3 => 'בינוני';
+
+  @override
+  String get reviewRating4 => 'טוב';
+
+  @override
+  String get reviewRating5 => 'מצוין';
+
+  @override
+  String get reviewWaitTimeTitle => 'זמן המתנה';
+
+  @override
+  String get reviewWaitTimeSubtitle => 'כמה זמן חיכית לפני שהתקבלת?';
+
+  @override
+  String get reviewWaitUnder15 => '< 15 דק׳';
+
+  @override
+  String get reviewWait1530 => '15–30 דק׳';
+
+  @override
+  String get reviewWait3045 => '30–45 דק׳';
+
+  @override
+  String get reviewWait4560 => '45–60 דק׳';
+
+  @override
+  String get reviewWaitOver60 => '> 60 דק׳';
+
+  @override
+  String get reviewCommentTitle => 'התגובה שלך';
+
+  @override
+  String get reviewCommentOptional => 'אופציונלי — שתפו את החוויה שלכם';
+
+  @override
+  String get reviewCommentHint => 'ספרו לנו על הביקור...';
+
+  @override
+  String get reviewAnonymousTitle => 'הישאר אנונימי';
+
+  @override
+  String get reviewAnonymousSubtitle => 'רק ראשי התיבות שלך יוצגו';
 }

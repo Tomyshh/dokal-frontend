@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_shadows.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../l10n/l10n.dart';
 
 class HealthDashboardPage extends StatelessWidget {
@@ -38,13 +40,7 @@ class HealthDashboardPage extends StatelessWidget {
                           colors: [AppColors.primary, AppColors.primaryLight],
                         ),
                         borderRadius: BorderRadius.circular(14.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.3),
-                            blurRadius: 12.r,
-                            offset: Offset(0, 4.h),
-                          ),
-                        ],
+                        boxShadow: AppShadows.primaryGlow,
                       ),
                       child: Icon(
                         Icons.favorite_rounded,
@@ -59,20 +55,12 @@ class HealthDashboardPage extends StatelessWidget {
                         children: [
                           Text(
                             l10n.healthTitle,
-                            style: TextStyle(
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                              letterSpacing: -0.5,
-                            ),
+                            style: AppTextStyles.headingLg(),
                           ),
                           SizedBox(height: 2.h),
                           Text(
                             l10n.healthSubtitle,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColors.textSecondary,
-                            ),
+                            style: AppTextStyles.bodyMd(),
                           ),
                         ],
                       ),
@@ -93,11 +81,7 @@ class HealthDashboardPage extends StatelessWidget {
                   // Section menu
                   Text(
                     l10n.healthMyFileSectionTitle,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
-                    ),
+                    style: AppTextStyles.titleLg(color: AppColors.primary),
                   ),
                   SizedBox(height: AppSpacing.md.h),
                   _MenuCard(
@@ -175,13 +159,7 @@ class _StatusCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  blurRadius: 8.r,
-                  offset: Offset(0, 2.h),
-                ),
-              ],
+              boxShadow: AppShadows.sm,
             ),
             child: Icon(
               Icons.check_circle_rounded,
@@ -196,20 +174,12 @@ class _StatusCard extends StatelessWidget {
               children: [
                 Text(
                   l10n.healthUpToDateTitle,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                  style: AppTextStyles.titleLg(),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   l10n.healthUpToDateSubtitle,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    color: AppColors.textSecondary.withValues(alpha: 0.9),
-                    height: 1.4,
-                  ),
+                  style: AppTextStyles.bodySm(),
                 ),
               ],
             ),
@@ -246,13 +216,7 @@ class _MenuCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 12.r,
-              offset: Offset(0, 2.h),
-            ),
-          ],
+          boxShadow: AppShadows.sm,
         ),
         child: Row(
           children: [
@@ -272,19 +236,12 @@ class _MenuCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
+                    style: AppTextStyles.titleMd(),
                   ),
                   SizedBox(height: 2.h),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      color: AppColors.textSecondary.withValues(alpha: 0.8),
-                    ),
+                    style: AppTextStyles.bodySm(),
                   ),
                 ],
               ),

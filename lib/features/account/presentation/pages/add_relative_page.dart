@@ -9,9 +9,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/widgets/dokal_avatar.dart';
-import '../../../../core/constants/insurance_providers.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/insurance_providers.dart';
+import '../../../../core/widgets/dokal_avatar.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -154,7 +155,7 @@ class _AddRelativePageState extends State<AddRelativePage> {
                                   child: Icon(
                                     Icons.camera_alt_rounded,
                                     size: 16.sp,
-                                    color: Colors.white,
+                                    color: AppColors.textOnPrimary,
                                   ),
                                 ),
                               ],
@@ -164,9 +165,7 @@ class _AddRelativePageState extends State<AddRelativePage> {
                         SizedBox(height: AppSpacing.lg.h),
                         Text(
                           l10n.addRelativeSubtitle,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
+                          style: AppTextStyles.bodyMd(color: AppColors.textSecondary),
                         ),
                         SizedBox(height: AppSpacing.xl.h),
                         DokalTextField(
@@ -269,9 +268,7 @@ class _AddRelativePageState extends State<AddRelativePage> {
                           padding: EdgeInsets.symmetric(vertical: AppSpacing.sm.h),
                           child: Text(
                             l10n.addRelativeOptionalSection,
-                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                  color: AppColors.textSecondary,
-                                ),
+                            style: AppTextStyles.labelLg(color: AppColors.textSecondary),
                           ),
                         ),
                         DropdownButtonFormField<String>(
@@ -329,7 +326,7 @@ class _AddRelativePageState extends State<AddRelativePage> {
                             ...insuranceProviders.map(
                               (p) => DropdownMenuItem<String>(
                                 value: p,
-                                child: Text(p),
+                                child: Text(insuranceDisplayName(context, p)),
                               ),
                             ),
                           ],

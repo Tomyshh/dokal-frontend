@@ -3,11 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_animations.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
+import '../../../../core/constants/app_shadows.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
-import '../../../../core/widgets/dokal_card.dart';
+import '../../../../core/widgets/dokal_fade_in.dart';
+import '../../../../core/widgets/dokal_list_tile.dart';
 import '../../../../core/widgets/logout_overlay.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -30,7 +34,7 @@ class AccountPage extends StatelessWidget {
         context.go('/home');
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.background,
         appBar: DokalAppBar(
           title: l10n.accountTitle,
           showBackButton: false,
@@ -47,51 +51,85 @@ class AccountPage extends StatelessWidget {
                   AppSpacing.lg.h + 100.h,
                 ),
                 children: [
-                  _AccountHeroCard(
-                    title: l10n.accountTaglineTitle,
-                    subtitle: l10n.accountTaglineSubtitle,
+                  DokalFadeIn(
+                    child: _AccountHeroCard(
+                      title: l10n.accountTaglineTitle,
+                      subtitle: l10n.accountTaglineSubtitle,
+                    ),
                   ),
-                  SizedBox(height: AppSpacing.lg.h),
-                  _SectionHeader(title: l10n.accountPersonalInfoSection),
+                  SizedBox(height: AppSpacing.xl.h),
+
+                  // ── Personal info ────────────────────────────────
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(1),
+                    child: _SectionHeader(
+                      title: l10n.accountPersonalInfoSection,
+                    ),
+                  ),
                   SizedBox(height: AppSpacing.sm.h),
-                  _MenuTile(
-                    icon: Icons.person_rounded,
-                    title: l10n.accountMyProfile,
-                    onTap: () => context.push('/account/profile'),
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(2),
+                    child: DokalListTile(
+                      icon: Icons.person_rounded,
+                      title: l10n.accountMyProfile,
+                      onTap: () => context.push('/account/profile'),
+                    ),
                   ),
                   SizedBox(height: AppSpacing.xs.h),
-                  _MenuTile(
-                    icon: Icons.group_rounded,
-                    title: l10n.accountMyRelatives,
-                    onTap: () => context.push('/account/relatives'),
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(3),
+                    child: DokalListTile(
+                      icon: Icons.group_rounded,
+                      title: l10n.accountMyRelatives,
+                      onTap: () => context.push('/account/relatives'),
+                    ),
                   ),
-                  SizedBox(height: AppSpacing.lg.h),
-                  _SectionHeader(title: l10n.accountSectionTitle),
+                  SizedBox(height: AppSpacing.xl.h),
+
+                  // ── Settings ─────────────────────────────────────
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(4),
+                    child: _SectionHeader(title: l10n.accountSectionTitle),
+                  ),
                   SizedBox(height: AppSpacing.sm.h),
-                  _MenuTile(
-                    icon: Icons.lock_rounded,
-                    title: l10n.securityTitle,
-                    onTap: () => context.push('/account/security'),
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(5),
+                    child: DokalListTile(
+                      icon: Icons.lock_rounded,
+                      title: l10n.securityTitle,
+                      onTap: () => context.push('/account/security'),
+                    ),
                   ),
                   SizedBox(height: AppSpacing.xs.h),
-                  _MenuTile(
-                    icon: Icons.tune_rounded,
-                    title: l10n.commonSettings,
-                    onTap: () => context.push('/account/settings'),
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(6),
+                    child: DokalListTile(
+                      icon: Icons.tune_rounded,
+                      title: l10n.commonSettings,
+                      onTap: () => context.push('/account/settings'),
+                    ),
                   ),
                   SizedBox(height: AppSpacing.xs.h),
-                  _MenuTile(
-                    icon: Icons.privacy_tip_rounded,
-                    title: l10n.privacyTitle,
-                    onTap: () => context.push('/account/privacy'),
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(7),
+                    child: DokalListTile(
+                      icon: Icons.privacy_tip_rounded,
+                      title: l10n.privacyTitle,
+                      onTap: () => context.push('/account/privacy'),
+                    ),
                   ),
-                  SizedBox(height: AppSpacing.lg.h),
-                  _MenuTile(
-                    icon: Icons.logout_rounded,
-                    title: l10n.authLogout,
-                    showChevron: false,
-                    tone: _MenuTileTone.danger,
-                    onTap: () => showLogoutConfirmDialog(context),
+                  SizedBox(height: AppSpacing.xl.h),
+
+                  // ── Logout ───────────────────────────────────────
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(8),
+                    child: DokalListTile(
+                      icon: Icons.logout_rounded,
+                      title: l10n.authLogout,
+                      showChevron: false,
+                      tone: DokalListTileTone.danger,
+                      onTap: () => showLogoutConfirmDialog(context),
+                    ),
                   ),
                 ],
               ),
@@ -112,6 +150,10 @@ class AccountPage extends StatelessWidget {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// HERO CARD
+// ═══════════════════════════════════════════════════════════════════════════════
+
 class _AccountHeroCard extends StatelessWidget {
   const _AccountHeroCard({required this.title, required this.subtitle});
 
@@ -123,26 +165,14 @@ class _AccountHeroCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadii.xxl.r),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.brandGradientStart,
-            AppColors.brandGradientEnd,
-          ],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.20),
-            blurRadius: 26.r,
-            offset: Offset(0, 14.h),
-          ),
-        ],
+        gradient: AppColors.brandGradient,
+        boxShadow: AppShadows.primaryGlow,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppRadii.xxl.r),
         child: Stack(
           children: [
+            // Decorative circles
             Positioned(
               right: -34.r,
               top: -34.r,
@@ -151,7 +181,7 @@ class _AccountHeroCard extends StatelessWidget {
                 height: 120.r,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.10),
+                  color: Colors.white.withValues(alpha: 0.08),
                 ),
               ),
             ),
@@ -163,7 +193,8 @@ class _AccountHeroCard extends StatelessWidget {
                 height: 80.r,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.brandGradientHighlight.withValues(alpha: 0.18),
+                  color: AppColors.brandGradientHighlight
+                      .withValues(alpha: 0.15),
                 ),
               ),
             ),
@@ -179,7 +210,6 @@ class _AccountHeroCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppRadii.lg.r),
                       border: Border.all(
                         color: Colors.white.withValues(alpha: 0.16),
-                        width: 1.r,
                       ),
                     ),
                     child: Icon(
@@ -195,19 +225,16 @@ class _AccountHeroCard extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
+                          style: AppTextStyles.titleMd(
+                            color: AppColors.textOnPrimary,
+                          ),
                         ),
                         SizedBox(height: 6.h),
                         Text(
                           subtitle,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.white.withValues(alpha: 0.86),
-                                height: 1.25,
-                              ),
+                          style: AppTextStyles.bodyXs(
+                            color: Colors.white.withValues(alpha: 0.86),
+                          ),
                         ),
                       ],
                     ),
@@ -222,6 +249,10 @@ class _AccountHeroCard extends StatelessWidget {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION HEADER
+// ═══════════════════════════════════════════════════════════════════════════════
+
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({required this.title});
   final String title;
@@ -229,89 +260,8 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
-      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-        color: AppColors.textSecondary,
-        fontWeight: FontWeight.w600,
-      ),
+      title.toUpperCase(),
+      style: AppTextStyles.overline(),
     );
   }
 }
-
-class _MenuTile extends StatelessWidget {
-  const _MenuTile({
-    required this.icon,
-    required this.title,
-    required this.onTap,
-    this.showChevron = true,
-    this.tone = _MenuTileTone.neutral,
-  });
-
-  final IconData icon;
-  final String title;
-  final VoidCallback onTap;
-  final bool showChevron;
-  final _MenuTileTone tone;
-
-  @override
-  Widget build(BuildContext context) {
-    final Color accentColor = switch (tone) {
-      _MenuTileTone.danger => AppColors.error,
-      _MenuTileTone.neutral => AppColors.primary,
-    };
-
-    return DokalCard(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.md.w,
-        vertical: AppSpacing.sm.h,
-      ),
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            width: 36.r,
-            height: 36.r,
-            decoration: BoxDecoration(
-              color: accentColor.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(AppRadii.md.r),
-            ),
-            child: Icon(icon, size: 18.sp, color: accentColor),
-          ),
-          SizedBox(width: AppSpacing.md.w),
-          Expanded(
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: tone == _MenuTileTone.danger
-                        ? AppColors.textPrimary
-                        : AppColors.textPrimary,
-                  ),
-            ),
-          ),
-          if (showChevron)
-            Container(
-              width: 28.r,
-              height: 28.r,
-              decoration: BoxDecoration(
-                color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.circular(AppRadii.pill.r),
-              ),
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: Icon(
-                  Directionality.of(context) == TextDirection.rtl
-                      ? Icons.chevron_left_rounded
-                      : Icons.chevron_right_rounded,
-                  size: 18.sp,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-enum _MenuTileTone { neutral, danger }

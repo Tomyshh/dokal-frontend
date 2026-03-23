@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/entities/auth_session.dart';
 import '../../domain/usecases/sign_in.dart';
@@ -35,7 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final res = await _signInWithGoogle();
     res.fold(
       (f) => emit(LoginState.failure(f.message)),
-      (session) => emit(LoginState.success(session)),
+      (session) => _handleOAuthResult(session, event.mode, emit),
     );
   }
 
@@ -47,8 +48,41 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final res = await _signInWithApple();
     res.fold(
       (f) => emit(LoginState.failure(f.message)),
-      (session) => emit(LoginState.success(session)),
+      (session) => _handleOAuthResult(session, event.mode, emit),
     );
+  }
+
+  void _handleOAuthResult(
+    AuthSession session,
+    OAuthMode mode,
+    Emitter<LoginState> emit,
+  ) {
+    if (mode == OAuthMode.login && session.isNewUser) {
+      // L'utilisateur essaie de se CONNECTER mais n'a pas de compte.
+      // Le compte vient d'être créé par Supabase — on le supprime et on
+      // signale l'erreur. Malheureusement, Supabase crée automatiquement
+      // le compte, on ne peut pas l'empêcher. On se déconnecte au moins.
+      _silentSignOut();
+      emit(const LoginState.failure(
+        'noAccountFound',
+      ));
+      return;
+    }
+
+    if (mode == OAuthMode.register && !session.isNewUser) {
+      // L'utilisateur essaie de s'INSCRIRE mais le compte existe déjà.
+      // On le connecte directement — c'est un comportement user-friendly.
+      emit(LoginState.successExistingAccount(session));
+      return;
+    }
+
+    emit(LoginState.success(session));
+  }
+
+  Future<void> _silentSignOut() async {
+    try {
+      await Supabase.instance.client.auth.signOut();
+    } catch (_) {}
   }
 
   Future<void> _onSubmitted(

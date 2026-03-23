@@ -8,7 +8,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/config/env_config.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
+import '../../../../core/constants/app_shadows.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../l10n/l10n.dart';
@@ -142,7 +144,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
                 top: 40,
                 right: 16,
                 child: IconButton(
-                  icon: const Icon(Icons.share, color: Colors.white),
+                  icon: const Icon(Icons.share, color: AppColors.textOnPrimary),
                   onPressed: _share,
                 ),
               ),
@@ -150,7 +152,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
                 top: 40,
                 left: 16,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  icon: const Icon(Icons.arrow_back, color: AppColors.textOnPrimary),
                   onPressed: () => context.pop(),
                 ),
               ),
@@ -167,12 +169,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 4),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.15),
-                    blurRadius: 12,
-                  ),
-                ],
+                boxShadow: AppShadows.sm,
               ),
               child: ClipOval(
                 child: card.avatarUrl != null
@@ -198,13 +195,13 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
                 children: [
                   Text(
                     card.fullName,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    style: AppTextStyles.headingMd(color: AppColors.textPrimary),
                   ),
                   if (card.headline.isNotEmpty) ...[
                     const SizedBox(height: 4),
                     Text(
                       card.headline,
-                      style: const TextStyle(fontSize: 15, color: AppColors.primary, fontWeight: FontWeight.w500),
+                      style: AppTextStyles.titleMd(color: AppColors.primary),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -212,7 +209,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
                     const SizedBox(height: 2),
                     Text(
                       card.organizationName!,
-                      style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                      style: AppTextStyles.bodySm(color: AppColors.textSecondary),
                     ),
                   ],
                   if (card.averageRating != null && card.reviewCount > 0) ...[
@@ -224,7 +221,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
                         const SizedBox(width: 2),
                         Text(
                           '${card.averageRating!.toStringAsFixed(1)} (${card.reviewCount})',
-                          style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                          style: AppTextStyles.bodySm(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -244,7 +241,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
       child: Center(
         child: Text(
           '${card.firstName.isNotEmpty ? card.firstName[0] : ''}${card.lastName.isNotEmpty ? card.lastName[0] : ''}',
-          style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: AppColors.primary),
+          style: AppTextStyles.headingXl(color: AppColors.primary),
         ),
       ),
     );
@@ -338,7 +335,7 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
           label: Text(l10n.cardSaveContact),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
+            foregroundColor: AppColors.textOnPrimary,
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.pill)),
           ),
@@ -355,13 +352,13 @@ class _BusinessCardPageState extends State<BusinessCardPage> {
         children: [
           Row(
             children: [
-              Text(l10n.cardAbout, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              Text(l10n.cardAbout, style: AppTextStyles.titleLg()),
               const SizedBox(width: AppSpacing.sm),
               Expanded(child: Container(height: 1, color: AppColors.primaryLightBackground)),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Text(card.about!, style: const TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.5)),
+          Text(card.about!, style: AppTextStyles.bodyMd(color: AppColors.textSecondary)),
         ],
       ),
     );
@@ -504,7 +501,7 @@ class _ActionButton extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          Text(data.label, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
+          Text(data.label, style: AppTextStyles.labelXs(color: AppColors.textSecondary)),
         ],
       ),
     );
@@ -526,7 +523,7 @@ class _InfoRow extends StatelessWidget {
           Icon(icon, size: 20, color: AppColors.primary),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
-            child: Text(label, style: const TextStyle(fontSize: 14, color: AppColors.textSecondary)),
+            child: Text(label, style: AppTextStyles.bodyMd(color: AppColors.textSecondary)),
           ),
           if (trailing != null) trailing!,
         ],

@@ -57,14 +57,7 @@ class _BookingSuccessPageState extends State<BookingSuccessPage> {
             width: 72.r,
             height: 72.r,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.brandGradientStart,
-                  AppColors.brandGradientEnd,
-                ],
-              ),
+              gradient: AppColors.brandGradient,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
@@ -257,12 +250,7 @@ class _AppointmentSummaryCard extends StatelessWidget {
               vertical: AppSpacing.md.h,
             ),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  AppColors.brandGradientStart,
-                  AppColors.brandGradientEnd,
-                ],
-              ),
+              gradient: AppColors.brandGradient,
               borderRadius:
                   BorderRadius.vertical(top: Radius.circular(AppRadii.lg.r)),
             ),
@@ -277,8 +265,8 @@ class _AppointmentSummaryCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     slotLabel,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.textOnPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -391,15 +379,14 @@ class _PrepTile extends StatelessWidget {
       trailing: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
         decoration: BoxDecoration(
-          color: AppColors.primary.withValues(alpha: 0.10),
+          color: AppColors.primarySurface,
           borderRadius: BorderRadius.circular(999.r),
         ),
         child: Text(
           statusLabel,
-          style: TextStyle(
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w700,
-            fontSize: 12.sp,
           ),
         ),
       ),

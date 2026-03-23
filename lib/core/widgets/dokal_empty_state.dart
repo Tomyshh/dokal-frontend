@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_radii.dart';
+import '../constants/app_shadows.dart';
 import '../constants/app_spacing.dart';
+import '../constants/app_text_styles.dart';
 
 /// État vide moderne avec icône, titre et sous-titre.
 class DokalEmptyState extends StatelessWidget {
@@ -25,12 +28,13 @@ class DokalEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final effectiveMaxWidth = (maxWidth ?? 420).w;
 
     final actionWidget = action == null
         ? null
-        : (actionFullWidth ? SizedBox(width: double.infinity, child: action!) : action!);
+        : (actionFullWidth
+            ? SizedBox(width: double.infinity, child: action!)
+            : action!);
 
     return SafeArea(
       child: Center(
@@ -44,15 +48,9 @@ class DokalEmptyState extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(18.r),
-                border: Border.all(color: AppColors.outline),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.shadow,
-                    blurRadius: 20.r,
-                    offset: Offset(0, 10.h),
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(AppRadii.xxl.r),
+                border: Border.all(color: AppColors.outlineSoft),
+                boxShadow: AppShadows.md,
               ),
               child: Padding(
                 padding: EdgeInsets.all(AppSpacing.xl.r),
@@ -64,37 +62,25 @@ class DokalEmptyState extends StatelessWidget {
                       height: 64.r,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: RadialGradient(
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.18),
-                            AppColors.primary.withValues(alpha: 0.06),
-                          ],
-                        ),
+                        color: AppColors.primarySurface,
                         border: Border.all(
                           color: AppColors.primary.withValues(alpha: 0.12),
-                          width: 1.r,
                         ),
                       ),
-                      child: Icon(icon, color: AppColors.primary, size: 26.sp),
+                      child:
+                          Icon(icon, color: AppColors.primary, size: 26.sp),
                     ),
                     SizedBox(height: AppSpacing.lg.h),
                     Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.2,
-                        color: AppColors.textPrimary,
-                      ),
+                      style: AppTextStyles.titleMd(),
                     ),
                     SizedBox(height: AppSpacing.xs.h),
                     Text(
                       subtitle,
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.35,
-                      ),
+                      style: AppTextStyles.bodySm(),
                     ),
                     if (actionWidget != null) ...[
                       SizedBox(height: AppSpacing.lg.h),

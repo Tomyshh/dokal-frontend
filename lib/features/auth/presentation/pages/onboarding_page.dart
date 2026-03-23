@@ -7,7 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:country_flags/country_flags.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_shadows.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../l10n/app_locale_controller.dart';
@@ -185,10 +187,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   isLast
                                       ? l10n.onboardingStartButton
                                       : l10n.onboardingContinueButton,
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: AppTextStyles.labelMd(),
                                 ),
                         ),
                       );
@@ -309,8 +308,6 @@ class _OnboardingTextPage extends StatelessWidget {
                     final delta = (page - pageIndex).clamp(-1.0, 1.0);
                     final t = 1.0 - delta.abs();
                     final eased = Curves.easeOutCubic.transform(t);
-                    final titleSize = 28.sp; // page 1 alignée avec 2/3
-
                     return Opacity(
                       opacity: (0.25 + 0.75 * eased).clamp(0.0, 1.0),
                       child: Transform.translate(
@@ -320,16 +317,10 @@ class _OnboardingTextPage extends StatelessWidget {
                           children: [
                             Text(
                               step.title,
-                              maxLines: 2,
+                              maxLines: 3,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                              style: AppTextStyles.headingXl(color: AppColors.textOnPrimary).copyWith(
                                     height: 1.12,
-                                    fontSize: titleSize,
                                   ),
                               textAlign: TextAlign.center,
                             ),
@@ -337,14 +328,8 @@ class _OnboardingTextPage extends StatelessWidget {
                               SizedBox(height: 10.h),
                               Text(
                                 step.subtitle!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: Colors.white.withValues(alpha: 0.9),
-                                      fontWeight: FontWeight.w500,
+                                style: AppTextStyles.titleMd(color: Colors.white.withValues(alpha: 0.9)).copyWith(
                                       height: 1.25,
-                                      fontSize: 15.sp,
                                     ),
                                 textAlign: TextAlign.center,
                               ),
@@ -501,13 +486,7 @@ class _PersistentOnboardingArt extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: _imageRadius(),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.18),
-                          blurRadius: 22.r,
-                          offset: Offset(0, 12.h),
-                        ),
-                      ],
+                      boxShadow: AppShadows.xl,
                     ),
                     child: ClipRRect(
                       borderRadius: _imageRadius(),
@@ -623,9 +602,7 @@ class _LanguagePicker extends StatelessWidget {
         avatar: flagForLanguage(code),
         label: Text(
           label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
+          style: AppTextStyles.labelSm(
             color: isSelected ? AppColors.primary : AppColors.textPrimary,
           ),
         ),

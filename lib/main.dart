@@ -88,6 +88,24 @@ void _handleNotificationClick(Map<String, dynamic>? data) {
           type == 'appointment_request' ||
           type == 'appointment_reminder')) {
     appRouter.go('/appointments/$appointmentId');
+  } else if (type == 'review_request') {
+    // Notification de demande d'avis — avec ou sans bouton étoile
+    final actionId = data['action_id'] as String?;
+    final practitionerId = data['practitioner_id'] as String?;
+    if (appointmentId != null) {
+      final rating = actionId != null && actionId.startsWith('rate_')
+          ? actionId.replaceFirst('rate_', '')
+          : '';
+      final query = <String, String>{
+        'appointment_id': appointmentId,
+        if (practitionerId != null) 'practitioner_id': practitionerId,
+        if (rating.isNotEmpty) 'rating': rating,
+      };
+      final uri = Uri(path: '/review', queryParameters: query);
+      appRouter.go(uri.toString());
+    } else {
+      appRouter.go('/home');
+    }
   } else if (type == 'review_received') {
     appRouter.go('/account');
   } else {

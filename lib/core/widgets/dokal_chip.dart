@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_radii.dart';
+import '../constants/app_text_styles.dart';
 
 class DokalChip extends StatelessWidget {
   const DokalChip({
@@ -19,21 +21,19 @@ class DokalChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = selected
-        ? AppColors.primary.withValues(alpha: 0.12)
-        : AppColors.surface;
+    final bg = selected ? AppColors.primarySurface : AppColors.surface;
     final border = selected ? AppColors.primary : AppColors.outline;
     final fg = selected ? AppColors.primary : AppColors.textPrimary;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(999.r),
+      borderRadius: BorderRadius.circular(AppRadii.pill.r),
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         decoration: BoxDecoration(
           color: bg,
-          borderRadius: BorderRadius.circular(999.r),
-          border: Border.all(color: border, width: 1.r),
+          borderRadius: BorderRadius.circular(AppRadii.pill.r),
+          border: Border.all(color: border),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -44,7 +44,7 @@ class DokalChip extends StatelessWidget {
             ],
             Text(
               label,
-              style: TextStyle(color: fg, fontWeight: FontWeight.w700, fontSize: 14.sp),
+              style: AppTextStyles.labelMd(color: fg),
             ),
           ],
         ),

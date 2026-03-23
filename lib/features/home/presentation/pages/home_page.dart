@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shimmer/shimmer.dart';
 
+import '../../../../core/constants/app_animations.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
+import '../../../../core/constants/app_shadows.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/appointment_card.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../core/widgets/dokal_fade_in.dart';
+import '../../../../core/widgets/dokal_section_title.dart';
+import '../../../../core/widgets/dokal_shimmer_block.dart';
 import '../../../../injection_container.dart';
 import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../l10n/l10n.dart';
@@ -26,25 +31,34 @@ class HomePage extends StatelessWidget {
       child: BlocListener<AuthBloc, AuthState>(
         listenWhen: (p, n) => p.isAuthenticated != n.isAuthenticated,
         listener: (context, _) => context.read<HomeCubit>().load(),
-        child: Scaffold(
-          backgroundColor: AppColors.background,
-          body: SafeArea(
-            bottom: false,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: _HomeHeader()),
-                SliverToBoxAdapter(child: SizedBox(height: AppSpacing.xs.h)),
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                      SizedBox(height: AppSpacing.sm.h),
-                      _AppointmentsSections(),
-                      SizedBox(height: 100.h),
-                    ]),
-                  ),
+        child: Builder(
+          builder: (context) => Scaffold(
+            backgroundColor: AppColors.background,
+            body: SafeArea(
+              bottom: false,
+              child: RefreshIndicator(
+                color: AppColors.primary,
+                onRefresh: () async {
+                  context.read<HomeCubit>().load();
+                  await Future.delayed(AppAnimations.slow);
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(child: _HomeHeader()),
+                    SliverToBoxAdapter(child: SizedBox(height: AppSpacing.sm.h)),
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg.w),
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate([
+                          SizedBox(height: AppSpacing.sm.h),
+                          _AppointmentsSections(),
+                          SizedBox(height: 100.h),
+                        ]),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -52,6 +66,10 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HOME HEADER
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _HomeHeader extends StatelessWidget {
   @override
@@ -92,19 +110,13 @@ class _HomeHeader extends StatelessWidget {
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Salutation + localisation
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           greetingText,
-                          style: TextStyle(
-                            fontSize: 22.sp,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.textPrimary,
-                            height: 1.2,
-                          ),
+                          style: AppTextStyles.headingMd(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -114,17 +126,15 @@ class _HomeHeader extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                width: 14.r,
-                                height: 14.r,
+                                width: 16.r,
+                                height: 16.r,
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withValues(
-                                    alpha: 0.12,
-                                  ),
+                                  color: AppColors.primarySurface,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
                                   Icons.location_on_rounded,
-                                  size: 9.sp,
+                                  size: 10.sp,
                                   color: AppColors.primary,
                                 ),
                               ),
@@ -132,11 +142,7 @@ class _HomeHeader extends StatelessWidget {
                               Flexible(
                                 child: Text(
                                   locationLabel,
-                                  style: TextStyle(
-                                    fontSize: 11.sp,
-                                    color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: AppTextStyles.bodyXs(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -155,22 +161,11 @@ class _HomeHeader extends StatelessWidget {
                         return Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // Bouton notification
-                            Container(
-                              width: 44.r,
-                              height: 44.r,
-                              decoration: BoxDecoration(
-                                color: AppColors.surfaceVariant,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.notifications_none_rounded,
-                                size: 22.sp,
-                                color: AppColors.textSecondary,
-                              ),
+                            _IconCircle(
+                              icon: Icons.notifications_none_rounded,
+                              onTap: () {},
                             ),
                             SizedBox(width: AppSpacing.sm.w),
-                            // Avatar utilisateur (cliquable → onglet compte)
                             GestureDetector(
                               onTap: () => context.go('/account'),
                               child: _UserAvatar(
@@ -181,7 +176,6 @@ class _HomeHeader extends StatelessWidget {
                           ],
                         );
                       }
-                      // Utilisateur non connecté : bouton Sign In
                       return GestureDetector(
                         onTap: () => context.go('/account'),
                         child: Container(
@@ -190,29 +184,15 @@ class _HomeHeader extends StatelessWidget {
                             vertical: 10.h,
                           ),
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                AppColors.brandGradientStart,
-                                AppColors.brandGradientEnd,
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(AppRadii.pill.r),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.3),
-                                blurRadius: 8.r,
-                                offset: Offset(0, 2.h),
-                              ),
-                            ],
+                            gradient: AppColors.brandGradient,
+                            borderRadius:
+                                BorderRadius.circular(AppRadii.pill.r),
+                            boxShadow: AppShadows.primaryGlow,
                           ),
                           child: Text(
                             l10n.authLoginButton,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
+                            style: AppTextStyles.labelMd(
+                              color: AppColors.textOnPrimary,
                             ),
                           ),
                         ),
@@ -224,6 +204,7 @@ class _HomeHeader extends StatelessWidget {
             },
           ),
           SizedBox(height: AppSpacing.md.h),
+          // ── Search bar ──────────────────────────────────────────────
           GestureDetector(
             onTap: () => context.push('/home/search'),
             child: Container(
@@ -234,31 +215,21 @@ class _HomeHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(AppRadii.xl.r),
-                border: Border.all(color: AppColors.outline, width: 1.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.shadow,
-                    blurRadius: 16.r,
-                    offset: Offset(0, 4.h),
-                  ),
-                ],
+                border: Border.all(color: AppColors.outline),
+                boxShadow: AppShadows.sm,
               ),
               child: Row(
                 children: [
                   Icon(
                     Icons.search_rounded,
-                    color: AppColors.textSecondary.withValues(alpha: 0.5),
+                    color: AppColors.textTertiary,
                     size: 22.sp,
                   ),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
                       l10n.homeSearchHint,
-                      style: TextStyle(
-                        color: AppColors.textSecondary.withValues(alpha: 0.6),
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: AppTextStyles.bodyMd(color: AppColors.textTertiary),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -267,8 +238,8 @@ class _HomeHeader extends StatelessWidget {
                     width: 36.r,
                     height: 36.r,
                     decoration: BoxDecoration(
-                      color: AppColors.primaryLightBackground,
-                      borderRadius: BorderRadius.circular(AppRadii.md.r),
+                      color: AppColors.primarySurface,
+                      borderRadius: BorderRadius.circular(AppRadii.lg.r),
                     ),
                     child: Icon(
                       Icons.tune_rounded,
@@ -281,6 +252,32 @@ class _HomeHeader extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SMALL REUSABLE WIDGETS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _IconCircle extends StatelessWidget {
+  const _IconCircle({required this.icon, required this.onTap});
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 44.r,
+        height: 44.r,
+        decoration: BoxDecoration(
+          color: AppColors.surfaceVariant,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, size: 22.sp, color: AppColors.textSecondary),
       ),
     );
   }
@@ -316,7 +313,8 @@ class _UserAvatar extends StatelessWidget {
             fit: BoxFit.cover,
             width: 44.r,
             height: 44.r,
-            errorWidget: (ctx, url, err) => _InitialsAvatar(initials: initials),
+            errorWidget: (ctx, url, err) =>
+                _InitialsAvatar(initials: initials),
             placeholder: (ctx, url) => _InitialsAvatar(initials: initials),
           ),
         ),
@@ -348,33 +346,23 @@ class _InitialsAvatar extends StatelessWidget {
       width: 44.r,
       height: 44.r,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.brandGradientStart, AppColors.brandGradientEnd],
-        ),
+        gradient: AppColors.brandGradient,
         shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.25),
-            blurRadius: 10.r,
-            offset: Offset(0, 3.h),
-          ),
-        ],
+        boxShadow: AppShadows.primaryGlow,
       ),
       child: Center(
         child: Text(
           initials,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppTextStyles.labelMd(color: AppColors.textOnPrimary),
         ),
       ),
     );
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// APPOINTMENTS SECTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _AppointmentsSections extends StatelessWidget {
   @override
@@ -396,9 +384,11 @@ class _AppointmentsSections extends StatelessWidget {
             state.status == HomeStatus.success && !hasUpcoming && !hasPast;
 
         if (showFindAppointmentCta) {
-          return _FindAppointmentEmptyState(
-            buttonLabel: l10n.homeFindAppointmentCta,
-            onTap: () => context.push('/home/search'),
+          return DokalFadeIn(
+            child: _FindAppointmentEmptyState(
+              buttonLabel: l10n.homeFindAppointmentCta,
+              onTap: () => context.push('/home/search'),
+            ),
           );
         }
 
@@ -406,13 +396,17 @@ class _AppointmentsSections extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (hasUpcoming || isLoading || hasPast) ...[
-              _SectionTitle(title: l10n.homeUpcomingAppointmentsTitle),
+              DokalFadeIn(
+                child: DokalSectionTitle(
+                  title: l10n.homeUpcomingAppointmentsTitle,
+                ),
+              ),
               SizedBox(height: AppSpacing.sm.h),
               _UpcomingAppointmentsSection(),
-              SizedBox(height: AppSpacing.lg.h),
+              SizedBox(height: AppSpacing.xl.h),
             ],
             _NewMessageSection(),
-            SizedBox(height: AppSpacing.lg.h),
+            SizedBox(height: AppSpacing.xl.h),
             _AppointmentHistorySection(),
           ],
         );
@@ -434,7 +428,7 @@ class _FindAppointmentEmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Padding(
-      padding: EdgeInsets.only(top: AppSpacing.xl.h, bottom: AppSpacing.lg.h),
+      padding: EdgeInsets.only(top: AppSpacing.xxl.h, bottom: AppSpacing.lg.h),
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 420.w),
@@ -442,32 +436,28 @@ class _FindAppointmentEmptyState extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 96.r,
-                height: 96.r,
+                width: 88.r,
+                height: 88.r,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.10),
+                  color: AppColors.primarySurface,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.search_rounded,
-                  size: 48.sp,
+                  size: 42.sp,
                   color: AppColors.primary,
                 ),
               ),
-              SizedBox(height: AppSpacing.md.h),
+              SizedBox(height: AppSpacing.lg.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppSpacing.md.w),
                 child: Text(
                   l10n.homeNoAppointmentsEmptyDescription,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    height: 1.4,
-                    color: AppColors.textSecondary,
-                  ),
+                  style: AppTextStyles.bodySm(),
                 ),
               ),
-              SizedBox(height: AppSpacing.lg.h),
+              SizedBox(height: AppSpacing.xl.h),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -476,15 +466,16 @@ class _FindAppointmentEmptyState extends StatelessWidget {
                   label: Text(buttonLabel),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppColors.textOnPrimary,
                     elevation: 0,
                     padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.lg.w,
                       vertical: 14.h,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadii.xl.r),
+                      borderRadius: BorderRadius.circular(AppRadii.lg.r),
                     ),
+                    textStyle: AppTextStyles.labelMd(),
                   ),
                 ),
               ),
@@ -495,6 +486,10 @@ class _FindAppointmentEmptyState extends StatelessWidget {
     );
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// UPCOMING APPOINTMENTS
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _UpcomingAppointmentsSection extends StatelessWidget {
   @override
@@ -513,22 +508,20 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
         }
         if (items.isEmpty) {
           return DokalCard(
+            variant: DokalCardVariant.filled,
             padding: EdgeInsets.all(AppSpacing.md.r),
             child: Row(
               children: [
                 Icon(
                   Icons.event_available_rounded,
-                  color: AppColors.textSecondary,
+                  color: AppColors.textTertiary,
                   size: 22.sp,
                 ),
                 SizedBox(width: AppSpacing.md.w),
                 Expanded(
                   child: Text(
                     context.l10n.homeNoUpcomingAppointments,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      color: AppColors.textSecondary,
-                    ),
+                    style: AppTextStyles.bodySm(),
                   ),
                 ),
               ],
@@ -538,21 +531,27 @@ class _UpcomingAppointmentsSection extends StatelessWidget {
 
         return Column(
           children: [
-            for (final a in items) ...[
-              AppointmentCard(
-                dateLabel: a.dateLabel,
-                timeLabel: a.timeLabel,
-                practitionerName: a.practitionerName,
-                specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
-                reason: a.reason,
-                address: a.address,
-                avatarUrl: a.avatarUrl,
-                isPast: a.isPast,
-                status: a.status,
-                trailing: _PatientChip(
-                  name: a.patientName ?? state.greetingName,
+            for (int i = 0; i < items.length; i++) ...[
+              DokalFadeIn(
+                delay: AppAnimations.staggerDelayFor(i),
+                child: AppointmentCard(
+                  dateLabel: items[i].dateLabel,
+                  timeLabel: items[i].timeLabel,
+                  practitionerName: items[i].practitionerName,
+                  specialty: specialtyToDisplayLabel(
+                    items[i].specialty,
+                    context.l10n,
+                  ),
+                  reason: items[i].reason,
+                  address: items[i].address,
+                  avatarUrl: items[i].avatarUrl,
+                  isPast: items[i].isPast,
+                  status: items[i].status,
+                  trailing: _PatientChip(
+                    name: items[i].patientName ?? state.greetingName,
+                  ),
+                  onTap: () => context.push('/appointments/${items[i].id}'),
                 ),
-                onTap: () => context.push('/appointments/${a.id}'),
               ),
               SizedBox(height: AppSpacing.sm.h),
             ],
@@ -568,17 +567,12 @@ class _UpcomingAppointmentsShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = AppColors.surfaceVariant;
-    final highlightColor = Colors.white.withValues(alpha: 0.9);
-
-    return Shimmer.fromColors(
-      baseColor: baseColor,
-      highlightColor: highlightColor,
+    return DokalShimmerGroup(
       child: Column(
         children: [
           for (var i = 0; i < 2; i++) ...[
             const _AppointmentCardSkeleton(),
-            if (i != 1) SizedBox(height: AppSpacing.sm),
+            if (i != 1) SizedBox(height: AppSpacing.sm.h),
           ],
         ],
       ),
@@ -591,8 +585,6 @@ class _AppointmentCardSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final block = AppColors.surfaceVariant;
-
     return DokalCard(
       padding: EdgeInsets.all(AppSpacing.md.r),
       child: Column(
@@ -601,76 +593,34 @@ class _AppointmentCardSkeleton extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _SkBlock(height: 26.h, borderRadius: 8.r, color: block),
+                child: DokalShimmerBlock(height: 26.h, borderRadius: 8),
               ),
               SizedBox(width: AppSpacing.sm.w),
-              _SkBlock(
+              DokalShimmerBlock(
                 height: 26.h,
                 width: 72.w,
-                borderRadius: 999.r,
-                color: block,
+                borderRadius: AppRadii.pill,
               ),
             ],
           ),
           SizedBox(height: AppSpacing.md.h),
           Row(
             children: [
-              _SkBlock(
-                height: 40.r,
-                width: 40.r,
-                borderRadius: 12.r,
-                color: block,
-              ),
+              DokalShimmerBlock.circle(size: 40.r),
               SizedBox(width: AppSpacing.md.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _SkBlock(
-                      height: 14.h,
-                      width: 170.w,
-                      borderRadius: 6.r,
-                      color: block,
-                    ),
+                    DokalShimmerBlock(height: 14.h, width: 170.w),
                     SizedBox(height: 8.h),
-                    _SkBlock(
-                      height: 18.h,
-                      width: 130.w,
-                      borderRadius: 6.r,
-                      color: block,
-                    ),
+                    DokalShimmerBlock(height: 18.h, width: 130.w),
                   ],
                 ),
               ),
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _SkBlock extends StatelessWidget {
-  const _SkBlock({
-    required this.height,
-    this.width,
-    required this.borderRadius,
-    required this.color,
-  });
-
-  final double height;
-  final double? width;
-  final double borderRadius;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(borderRadius),
       ),
     );
   }
@@ -686,23 +636,23 @@ class _PatientChip extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(999.r),
+        color: AppColors.primarySurface,
+        borderRadius: BorderRadius.circular(AppRadii.pill.r),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.25),
-          width: 1.r,
+          color: AppColors.primary.withValues(alpha: 0.20),
         ),
       ),
       child: Text(
         name,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: AppColors.primary,
-          fontWeight: FontWeight.w600,
-        ),
+        style: AppTextStyles.labelXs(color: AppColors.primary),
       ),
     );
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// NEW MESSAGES
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _NewMessageSection extends StatelessWidget {
   @override
@@ -722,177 +672,138 @@ class _NewMessageSection extends StatelessWidget {
         final isPast = appt?.isPast ?? false;
         final chipLabel =
             isPast ? l10n.appointmentsTabPast : l10n.appointmentsTabUpcoming;
+        final isRtl = Directionality.of(context) == TextDirection.rtl;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _SectionTitle(title: l10n.messagesTitle),
-            SizedBox(height: AppSpacing.sm.h),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => context.push('/messages/c/${conv.id}', extra: conv),
-              child: DokalCard(
-                padding: EdgeInsets.all(AppSpacing.md.r),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 44.r,
-                      height: 44.r,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.brandGradientStart,
-                            AppColors.brandGradientEnd,
-                          ],
+        return DokalFadeIn(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DokalSectionTitle(title: l10n.messagesTitle),
+              SizedBox(height: AppSpacing.sm.h),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () =>
+                    context.push('/messages/c/${conv.id}', extra: conv),
+                child: DokalCard(
+                  padding: EdgeInsets.all(AppSpacing.md.r),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 44.r,
+                        height: 44.r,
+                        decoration: BoxDecoration(
+                          gradient: AppColors.brandGradient,
+                          borderRadius: BorderRadius.circular(AppRadii.lg.r),
+                          boxShadow: AppShadows.primaryGlow,
                         ),
-                        borderRadius: BorderRadius.circular(AppRadii.lg.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.25),
-                            blurRadius: 8.r,
-                            offset: Offset(0, 3.h),
-                          ),
-                        ],
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            Icons.mail_rounded,
-                            color: Colors.white,
-                            size: 22.sp,
-                          ),
-                          Positioned(
-                            right: 4.w,
-                            top: 4.h,
-                            child: Container(
-                              width: 10.r,
-                              height: 10.r,
-                              decoration: BoxDecoration(
-                                color: AppColors.error,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2.r,
-                                ),
-                              ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.mail_rounded,
+                              color: Colors.white,
+                              size: 22.sp,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: AppSpacing.md.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.homeNewMessageTitle(conv.name),
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            conv.lastMessage,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: AppColors.textSecondary,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(height: 8.h),
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 5.h,
-                                ),
+                            Positioned(
+                              right: 4.w,
+                              top: 4.h,
+                              child: Container(
+                                width: 10.r,
+                                height: 10.r,
                                 decoration: BoxDecoration(
-                                  color: isPast
-                                      ? AppColors.textSecondary
-                                          .withValues(alpha: 0.1)
-                                      : AppColors.accent
-                                          .withValues(alpha: 0.1),
-                                  borderRadius:
-                                      BorderRadius.circular(999.r),
-                                ),
-                                child: Text(
-                                  chipLabel,
-                                  style: TextStyle(
-                                    color: isPast
-                                        ? AppColors.textSecondary
-                                        : AppColors.accent,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11.sp,
+                                  color: AppColors.error,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2.r,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: AppSpacing.sm.w),
-                              Expanded(
-                                child: Text(
-                                  apptLabel,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
-                                      ?.copyWith(
-                                        color: AppColors.textSecondary,
-                                      ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: AppSpacing.md.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.homeNewMessageTitle(conv.name),
+                              style: AppTextStyles.titleSm(),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              conv.lastMessage,
+                              style: AppTextStyles.bodyXs(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 8.h),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 5.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isPast
+                                        ? AppColors.surfaceVariant
+                                        : AppColors.successLight,
+                                    borderRadius:
+                                        BorderRadius.circular(AppRadii.pill.r),
+                                  ),
+                                  child: Text(
+                                    chipLabel,
+                                    style: AppTextStyles.labelXs(
+                                      color: isPast
+                                          ? AppColors.textSecondary
+                                          : AppColors.success,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                SizedBox(width: AppSpacing.sm.w),
+                                Expanded(
+                                  child: Text(
+                                    apptLabel,
+                                    style: AppTextStyles.labelXs(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(width: AppSpacing.xs.w),
-                    Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Icon(
-                        Directionality.of(context) == TextDirection.rtl
-                            ? Icons.chevron_left_rounded
-                            : Icons.chevron_right_rounded,
-                        size: 20.sp,
-                        color: AppColors.primary,
+                      SizedBox(width: AppSpacing.xs.w),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Icon(
+                          isRtl
+                              ? Icons.chevron_left_rounded
+                              : Icons.chevron_right_rounded,
+                          size: 20.sp,
+                          color: AppColors.primary,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
   }
 }
 
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 16.sp,
-        fontWeight: FontWeight.w800,
-        color: AppColors.textPrimary,
-      ),
-    );
-  }
-}
+// ═══════════════════════════════════════════════════════════════════════════════
+// APPOINTMENT HISTORY
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _AppointmentHistorySection extends StatelessWidget {
   @override
@@ -901,31 +812,19 @@ class _AppointmentHistorySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: _SectionTitle(title: l10n.homeLast3AppointmentsTitle),
-            ),
-            TextButton(
-              onPressed: () => context.go('/appointments?tab=past'),
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.primary,
-                textStyle: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              child: Text(l10n.homeSeeAllPastAppointments),
-            ),
-          ],
+        DokalSectionTitle(
+          title: l10n.homeLast3AppointmentsTitle,
+          actionLabel: l10n.homeSeeAllPastAppointments,
+          onAction: () => context.go('/appointments?tab=past'),
         ),
-        SizedBox(height: AppSpacing.xs.h),
+        SizedBox(height: AppSpacing.sm.h),
         BlocBuilder<HomeCubit, HomeState>(
           buildWhen: (p, n) => p.appointmentHistory != n.appointmentHistory,
           builder: (context, state) {
             final items = state.appointmentHistory;
             if (items.isEmpty) {
               return DokalCard(
+                variant: DokalCardVariant.filled,
                 padding: EdgeInsets.all(AppSpacing.md.r),
                 child: Row(
                   children: [
@@ -938,7 +837,7 @@ class _AppointmentHistorySection extends StatelessWidget {
                       ),
                       child: Icon(
                         Icons.event_busy_rounded,
-                        color: AppColors.textSecondary,
+                        color: AppColors.textTertiary,
                         size: 22.sp,
                       ),
                     ),
@@ -946,10 +845,7 @@ class _AppointmentHistorySection extends StatelessWidget {
                     Expanded(
                       child: Text(
                         l10n.homeNoAppointmentHistory,
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          color: AppColors.textSecondary,
-                        ),
+                        style: AppTextStyles.bodySm(),
                       ),
                     ),
                   ],
@@ -959,21 +855,28 @@ class _AppointmentHistorySection extends StatelessWidget {
 
             return Column(
               children: [
-                for (final a in items) ...[
-                  AppointmentCard(
-                    dateLabel: a.dateLabel,
-                    timeLabel: a.timeLabel,
-                    practitionerName: a.practitionerName,
-                    specialty: specialtyToDisplayLabel(a.specialty, l10n),
-                    reason: a.reason,
-                    address: a.address,
-                    avatarUrl: a.avatarUrl,
-                    isPast: a.isPast,
-                    status: a.status,
-                    trailing: _PatientChip(
-                      name: a.patientName ?? l10n.commonMe,
+                for (int i = 0; i < items.length; i++) ...[
+                  DokalFadeIn(
+                    delay: AppAnimations.staggerDelayFor(i),
+                    child: AppointmentCard(
+                      dateLabel: items[i].dateLabel,
+                      timeLabel: items[i].timeLabel,
+                      practitionerName: items[i].practitionerName,
+                      specialty: specialtyToDisplayLabel(
+                        items[i].specialty,
+                        l10n,
+                      ),
+                      reason: items[i].reason,
+                      address: items[i].address,
+                      avatarUrl: items[i].avatarUrl,
+                      isPast: items[i].isPast,
+                      status: items[i].status,
+                      trailing: _PatientChip(
+                        name: items[i].patientName ?? l10n.commonMe,
+                      ),
+                      onTap: () =>
+                          context.push('/appointments/${items[i].id}'),
                     ),
-                    onTap: () => context.push('/appointments/${a.id}'),
                   ),
                   SizedBox(height: AppSpacing.sm.h),
                 ],

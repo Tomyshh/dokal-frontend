@@ -8,13 +8,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/permissions/permissions_service.dart';
 import '../../../../core/services/push_notification_service.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
 
-/// Page obligatoire après l'onboarding : l'utilisateur doit activer les switches
-/// notifications et localisation pour continuer. Barrière persistante (même après restart).
+/// Page obligatoire après l'onboarding : l'utilisateur peut activer notifications et
+/// localisation (optionnelles) pour une meilleure expérience. La localisation est
+/// demandée à l'initialisation pour maximiser les acceptations, mais l'utilisateur
+/// peut continuer même s'il refuse (conformité Apple Guideline 5.1.5).
 class PermissionsGatePage extends StatefulWidget {
   const PermissionsGatePage({super.key});
 
@@ -27,9 +30,22 @@ class _PermissionsGatePageState extends State<PermissionsGatePage> {
   bool _locationEnabled = false;
   bool _isValidating = false;
 
-  // Sur iOS, les notifications sont optionnelles (on les demandera plus tard).
-  bool get _canValidate =>
-      Platform.isIOS ? _locationEnabled : (_notificationsEnabled && _locationEnabled);
+  // Localisation et notifications optionnelles : l'utilisateur peut toujours continuer
+  // (conformité Apple : l'app doit rester fonctionnelle sans localisation).
+  bool get _canValidate => true;
+
+  @override
+  void initState() {
+    super.initState();
+    _requestLocationOnInit();
+  }
+
+  /// Demande la localisation à l'initialisation si non activée (sans bloquer).
+  Future<void> _requestLocationOnInit() async {
+    final granted = await sl<PermissionsService>().requestLocation();
+    if (!mounted) return;
+    setState(() => _locationEnabled = granted);
+  }
 
   Future<void> _toggleNotifications() async {
     if (_notificationsEnabled) {
@@ -175,20 +191,14 @@ class _PermissionsGatePageState extends State<PermissionsGatePage> {
                       SizedBox(height: AppSpacing.xxl.h),
                       Text(
                         l10n.permissionsGateTitle,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 26.sp,
-                        ),
+                        style: AppTextStyles.headingLg(color: AppColors.textOnPrimary),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: AppSpacing.sm.h),
                       Text(
                         l10n.permissionsGateSubtitle,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
+                        style: AppTextStyles.bodyLg(color: Colors.white.withValues(alpha: 0.9)).copyWith(
                           height: 1.35,
-                          fontSize: 15.sp,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -205,13 +215,14 @@ class _PermissionsGatePageState extends State<PermissionsGatePage> {
                             : null,
                       ),
                       SizedBox(height: AppSpacing.md.h),
-                      // Carte localisation
+                      // Carte localisation (optionnelle)
                       _PermissionCard(
                         icon: Icons.location_on_rounded,
                         title: l10n.permissionsGateLocationTitle,
                         subtitle: l10n.permissionsGateLocationSubtitle,
                         value: _locationEnabled,
                         onTap: _toggleLocation,
+                        optionalBadge: l10n.permissionsGateNotificationsOptional,
                       ),
                       const Spacer(),
                       // Bouton Valider
@@ -247,10 +258,7 @@ class _PermissionsGatePageState extends State<PermissionsGatePage> {
                                   )
                                 : Text(
                                     l10n.permissionsGateValidateButton,
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: AppTextStyles.titleLg(),
                                   ),
                           ),
                         ),
@@ -349,11 +357,7 @@ class _PermissionCard extends StatelessWidget {
                           children: [
                             Text(
                               title,
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15.sp,
-                              ),
+                              style: AppTextStyles.titleMd(color: AppColors.textOnPrimary),
                             ),
                             if (optionalBadge != null) ...[
                               SizedBox(width: 6.w),
@@ -368,11 +372,7 @@ class _PermissionCard extends StatelessWidget {
                                 ),
                                 child: Text(
                                   optionalBadge!,
-                                  style: TextStyle(
-                                    color: Colors.white.withValues(alpha: 0.9),
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: AppTextStyles.labelXs(color: Colors.white.withValues(alpha: 0.9)),
                                 ),
                               ),
                             ],
@@ -381,10 +381,8 @@ class _PermissionCard extends StatelessWidget {
                         SizedBox(height: 2.h),
                         Text(
                           subtitle,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.85),
+                          style: AppTextStyles.bodySm(color: Colors.white.withValues(alpha: 0.85)).copyWith(
                             height: 1.25,
-                            fontSize: 13.sp,
                           ),
                         ),
                       ],

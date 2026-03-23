@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
 import '../../../../core/widgets/dokal_loader.dart';
@@ -206,9 +207,7 @@ class _HealthProfileWorkflowViewState
                   children: [
                     Text(
                       l10n.healthProfileIntro,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                      style: AppTextStyles.bodySm(),
                     ),
                     SizedBox(height: AppSpacing.md.h),
                     TextField(
@@ -276,10 +275,7 @@ class _HealthProfileWorkflowViewState
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
                         l10n.healthProfileKupatHolim,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
+                        style: AppTextStyles.labelLg(),
                       ),
                     ),
                     SizedBox(height: 6.h),

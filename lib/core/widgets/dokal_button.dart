@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_radii.dart';
+import '../constants/app_text_styles.dart';
 
 /// Bouton moderne Dokal avec variantes et taille compacte.
 class DokalButton extends StatelessWidget {
@@ -60,6 +61,37 @@ class DokalButton extends StatelessWidget {
     child: child,
   );
 
+  factory DokalButton.text({
+    required VoidCallback? onPressed,
+    required Widget child,
+    bool isLoading = false,
+    Widget? leading,
+    bool compact = false,
+  }) => DokalButton._(
+    onPressed: onPressed,
+    variant: _Variant.text,
+    isLoading: isLoading,
+    leading: leading,
+    compact: compact,
+    child: child,
+  );
+
+  /// Bouton doré premium — CTA de connexion / actions importantes.
+  factory DokalButton.gold({
+    required VoidCallback? onPressed,
+    required Widget child,
+    bool isLoading = false,
+    Widget? leading,
+    bool compact = false,
+  }) => DokalButton._(
+    onPressed: onPressed,
+    variant: _Variant.gold,
+    isLoading: isLoading,
+    leading: leading,
+    compact: compact,
+    child: child,
+  );
+
   final VoidCallback? onPressed;
   final Widget child;
   final bool isLoading;
@@ -72,8 +104,8 @@ class DokalButton extends StatelessWidget {
     final effectiveOnPressed = isLoading ? null : onPressed;
     final iconSize = (compact ? 14.0 : 16.0).sp;
     final loaderSize = (compact ? 14.0 : 16.0).r;
-    final hPadding = (compact ? 12.0 : 16.0).w;
-    final vPadding = (compact ? 10.0 : 12.0).h;
+    final hPadding = (compact ? 14.0 : 20.0).w;
+    final vPadding = (compact ? 10.0 : 14.0).h;
 
     final content = Row(
       mainAxisSize: MainAxisSize.min,
@@ -85,7 +117,7 @@ class DokalButton extends StatelessWidget {
             height: loaderSize,
             child: CircularProgressIndicator(
               strokeWidth: 2.r,
-              color: _variant == _Variant.primary
+              color: _variant == _Variant.primary || _variant == _Variant.gold
                   ? Colors.white
                   : AppColors.primary,
             ),
@@ -100,11 +132,9 @@ class DokalButton extends StatelessWidget {
         ],
         Flexible(
           child: DefaultTextStyle.merge(
-            style: TextStyle(
-              fontSize: (compact ? 12.0 : 13.0).sp,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0,
-            ),
+            style: compact
+                ? AppTextStyles.labelSm()
+                : AppTextStyles.labelMd(),
             child: child,
           ),
         ),
@@ -116,19 +146,16 @@ class DokalButton extends StatelessWidget {
         EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
       ),
       minimumSize: WidgetStatePropertyAll(
-        Size(compact ? 0 : double.infinity, (compact ? 36.0 : 44.0).h),
+        Size(compact ? 0 : double.infinity, (compact ? 38.0 : 48.0).h),
       ),
       shape: WidgetStatePropertyAll(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.md.r),
+          borderRadius: BorderRadius.circular(AppRadii.lg.r),
         ),
       ),
       elevation: const WidgetStatePropertyAll(0),
       textStyle: WidgetStatePropertyAll(
-        TextStyle(
-          fontSize: (compact ? 12.0 : 13.0).sp,
-          fontWeight: FontWeight.w600,
-        ),
+        compact ? AppTextStyles.labelSm() : AppTextStyles.labelMd(),
       ),
     );
 
@@ -156,6 +183,20 @@ class DokalButton extends StatelessWidget {
           onPressed: effectiveOnPressed,
           child: content,
         );
+      case _Variant.text:
+        button = TextButton(
+          style: style.copyWith(
+            foregroundColor: const WidgetStatePropertyAll(AppColors.primary),
+          ),
+          onPressed: effectiveOnPressed,
+          child: content,
+        );
+      case _Variant.gold:
+        button = _GoldShimmerButton(
+          style: style,
+          onPressed: effectiveOnPressed,
+          child: content,
+        );
     }
 
     if (compact) return button;
@@ -163,4 +204,126 @@ class DokalButton extends StatelessWidget {
   }
 }
 
-enum _Variant { primary, secondary, outline }
+enum _Variant { primary, secondary, outline, text, gold }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GOLD SHIMMER BUTTON
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _GoldShimmerButton extends StatefulWidget {
+  const _GoldShimmerButton({
+    required this.style,
+    required this.onPressed,
+    required this.child,
+  });
+
+  final ButtonStyle style;
+  final VoidCallback? onPressed;
+  final Widget child;
+
+  @override
+  State<_GoldShimmerButton> createState() => _GoldShimmerButtonState();
+}
+
+class _GoldShimmerButtonState extends State<_GoldShimmerButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _shimmerCtrl;
+
+  // Palette dorée riche
+  static const _goldLight = Color(0xFFE8C55A);
+  static const _gold = Color(0xFFD4A843);
+  static const _goldDark = Color(0xFFB8922E);
+  static const _goldDeep = Color(0xFFA07B24);
+
+  @override
+  void initState() {
+    super.initState();
+    _shimmerCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    // Délai avant le shimmer pour laisser le bouton apparaître
+    Future.delayed(const Duration(milliseconds: 600), () {
+      if (mounted) _shimmerCtrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _shimmerCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _shimmerCtrl,
+      builder: (context, child) {
+        final shimmerValue = _shimmerCtrl.value;
+
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [_goldLight, _gold, _goldDark, _goldDeep],
+              stops: [0.0, 0.3, 0.7, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(AppRadii.lg.r),
+            boxShadow: [
+              BoxShadow(
+                color: _gold.withValues(alpha: 0.35),
+                blurRadius: 14.r,
+                offset: Offset(0, 5.h),
+              ),
+              BoxShadow(
+                color: _goldLight.withValues(alpha: 0.15),
+                blurRadius: 6.r,
+                offset: Offset(0, 2.h),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadii.lg.r),
+            child: Stack(
+              children: [
+                // Shimmer highlight pass
+                if (shimmerValue > 0 && shimmerValue < 1)
+                  Positioned.fill(
+                    child: FractionallySizedBox(
+                      alignment: Alignment(
+                        -1.0 + 2.0 * shimmerValue,
+                        0,
+                      ),
+                      widthFactor: 0.4,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.white.withValues(alpha: 0),
+                              Colors.white.withValues(alpha: 0.28),
+                              Colors.white.withValues(alpha: 0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                // Le bouton réel
+                child!,
+              ],
+            ),
+          ),
+        );
+      },
+      child: FilledButton(
+        style: widget.style.copyWith(
+          backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+          foregroundColor: const WidgetStatePropertyAll(Colors.white),
+        ),
+        onPressed: widget.onPressed,
+        child: widget.child,
+      ),
+    );
+  }
+}

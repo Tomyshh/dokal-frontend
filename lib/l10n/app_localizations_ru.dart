@@ -789,6 +789,48 @@ class AppLocalizationsRu extends AppLocalizations {
   String get kupatOther => 'Другое';
 
   @override
+  String get insuranceAig => 'AIG';
+
+  @override
+  String get insuranceAyalon => 'Аялон';
+
+  @override
+  String get insuranceBituchHaklay => 'Битуах Хаклаи';
+
+  @override
+  String get insuranceDikla => 'Дикла';
+
+  @override
+  String get insuranceHarel => 'Харель';
+
+  @override
+  String get insuranceHachshara => 'Хахшара';
+
+  @override
+  String get insuranceHaphenix => 'Хафеникс';
+
+  @override
+  String get insuranceClal => 'Клаль';
+
+  @override
+  String get insuranceMigdal => 'Мигдаль';
+
+  @override
+  String get insuranceMenora => 'Менора';
+
+  @override
+  String get insuranceBituchYashir => 'Битуах Яшир';
+
+  @override
+  String get insuranceShirbit => 'Ширбит';
+
+  @override
+  String get insuranceShlomo => 'Шломо';
+
+  @override
+  String get insuranceShomera => 'Шомера';
+
+  @override
   String get healthMyFileSectionTitle => 'Мой файл';
 
   @override
@@ -1197,6 +1239,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get authLoginSuccess => 'Добро пожаловать!';
+
+  @override
+  String get authNoAccountFound =>
+      'Аккаунт не найден — сначала зарегистрируйтесь.';
+
+  @override
+  String get authAccountAlreadyExists =>
+      'Аккаунт уже существует — вы были подключены.';
 
   @override
   String get securityTitle => 'Безопасность';
@@ -2098,4 +2148,71 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cardNotFound => 'Визитка не найдена';
+
+  @override
+  String get reviewSurveyTitle => 'Ваш отзыв';
+
+  @override
+  String get reviewSuccessMessage => 'Спасибо за отзыв!';
+
+  @override
+  String get reviewSubmitButton => 'Отправить отзыв';
+
+  @override
+  String get reviewOverallRating => 'Как прошёл визит?';
+
+  @override
+  String get reviewRatingPrompt => 'Нажмите на звезду';
+
+  @override
+  String get reviewRating1 => 'Очень плохо';
+
+  @override
+  String get reviewRating2 => 'Плохо';
+
+  @override
+  String get reviewRating3 => 'Средне';
+
+  @override
+  String get reviewRating4 => 'Хорошо';
+
+  @override
+  String get reviewRating5 => 'Отлично';
+
+  @override
+  String get reviewWaitTimeTitle => 'Время ожидания';
+
+  @override
+  String get reviewWaitTimeSubtitle => 'Сколько вы ждали до приёма?';
+
+  @override
+  String get reviewWaitUnder15 => '< 15 мин';
+
+  @override
+  String get reviewWait1530 => '15–30 мин';
+
+  @override
+  String get reviewWait3045 => '30–45 мин';
+
+  @override
+  String get reviewWait4560 => '45–60 мин';
+
+  @override
+  String get reviewWaitOver60 => '> 60 мин';
+
+  @override
+  String get reviewCommentTitle => 'Ваш комментарий';
+
+  @override
+  String get reviewCommentOptional =>
+      'Необязательно — поделитесь впечатлениями';
+
+  @override
+  String get reviewCommentHint => 'Расскажите о визите...';
+
+  @override
+  String get reviewAnonymousTitle => 'Остаться анонимным';
+
+  @override
+  String get reviewAnonymousSubtitle => 'Будут видны только ваши инициалы';
 }

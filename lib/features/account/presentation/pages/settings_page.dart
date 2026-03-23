@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
@@ -44,7 +45,7 @@ class SettingsPage extends StatelessWidget {
                     SizedBox(width: AppSpacing.sm.w),
                     Text(
                       l10n.settingsLanguageTitle,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: AppTextStyles.titleSm(),
                     ),
                   ],
                 ),
@@ -57,11 +58,9 @@ class SettingsPage extends StatelessWidget {
                   leading: Text(lang.flag, style: TextStyle(fontSize: 22.sp)),
                   title: Text(
                     _languageName(l10n, lang.locale.languageCode),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: isSelected
-                          ? FontWeight.w600
-                          : FontWeight.normal,
-                    ),
+                    style: isSelected
+                        ? AppTextStyles.titleSm()
+                        : AppTextStyles.bodyMd(),
                   ),
                   trailing: isSelected
                       ? Icon(
@@ -194,7 +193,6 @@ class _SettingsSwitchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return DokalCard(
       padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.md.w,
@@ -206,7 +204,7 @@ class _SettingsSwitchCard extends StatelessWidget {
             width: 38.r,
             height: 38.r,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.10),
+              color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(AppRadii.md.r),
             ),
             child: Icon(icon, size: 20.sp, color: AppColors.primary),
@@ -218,17 +216,12 @@ class _SettingsSwitchCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyles.titleSm(),
                 ),
                 SizedBox(height: 3.h),
                 Text(
                   subtitle,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.25,
-                  ),
+                  style: AppTextStyles.bodySm(color: AppColors.textSecondary),
                 ),
               ],
             ),
@@ -255,7 +248,6 @@ class _SettingsLinkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return DokalCard(
       padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.md.w,
@@ -268,7 +260,7 @@ class _SettingsLinkCard extends StatelessWidget {
             width: 38.r,
             height: 38.r,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.10),
+              color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(AppRadii.md.r),
             ),
             child: Icon(icon, size: 20.sp, color: AppColors.primary),
@@ -277,17 +269,12 @@ class _SettingsLinkCard extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyles.titleSm(),
             ),
           ),
           Text(
             valueText,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.labelSm(color: AppColors.textSecondary),
           ),
           SizedBox(width: 6.w),
           Container(

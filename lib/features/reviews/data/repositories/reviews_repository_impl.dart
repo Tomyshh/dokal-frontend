@@ -18,6 +18,8 @@ class ReviewsRepositoryImpl implements ReviewsRepository {
     required String practitionerId,
     required int rating,
     String? comment,
+    String? waitTime,
+    bool isAnonymous = false,
   }) async {
     try {
       final review = await remote.createReviewAsync(
@@ -25,6 +27,8 @@ class ReviewsRepositoryImpl implements ReviewsRepository {
         practitionerId: practitionerId,
         rating: rating,
         comment: comment,
+        waitTime: waitTime,
+        isAnonymous: isAnonymous,
       );
       return Right(review);
     } on ServerException catch (e) {

@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/constants/insurance_providers.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_avatar.dart';
@@ -243,7 +244,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         child: Icon(
                                           Icons.camera_alt_rounded,
                                           size: 16.sp,
-                                          color: Colors.white,
+                                          color: AppColors.textOnPrimary,
                                         ),
                                       ),
                                     ],
@@ -327,12 +328,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 ),
                                 child: Text(
                                   l10n.addRelativeOptionalSection,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge
-                                      ?.copyWith(
-                                        color: AppColors.textSecondary,
-                                      ),
+                                  style: AppTextStyles.labelLg(color: AppColors.textSecondary),
                                 ),
                               ),
                               DropdownButtonFormField<String>(
@@ -393,7 +389,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   ...insuranceProviders.map(
                                     (p) => DropdownMenuItem<String>(
                                       value: p,
-                                      child: Text(p),
+                                      child: Text(insuranceDisplayName(context, p)),
                                     ),
                                   ),
                                 ],

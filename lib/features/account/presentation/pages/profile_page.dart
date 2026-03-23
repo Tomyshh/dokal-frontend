@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -269,10 +270,7 @@ class _ProfileSection extends StatelessWidget {
             ),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyles.labelMd(color: AppColors.textSecondary),
             ),
           ),
           ...children,
@@ -305,7 +303,7 @@ class _EditableNameRow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
+            Text(label, style: AppTextStyles.bodyMd()),
             Flexible(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -314,10 +312,7 @@ class _EditableNameRow extends StatelessWidget {
                   Flexible(
                     child: Text(
                       profile.fullName,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(fontWeight: FontWeight.w500),
+                      style: AppTextStyles.titleMd(),
                       textAlign: TextAlign.end,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -353,13 +348,11 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: Theme.of(context).textTheme.bodyMedium),
+          Text(label, style: AppTextStyles.bodyMd()),
           Flexible(
             child: Text(
               value,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
+              style: AppTextStyles.titleMd(),
               textAlign: TextAlign.end,
             ),
           ),
@@ -383,17 +376,12 @@ class _DangerZoneCard extends StatelessWidget {
         children: [
           Text(
             l10n.profileDangerZoneTitle,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.error,
-            ),
+            style: AppTextStyles.titleSm(color: AppColors.error),
           ),
           SizedBox(height: 6.h),
           Text(
             l10n.profileDeleteAccountHint,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-            ),
+            style: AppTextStyles.bodySm(color: AppColors.textSecondary),
           ),
           SizedBox(height: AppSpacing.md.h),
           SizedBox(
@@ -401,7 +389,7 @@ class _DangerZoneCard extends StatelessWidget {
             child: FilledButton(
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.error,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.textOnPrimary,
               ),
               onPressed: onDelete,
               child: Text(l10n.profileDeleteAccountButton),
@@ -423,7 +411,7 @@ class _OverlayDeletingAccount extends StatelessWidget {
       child: AbsorbPointer(
         child: Stack(
           children: [
-            ColoredBox(color: Colors.black.withValues(alpha: 0.25)),
+            ColoredBox(color: AppColors.scrim),
             Center(
               child: DokalCard(
                 child: Padding(
@@ -440,7 +428,7 @@ class _OverlayDeletingAccount extends StatelessWidget {
                       Flexible(
                         child: Text(
                           l10n.profileDeleteAccountLoading,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: AppTextStyles.bodyMd(),
                         ),
                       ),
                     ],

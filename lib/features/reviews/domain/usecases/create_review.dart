@@ -14,10 +14,14 @@ class CreateReview {
     required String practitionerId,
     required int rating,
     String? comment,
+    String? waitTime,
+    bool isAnonymous = false,
   }) => repo.createReview(
     appointmentId: appointmentId,
     practitionerId: practitionerId,
     rating: rating,
     comment: comment,
+    waitTime: waitTime,
+    isAnonymous: isAnonymous,
   );
 }

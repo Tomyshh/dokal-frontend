@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../l10n/l10n.dart';
@@ -64,7 +65,7 @@ class _PrivacyTile extends StatelessWidget {
             width: 36.r,
             height: 36.r,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(icon, size: 18.sp, color: AppColors.primary),
@@ -74,9 +75,9 @@ class _PrivacyTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: Theme.of(context).textTheme.titleSmall),
+                Text(title, style: AppTextStyles.titleSm()),
                 SizedBox(height: 2.h),
-                Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
+                Text(subtitle, style: AppTextStyles.bodySm(color: AppColors.textSecondary)),
               ],
             ),
           ),

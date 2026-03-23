@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_radii.dart';
+import '../constants/app_shadows.dart';
 import '../constants/app_spacing.dart';
+import '../constants/app_text_styles.dart';
 import '../utils/address_actions.dart';
 import '../utils/format_appointment_date.dart';
 import '../../l10n/l10n.dart';
@@ -59,297 +62,296 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(AppRadii.xl.r),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: BorderRadius.circular(AppRadii.xl.r),
             border: Border.all(
               color: isPast
-                  ? AppColors.outline.withValues(alpha: 0.3)
+                  ? AppColors.outline.withValues(alpha: 0.5)
                   : AppColors.primary.withValues(alpha: 0.08),
-              width: 1,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow.withValues(alpha: 0.04),
-                blurRadius: 16.r,
-                offset: Offset(0, 4.h),
-              ),
-              BoxShadow(
-                color: isPast
-                    ? Colors.transparent
-                    : AppColors.primary.withValues(alpha: 0.04),
-                blurRadius: 20.r,
-                offset: Offset(0, 2.h),
-              ),
-            ],
+            boxShadow: isPast ? AppShadows.xs : AppShadows.sm,
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: BorderRadius.circular(AppRadii.xl.r),
             child: IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Bande d'accent verticale
-                Container(
-                  width: 4.w,
-                  decoration: BoxDecoration(
-                    gradient: isPast
-                        ? null
-                        : const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              AppColors.brandGradientStart,
-                              AppColors.brandGradientEnd,
-                            ],
-                          ),
-                    color: isPast
-                        ? AppColors.textSecondary.withValues(alpha: 0.2)
-                        : null,
+                children: [
+                  // Bande d'accent verticale
+                  Container(
+                    width: 4.w,
+                    decoration: BoxDecoration(
+                      gradient: isPast
+                          ? null
+                          : AppColors.brandGradient,
+                      color: isPast
+                          ? AppColors.textTertiary.withValues(alpha: 0.3)
+                          : null,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(AppSpacing.md.r),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Ligne date + heure + trailing
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.calendar_today_rounded,
-                              size: 14.sp,
-                              color: isPast
-                                  ? AppColors.textSecondary
-                                  : AppColors.primary,
-                            ),
-                            SizedBox(width: 6.w),
-                            Expanded(
-                              child: Text(
-                                formatAppointmentDateLabel(context, dateLabel),
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: isPast
-                                      ? AppColors.textSecondary
-                                      : AppColors.textPrimary,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8.w,
-                                vertical: 4.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: isPast
-                                    ? AppColors.textSecondary.withValues(alpha: 0.08)
-                                    : AppColors.accent.withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Text(
-                                timeLabel,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: isPast
-                                      ? AppColors.textSecondary
-                                      : AppColors.primary,
-                                ),
-                              ),
-                            ),
-                            if (trailing != null) ...[
-                              SizedBox(width: 8.w),
-                              trailing!,
-                            ],
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.md.h),
-                        // Praticien
-                        Row(
-                          children: [
-                            Container(
-                              width: 44.r,
-                              height: 44.r,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AppColors.primary.withValues(alpha: 0.15),
-                                  width: 1.5.r,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.primary.withValues(alpha: 0.08),
-                                    blurRadius: 8.r,
-                                    offset: Offset(0, 2.h),
-                                  ),
-                                ],
-                              ),
-                              child: ClipOval(
-                                child: (avatarUrl?.trim().isNotEmpty ?? false)
-                                    ? CachedNetworkImage(
-                                        imageUrl: avatarUrl!.trim(),
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) =>
-                                            _AvatarPlaceholder(initials: _getInitials()),
-                                        errorWidget: (context, url, error) =>
-                                            _AvatarPlaceholder(initials: _getInitials()),
-                                      )
-                                    : _AvatarPlaceholder(initials: _getInitials()),
-                              ),
-                            ),
-                            SizedBox(width: AppSpacing.md.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          practitionerName,
-                                          style: TextStyle(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.textPrimary,
-                                            letterSpacing: -0.2,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      if (_statusLabel(context) != null) ...[
-                                        SizedBox(width: 8.w),
-                                        _StatusChip(
-                                          label: _statusLabel(context)!,
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w,
-                                      vertical: 3.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primary.withValues(alpha: 0.08),
-                                      borderRadius: BorderRadius.circular(6.r),
-                                    ),
-                                    child: Text(
-                                      specialty,
-                                      style: TextStyle(
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.primary,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: Icon(
-                                Directionality.of(context) == TextDirection.rtl
-                                    ? Icons.chevron_left_rounded
-                                    : Icons.chevron_right_rounded,
-                                size: 20.sp,
-                                color:
-                                    AppColors.textSecondary.withValues(alpha: 0.6),
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (reason.isNotEmpty) ...[
-                          SizedBox(height: AppSpacing.sm.h),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.md.r),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ── Date + heure + trailing ──────────────────
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(
-                                Icons.medical_information_outlined,
+                                Icons.calendar_today_rounded,
                                 size: 14.sp,
-                                color: AppColors.accent.withValues(alpha: 0.8),
+                                color: isPast
+                                    ? AppColors.textTertiary
+                                    : AppColors.primary,
                               ),
                               SizedBox(width: 6.w),
                               Expanded(
                                 child: Text(
-                                  reason,
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: AppColors.textSecondary,
-                                    height: 1.35,
+                                  formatAppointmentDateLabel(context, dateLabel),
+                                  style: AppTextStyles.labelMd(
+                                    color: isPast
+                                        ? AppColors.textSecondary
+                                        : AppColors.textPrimary,
                                   ),
-                                  maxLines: 2,
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                  vertical: 5.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isPast
+                                      ? AppColors.surfaceVariant
+                                      : AppColors.primarySurface,
+                                  borderRadius:
+                                      BorderRadius.circular(AppRadii.sm.r),
+                                ),
+                                child: Text(
+                                  timeLabel,
+                                  style: AppTextStyles.labelSm(
+                                    color: isPast
+                                        ? AppColors.textSecondary
+                                        : AppColors.primary,
+                                  ),
+                                ),
+                              ),
+                              if (trailing != null) ...[
+                                SizedBox(width: 8.w),
+                                trailing!,
+                              ],
+                            ],
+                          ),
+                          SizedBox(height: AppSpacing.md.h),
+                          // ── Praticien ───────────────────────────────
+                          Row(
+                            children: [
+                              _PractitionerAvatar(
+                                avatarUrl: avatarUrl,
+                                initials: _getInitials(),
+                                isPast: isPast,
+                              ),
+                              SizedBox(width: AppSpacing.md.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            practitionerName,
+                                            style: AppTextStyles.titleMd(
+                                              color: AppColors.textPrimary,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        if (_statusLabel(context) != null) ...[
+                                          SizedBox(width: 8.w),
+                                          _StatusChip(
+                                            label: _statusLabel(context)!,
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w,
+                                        vertical: 3.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primarySurface,
+                                        borderRadius: BorderRadius.circular(
+                                          AppRadii.xs.r,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        specialty,
+                                        style: AppTextStyles.labelXs(
+                                          color: AppColors.primary,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Icon(
+                                  isRtl
+                                      ? Icons.chevron_left_rounded
+                                      : Icons.chevron_right_rounded,
+                                  size: 20.sp,
+                                  color: AppColors.textTertiary,
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                        if (address != null && address!.isNotEmpty) ...[
-                          SizedBox(height: AppSpacing.sm.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.location_on_outlined,
-                                size: 14.sp,
-                                color: AppColors.primary.withValues(alpha: 0.7),
-                              ),
-                              SizedBox(width: 6.w),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => openAddressInMaps(address!),
+                          // ── Reason ──────────────────────────────────
+                          if (reason.isNotEmpty) ...[
+                            SizedBox(height: AppSpacing.sm.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.medical_information_outlined,
+                                  size: 14.sp,
+                                  color: AppColors.accent.withValues(
+                                    alpha: 0.8,
+                                  ),
+                                ),
+                                SizedBox(width: 6.w),
+                                Expanded(
                                   child: Text(
-                                    address!,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.primary,
-                                      height: 1.35,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: AppColors.primary
-                                          .withValues(alpha: 0.4),
+                                    reason,
+                                    style: AppTextStyles.bodyXs(
+                                      color: AppColors.textSecondary,
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 4.w),
-                              GestureDetector(
-                                onTap: () => copyAddress(context, address!),
-                                child: Icon(
-                                  Icons.copy_rounded,
+                              ],
+                            ),
+                          ],
+                          // ── Address ─────────────────────────────────
+                          if (address != null && address!.isNotEmpty) ...[
+                            SizedBox(height: AppSpacing.sm.h),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on_outlined,
                                   size: 14.sp,
-                                  color: AppColors.textSecondary
-                                      .withValues(alpha: 0.6),
+                                  color: AppColors.primary.withValues(
+                                    alpha: 0.7,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                SizedBox(width: 6.w),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () => openAddressInMaps(address!),
+                                    child: Text(
+                                      address!,
+                                      style: AppTextStyles.bodyXs(
+                                        color: AppColors.primary,
+                                      ).copyWith(
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: AppColors.primary
+                                            .withValues(alpha: 0.4),
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 4.w),
+                                GestureDetector(
+                                  onTap: () => copyAddress(context, address!),
+                                  child: Icon(
+                                    Icons.copy_rounded,
+                                    size: 14.sp,
+                                    color: AppColors.textTertiary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _PractitionerAvatar extends StatelessWidget {
+  const _PractitionerAvatar({
+    required this.avatarUrl,
+    required this.initials,
+    required this.isPast,
+  });
+
+  final String? avatarUrl;
+  final String initials;
+  final bool isPast;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 44.r,
+      height: 44.r,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: isPast
+              ? AppColors.outline
+              : AppColors.primary.withValues(alpha: 0.15),
+          width: 1.5.r,
+        ),
+        boxShadow: isPast
+            ? AppShadows.none
+            : [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.08),
+                  blurRadius: 8.r,
+                  offset: Offset(0, 2.h),
+                ),
+              ],
+      ),
+      child: ClipOval(
+        child: (avatarUrl?.trim().isNotEmpty ?? false)
+            ? CachedNetworkImage(
+                imageUrl: avatarUrl!.trim(),
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    _AvatarPlaceholder(initials: initials),
+                errorWidget: (context, url, error) =>
+                    _AvatarPlaceholder(initials: initials),
+              )
+            : _AvatarPlaceholder(initials: initials),
       ),
     );
   }
@@ -365,16 +367,12 @@ class _StatusChip extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: AppColors.error.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8.r),
+        color: AppColors.errorLight,
+        borderRadius: BorderRadius.circular(AppRadii.sm.r),
       ),
       child: Text(
         label,
-        style: TextStyle(
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w600,
-          color: AppColors.error,
-        ),
+        style: AppTextStyles.labelXs(color: AppColors.error),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -391,14 +389,7 @@ class _AvatarPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.brandGradientStart,
-            AppColors.brandGradientEnd,
-          ],
-        ),
+        gradient: AppColors.brandGradient,
         shape: BoxShape.circle,
       ),
       child: Center(

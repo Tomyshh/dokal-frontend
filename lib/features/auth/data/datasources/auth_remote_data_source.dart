@@ -131,12 +131,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (user == null) {
       throw AuthException(l10nStatic.authSignInFailedTryAgain);
     }
+    final isNewUser = _isRecentlyCreated(user);
+    // Persiste le nom/prénom Google dans les métadonnées Supabase pour
+    // pré-remplir le wizard de complétion de profil.
+    await _persistGoogleIdentityMetadata(client, account);
     // Nettoie la session Google côté plugin pour que la prochaine connexion
     // ré-affiche le sélecteur de compte.
     try {
       await googleSignIn.signOut();
     } catch (_) {}
-    return AuthSession(userId: user.id, email: user.email);
+    return AuthSession(userId: user.id, email: user.email, isNewUser: isNewUser);
   }
 
   @override
@@ -162,8 +166,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (user == null) {
         throw AuthException(l10nStatic.authSignInFailedTryAgain);
       }
+      final isNewUser = _isRecentlyCreated(user);
       await _persistAppleIdentityMetadata(client, credential);
-      return AuthSession(userId: user.id, email: user.email);
+      return AuthSession(userId: user.id, email: user.email, isNewUser: isNewUser);
     } on SignInWithAppleAuthorizationException catch (e) {
       // Annulation utilisateur ou erreurs Apple → message propre (pas de crash).
       if (e.code == AuthorizationErrorCode.canceled) {
@@ -173,6 +178,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e) {
       rethrow;
     }
+  }
+
+  /// Retourne `true` si le compte a été créé il y a moins de 30 secondes
+  /// (indique un signup implicite via OAuth, pas un login existant).
+  bool _isRecentlyCreated(User user) {
+    final createdAt = user.createdAt;
+    final parsed = DateTime.tryParse(createdAt);
+    if (parsed == null) return false;
+    return DateTime.now().toUtc().difference(parsed).inSeconds.abs() < 30;
   }
 
   Future<void> _persistAppleIdentityMetadata(
@@ -221,6 +235,51 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  Future<void> _persistGoogleIdentityMetadata(
+    SupabaseClient client,
+    GoogleSignInAccount account,
+  ) async {
+    final displayName = account.displayName?.trim() ?? '';
+    final email = account.email.trim();
+    if (displayName.isEmpty && email.isEmpty) return;
+
+    try {
+      final currentUser = client.auth.currentUser;
+      final currentMeta =
+          (currentUser?.userMetadata ?? const <String, dynamic>{});
+      final data = <String, dynamic>{...currentMeta};
+      String metaString(String key) {
+        final raw = data[key];
+        if (raw is String) return raw.trim();
+        return '';
+      }
+
+      // Extraire prénom / nom depuis displayName Google
+      if (displayName.isNotEmpty) {
+        final parts = displayName.split(RegExp(r'\s+'));
+        final firstName = parts.first;
+        final lastName = parts.length > 1 ? parts.skip(1).join(' ') : '';
+
+        if (firstName.isNotEmpty && metaString('first_name').isEmpty) {
+          data['first_name'] = firstName;
+        }
+        if (lastName.isNotEmpty && metaString('last_name').isEmpty) {
+          data['last_name'] = lastName;
+        }
+        if (metaString('full_name').isEmpty) {
+          data['full_name'] = displayName;
+        }
+      }
+      if (email.isNotEmpty && metaString('email').isEmpty) {
+        data['email'] = email;
+      }
+
+      await client.auth.updateUser(UserAttributes(data: data));
+    } catch (_) {
+      // Best-effort only: auth session is already valid.
+    }
+  }
+
   @override
   Future<AuthSession> signUp({
     required String email,
@@ -241,6 +300,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (user == null) {
       throw AuthException(l10nStatic.authSignUpFailedTryAgain);
     }
+
+    // Supabase returns a user with empty identities when the email already
+    // exists (even if unconfirmed) — but does NOT re-send the OTP email.
+    // Distinguish: unconfirmed → resend OTP, confirmed → account exists.
+    final identities = user.identities;
+    if (identities == null || identities.isEmpty) {
+      if (user.emailConfirmedAt != null) {
+        throw AuthException(l10nStatic.authAccountAlreadyExists);
+      }
+      await client.auth.resend(type: OtpType.signup, email: email);
+    }
+
     return AuthSession(userId: user.id, email: user.email);
   }
 

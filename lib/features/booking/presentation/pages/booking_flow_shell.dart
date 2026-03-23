@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/l10n.dart';
@@ -86,18 +86,14 @@ class BookingFlowShell extends StatelessWidget {
                     children: [
                       Text(
                         l10n.bookingFlowTitle,
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w500,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.textSecondary,
                         ),
                       ),
                       Text(
                         name,
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
                         ),
                       ),
                     ],
@@ -147,12 +143,7 @@ class BookingFlowShell extends StatelessWidget {
                                         width: 42.r,
                                         height: 42.r,
                                         decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            colors: [
-                                              AppColors.brandGradientStart,
-                                              AppColors.brandGradientEnd,
-                                            ],
-                                          ),
+                                          gradient: AppColors.brandGradient,
                                           borderRadius: BorderRadius.circular(
                                             AppRadii.lg.r,
                                           ),

@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_radii.dart';
+import '../constants/app_text_styles.dart';
 import '../../l10n/l10n.dart';
 
 /// AppBar moderne Dokal avec bouton retour stylisé.
@@ -18,6 +20,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.foregroundColor,
     this.elevation = 0,
     this.centerTitle = true,
+    this.bottom,
   });
 
   final String title;
@@ -29,9 +32,12 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? foregroundColor;
   final double elevation;
   final bool centerTitle;
+  final PreferredSizeWidget? bottom;
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(
+        kToolbarHeight + (bottom?.preferredSize.height ?? 0),
+      );
 
   void _handleBack(BuildContext context) {
     if (onBack != null) {
@@ -39,7 +45,6 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
     } else if (context.canPop()) {
       context.pop();
     } else {
-      // Fallback: go to home
       context.go('/home');
     }
   }
@@ -48,7 +53,6 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final effectiveBg = backgroundColor ?? AppColors.background;
     final effectiveFg = foregroundColor ?? AppColors.textPrimary;
-    final showBack = showBackButton;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     Widget? titleWidget;
@@ -61,19 +65,13 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
-              color: effectiveFg,
-              fontSize: 15.sp,
-              fontWeight: FontWeight.w600,
-              height: 1.2,
-            ),
+            style: AppTextStyles.titleMd(color: effectiveFg),
           ),
+          SizedBox(height: 2.h),
           Text(
             subtitle!,
-            style: TextStyle(
+            style: AppTextStyles.bodyXs(
               color: effectiveFg.withValues(alpha: 0.7),
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
             ),
           ),
         ],
@@ -81,11 +79,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
     } else {
       titleWidget = Text(
         title,
-        style: TextStyle(
-          color: effectiveFg,
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-        ),
+        style: AppTextStyles.titleLg(color: effectiveFg),
       );
     }
 
@@ -94,9 +88,10 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: effectiveFg,
       elevation: elevation,
       scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       centerTitle: centerTitle,
       automaticallyImplyLeading: false,
-      leading: showBack
+      leading: showBackButton
           ? Padding(
               padding: EdgeInsetsDirectional.only(start: 4.w),
               child: IconButton(
@@ -106,7 +101,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 36.r,
                   decoration: BoxDecoration(
                     color: effectiveFg.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(10.r),
+                    borderRadius: BorderRadius.circular(AppRadii.lg.r),
                   ),
                   child: Directionality(
                     textDirection: TextDirection.ltr,
@@ -125,6 +120,7 @@ class DokalAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       title: titleWidget,
       actions: actions,
+      bottom: bottom,
     );
   }
 }

@@ -17,10 +17,23 @@ class LoginSubmitted extends LoginEvent {
   List<Object?> get props => [email, password];
 }
 
+/// Mode du flux OAuth : login (connexion) ou register (inscription).
+enum OAuthMode { login, register }
+
 class LoginWithGoogleRequested extends LoginEvent {
-  const LoginWithGoogleRequested();
+  const LoginWithGoogleRequested({this.mode = OAuthMode.login});
+
+  final OAuthMode mode;
+
+  @override
+  List<Object?> get props => [mode];
 }
 
 class LoginWithAppleRequested extends LoginEvent {
-  const LoginWithAppleRequested();
+  const LoginWithAppleRequested({this.mode = OAuthMode.login});
+
+  final OAuthMode mode;
+
+  @override
+  List<Object?> get props => [mode];
 }

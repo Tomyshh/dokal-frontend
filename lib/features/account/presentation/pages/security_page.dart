@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
+import '../../../../core/widgets/dokal_list_tile.dart';
 import '../../../../core/widgets/logout_overlay.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -40,7 +42,7 @@ class SecurityPage extends StatelessWidget {
                           width: 36.r,
                           height: 36.r,
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.1),
+                            color: AppColors.primarySurface,
                             borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Icon(
@@ -56,12 +58,12 @@ class SecurityPage extends StatelessWidget {
                             children: [
                               Text(
                                 l10n.securitySecureAccountTitle,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: AppTextStyles.titleSm(),
                               ),
                               SizedBox(height: 2.h),
                               Text(
                                 l10n.securitySecureAccountSubtitle,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: AppTextStyles.bodySm(color: AppColors.textSecondary),
                               ),
                             ],
                           ),
@@ -70,34 +72,10 @@ class SecurityPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: AppSpacing.md.h),
-                  DokalCard(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg.w,
-                      vertical: AppSpacing.md.h,
-                    ),
+                  DokalListTile(
+                    icon: Icons.lock_rounded,
+                    title: l10n.securityChangePassword,
                     onTap: () => context.go('/account/security/change-password'),
-                    child: Row(
-                      children: [
-                        Icon(Icons.lock_rounded, size: 20.sp),
-                        SizedBox(width: AppSpacing.md.w),
-                        Expanded(
-                          child: Text(
-                            l10n.securityChangePassword,
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                        ),
-                        Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: Icon(
-                            Directionality.of(context) == TextDirection.rtl
-                                ? Icons.chevron_left_rounded
-                                : Icons.chevron_right_rounded,
-                            size: 18.sp,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                   SizedBox(height: AppSpacing.xl.h),
                   DokalButton.outline(

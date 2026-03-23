@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_text_styles.dart';
 
 class DokalAvatar extends StatelessWidget {
   const DokalAvatar({
@@ -31,15 +32,14 @@ class DokalAvatar extends StatelessWidget {
       height: size.r,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: backgroundColor ?? AppColors.primary.withValues(alpha: 0.10),
+        color: backgroundColor ?? AppColors.primarySurface,
       ),
       alignment: Alignment.center,
       child: Text(
         _initials,
-        style: TextStyle(
-          color: AppColors.primary,
-          fontWeight: FontWeight.w800,
+        style: AppTextStyles.labelLg(color: AppColors.primary).copyWith(
           fontSize: (size * 0.34).sp,
+          fontWeight: FontWeight.w800,
         ),
       ),
     );

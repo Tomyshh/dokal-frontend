@@ -6,11 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/insurance_providers.dart';
+import '../../../../core/constants/app_shadows.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/insurance_providers.dart';
 import '../../../../core/widgets/dokal_avatar.dart';
 import '../../../../core/profile_completion/profile_completion_notifier.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
@@ -65,6 +69,7 @@ class _WizardViewState extends State<_WizardView> {
   final _phone = TextEditingController();
   final _teudatZehut = TextEditingController();
 
+  String _fullPhone = '';
   String _kupatHolim = 'clalit';
   String? _insuranceProvider;
   String _sex = 'other';
@@ -93,18 +98,28 @@ class _WizardViewState extends State<_WizardView> {
     final h = state.healthProfile;
     if (p == null) return;
 
-    _firstName.text = (p.firstName ?? '').trim();
-    _lastName.text = (p.lastName ?? '').trim();
+    // Récupère les métadonnées OAuth (Google/Apple) pour pré-remplir
+    final authUser = Supabase.instance.client.auth.currentUser;
+    final authMeta = authUser?.userMetadata ?? const <String, dynamic>{};
+    final authFirstName = (authMeta['first_name'] as String? ?? '').trim();
+    final authLastName = (authMeta['last_name'] as String? ?? '').trim();
+    final authEmail = authUser?.email;
+
+    _firstName.text = (p.firstName ?? '').trim().isNotEmpty
+        ? (p.firstName ?? '').trim()
+        : authFirstName;
+    _lastName.text = (p.lastName ?? '').trim().isNotEmpty
+        ? (p.lastName ?? '').trim()
+        : authLastName;
     final cityVal = p.city.trim();
     _city = cityVal;
     _address.text = cityVal;
     _sex = _normalizeSex(p.sex);
     _avatarUrlFromProfile = p.avatarUrl;
     _phone.text = (p.phone ?? '').trim();
-    final authEmail = Supabase.instance.client.auth.currentUser?.email;
     _email.text = ((p.email).trim().isNotEmpty ? p.email : (authEmail ?? ''))
         .trim();
-    _dateOfBirth.text = _normalizeIsoDate((p.dateOfBirth ?? '').trim());
+    _dateOfBirth.text = _formatDisplayDate((p.dateOfBirth ?? '').trim());
 
     _teudatZehut.text = (h?.teudatZehut ?? '').trim();
     _kupatHolim = (h?.kupatHolim ?? '').trim().isEmpty
@@ -240,6 +255,8 @@ class _WizardViewState extends State<_WizardView> {
                           formKey: _contactFormKey,
                           email: _email,
                           phone: _phone,
+                          onPhoneChanged: (p) =>
+                              _fullPhone = p.completeNumber,
                         ),
                         _IsraelStep(
                           formKey: _israelFormKey,
@@ -304,12 +321,12 @@ class _WizardViewState extends State<_WizardView> {
       return;
     }
 
-    final dobIso = _normalizeIsoDate(_dateOfBirth.text.trim());
+    final dobIso = _displayToIso(_dateOfBirth.text.trim());
     final cityVal = _city.trim().isNotEmpty ? _city.trim() : _address.text.trim();
     context.read<ProfileCompletionCubit>().saveRequiredInfo(
       firstName: _firstName.text.trim(),
       lastName: _lastName.text.trim(),
-      phone: _phone.text.trim(),
+      phone: _fullPhone.isNotEmpty ? _fullPhone : _phone.text.trim(),
       dateOfBirthIso: dobIso,
       teudatZehut: _digitsOnly(_teudatZehut.text),
       kupatHolim: _kupatHolim.trim(),
@@ -381,7 +398,7 @@ class _WizardViewState extends State<_WizardView> {
   Future<void> _pickDob() async {
     final now = DateTime.now();
     final initial =
-        _tryParseIsoDate(_dateOfBirth.text) ??
+        _tryParseDate(_dateOfBirth.text) ??
         DateTime(now.year - 30, now.month, now.day);
     final picked = await _showCupertinoDatePicker(
       context: context,
@@ -390,7 +407,7 @@ class _WizardViewState extends State<_WizardView> {
       maximumDate: now,
     );
     if (picked == null) return;
-    setState(() => _dateOfBirth.text = _formatIsoDate(picked));
+    setState(() => _dateOfBirth.text = _formatDisplayDate(_formatIsoDate(picked)));
   }
 
   static Future<DateTime?> _showCupertinoDatePicker({
@@ -415,13 +432,7 @@ class _WizardViewState extends State<_WizardView> {
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 16.r,
-                offset: Offset(0, -2.h),
-              ),
-            ],
+            boxShadow: AppShadows.sm,
           ),
           child: Column(
             children: [
@@ -444,10 +455,7 @@ class _WizardViewState extends State<_WizardView> {
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(
                         l10n.commonCancel,
-                        style: TextStyle(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: AppTextStyles.titleSm(color: AppColors.textSecondary),
                       ),
                     ),
                     CupertinoButton(
@@ -455,10 +463,7 @@ class _WizardViewState extends State<_WizardView> {
                       onPressed: () => Navigator.of(context).pop(selected),
                       child: Text(
                         l10n.commonContinue,
-                        style: const TextStyle(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: AppTextStyles.titleSm(color: AppColors.primary),
                       ),
                     ),
                   ],
@@ -518,17 +523,12 @@ class _WizardHeader extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-            ),
+            style: AppTextStyles.headingSm(color: AppColors.textOnPrimary),
           ),
           SizedBox(height: 4.h),
           Text(
             subtitle,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.9),
-            ),
+            style: AppTextStyles.bodyMd(color: AppColors.textOnPrimary),
           ),
           SizedBox(height: AppSpacing.md.h),
           Row(
@@ -594,10 +594,7 @@ class _WizardHeader extends StatelessWidget {
                 ),
                 child: Text(
                   stepLabel,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyles.labelMd(color: AppColors.textOnPrimary),
                 ),
               ),
             ],
@@ -635,14 +632,8 @@ class _WizardFooter extends StatelessWidget {
         AppSpacing.lg.h,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12.r,
-            offset: Offset(0, -2.h),
-          ),
-        ],
+        color: AppColors.surface,
+        boxShadow: AppShadows.sm,
       ),
       child: Row(
         children: [
@@ -659,16 +650,16 @@ class _WizardFooter extends StatelessWidget {
               onPressed: isSaving ? null : onNext,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.textOnPrimary,
                 padding: EdgeInsets.symmetric(vertical: 12.h),
               ),
               child: isSaving
                   ? SizedBox(
                       width: 18.r,
                       height: 18.r,
-                      child: const CircularProgressIndicator(
+                      child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: AppColors.textOnPrimary,
                       ),
                     )
                   : Text(nextLabel),
@@ -698,17 +689,12 @@ class _StepCard extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTextStyles.titleLg(),
         ),
         SizedBox(height: 6.h),
         Text(
           subtitle,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+          style: AppTextStyles.bodyMd(color: AppColors.textSecondary),
         ),
         SizedBox(height: AppSpacing.lg.h),
         child,
@@ -786,7 +772,7 @@ class _IdentityStep extends StatelessWidget {
                         child: Icon(
                           Icons.camera_alt_rounded,
                           size: 18.r,
-                          color: Colors.white,
+                          color: AppColors.textOnPrimary,
                         ),
                       ),
                     ),
@@ -797,9 +783,7 @@ class _IdentityStep extends StatelessWidget {
             SizedBox(height: AppSpacing.md.h),
             Text(
               l10n.profileCompletionAvatar,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: AppTextStyles.bodySm(color: AppColors.textSecondary),
             ),
             SizedBox(height: AppSpacing.lg.h),
             Row(
@@ -835,7 +819,7 @@ class _IdentityStep extends StatelessWidget {
                   (v ?? '').trim().isEmpty ? l10n.commonRequired : null,
               decoration: InputDecoration(
                 labelText: l10n.profileCompletionDateOfBirth,
-                hintText: context.l10n.commonDateHintYyyyMmDd,
+                hintText: context.l10n.commonDateHintDdMmYyyy,
                 prefixIcon: const Icon(Icons.cake_rounded),
                 suffixIcon: const Icon(Icons.calendar_today_rounded),
               ),
@@ -922,11 +906,13 @@ class _ContactStep extends StatelessWidget {
     required this.formKey,
     required this.email,
     required this.phone,
+    required this.onPhoneChanged,
   });
 
   final GlobalKey<FormState> formKey;
   final TextEditingController email;
   final TextEditingController phone;
+  final ValueChanged<PhoneNumber> onPhoneChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -948,21 +934,33 @@ class _ContactStep extends StatelessWidget {
               ),
             ),
             SizedBox(height: AppSpacing.md.h),
-            DokalTextField(
+            IntlPhoneField(
               controller: phone,
-              label: l10n.profileCompletionPhone,
-              hint: l10n.profileCompletionPhoneHint,
-              keyboardType: TextInputType.phone,
-              prefixIcon: Icons.phone_rounded,
-              textInputAction: TextInputAction.done,
+              initialCountryCode: 'IL',
+              languageCode: Localizations.localeOf(context).languageCode,
+              disableLengthCheck: true,
+              decoration: InputDecoration(
+                labelText: l10n.profileCompletionPhone,
+                hintText: l10n.profileCompletionPhoneHint,
+                counterText: '',
+              ),
+              dropdownTextStyle: AppTextStyles.bodyMd(),
+              style: AppTextStyles.bodyMd(),
+              flagsButtonPadding: EdgeInsets.only(left: 12.w),
+              dropdownIconPosition: IconPosition.trailing,
+              dropdownIcon: Icon(
+                Icons.arrow_drop_down,
+                color: AppColors.textSecondary,
+              ),
               validator: (v) {
-                final raw = (v ?? '').trim();
+                final raw = (v?.number ?? '').trim();
                 if (raw.isEmpty) return l10n.commonRequired;
                 if (_digitsOnly(raw).length < 7) {
                   return l10n.profileCompletionPhoneInvalid;
                 }
                 return null;
               },
+              onChanged: onPhoneChanged,
             ),
           ],
         ),
@@ -1079,7 +1077,7 @@ class _InsuranceStep extends StatelessWidget {
               ...insuranceProviders.map(
                 (p) => DropdownMenuItem<String>(
                   value: p,
-                  child: Text(p),
+                  child: Text(insuranceDisplayName(context, p)),
                 ),
               ),
             ],
@@ -1108,10 +1106,7 @@ class _InsuranceStep extends StatelessWidget {
                 Expanded(
                   child: Text(
                     l10n.profileCompletionInsuranceOptionalHint,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.25,
-                    ),
+                    style: AppTextStyles.bodySm(color: AppColors.textSecondary),
                   ),
                 ),
               ],
@@ -1125,34 +1120,67 @@ class _InsuranceStep extends StatelessWidget {
 
 String _digitsOnly(String input) => input.replaceAll(RegExp(r'[^0-9]'), '');
 
-String _normalizeIsoDate(String input) {
-  final trimmed = input.trim();
-  if (trimmed.isEmpty) return '';
-  final d = _tryParseIsoDate(trimmed);
-  return d == null ? trimmed : _formatIsoDate(d);
-}
-
-DateTime? _tryParseIsoDate(String input) {
+/// Parses ISO (YYYY-MM-DD) or display (DD/MM/YYYY) into a DateTime.
+DateTime? _tryParseDate(String input) {
   final trimmed = input.trim();
   if (trimmed.length < 10) return null;
-  final parts = trimmed.substring(0, 10).split('-');
-  if (parts.length != 3) return null;
-  final y = int.tryParse(parts[0]);
-  final m = int.tryParse(parts[1]);
-  final d = int.tryParse(parts[2]);
-  if (y == null || m == null || d == null) return null;
-  try {
-    return DateTime(y, m, d);
-  } catch (_) {
-    return null;
+
+  // Try DD/MM/YYYY
+  if (trimmed.contains('/')) {
+    final parts = trimmed.substring(0, 10).split('/');
+    if (parts.length == 3) {
+      final d = int.tryParse(parts[0]);
+      final m = int.tryParse(parts[1]);
+      final y = int.tryParse(parts[2]);
+      if (y != null && m != null && d != null) {
+        try {
+          return DateTime(y, m, d);
+        } catch (_) {}
+      }
+    }
   }
+
+  // Try YYYY-MM-DD
+  final parts = trimmed.substring(0, 10).split('-');
+  if (parts.length == 3) {
+    final y = int.tryParse(parts[0]);
+    final m = int.tryParse(parts[1]);
+    final d = int.tryParse(parts[2]);
+    if (y != null && m != null && d != null) {
+      try {
+        return DateTime(y, m, d);
+      } catch (_) {}
+    }
+  }
+  return null;
 }
 
+/// Formats a DateTime as ISO YYYY-MM-DD (for API).
 String _formatIsoDate(DateTime date) {
   final y = date.year.toString().padLeft(4, '0');
   final m = date.month.toString().padLeft(2, '0');
   final d = date.day.toString().padLeft(2, '0');
   return '$y-$m-$d';
+}
+
+/// Converts any date string (ISO or display) to DD/MM/YYYY for the text field.
+String _formatDisplayDate(String input) {
+  final trimmed = input.trim();
+  if (trimmed.isEmpty) return '';
+  final dt = _tryParseDate(trimmed);
+  if (dt == null) return trimmed;
+  final d = dt.day.toString().padLeft(2, '0');
+  final m = dt.month.toString().padLeft(2, '0');
+  final y = dt.year.toString().padLeft(4, '0');
+  return '$d/$m/$y';
+}
+
+/// Converts any date string (ISO or display) to ISO YYYY-MM-DD for the API.
+String _displayToIso(String input) {
+  final trimmed = input.trim();
+  if (trimmed.isEmpty) return '';
+  final dt = _tryParseDate(trimmed);
+  return dt == null ? trimmed : _formatIsoDate(dt);
 }
 
 bool _isValidIsraeliId(String digits) {

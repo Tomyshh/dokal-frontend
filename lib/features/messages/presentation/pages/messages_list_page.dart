@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/constants/app_animations.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/format_appointment_date.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/utils/format_appointment_date.dart';
+import '../../../../core/widgets/dokal_app_bar.dart';
+import '../../../../core/widgets/dokal_badge.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
+import '../../../../core/widgets/dokal_fade_in.dart';
+import '../../../../core/widgets/dokal_shimmer_block.dart';
 import '../../../../injection_container.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../l10n/l10n.dart';
@@ -29,22 +34,10 @@ class MessagesListPage extends StatelessWidget {
       create: (_) => sl<MessagesCubit>()..load(),
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-          scrolledUnderElevation: 0,
-          toolbarHeight: 48.h,
+        appBar: DokalAppBar(
+          title: l10n.messagesTitle,
+          showBackButton: false,
           centerTitle: true,
-          title: Text(
-            l10n.messagesTitle,
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
           actions: [
             IconButton(
               onPressed: () {
@@ -63,7 +56,7 @@ class MessagesListPage extends StatelessWidget {
                             ),
                             title: Text(
                               l10n.messagesMarkAllRead,
-                              style: Theme.of(context).textTheme.titleSmall,
+                              style: AppTextStyles.titleSm(),
                             ),
                             onTap: () {
                               Navigator.of(ctx).pop();
@@ -78,7 +71,7 @@ class MessagesListPage extends StatelessWidget {
                             leading: Icon(Icons.tune_rounded, size: 20.sp),
                             title: Text(
                               l10n.commonSettings,
-                              style: Theme.of(context).textTheme.titleSmall,
+                              style: AppTextStyles.titleSm(),
                             ),
                             onTap: () {
                               Navigator.of(ctx).pop();
@@ -118,7 +111,7 @@ class MessagesListPage extends StatelessWidget {
                 icon: Icons.mail_rounded,
                 action: hasSession
                     ? null
-                    : DokalButton.primary(
+                    : DokalButton.gold(
                         onPressed: () => context.go('/account'),
                         leading: const Icon(Icons.login_rounded),
                         child: Text(l10n.authLoginButton),
@@ -133,45 +126,46 @@ class MessagesListPage extends StatelessWidget {
               itemCount: conversations.length,
               itemBuilder: (context, index) {
                 final conv = conversations[index];
-                return _ConversationTile(
-                  conversation: conv,
-                  onTap: () => context.push('/messages/c/${conv.id}', extra: conv),
-                  showDivider: index < conversations.length - 1,
+                return DokalFadeIn(
+                  delay: AppAnimations.staggerDelayFor(index),
+                  child: _ConversationTile(
+                    conversation: conv,
+                    onTap: () =>
+                        context.push('/messages/c/${conv.id}', extra: conv),
+                    showDivider: index < conversations.length - 1,
+                  ),
                 );
               },
             );
           },
         ),
-        floatingActionButton: FloatingActionButton.small(
+        floatingActionButton: FloatingActionButton(
           heroTag: 'fab_messages',
           onPressed: () => hasSession
               ? context.push('/messages/new')
               : context.go('/account'),
-          backgroundColor: AppColors.primary,
-          child: Icon(Icons.edit_rounded, color: Colors.white, size: 20.sp),
+          child: Icon(Icons.edit_rounded, size: 22.sp),
         ),
       ),
     );
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// SHIMMER
+// ═══════════════════════════════════════════════════════════════════════════════
+
 class _MessagesListShimmer extends StatelessWidget {
   const _MessagesListShimmer();
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = AppColors.surfaceVariant;
-    final highlightColor = Colors.white.withValues(alpha: 0.9);
-    final block = AppColors.surfaceVariant;
-
-    return Shimmer.fromColors(
-      baseColor: baseColor,
-      highlightColor: highlightColor,
+    return DokalShimmerGroup(
       child: ListView(
         padding: EdgeInsets.only(top: AppSpacing.sm.h, bottom: 100.h),
         children: [
           for (var i = 0; i < 5; i++) ...[
-            _ShimmerTile(color: block),
+            _ShimmerTile(),
             if (i < 4)
               Divider(
                 height: 1.h,
@@ -187,10 +181,6 @@ class _MessagesListShimmer extends StatelessWidget {
 }
 
 class _ShimmerTile extends StatelessWidget {
-  const _ShimmerTile({required this.color});
-
-  final Color color;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -201,14 +191,7 @@ class _ShimmerTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 40.r,
-            height: 40.r,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
-          ),
+          DokalShimmerBlock.circle(size: 40.r),
           SizedBox(width: AppSpacing.md.w),
           Expanded(
             child: Column(
@@ -216,35 +199,17 @@ class _ShimmerTile extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(
-                      child: Container(
-                        height: 14.h,
-                        decoration: BoxDecoration(
-                          color: color,
-                          borderRadius: BorderRadius.circular(AppRadii.sm.r),
-                        ),
-                      ),
-                    ),
+                    Expanded(child: DokalShimmerBlock(height: 14.h)),
                     SizedBox(width: AppSpacing.sm.w),
-                    Container(
+                    DokalShimmerBlock(
                       height: 12.h,
                       width: 40.w,
-                      decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: BorderRadius.circular(AppRadii.pill.r),
-                      ),
+                      borderRadius: AppRadii.pill,
                     ),
                   ],
                 ),
                 SizedBox(height: 8.h),
-                Container(
-                  height: 12.h,
-                  width: 180.w,
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.circular(AppRadii.sm.r),
-                  ),
-                ),
+                DokalShimmerBlock(height: 12.h, width: 180.w),
               ],
             ),
           ),
@@ -254,7 +219,10 @@ class _ShimmerTile extends StatelessWidget {
   }
 }
 
-/// Tile de conversation
+// ═══════════════════════════════════════════════════════════════════════════════
+// CONVERSATION TILE
+// ═══════════════════════════════════════════════════════════════════════════════
+
 class _ConversationTile extends StatelessWidget {
   const _ConversationTile({
     required this.conversation,
@@ -298,22 +266,18 @@ class _ConversationTile extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 conversation.name,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: AppTextStyles.titleSm(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Text(
                               conversation.timeAgo,
-                              style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    color: conversation.unreadCount > 0
-                                        ? AppColors.primary
-                                        : AppColors.textSecondary,
-                                    fontWeight: conversation.unreadCount > 0
-                                        ? FontWeight.w600
-                                        : FontWeight.w400,
-                                  ),
+                              style: AppTextStyles.labelXs(
+                                color: conversation.unreadCount > 0
+                                    ? AppColors.primary
+                                    : AppColors.textTertiary,
+                              ),
                             ),
                           ],
                         ),
@@ -323,26 +287,28 @@ class _ConversationTile extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 conversation.lastMessage,
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      fontWeight: conversation.unreadCount > 0
-                                          ? FontWeight.w500
-                                          : FontWeight.w400,
-                                    ),
+                                style: AppTextStyles.bodyXs(
+                                  color: conversation.unreadCount > 0
+                                      ? AppColors.textPrimary
+                                      : AppColors.textSecondary,
+                                ).copyWith(
+                                  fontWeight: conversation.unreadCount > 0
+                                      ? FontWeight.w500
+                                      : FontWeight.w400,
+                                ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             if (conversation.unreadCount > 0) ...[
                               SizedBox(width: AppSpacing.xs.w),
-                              _UnreadBadge(count: conversation.unreadCount),
+                              DokalBadge(count: conversation.unreadCount),
                             ],
                           ],
                         ),
                         if (conversation.appointment != null) ...[
                           SizedBox(height: AppSpacing.xs.h),
                           _AppointmentChip(
-                            context: context,
                             appointment: conversation.appointment!,
                           ),
                         ],
@@ -366,7 +332,10 @@ class _ConversationTile extends StatelessWidget {
   }
 }
 
-/// Avatar avec indicateur en ligne
+// ═══════════════════════════════════════════════════════════════════════════════
+// AVATAR
+// ═══════════════════════════════════════════════════════════════════════════════
+
 class _Avatar extends StatelessWidget {
   const _Avatar({
     required this.name,
@@ -417,7 +386,7 @@ class _Avatar extends StatelessWidget {
                 width: 10.r,
                 height: 10.r,
                 decoration: BoxDecoration(
-                  color: AppColors.accent,
+                  color: AppColors.success,
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 1.5.w),
                 ),
@@ -439,54 +408,20 @@ class _Avatar extends StatelessWidget {
       child: Center(
         child: Text(
           initials,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w600,
-            color: color,
-          ),
+          style: AppTextStyles.labelMd(color: color),
         ),
       ),
     );
   }
 }
 
-/// Badge de messages non lus
-class _UnreadBadge extends StatelessWidget {
-  const _UnreadBadge({required this.count});
+// ═══════════════════════════════════════════════════════════════════════════════
+// APPOINTMENT CHIP
+// ═══════════════════════════════════════════════════════════════════════════════
 
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 18.r,
-      height: 18.r,
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Text(
-          count.toString(),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 10.sp,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Chip d'aperçu RDV
 class _AppointmentChip extends StatelessWidget {
-  const _AppointmentChip({
-    required this.context,
-    required this.appointment,
-  });
+  const _AppointmentChip({required this.appointment});
 
-  final BuildContext context;
   final ConversationAppointmentPreview appointment;
 
   String _statusLabel(AppLocalizations l10n) {
@@ -511,7 +446,8 @@ class _AppointmentChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final statusLabel = _statusLabel(l10n);
-    final formattedDate = formatAppointmentDateShort(context, appointment.date);
+    final formattedDate =
+        formatAppointmentDateShort(context, appointment.date);
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -520,7 +456,7 @@ class _AppointmentChip extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: AppColors.surfaceVariant,
-        borderRadius: BorderRadius.circular(6.r),
+        borderRadius: BorderRadius.circular(AppRadii.xs.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -529,7 +465,7 @@ class _AppointmentChip extends StatelessWidget {
             width: 22.r,
             height: 22.r,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.15),
+              color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(4.r),
             ),
             child: Icon(
@@ -544,17 +480,12 @@ class _AppointmentChip extends StatelessWidget {
             children: [
               Text(
                 statusLabel,
-                style: Theme.of(
-                  context,
-                ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
+                style: AppTextStyles.labelXs(color: AppColors.textPrimary),
               ),
               Text(
                 formattedDate,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.primary,
-                  fontSize: 9.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyles.labelXs(color: AppColors.primary)
+                    .copyWith(fontSize: 9.sp),
               ),
             ],
           ),

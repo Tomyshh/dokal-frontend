@@ -10,18 +10,13 @@ class ReviewsCubit extends Cubit<ReviewsState> {
 
   final CreateReview _createReview;
 
-  /// Submits a review for an appointment.
-  ///
-  /// Parameters:
-  ///   - appointmentId: The UUID of the appointment being reviewed
-  ///   - practitionerId: The UUID of the practitioner being reviewed
-  ///   - rating: The rating given (1-5)
-  ///   - comment: Optional comment/review text
   Future<void> submit({
     required String appointmentId,
     required String practitionerId,
     required int rating,
     String? comment,
+    String? waitTime,
+    bool isAnonymous = false,
   }) async {
     emit(state.copyWith(status: ReviewsStatus.loading));
 
@@ -30,6 +25,8 @@ class ReviewsCubit extends Cubit<ReviewsState> {
       practitionerId: practitionerId,
       rating: rating,
       comment: comment,
+      waitTime: waitTime,
+      isAnonymous: isAnonymous,
     );
 
     result.fold(
@@ -46,7 +43,6 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     );
   }
 
-  /// Resets the state to initial.
   void reset() {
     emit(const ReviewsState.initial());
   }

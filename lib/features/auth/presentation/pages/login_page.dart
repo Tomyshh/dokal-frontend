@@ -160,7 +160,9 @@ class _LoginPageState extends State<LoginPage> {
                     : constraints.maxHeight * 0.40)
                 .clamp(_expanded ? 180.0.h : 280.0.h, _expanded ? 260.0.h : 420.0.h)
                 .toDouble();
-            final collapsedSheetHeight = MediaQuery.of(context).size.height/2.8.h;
+            final collapsedSheetHeight = (constraints.maxHeight * 0.32)
+                .clamp(220.0.h, 320.0.h)
+                .toDouble();
             final expandedTargetHeight =
                 _view == _AuthSheetView.login ? 560.0.h : 630.0.h;
             final minSheetHeight = 500.0.h;
@@ -329,71 +331,53 @@ class _LoginPageState extends State<LoginPage> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(
                           AppSpacing.xl.w,
-                          AppSpacing.lg.h,
+                          0,
                           AppSpacing.xl.w,
-                          AppSpacing.lg.h + safeBottom,
+                          safeBottom + AppSpacing.md.h,
                         ),
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.fromLTRB(
-                            AppSpacing.md.w,
-                            AppSpacing.md.h,
-                            AppSpacing.md.w,
-                            AppSpacing.md.h,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                AppColors.primary.withValues(alpha: 0.04),
-                                AppColors.primary.withValues(alpha: 0.09),
-                              ],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            // ── Texte descriptif ────────────────
+                            Text(
+                              l10n.authLoginSubtitle,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: base.textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textSecondary,
+                                height: 1.4,
+                              ),
                             ),
-                            border: Border.all(
-                              color: AppColors.primary.withValues(alpha: 0.18),
+                            SizedBox(height: AppSpacing.xl.h),
+                            // ── Bouton Se connecter ─────────────
+                            FilledButton(
+                              onPressed: _expand,
+                              style: primaryButtonStyle,
+                              child: Text(
+                                l10n.onboardingStartButton,
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(18.r),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                l10n.authLoginSubtitle,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: base.textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.3,
+                            SizedBox(height: AppSpacing.sm.h),
+                            // ── Bouton Créer un compte ──────────
+                            OutlinedButton(
+                              onPressed: _expandToRegister,
+                              style: accentOutlinedButtonStyle,
+                              child: Text(
+                                l10n.authCreateAccountCta,
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w800,
                                 ),
                               ),
-                              SizedBox(height: AppSpacing.md.h),
-                              FilledButton(
-                                onPressed: _expand,
-                                style: primaryButtonStyle,
-                                child: Text(
-                                  l10n.onboardingStartButton,
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: AppSpacing.sm.h),
-                              OutlinedButton(
-                                onPressed: _expandToRegister,
-                                style: accentOutlinedButtonStyle,
-                                child: Text(
-                                  l10n.authCreateAccountCta,
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: AppSpacing.sm.h),
+                          ],
                         ),
                       ),
                     ),
@@ -402,13 +386,13 @@ class _LoginPageState extends State<LoginPage> {
               }
 
               Widget loginView() {
-                return Center(
+                return Align(
+                  alignment: Alignment.topCenter,
                   child: SizedBox(
                     width: sheetWidth,
                     child: SingleChildScrollView(
                       key: const ValueKey('loginView'),
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.fromLTRB(
                         AppSpacing.xl.w,
                         AppSpacing.xxs.h,
@@ -526,7 +510,8 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: AppSpacing.sm.h),
                             BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
-                            if (state.status == LoginStatus.success) {
+                            if (state.status == LoginStatus.success ||
+                                state.status == LoginStatus.successExistingAccount) {
                               final authBloc = context.read<AuthBloc>();
                               if (state.session != null) {
                                 authBloc.add(
@@ -535,11 +520,19 @@ class _LoginPageState extends State<LoginPage> {
                               } else {
                                 authBloc.add(const AuthRefreshRequested());
                               }
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(context.l10n.authLoginSuccess),
-                                ),
-                              );
+                              if (state.status == LoginStatus.successExistingAccount) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(l10n.authAccountAlreadyExists),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(context.l10n.authLoginSuccess),
+                                  ),
+                                );
+                              }
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 appRouter.go(_postAuthTarget);
                               });
@@ -558,10 +551,13 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             }
                             if (state.status == LoginStatus.failure) {
+                              final msg = state.errorMessage;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    state.errorMessage ?? l10n.commonError,
+                                    msg == 'noAccountFound'
+                                        ? l10n.authNoAccountFound
+                                        : msg ?? l10n.commonError,
                                   ),
                                 ),
                               );
@@ -611,7 +607,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: FilledButton(
                                     onPressed: () => context
                                         .read<LoginBloc>()
-                                        .add(const LoginWithAppleRequested()),
+                                        .add(const LoginWithAppleRequested(mode: OAuthMode.login)),
                                     style: appleButtonStyle,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -654,7 +650,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ? null
                                   : () => context
                                       .read<LoginBloc>()
-                                      .add(const LoginWithGoogleRequested()),
+                                      .add(const LoginWithGoogleRequested(mode: OAuthMode.login)),
                               style: googleButtonStyle,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -727,13 +723,13 @@ class _LoginPageState extends State<LoginPage> {
               Widget registerView() {
                 return BlocProvider(
                   create: (_) => sl<RegisterBloc>(),
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.topCenter,
                     child: SizedBox(
                       width: sheetWidth,
                       child: SingleChildScrollView(
                         key: const ValueKey('registerView'),
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        physics: const ClampingScrollPhysics(),
                         padding: EdgeInsets.fromLTRB(
                           AppSpacing.xl.w,
                           AppSpacing.xxs.h,
@@ -923,6 +919,90 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             },
                           ),
+                          SizedBox(height: AppSpacing.lg.h),
+                          Divider(height: 1.h, color: AppColors.outline),
+                          SizedBox(height: AppSpacing.lg.h),
+                          if (isIos) ...[
+                            BlocBuilder<RegisterBloc, RegisterState>(
+                              buildWhen: (prev, curr) =>
+                                  prev.status != curr.status,
+                              builder: (context, regState) {
+                                final busy =
+                                    regState.status == RegisterStatus.loading;
+                                return Opacity(
+                                  opacity: busy ? 0.7 : 1,
+                                  child: IgnorePointer(
+                                    ignoring: busy,
+                                    child: FilledButton(
+                                      onPressed: () => context
+                                          .read<LoginBloc>()
+                                          .add(const LoginWithAppleRequested(mode: OAuthMode.register)),
+                                      style: appleButtonStyle,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: 18.r,
+                                            height: 18.r,
+                                            child: CustomPaint(
+                                              painter:
+                                                  apple_auth.AppleLogoPainter(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: AppSpacing.sm.w),
+                                          Text(
+                                            l10n.authContinueWithApple,
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(height: AppSpacing.sm.h),
+                          ],
+                          BlocBuilder<RegisterBloc, RegisterState>(
+                            buildWhen: (prev, curr) =>
+                                prev.status != curr.status,
+                            builder: (context, regState) {
+                              final busy =
+                                  regState.status == RegisterStatus.loading;
+                              return OutlinedButton(
+                                onPressed: busy
+                                    ? null
+                                    : () => context
+                                        .read<LoginBloc>()
+                                        .add(const LoginWithGoogleRequested(mode: OAuthMode.register)),
+                                style: googleButtonStyle,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/icons/google.png',
+                                      width: 18.r,
+                                      height: 18.r,
+                                    ),
+                                    SizedBox(width: AppSpacing.sm.w),
+                                    Text(
+                                      l10n.authContinueWithGoogle,
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                           SizedBox(height: AppSpacing.sm.h),
                           OutlinedButton(
                             onPressed: _goToLogin,
@@ -1020,16 +1100,8 @@ class _LoginPageState extends State<LoginPage> {
                   height: sheetHeight,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        white,
-                        white
-                      ],
-                    ),
+                    color: white,
                     borderRadius: sheetRadius,
-                    
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.14),
@@ -1040,7 +1112,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Column(
                     children: [
-                      sheetHandle,
+                      // Handle — drag vers le bas pour collapse
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onVerticalDragUpdate: _expanded
+                            ? (details) {
+                                if (details.primaryDelta != null &&
+                                    details.primaryDelta! > 8) {
+                                  _collapse();
+                                }
+                              }
+                            : null,
+                        child: sheetHandle,
+                      ),
                       Expanded(child: sheetBody()),
                     ],
                   ),

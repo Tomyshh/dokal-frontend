@@ -12,6 +12,12 @@ class LoginState extends Equatable {
   const LoginState.loading() : this._(status: LoginStatus.loading);
   const LoginState.success([AuthSession? session])
     : this._(status: LoginStatus.success, session: session);
+
+  /// Login réussi mais le compte existait déjà (tentative d'inscription OAuth
+  /// avec un compte déjà existant → on connecte quand même).
+  const LoginState.successExistingAccount(AuthSession session)
+    : this._(status: LoginStatus.successExistingAccount, session: session);
+
   const LoginState.failure(String message)
     : this._(status: LoginStatus.failure, errorMessage: message);
   const LoginState.needsEmailVerification(String email)
@@ -28,4 +34,12 @@ class LoginState extends Equatable {
   List<Object?> get props => [status, errorMessage, email, session];
 }
 
-enum LoginStatus { initial, loading, success, failure, needsEmailVerification }
+enum LoginStatus {
+  initial,
+  loading,
+  success,
+  /// Le compte existait déjà — connexion effectuée automatiquement.
+  successExistingAccount,
+  failure,
+  needsEmailVerification,
+}

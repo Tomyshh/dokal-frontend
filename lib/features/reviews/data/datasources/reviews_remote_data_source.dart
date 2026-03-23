@@ -7,17 +7,13 @@ class ReviewsRemoteDataSourceImpl {
 
   final ApiClient api;
 
-  /// Creates a new review for an appointment.
-  ///
-  /// Sends a POST request to `/api/v1/reviews` with the review data.
-  ///
-  /// Returns the created [Review] entity.
-  /// Throws [ServerException] if the request fails.
   Future<Review> createReviewAsync({
     required String appointmentId,
     required String practitionerId,
     required int rating,
     String? comment,
+    String? waitTime,
+    bool isAnonymous = false,
   }) async {
     final json =
         await api.post(
@@ -27,13 +23,14 @@ class ReviewsRemoteDataSourceImpl {
                 'practitioner_id': practitionerId,
                 'rating': rating,
                 if (comment != null) 'comment': comment,
+                if (waitTime != null) 'wait_time': waitTime,
+                'is_anonymous': isAnonymous,
               },
             )
             as Map<String, dynamic>;
     return _mapReview(json);
   }
 
-  /// Maps a backend review JSON response to a [Review] entity.
   static Review _mapReview(Map<String, dynamic> json) {
     final profiles = json['profiles'] as Map<String, dynamic>?;
     final firstName = profiles?['first_name'] as String? ?? '';

@@ -4,12 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/constants/app_animations.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/appointment_card.dart';
+import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
+import '../../../../core/widgets/dokal_fade_in.dart';
 import '../../../../core/widgets/dokal_loader.dart';
 import '../../../../injection_container.dart';
 import '../../../../core/utils/search_filter_utils.dart';
@@ -31,78 +34,46 @@ class AppointmentsPage extends StatelessWidget {
         initialIndex: initialIndex,
         child: Scaffold(
           backgroundColor: AppColors.background,
-          appBar: AppBar(
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
-            surfaceTintColor: Colors.transparent,
-            scrolledUnderElevation: 0,
-            toolbarHeight: 48.h,
+          appBar: DokalAppBar(
+            title: l10n.appointmentsTitle,
+            showBackButton: false,
             centerTitle: true,
-            title: Text(
-              l10n.appointmentsTitle,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(52.h),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg.w,
+                  vertical: AppSpacing.xs.h,
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(4.r),
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceVariant,
+                    borderRadius: BorderRadius.circular(AppRadii.xl.r),
+                  ),
+                  child: TabBar(
+                    indicatorPadding: EdgeInsets.zero,
+                    tabs: [
+                      Tab(
+                        height: 36.h,
+                        text: l10n.appointmentsTabUpcoming,
+                      ),
+                      Tab(
+                        height: 36.h,
+                        text: l10n.appointmentsTabPast,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-          body: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg.w,
-                  vertical: AppSpacing.sm.h,
-                ),
-                padding: EdgeInsets.all(4.r),
-                decoration: BoxDecoration(
-                  color: AppColors.surfaceVariant,
-                  borderRadius: BorderRadius.circular(AppRadii.xl.r),
-                ),
-                child: TabBar(
-                  dividerColor: Colors.transparent,
-                  labelStyle: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  labelColor: Colors.white,
-                  unselectedLabelColor: AppColors.textSecondary,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicator: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(AppRadii.lg.r),
-                  ),
-                  indicatorPadding: EdgeInsets.zero,
-                  splashBorderRadius: BorderRadius.circular(AppRadii.lg.r),
-                  tabs: [
-                    Tab(
-                      height: 36.h,
-                      text: l10n.appointmentsTabUpcoming,
-                    ),
-                    Tab(
-                      height: 36.h,
-                      text: l10n.appointmentsTabPast,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: const TabBarView(
-                  children: [_UpcomingTab(), _PastTab()],
-                ),
-              ),
-            ],
+          body: const TabBarView(
+            children: [_UpcomingTab(), _PastTab()],
           ),
           floatingActionButton: FloatingActionButton(
             heroTag: 'fab_appointments',
             onPressed: () => context.push('/home/search'),
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
-            elevation: 4,
-            shape: const CircleBorder(),
             child: Icon(Icons.add_rounded, size: 26.sp),
           ),
         ),
@@ -144,7 +115,7 @@ class _UpcomingTab extends StatelessWidget {
             icon: Icons.event_available_rounded,
             action: hasSession
                 ? null
-                : DokalButton.primary(
+                : DokalButton.gold(
                     onPressed: () => context.go('/account'),
                     leading: const Icon(Icons.login_rounded),
                     child: Text(l10n.authLoginButton),
@@ -163,15 +134,18 @@ class _UpcomingTab extends StatelessWidget {
               SizedBox(height: AppSpacing.sm.h),
           itemBuilder: (context, index) {
             final a = items[index];
-            return AppointmentCard(
-              dateLabel: a.dateLabel,
-              timeLabel: a.timeLabel,
-              practitionerName: a.practitionerName,
-              specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
-              reason: a.reason,
-              address: a.address,
-              status: a.status,
-              onTap: () => context.push('/appointments/${a.id}'),
+            return DokalFadeIn(
+              delay: AppAnimations.staggerDelayFor(index),
+              child: AppointmentCard(
+                dateLabel: a.dateLabel,
+                timeLabel: a.timeLabel,
+                practitionerName: a.practitionerName,
+                specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
+                reason: a.reason,
+                address: a.address,
+                status: a.status,
+                onTap: () => context.push('/appointments/${a.id}'),
+              ),
             );
           },
         );
@@ -213,7 +187,7 @@ class _PastTab extends StatelessWidget {
             icon: Icons.event_busy_rounded,
             action: hasSession
                 ? null
-                : DokalButton.primary(
+                : DokalButton.gold(
                     onPressed: () => context.go('/account'),
                     leading: const Icon(Icons.login_rounded),
                     child: Text(l10n.authLoginButton),
@@ -232,15 +206,18 @@ class _PastTab extends StatelessWidget {
               SizedBox(height: AppSpacing.sm.h),
           itemBuilder: (context, index) {
             final a = items[index];
-            return AppointmentCard(
-              dateLabel: a.dateLabel,
-              timeLabel: a.timeLabel,
-              practitionerName: a.practitionerName,
-              specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
-              reason: a.reason,
-              address: a.address,
-              status: a.status,
-              onTap: () => context.push('/appointments/${a.id}'),
+            return DokalFadeIn(
+              delay: AppAnimations.staggerDelayFor(index),
+              child: AppointmentCard(
+                dateLabel: a.dateLabel,
+                timeLabel: a.timeLabel,
+                practitionerName: a.practitionerName,
+                specialty: specialtyToDisplayLabel(a.specialty, context.l10n),
+                reason: a.reason,
+                address: a.address,
+                status: a.status,
+                onTap: () => context.push('/appointments/${a.id}'),
+              ),
             );
           },
         );

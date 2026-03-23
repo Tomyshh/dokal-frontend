@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_button.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../injection_container.dart';
@@ -90,12 +91,12 @@ class _VerifyPasswordResetOtpPageState extends State<VerifyPasswordResetOtpPage>
                   SizedBox(height: AppSpacing.xxl.h),
                   Text(
                     l10n.authResetPasswordVerifyTitle,
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: AppTextStyles.headingLg(),
                   ),
                   SizedBox(height: AppSpacing.sm.h),
                   Text(
                     l10n.authResetPasswordVerifyDescription(widget.email.trim()),
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: AppTextStyles.bodyLg(),
                   ),
                   SizedBox(height: AppSpacing.xl.h),
                   DokalCard(
@@ -110,13 +111,8 @@ class _VerifyPasswordResetOtpPageState extends State<VerifyPasswordResetOtpPage>
                             keyboardType: TextInputType.number,
                             maxLength: 6,
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(
+                            style: AppTextStyles.headingMd(color: AppColors.primary).copyWith(
                                   letterSpacing: 8,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primary,
                                 ),
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,

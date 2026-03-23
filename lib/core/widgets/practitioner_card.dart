@@ -37,7 +37,7 @@ class PractitionerCard extends StatelessWidget {
       return AppColors.accent;
     } else if (nextAvailabilityLabel.contains('מחר') ||
         nextAvailabilityLabel.toLowerCase().contains('tomorrow')) {
-      return const Color(0xFF3B82F6); // Blue
+      return AppColors.info;
     }
     return AppColors.primary;
   }
@@ -123,7 +123,7 @@ class PractitionerCard extends StatelessWidget {
                         vertical: 2.h,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.08),
+                        color: AppColors.primarySurface,
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Text(
@@ -174,7 +174,7 @@ class PractitionerCard extends StatelessWidget {
               Icon(
                 Icons.location_on_rounded,
                 size: 14.sp,
-                color: const Color(0xFFEF4444), // Red subtle
+                color: AppColors.error,
               ),
               SizedBox(width: 6.w),
               Expanded(
@@ -272,19 +272,15 @@ class _AvatarPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryLight],
-        ),
+      decoration: const BoxDecoration(
+        gradient: AppColors.brandGradient,
         shape: BoxShape.circle,
       ),
       child: Center(
         child: Text(
           initials,
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.textOnPrimary,
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),

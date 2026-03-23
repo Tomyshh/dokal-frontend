@@ -3,9 +3,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_radii.dart';
+import '../constants/app_shadows.dart';
 import '../constants/app_spacing.dart';
 
-/// Carte moderne Dokal avec styles compacts.
+/// Variante de style pour [DokalCard].
+enum DokalCardVariant {
+  /// Carte avec bordure subtile et ombre légère (défaut).
+  elevated,
+
+  /// Carte avec bordure visible, sans ombre.
+  outlined,
+
+  /// Carte avec fond coloré léger, sans bordure ni ombre.
+  filled,
+}
+
+/// Carte moderne Dokal avec variantes.
 class DokalCard extends StatelessWidget {
   const DokalCard({
     super.key,
@@ -17,6 +30,7 @@ class DokalCard extends StatelessWidget {
     this.borderRadius,
     this.shadowColor,
     this.showShadow = true,
+    this.variant = DokalCardVariant.elevated,
   });
 
   final Widget child;
@@ -27,30 +41,45 @@ class DokalCard extends StatelessWidget {
   final BorderRadius? borderRadius;
   final Color? shadowColor;
   final bool showShadow;
+  final DokalCardVariant variant;
 
   @override
   Widget build(BuildContext context) {
     final effectiveRadius =
-        borderRadius ?? BorderRadius.circular(AppRadii.lg.r);
-    final effectiveColor = color ?? AppColors.surface;
-    final effectiveBorderColor = borderColor ?? AppColors.outlineSoft;
+        borderRadius ?? BorderRadius.circular(AppRadii.xl.r);
     final effectivePadding = padding ?? EdgeInsets.all(AppSpacing.lg.r);
-    final effectiveShadow = shadowColor ?? AppColors.shadow;
+
+    final Color effectiveColor;
+    final Border? effectiveBorder;
+    final List<BoxShadow> effectiveShadow;
+
+    switch (variant) {
+      case DokalCardVariant.elevated:
+        effectiveColor = color ?? AppColors.surface;
+        effectiveBorder = Border.all(
+          color: borderColor ?? AppColors.outlineSoft,
+          width: 1,
+        );
+        effectiveShadow = showShadow ? AppShadows.sm : AppShadows.none;
+      case DokalCardVariant.outlined:
+        effectiveColor = color ?? AppColors.surface;
+        effectiveBorder = Border.all(
+          color: borderColor ?? AppColors.outline,
+          width: 1,
+        );
+        effectiveShadow = AppShadows.none;
+      case DokalCardVariant.filled:
+        effectiveColor = color ?? AppColors.surfaceVariant;
+        effectiveBorder = null;
+        effectiveShadow = AppShadows.none;
+    }
 
     final cardContent = Container(
       decoration: BoxDecoration(
         color: effectiveColor,
         borderRadius: effectiveRadius,
-        border: Border.all(color: effectiveBorderColor, width: 1.w),
-        boxShadow: showShadow
-            ? [
-                BoxShadow(
-                  color: effectiveShadow,
-                  blurRadius: 18.r,
-                  offset: Offset(0, 8.h),
-                ),
-              ]
-            : null,
+        border: effectiveBorder,
+        boxShadow: effectiveShadow,
       ),
       child: ClipRRect(
         borderRadius: effectiveRadius,

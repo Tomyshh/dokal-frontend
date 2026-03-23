@@ -10,6 +10,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_shadows.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/search_filter_utils.dart';
 import '../../../../core/utils/format_appointment_date.dart';
 import '../../../../core/utils/format_time_slot.dart';
@@ -323,12 +325,7 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                     height: 32.r,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.1),
-                          blurRadius: 8.r,
-                        ),
-                      ],
+                      boxShadow: AppShadows.xs,
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
@@ -356,11 +353,7 @@ class _ProfileScaffoldState extends State<_ProfileScaffold> {
                   Flexible(
                     child: Text(
                       profile.name,
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
+                      style: AppTextStyles.titleMd(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -548,20 +541,7 @@ class _TabButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected ? Colors.white : Colors.transparent,
             borderRadius: BorderRadius.circular(12.r),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.08),
-                      blurRadius: 12.r,
-                      offset: Offset(0, 2.h),
-                    ),
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 6.r,
-                      offset: Offset(0, 1.h),
-                    ),
-                  ]
-                : null,
+            boxShadow: isSelected ? AppShadows.md : null,
           ),
           child: Text(
             label,
@@ -594,13 +574,7 @@ class _HeaderSection extends StatelessWidget {
           height: 100.r,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(28.r),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.2),
-                blurRadius: 24.r,
-                offset: Offset(0, 10.h),
-              ),
-            ],
+            boxShadow: AppShadows.primaryGlow,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(28.r),
@@ -1150,11 +1124,7 @@ class _ReviewCard extends StatelessWidget {
                 backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 child: Text(
                   initials,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
-                  ),
+                  style: AppTextStyles.labelSm(color: AppColors.primary),
                 ),
               ),
               SizedBox(width: 12.w),
@@ -1602,7 +1572,7 @@ class _AvailabilityCalendarState extends State<_AvailabilityCalendar> {
                                 ? FontWeight.w700
                                 : FontWeight.w500,
                             color: isSelected && isAvailable
-                                ? Colors.white
+                                ? AppColors.textOnPrimary
                                 : isPast
                                 ? AppColors.textSecondary.withValues(alpha: 0.4)
                                 : isAvailable
@@ -1827,21 +1797,13 @@ class _TimeSlotSectionState extends State<_TimeSlotSection> {
                           : AppColors.primary.withValues(alpha: 0.2),
                       width: isSelected ? 2.r : 1.r,
                     ),
-                    boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.25),
-                              blurRadius: 8.r,
-                              offset: Offset(0, 4.h),
-                            ),
-                          ]
-                        : null,
+                    boxShadow: isSelected ? AppShadows.sm : null,
                   ),
                   child: Text(
                     slot.start,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: isSelected
-                          ? Colors.white
+                          ? AppColors.textOnPrimary
                           : AppColors.primary,
                       fontWeight: FontWeight.w600,
                     ),
@@ -1889,19 +1851,9 @@ class _BookingConfirmation extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.md.r),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryLight],
-        ),
+        gradient: AppColors.brandGradient,
         borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
-            blurRadius: 20.r,
-            offset: Offset(0, 8.h),
-          ),
-        ],
+        boxShadow: AppShadows.primaryGlow,
       ),
       child: Column(
         children: [
@@ -1911,13 +1863,13 @@ class _BookingConfirmation extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(10.r),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: AppColors.textOnPrimary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
                   Icons.check_circle_rounded,
                   size: 24.sp,
-                  color: Colors.white,
+                  color: AppColors.textOnPrimary,
                 ),
               ),
               SizedBox(width: 12.w),
@@ -1927,17 +1879,15 @@ class _BookingConfirmation extends StatelessWidget {
                   children: [
                     Text(
                       l10n.practitionerYourAppointmentLabel,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        fontWeight: FontWeight.w500,
+                      style: AppTextStyles.labelSm(
+                        color: AppColors.textOnPrimary.withValues(alpha: 0.85),
                       ),
                     ),
                     SizedBox(height: 2.h),
                     Text(
                       '${formatTimeTo24h(selectedTime)} • ${_formatFullDate(context)}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
+                      style: AppTextStyles.titleMd(
+                        color: AppColors.textOnPrimary,
                       ),
                     ),
                   ],
@@ -1947,10 +1897,10 @@ class _BookingConfirmation extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md.h),
 
-          // Book button - ouvre le flux de réservation rapide
+          // Book button
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
+            child: FilledButton(
               onPressed: () {
                 final isAuthenticated =
                     context.read<AuthBloc>().state.isAuthenticated;
@@ -1978,28 +1928,18 @@ class _BookingConfirmation extends StatelessWidget {
                   endTime: selectedEndTime,
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: AppColors.primary,
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.textOnPrimary,
+                foregroundColor: AppColors.primaryDark,
                 padding: EdgeInsets.symmetric(vertical: 14.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppRadii.lg.r),
                 ),
                 elevation: 0,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.event_available_rounded, size: 20.sp),
-                  SizedBox(width: 8.w),
-                  Text(
-                    l10n.practitionerBookAppointment,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
+              child: Text(
+                l10n.practitionerBookAppointment,
+                style: AppTextStyles.labelLg(color: AppColors.primaryDark),
               ),
             ),
           ),
@@ -2358,7 +2298,7 @@ class _SocialIcon extends StatelessWidget {
           SizedBox(height: 4.h),
           Text(
             label,
-            style: TextStyle(fontSize: 10.sp, color: AppColors.textSecondary),
+            style: AppTextStyles.labelXs(color: AppColors.textSecondary),
           ),
         ],
       ),
@@ -2604,17 +2544,13 @@ class _AvatarPlaceholder extends StatelessWidget {
       width: size,
       height: size,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryLight],
-        ),
+        gradient: AppColors.brandGradient,
       ),
       child: Center(
         child: Text(
           initials,
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.textOnPrimary,
             fontSize: size * 0.35,
             fontWeight: FontWeight.w600,
           ),

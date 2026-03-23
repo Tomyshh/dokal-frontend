@@ -1564,6 +1564,90 @@ abstract class AppLocalizations {
   /// **'אחר'**
   String get kupatOther;
 
+  /// No description provided for @insuranceAig.
+  ///
+  /// In he, this message translates to:
+  /// **'AIG'**
+  String get insuranceAig;
+
+  /// No description provided for @insuranceAyalon.
+  ///
+  /// In he, this message translates to:
+  /// **'איילון'**
+  String get insuranceAyalon;
+
+  /// No description provided for @insuranceBituchHaklay.
+  ///
+  /// In he, this message translates to:
+  /// **'ביטוח חקלאי'**
+  String get insuranceBituchHaklay;
+
+  /// No description provided for @insuranceDikla.
+  ///
+  /// In he, this message translates to:
+  /// **'דקלה'**
+  String get insuranceDikla;
+
+  /// No description provided for @insuranceHarel.
+  ///
+  /// In he, this message translates to:
+  /// **'הראל'**
+  String get insuranceHarel;
+
+  /// No description provided for @insuranceHachshara.
+  ///
+  /// In he, this message translates to:
+  /// **'הכשרה'**
+  String get insuranceHachshara;
+
+  /// No description provided for @insuranceHaphenix.
+  ///
+  /// In he, this message translates to:
+  /// **'הפניקס'**
+  String get insuranceHaphenix;
+
+  /// No description provided for @insuranceClal.
+  ///
+  /// In he, this message translates to:
+  /// **'כלל'**
+  String get insuranceClal;
+
+  /// No description provided for @insuranceMigdal.
+  ///
+  /// In he, this message translates to:
+  /// **'מגדל'**
+  String get insuranceMigdal;
+
+  /// No description provided for @insuranceMenora.
+  ///
+  /// In he, this message translates to:
+  /// **'מנורה'**
+  String get insuranceMenora;
+
+  /// No description provided for @insuranceBituchYashir.
+  ///
+  /// In he, this message translates to:
+  /// **'ביטוח ישיר'**
+  String get insuranceBituchYashir;
+
+  /// No description provided for @insuranceShirbit.
+  ///
+  /// In he, this message translates to:
+  /// **'שירביט'**
+  String get insuranceShirbit;
+
+  /// No description provided for @insuranceShlomo.
+  ///
+  /// In he, this message translates to:
+  /// **'שלמה'**
+  String get insuranceShlomo;
+
+  /// No description provided for @insuranceShomera.
+  ///
+  /// In he, this message translates to:
+  /// **'שומרה'**
+  String get insuranceShomera;
+
   /// No description provided for @healthMyFileSectionTitle.
   ///
   /// In he, this message translates to:
@@ -2325,6 +2409,18 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'ברוך הבא!'**
   String get authLoginSuccess;
+
+  /// No description provided for @authNoAccountFound.
+  ///
+  /// In he, this message translates to:
+  /// **'לא נמצא חשבון — נא להירשם תחילה.'**
+  String get authNoAccountFound;
+
+  /// No description provided for @authAccountAlreadyExists.
+  ///
+  /// In he, this message translates to:
+  /// **'חשבון קיים — התחברת בהצלחה.'**
+  String get authAccountAlreadyExists;
 
   /// No description provided for @securityTitle.
   ///
@@ -3981,6 +4077,138 @@ abstract class AppLocalizations {
   /// In he, this message translates to:
   /// **'כרטיס ביקור לא נמצא'**
   String get cardNotFound;
+
+  /// No description provided for @reviewSurveyTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'המשוב שלך'**
+  String get reviewSurveyTitle;
+
+  /// No description provided for @reviewSuccessMessage.
+  ///
+  /// In he, this message translates to:
+  /// **'תודה על המשוב!'**
+  String get reviewSuccessMessage;
+
+  /// No description provided for @reviewSubmitButton.
+  ///
+  /// In he, this message translates to:
+  /// **'שלח ביקורת'**
+  String get reviewSubmitButton;
+
+  /// No description provided for @reviewOverallRating.
+  ///
+  /// In he, this message translates to:
+  /// **'איך הייתה הפגישה?'**
+  String get reviewOverallRating;
+
+  /// No description provided for @reviewRatingPrompt.
+  ///
+  /// In he, this message translates to:
+  /// **'לחצו על כוכב לדירוג'**
+  String get reviewRatingPrompt;
+
+  /// No description provided for @reviewRating1.
+  ///
+  /// In he, this message translates to:
+  /// **'גרוע מאוד'**
+  String get reviewRating1;
+
+  /// No description provided for @reviewRating2.
+  ///
+  /// In he, this message translates to:
+  /// **'גרוע'**
+  String get reviewRating2;
+
+  /// No description provided for @reviewRating3.
+  ///
+  /// In he, this message translates to:
+  /// **'בינוני'**
+  String get reviewRating3;
+
+  /// No description provided for @reviewRating4.
+  ///
+  /// In he, this message translates to:
+  /// **'טוב'**
+  String get reviewRating4;
+
+  /// No description provided for @reviewRating5.
+  ///
+  /// In he, this message translates to:
+  /// **'מצוין'**
+  String get reviewRating5;
+
+  /// No description provided for @reviewWaitTimeTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'זמן המתנה'**
+  String get reviewWaitTimeTitle;
+
+  /// No description provided for @reviewWaitTimeSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'כמה זמן חיכית לפני שהתקבלת?'**
+  String get reviewWaitTimeSubtitle;
+
+  /// No description provided for @reviewWaitUnder15.
+  ///
+  /// In he, this message translates to:
+  /// **'< 15 דק׳'**
+  String get reviewWaitUnder15;
+
+  /// No description provided for @reviewWait1530.
+  ///
+  /// In he, this message translates to:
+  /// **'15–30 דק׳'**
+  String get reviewWait1530;
+
+  /// No description provided for @reviewWait3045.
+  ///
+  /// In he, this message translates to:
+  /// **'30–45 דק׳'**
+  String get reviewWait3045;
+
+  /// No description provided for @reviewWait4560.
+  ///
+  /// In he, this message translates to:
+  /// **'45–60 דק׳'**
+  String get reviewWait4560;
+
+  /// No description provided for @reviewWaitOver60.
+  ///
+  /// In he, this message translates to:
+  /// **'> 60 דק׳'**
+  String get reviewWaitOver60;
+
+  /// No description provided for @reviewCommentTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'התגובה שלך'**
+  String get reviewCommentTitle;
+
+  /// No description provided for @reviewCommentOptional.
+  ///
+  /// In he, this message translates to:
+  /// **'אופציונלי — שתפו את החוויה שלכם'**
+  String get reviewCommentOptional;
+
+  /// No description provided for @reviewCommentHint.
+  ///
+  /// In he, this message translates to:
+  /// **'ספרו לנו על הביקור...'**
+  String get reviewCommentHint;
+
+  /// No description provided for @reviewAnonymousTitle.
+  ///
+  /// In he, this message translates to:
+  /// **'הישאר אנונימי'**
+  String get reviewAnonymousTitle;
+
+  /// No description provided for @reviewAnonymousSubtitle.
+  ///
+  /// In he, this message translates to:
+  /// **'רק ראשי התיבות שלך יוצגו'**
+  String get reviewAnonymousSubtitle;
 }
 
 class _AppLocalizationsDelegate

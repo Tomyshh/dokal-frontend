@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_avatar.dart';
 import '../../../../core/widgets/dokal_card.dart';
@@ -103,7 +104,7 @@ class RelativesPage extends StatelessWidget {
                       },
                     ),
             ),
-            floatingActionButton: FloatingActionButton.small(
+            floatingActionButton: FloatingActionButton(
               heroTag: 'fab_relatives',
               onPressed: () async {
                 await context.push('/account/relatives/add');
@@ -111,7 +112,7 @@ class RelativesPage extends StatelessWidget {
                   context.read<RelativesCubit>().load();
                 }
               },
-              child: Icon(Icons.add_rounded, size: 20.sp),
+              child: Icon(Icons.add_rounded, size: 22.sp),
             ),
           );
         },
@@ -141,13 +142,13 @@ class RelativesPage extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: AppTextStyles.titleSm(),
                   ),
                   if (label != null) ...[
                     SizedBox(height: 2.h),
                     Text(
                       label,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: AppTextStyles.bodySm(color: AppColors.textSecondary),
                     ),
                   ],
                 ],

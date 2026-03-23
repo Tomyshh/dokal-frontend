@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radii.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/dokal_app_bar.dart';
 import '../../../../core/widgets/dokal_card.dart';
 import '../../../../core/widgets/dokal_empty_state.dart';
@@ -60,7 +61,7 @@ class PaymentPage extends StatelessWidget {
                               width: 36.r,
                               height: 36.r,
                               decoration: BoxDecoration(
-                                color: AppColors.primary.withValues(alpha: 0.1),
+                                color: AppColors.primarySurface,
                                 borderRadius: BorderRadius.circular(
                                   AppRadii.sm.r,
                                 ),
@@ -78,16 +79,12 @@ class PaymentPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     '${pm.brandLabel} •••• ${pm.last4}',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleSmall,
+                                    style: AppTextStyles.titleSm(),
                                   ),
                                   SizedBox(height: 2.h),
                                   Text(
                                     l10n.paymentExpires(pm.expiry),
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall,
+                                    style: AppTextStyles.bodySm(color: AppColors.textSecondary),
                                   ),
                                 ],
                               ),
